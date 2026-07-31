@@ -427,6 +427,8 @@
   "aice.devices.add": "Add GPU",
   "aice.devices.count_unit": "cards",
   "aice.devices.sharing_mode": "Sharing Mode",
+  "aice.devices.vendor": "Vendor",
+  "aice.devices.vendor.required": "Please select a GPU vendor",
   "aice.devices.memory_mb": "VRAM",
   "aice.devices.memory_mb.placeholder": "Optional",
   "aice.devices.memory_mb.placeholder_required": "Required",

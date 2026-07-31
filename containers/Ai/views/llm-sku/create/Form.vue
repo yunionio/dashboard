@@ -446,7 +446,9 @@ import {
 import {
   aggregateDevicesToRows,
   createEmptyDeviceRow,
+  deviceRowNeedsVendor,
   expandRowsToDevices,
+  getPodPciModelTypes,
   isValidDeviceRows,
   resolveSharingMode,
 } from '@Ai/utils/deviceFormUtils'
@@ -906,9 +908,14 @@ export default {
                   const hasInjectedDevice = (this.isCatalogMode && this.catalogSubmitType === 'import' && !this.isApplyType && !this.isDesktopType) || this.isLocalPathSku
                   const required = !!(field?.rules?.some(r => r.required) || hasInjectedDevice || isCatalogImport || isLocalPathImport)
                   const requireHamiMemoryMb = !!(this.isLocalPathSku || isLocalPathImport)
-                  if (!isValidDeviceRows(value, { allowEmpty: !required, requireHamiMemoryMb })) {
+                  const pciModelTypes = this.podPciModels
+                  if (!isValidDeviceRows(value, { allowEmpty: !required, requireHamiMemoryMb, pciModelTypes })) {
                     if (requireHamiMemoryMb && Array.isArray(value) && value.some(row => String(row?.model || '').trim() && resolveSharingMode(row.sharing_mode) === 'HAMI' && !(parseInt(row.memory_mb, 10) > 0))) {
                       callback(new Error(this.$t('aice.devices.memory_mb.required')))
+                      return
+                    }
+                    if (Array.isArray(value) && value.some(row => deviceRowNeedsVendor(row, pciModelTypes))) {
+                      callback(new Error(this.$t('aice.devices.vendor.required')))
                       return
                     }
                     callback(new Error(this.$t('common.tips.select', [this.$t('aice.devices')])))
@@ -1138,8 +1145,11 @@ export default {
       }
     },
     specList () {
-      const list = Object.values(this.$store.getters.capability?.pci_model_types || {}).filter(item => item.hypervisor === 'pod')
+      const list = getPodPciModelTypes(this.$store.getters.capability)
       return list.map(item => ({ key: item.model, label: item.model }))
+    },
+    podPciModels () {
+      return getPodPciModelTypes(this.$store.getters.capability)
     },
   },
   watch: {
@@ -1177,6 +1187,7 @@ export default {
   },
   mounted () {
     if (this.isCatalogMode) {
+      this.$store.dispatch('auth/getCapabilities').catch(() => {})
       this.$nextTick(() => this.applyCatalogSpec())
     } else if (this.isLocalPathImportMode) {
       this.$nextTick(() => this.applyLocalPathImportDefaults())
@@ -1324,20 +1335,8 @@ export default {
       typeFieldKeys.forEach(key => {
         if (values[key] !== undefined) pickTypeValues[key] = values[key]
       })
-      const volumes = [{
-        containers: this.mode === 'edit' && this.editData && this.editData.volumes && this.editData.volumes[0] ? this.editData.volumes[0].containers : {
-          1: { mount_path: '/etc/wolf', sub_directory: 'wolf' },
-          2: {
-            mount_path: '/home/retro',
-            sub_directory: 'home',
-            overlay: {
-              lower_dir: ['/opt/steam-data/steam', '/opt/steam-data/games'],
-              use_disk_image: false,
-            },
-          },
-        },
-        size_mb: (volume_size ?? 10) * 1024,
-      }]
+      const sizeMb = (volume_size ?? 10) * 1024
+      const volumes = [{ size_mb: sizeMb }]
       const port_mappings = this.portMappings.map(item => ({
         protocol: protocol[item.key],
         container_port: container_port[item.key],
@@ -1383,8 +1382,7 @@ export default {
         memory: (memory ?? 2) * 1024,
         bandwidth: bandwidth ?? 100,
         volumes,
-        disk_size: volumes[0].size_mb,
-        app_type: 'steam',
+        disk_size: sizeMb,
       }
       if (port_mappings.length > 0) data.port_mappings = port_mappings
       if (host_paths.length > 0) data.host_paths = host_paths
@@ -1397,7 +1395,7 @@ export default {
         if (v === undefined) return
         if ((effectiveLlmType === 'vllm' || effectiveLlmType === 'sglang') && key === 'preferred_model') return
         if (key === 'device') {
-          const expanded = expandRowsToDevices(v)
+          const expanded = expandRowsToDevices(v, this.podPciModels)
           if (expanded.length) data.devices = expanded
         } else {
           data[key] = v

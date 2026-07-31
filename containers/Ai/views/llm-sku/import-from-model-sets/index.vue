@@ -12,7 +12,7 @@
     <a-drawer
       wrap-class-name="catalog-drawer-wrap"
       :visible="drawerVisible"
-      :width="720"
+      :width="'50%'"
       destroy-on-close
       placement="right"
       @close="clearSet">
@@ -126,6 +126,7 @@ export default {
   methods: {
     getCatalogSpecId,
     onSetSelect (set) {
+      this.$store.dispatch('auth/getCapabilities').catch(() => {})
       this.set = set
       const specs = set.specs || []
       const first = specs.find(s => isCatalogInferenceBackend(s.backend)) || specs[0]

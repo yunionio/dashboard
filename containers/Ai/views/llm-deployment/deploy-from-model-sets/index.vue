@@ -12,7 +12,7 @@
     <a-drawer
       wrap-class-name="catalog-drawer-wrap"
       :visible="drawerVisible"
-      :width="720"
+      :width="'50%'"
       destroy-on-close
       placement="right"
       @close="clearSet">
@@ -125,6 +125,9 @@ export default {
     deployFormKey () {
       return `${getCatalogSpecId(this.selectedSpec)}-${this.deployLlmType}`
     },
+    podPciModels () {
+      return Object.values(this.$store.getters.capability?.pci_model_types || {}).filter(item => item.hypervisor === 'pod')
+    },
   },
   watch: {
     selectedSpecId () {
@@ -183,7 +186,7 @@ export default {
       }
       this.submitLoading = true
       try {
-        const payload = buildCatalogDeploymentPayload(this.deployForm, spec, this.deployLlmType)
+        const payload = buildCatalogDeploymentPayload(this.deployForm, spec, this.deployLlmType, this.podPciModels)
         await this.deploymentsManager.create({ data: payload })
         this.$message.success(this.$t('common.success'))
         this.clearSet()

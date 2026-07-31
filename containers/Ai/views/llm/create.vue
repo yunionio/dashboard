@@ -566,6 +566,7 @@ import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
 import LlmSkuSelect from '@Ai/sections/LlmSkuSelect'
 import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
+import { devicesFromModelKeys } from '@Ai/utils/deviceFormUtils'
 import WindowsMixin from '@/mixins/windows'
 import validateForm from '@/utils/validate'
 import { uuid } from '@/utils/utils'
@@ -951,6 +952,9 @@ export default {
     specList () {
       const list = Object.values(this.$store.getters.capability?.pci_model_types || {}).filter(item => item.hypervisor === 'pod')
       return list.map(item => ({ key: item.model, label: item.model }))
+    },
+    podPciModels () {
+      return Object.values(this.$store.getters.capability?.pci_model_types || {}).filter(item => item.hypervisor === 'pod')
     },
     supportDevicesAndHostPaths () {
       return ['ollama', 'vllm', 'sglang', 'comfyui', 'desktop'].includes((this.form.fd.llm_type || '').toLowerCase())
@@ -1424,7 +1428,7 @@ export default {
         }
         if (this.supportDevicesAndHostPaths) {
           if (Array.isArray(values.device) && values.device.length > 0) {
-            data.devices = values.device.map(k => ({ model: k, sharing_mode: 'HAMI', dev_type: 'GPU' }))
+            data.devices = devicesFromModelKeys(values.device, this.podPciModels)
           }
         }
         if (this.supportMountedModels) {
