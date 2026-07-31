@@ -46,7 +46,11 @@ export default {
   components: {
     DiscountPrice,
   },
-  inject: ['form', 'cloudEnv'],
+  inject: {
+    form: { default: undefined },
+    cloudEnv: { default: undefined },
+    flushCreateFormFieldDrafts: { default: undefined },
+  },
   props: {
     currentCloudregion: {
       type: Object,
@@ -204,6 +208,9 @@ export default {
           }
         }
         await this.doCreate(values)
+        if (typeof this.flushCreateFormFieldDrafts === 'function') {
+          this.flushCreateFormFieldDrafts()
+        }
         this.$emit('create-success')
         this.loading = false
         this.$message.success(this.$t('k8s.text_184'))
