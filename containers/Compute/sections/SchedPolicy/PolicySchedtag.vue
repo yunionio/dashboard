@@ -1,7 +1,7 @@
 <template>
   <div class="policy-schedtag">
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in schedtagPolicyList" :key="item.key">
-      <schedtag-policy :form="form" class="w-50" :decorators="genDecorator(item.key)" :schedtag-params="{ ...schedtagParams, $t: `schedtag-${i}` }" :policyReactInSchedtag="false" />
+      <schedtag-policy :form="form" class="w-50" :decorators="genDecorator(item.key)" :schedtag-params="{ ...schedtagParams, $t: `schedtag-${i}` }" :policyReactInSchedtag="false" @change="onItemFieldChange" />
       <a-button shape="circle" icon="minus" size="small" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
@@ -121,15 +121,18 @@ export default {
         if (item.policy) values[policyField] = item.policy
         this.form.fc.setFieldsValue(values)
       })
+      this.$emit('change')
     },
     add () {
       const uid = uuid()
       this.schedtagPolicyList.push({
         key: uid,
       })
+      this.$emit('change')
     },
     decrease (uid, index) {
       this.schedtagPolicyList.splice(index, 1)
+      this.$emit('change')
     },
     genDecorator (key) {
       const item = this.schedtagPolicyList.find(v => v.key === key) || {}
@@ -151,6 +154,22 @@ export default {
           },
         ],
       }
+    },
+    onItemFieldChange () {
+      // 用户改调度标签/策略后，把 fc 值同步回 list 再通知父级落盘
+      if (!this.form?.fc || !this.schedtagPolicyList.length) {
+        this.$emit('change')
+        return
+      }
+      this.schedtagPolicyList.forEach((item) => {
+        const schedtagField = this.decorators.schedtags(item.key)[0]
+        const policyField = this.decorators.policys(item.key)[0]
+        const schedtag = this.form.fc.getFieldValue(schedtagField)
+        const policy = this.form.fc.getFieldValue(policyField)
+        if (schedtag) item.schedtag = typeof schedtag === 'object' ? (schedtag.key || schedtag.id) : schedtag
+        if (policy) item.policy = typeof policy === 'object' ? (policy.key || policy.id) : policy
+      })
+      this.$emit('change')
     },
   },
 }

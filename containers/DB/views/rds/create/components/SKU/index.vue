@@ -1,7 +1,7 @@
 <template>
   <div>
-    <filters ref="FILTERS" :rds-item="rdsItem" />
-    <size-filters ref="SIZE_FILTER" :rds-item="rdsItem">
+    <filters ref="FILTERS" :rds-item="rdsItem" @change="onFiltersChange" />
+    <size-filters ref="SIZE_FILTER" :rds-item="rdsItem" @change="onSizeFiltersChange">
       <div v-if="$slots.zone" slot="zone">
         <slot name="zone" />
       </div>
@@ -82,6 +82,32 @@ export default {
     this.linkageValue = getVersion
   },
   methods: {
+    onFiltersChange (payload) {
+      // 级联字段写稳后再拉；带 payload 避免表单读值时机问题
+      this.$nextTick(() => this.ensureFetchSpecs(0, payload))
+    },
+    onSizeFiltersChange () {
+      this.$nextTick(() => {
+        const fetchSkus = this.$refs.LIST && this.$refs.LIST.fetchSkus
+        if (typeof fetchSkus === 'function') fetchSkus.call(this.$refs.LIST)
+      })
+    },
+    async ensureFetchSpecs (retry = 0, payload) {
+      const sizeRef = this.$refs.SIZE_FILTER
+      const fetchSpecs = sizeRef && sizeRef.fetchSpecs
+      if (typeof fetchSpecs !== 'function') {
+        if (retry < 8) {
+          await new Promise(resolve => setTimeout(resolve, 80))
+          return this.ensureFetchSpecs(retry + 1, payload)
+        }
+        return
+      }
+      const ok = await fetchSpecs.call(sizeRef, payload)
+      if (!ok && retry < 8) {
+        await new Promise(resolve => setTimeout(resolve, 80))
+        return this.ensureFetchSpecs(retry + 1, payload)
+      }
+    },
     handleSkuChange (sku) {
       this.selectedSku = sku
       this.initMultiAz(sku)

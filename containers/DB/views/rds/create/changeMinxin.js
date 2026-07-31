@@ -25,12 +25,19 @@ export default {
         delete this.scopeParams.project_domain
       }
     },
-    cloudregion_change () {
-      this.skuRef.fetchCapability()
-    },
     // 获取CPU核数、内存、可用区
     capability_change () {
-      this.skuRef.fetchSpecs()
+      // 级联回填/切换引擎过程中由 Filters @change 统一拉，避免半成品参数把 CPU 清空
+      if (this._rdsSkuDraftRestoring) return
+      if (this.skuRef && this.skuRef.ensureFetchSpecs) {
+        this.skuRef.ensureFetchSpecs(0)
+      }
+    },
+    cloudregion_change () {
+      // capability 拉完后 Filters 会 emit change → ensureFetchSpecs；这里只触发引擎级联
+      if (this.skuRef && this.skuRef.fetchCapability) {
+        this.skuRef.fetchCapability()
+      }
     },
     // 获取skulist
     specs_change () {
@@ -75,8 +82,8 @@ export default {
           return handleChange()
         }
       })
-      if (typeof this.scheduleSaveCreateFormDraft === 'function') {
-        this.scheduleSaveCreateFormDraft()
+      if (typeof this.syncCreateFormFcDrafts === 'function') {
+        this.syncCreateFormFcDrafts(changedFields)
       }
     },
   },

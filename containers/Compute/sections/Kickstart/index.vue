@@ -12,9 +12,15 @@
 <script>
 import 'codemirror/theme/material.css'
 import 'codemirror/addon/edit/matchbrackets'
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 export default {
   name: 'Kickstart',
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     decorator: {
       type: Object,
       required: true,
@@ -53,6 +59,23 @@ export default {
           })
         }
       },
+    },
+  },
+  methods: {
+    getCreateFormFieldDraftSnapshot () {
+      const fc = this.form?.fc
+      if (!fc) return undefined
+      return {
+        kickstart_enabled: fc.getFieldValue('kickstart_enabled'),
+        kickstart_config: fc.getFieldValue('kickstart_config'),
+      }
+    },
+    applyCreateFormFieldDraft (draft) {
+      if (!draft || !this.form?.fc || this.enableDisabled) return
+      const values = {}
+      if (draft.kickstart_enabled != null) values.kickstart_enabled = draft.kickstart_enabled
+      if (draft.kickstart_config) values.kickstart_config = draft.kickstart_config
+      if (Object.keys(values).length) this.form.fc.setFieldsValue(values)
     },
   },
 }

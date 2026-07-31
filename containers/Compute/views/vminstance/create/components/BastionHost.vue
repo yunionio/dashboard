@@ -90,9 +90,15 @@
 </template>
 
 <script>
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 export default {
   name: 'BastionHost',
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     form: {
       type: Object,
       required: true,
@@ -141,6 +147,23 @@ export default {
     }
   },
   methods: {
+    getCreateFormFieldDraftSnapshot () {
+      const f = this.form?.fc
+      if (!f || !this.bastionHostEnable) return { bastionHostEnable: false }
+      return {
+        bastionHostEnable: true,
+        bastion_host_id: f.getFieldValue('bastion_host_id') || this.currentBastionHostId,
+        bastion_org_id: f.getFieldValue('bastion_org_id'),
+        nodes: f.getFieldValue('nodes'),
+        accounts: f.getFieldValue('accounts'),
+        bastion_domain_id: f.getFieldValue('bastion_domain_id'),
+      }
+    },
+    applyCreateFormFieldDraft (draft) {
+      if (!draft?.bastionHostEnable) return
+      if (typeof this.initData === 'function') this.initData(draft)
+    },
+
     initData (data) {
       this.bastionHostEnable = true
       this.currentBastionHostId = data.bastion_host_id
@@ -151,6 +174,7 @@ export default {
     },
     changeHandle (v) {
       this.bastionHostEnable = v
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     bastionHostChangeHandle (v) {
       this.currentBastionHostId = v

@@ -19,6 +19,7 @@
         class="w-100"
         v-decorator="decorators.policy"
         :options="policyOpts"
+        @change="policyChange"
         :select-props="{ allowClear: true, placeholder: $t('common_256') }" />
     </a-form-item>
   </div>
@@ -59,6 +60,7 @@ export default {
   },
   methods: {
     schedtagChange (val) {
+      this.$emit('change', val)
       this.$nextTick(() => {
         if (this.form && this.form.fc) {
           let defaultStrategy = this.schedtagItem.default_strategy || 'require'
@@ -75,6 +77,9 @@ export default {
           }
         }
       })
+    },
+    policyChange (val) {
+      this.$emit('change', val)
     },
   },
 }

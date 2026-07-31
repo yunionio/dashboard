@@ -45,7 +45,10 @@ export default {
   components: {
     DiscountPrice,
   },
-  inject: ['form'],
+  inject: {
+    form: { default: undefined },
+    flushCreateFormFieldDrafts: { default: undefined },
+  },
   props: {
     currentCloudregion: {
       type: Object,
@@ -227,6 +230,9 @@ export default {
         Reflect.deleteProperty(values, 'cloudregion')
         Reflect.deleteProperty(values, 'zone')
         await this.doCreate(values)
+        if (typeof this.flushCreateFormFieldDrafts === 'function') {
+          this.flushCreateFormFieldDrafts()
+        }
         this.$emit('create-success')
         const successBack = () => {
           this.$message.success(this.$t('k8s.text_184'))

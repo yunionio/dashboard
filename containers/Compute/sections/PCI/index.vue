@@ -91,6 +91,7 @@ import {
   resolveGpuTypeBySharingMode,
 } from '@Compute/constants'
 import DiskSizeInput from '@/sections/DiskSizeInput'
+import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 
 let id = 0
 export default {
@@ -98,7 +99,12 @@ export default {
   components: {
     DiskSizeInput,
   },
+  mixins: [createFormFieldDraftMixin],
   props: {
+    formDraftKey: {
+      type: String,
+      default: '',
+    },
     form: {
       type: Object,
       require: true,
@@ -122,6 +128,7 @@ export default {
       curPciDevType: '',
       curGpuType: GPU_TYPE_OPTION_MAP.HPC.value,
       memoryUnits: {},
+      pciDraftRestoring: false,
     }
   },
   computed: {
@@ -182,7 +189,15 @@ export default {
         })
       }
     },
-    realPciDevTypeOptions (val, oldVal) {
+    realPciDevTypeOptions () {
+      if (this.pciDraftRestoring) return
+      if (this.canReadWriteFormFieldDraft()) {
+        const draft = this.readFormFieldDraft()
+        if (draft?.pciEnable) {
+          this.tryApplyPciDraft(draft)
+          return
+        }
+      }
       this.changeSelectedValue()
     },
     isPciEmpty (val) {
@@ -195,6 +210,33 @@ export default {
     this.pciForm.fc.getFieldDecorator('keys', { initialValue: [id], preserve: true })
   },
   methods: {
+    getCreateFormFieldDraftSnapshot () {
+      const enable = this.pciEnable
+      if (!enable) return { pciEnable: false }
+      const values = this.pciForm?.fc?.getFieldsValue?.() || {}
+      return { pciEnable: true, ...values }
+    },
+    applyCreateFormFieldDraft (draft) {
+      this.tryApplyPciDraft(draft || this.readFormFieldDraft())
+    },
+    tryApplyPciDraft (draft) {
+      if (!draft?.pciEnable) return
+      this.pciDraftRestoring = true
+      this.pciEnable = true
+      this.$nextTick(() => {
+        try {
+          if (this.form?.fc) this.form.fc.setFieldsValue({ pciEnable: true })
+          if (this.pciForm?.fc && draft.keys) {
+            try { this.pciForm.fc.setFieldsValue(draft) } catch (e) { /* ignore */ }
+          }
+        } finally {
+          this.$nextTick(() => {
+            this.pciDraftRestoring = false
+          })
+        }
+      })
+    },
+
     parsePciDevTypeKey (key) {
       if (!key) return { dev_type: '', sharing_mode: '' }
       const idx = key.indexOf('/')
@@ -261,6 +303,7 @@ export default {
       })
     },
     changeSelectedValue () {
+      if (this.pciDraftRestoring) return
       const keys = this.pciForm.fc.getFieldValue('keys')
       keys.forEach(key => {
         if (this.form.fd[`pciDevType[${key}]`] && !this.getRealPciDevTypeOptions(this.realPciDevTypeOptions).some(item => item.key === this.form.fd[`pciDevType[${key}]`])) {
@@ -302,6 +345,7 @@ export default {
     },
     change (val) {
       this.pciEnable = val
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
       this.$emit('change', val)
     },
     onChangeDevType (val, key) {
@@ -321,12 +365,14 @@ export default {
         this.$delete(this.form.fd, `memory_request[${key}]`)
       }
       this.reset()
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     onChangeGpuType (val, key) {
       this.curGpuType = val
       this.form.fc.setFieldsValue({
         [`pciGpuType[${key}]`]: val,
       })
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     onChangeModel (val, key) {
       this.form.fc.setFieldsValue({
@@ -340,16 +386,19 @@ export default {
           [`memory_request[${key}]`]: max,
         })
       }
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     onChangeCount (e, key) {
       this.form.fc.setFieldsValue({
         [`pciCount[${key}]`]: e.target.value,
       })
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     onChangeMemoryRequest (val, key) {
       this.form.fc.setFieldsValue({
         [`memory_request[${key}]`]: val,
       })
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     add () {
       const { pciForm } = this
@@ -358,6 +407,7 @@ export default {
       const nextKeys = keys.concat(nextKey)
       pciForm.fc.setFieldsValue({ keys: nextKeys })
       this.initialValue(nextKey)
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     remove (k) {
       const { pciForm } = this
@@ -370,6 +420,7 @@ export default {
         keys: keys.filter(key => key !== k),
       })
       this.removeValue(k)
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     reset () {
       const { pciForm } = this

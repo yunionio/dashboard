@@ -39,7 +39,10 @@ export default {
   components: {
     PriceFetcher,
   },
-  inject: ['form'],
+  inject: {
+    form: { default: undefined },
+    flushCreateFormFieldDrafts: { default: undefined },
+  },
   props: {
     values: {
       type: Object,
@@ -153,6 +156,9 @@ export default {
       const manager = new Manager('dbinstances', 'v2')
       try {
         await manager.create({ data: this.formatParams() })
+        if (typeof this.flushCreateFormFieldDrafts === 'function') {
+          this.flushCreateFormFieldDrafts()
+        }
         this.$emit('create-success')
         this.$router.push('/rds')
       } catch (err) {

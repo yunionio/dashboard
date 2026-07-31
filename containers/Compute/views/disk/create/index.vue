@@ -10,7 +10,7 @@
           :fc="form.fc"
           :fd="form.fd"
           :decorators="{ project: decorators.project, domain: decorators.domain }"
-          :ignoreStorage="ignoreLocalFormStorage"
+          :form-draft-key="diskDraftFields.domainProject"
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
@@ -45,11 +45,11 @@
         :provider-multiple="isPublic"
         :cloudregion-multiple="isPublic"
         :cloudregion-mapper="filterCloudregionListByProvider"
-        :defaultActiveFirstOption="areaDefaultActiveFirstOption"
+        :defaultActiveFirstOption="isPublic ? [] : true"
         :region.sync="regionList"
         filterBrandResource="compute_engine"
         :zone.sync="zoneList"
-        @fetchsDone="onAreaSelectsFetchsDone"
+        :form-draft-key="diskDraftFields.areaSelects"
         @change="handleAreaChange" />
       <!-- 无私有云订阅时仍用平台单选；公有云/HCSO/HCS 由云订阅决定平台 -->
       <a-form-item
@@ -62,6 +62,7 @@
           :type="form.fi.createType"
           :hypervisors="hypervisors"
           :disabledHypervisorMap="disabledHypervisorMap"
+          :form-draft-key="diskDraftFields.hypervisor"
           @change="changeHandle" />
       </a-form-item>
       <a-form-item v-if="showCloudprovider" :label="$t('compute.text_15')" v-bind="formItemLayout">
@@ -70,7 +71,7 @@
           v-decorator="decorators.manager_id"
           resource="cloudproviders"
           :params="cloudproviderParams"
-          :isDefaultSelect="!isFormBackfill"
+          :isDefaultSelect="true"
           :showSync="true"
           :select-props="{ placeholder: $t('compute.text_149') }"
           :resList.sync="cloudproviderData"
@@ -153,8 +154,7 @@
       :storage-types="storageTypes"
       :provider="provider"
       :cloudprovider-item="cloudproviderItem"
-      :size="form.fd.size"
-      @create-success="onDiskCreateSuccess" />
+      :size="form.fd.size" />
   </div>
 </template>
 
@@ -165,17 +165,10 @@ import { MEDIUM_MAP, CUSTOM_STORAGE_TYPES, STORAGE_TYPES } from '@Compute/consta
 import EncryptKeys from '@Compute/sections/encryptkeys'
 import DiskStorageSelect from '@Compute/sections/Disk/components/Storage'
 import RegionMap from '@Compute/sections/RegionMap'
-import {
-  mergeDiskCreateDraft,
-  isMeaningfulDiskCreateDraft,
-  buildDiskCreateDraftPayload,
-} from '@Compute/utils/diskCreateDraft'
 import { HYPERVISORS_MAP, CLOUD_ENVS, PROVIDER_MAP, BRAND_MAP, resolveHypervisorKey } from '@/constants'
 import AreaSelects from '@/sections/AreaSelects'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import createFormDraftMixin from '@/mixins/createFormDraft'
-import { setDraft, omitIdentityFields } from '@/utils/createFormDraft'
 import validateForm, { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
@@ -183,6 +176,13 @@ import HypervisorRadio from '@/sections/HypervisorRadio'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import { cloudregionFilterByCapability } from '@/utils/common/capability'
 import Tag from '@/sections/Tag'
+import {
+  DISK_CREATE_FORM_DRAFT_FIELD,
+  DISK_CREATE_FORM_DRAFT_FIELDS,
+  DISK_CREATE_FORM_DRAFT_FC_BINDINGS,
+  getDiskCreateFormDraftScope,
+} from '@Compute/utils/diskCreateFormDraft'
+import createFormDraftMixin from '@/mixins/createFormDraft'
 import BottomBar from './components/BottomBar'
 
 export default {
@@ -244,7 +244,7 @@ export default {
             if (values.hasOwnProperty('size')) {
               this.form.fd.size = values.size
             }
-            this.scheduleSaveCreateFormDraft()
+            this.syncDiskCreateFormFcDrafts(values)
           },
         }),
         fd: {
@@ -430,6 +430,16 @@ export default {
     }
   },
   computed: {
+    createFormDraftOptions () {
+      return {
+        formScope: getDiskCreateFormDraftScope({ cloudEnv: this.cloudEnv }),
+        // 与全局 shouldUseCreateDraft 一致：有 workflow / 预填时禁用
+        disableWhen: () => !!this.$route.query.workflow,
+      }
+    },
+    diskDraftFields () {
+      return DISK_CREATE_FORM_DRAFT_FIELDS
+    },
     enableEncryption () {
       return this.$appConfig.isPrivate && !this.$store.getters.isSysCE
     },
@@ -437,29 +447,6 @@ export default {
       return this.$t('compute.text_137', [this.minDiskData, this.maxDiskData])
     },
     ...mapGetters(['isAdminMode', 'scope', 'userInfo', 'capability']),
-    createFormDraftOptions () {
-      return {
-        formScope: `compute.disk.${this.cloudEnv}`,
-        omitKeys: ['encryptEnable', 'encrypt_key_id', 'encrypt_key_alg', 'encrypt_key_new'],
-        serialize: () => this.serializeCreateFormDraft(),
-        applyDraft: async (draftData) => {
-          await this.applyDiskCreateDraft(draftData)
-        },
-        isMeaningfulDraft: (data) => isMeaningfulDiskCreateDraft(data),
-      }
-    },
-    ignoreLocalFormStorage () {
-      return !!this._draftInitFormData
-    },
-    isFormBackfill () {
-      if (this._draftInitFormData && !this.createFormDraftUserInteracted) return true
-      return this.isCreateFormDraftHydrating
-    },
-    effectiveInitFormData () {
-      if (this._draftInitFormData && !this.createFormDraftUserInteracted) return this._draftInitFormData
-      if (this.isCreateFormDraftHydrating && this._draftInitFormData) return this._draftInitFormData
-      return {}
-    },
     currentCloudzone () {
       const zoneId = this.resolveZoneForCapability()
       return zoneId ? this.zoneList[zoneId] : undefined
@@ -599,14 +586,9 @@ export default {
       }
       return ['provider', 'cloudregion', 'zone']
     },
-    areaDefaultActiveFirstOption () {
-      if (this.isFormBackfill) return false
-      return this.isPublic ? [] : true
-    },
     showCloudprovider () {
       return this.isPublic || this.isHCSO || this.isHCS
     },
-    // 有云订阅时由订阅决定平台；本地/普通私有云仍展示平台单选
     showHypervisorRadio () {
       return !this.showCloudprovider
     },
@@ -746,12 +728,8 @@ export default {
     },
   },
   watch: {
-    async cloudEnv (val, oldVal) {
-      // 切 IDC / 私有云 / 公有云：先落盘旧环境，再复位并恢复新环境草稿（同页不重挂载）
-      if (oldVal && oldVal !== val) {
-        this.flushDiskDraftForEnv(oldVal)
-        this.resetDiskDraftStateForEnvSwitch()
-      }
+    async cloudEnv (val) {
+      this.bindDiskCreateFormFcDrafts()
       this.$nextTick(() => {
         const { query, path } = this.$router.history.current
         const newQuery = JSON.parse(JSON.stringify(query))
@@ -770,36 +748,14 @@ export default {
       if (this.$refs.areaSelects) {
         this.$refs.areaSelects.fetchs(this.areaselectsName)
       }
-      if (oldVal && oldVal !== val) {
-        await this.$nextTick()
-        try {
-          await this.tryRestoreCreateFormDraft()
-        } catch (e) { /* ignore */ }
-        this.isDraftRestore = false
-        this._bindCreateFormDraftUserInteraction()
-      }
     },
     'form.fd.domain' (newValue, oldValue) {
       if (newValue !== oldValue) {
-        // 草稿区域回填中勿再触发 fetchs，避免死循环卡死
-        if (this._diskAreaApplying) return
         this.$refs.areaSelects && this.$refs.areaSelects.fetchs(this.areaselectsName)
       }
     },
-    // 云订阅列表刷新并自动选中后，补拉磁盘类型
     cloudproviderData (list) {
       if (!this.showCloudprovider || !list || !list.length) return
-      // 草稿回填：params 变更会 clearSelect，列表每次就绪后重写 manager_id
-      if (this.isCreateFormDraftHydrating) {
-        const mid = this._draftInitFormData?.manager_id
-        if (mid && list.some(i => i.id === mid)) {
-          this.form.fc.setFieldsValue({ manager_id: mid })
-          this.$set(this.form.fd, 'manager_id', mid)
-          const item = list.find(i => i.id === mid)
-          if (item) this.cloudproviderSelected(item)
-          return
-        }
-      }
       this.$nextTick(() => this.refreshStorageByCloudprovider())
     },
     'form.fd.manager_id' (id) {
@@ -810,9 +766,68 @@ export default {
   provide () {
     return {
       form: this.form,
+      getCreateFormDraftScope: () => this.getCreateFormDraftScope(),
+      canUseCreateFormFieldDraft: () => this.canUseCreateFormDraft,
+      registerCreateFormFieldDraftFlush: (fn) => this.registerCreateFormFieldDraftFlush(fn),
+      readCreateFormFieldDraft: (key) => this.readCreateFormFieldDraft(key),
+      writeCreateFormFieldDraft: (key, data, options) => this.writeCreateFormFieldDraft(key, data, options),
+      bindCreateFormFieldDraft: (spec) => this.bindCreateFormFieldDraft(spec),
+      flushCreateFormFieldDrafts: () => this.flushCreateFormFieldDrafts(),
     }
   },
+  created () {
+    this.bindCreateFormFieldDraft({
+      key: DISK_CREATE_FORM_DRAFT_FIELD.TAG,
+      get: () => {
+        const meta = this.form.fc.getFieldValue('__meta__')
+        if (!meta || !Object.keys(meta).length) return undefined
+        return { checked: meta }
+      },
+      set: (draft) => {
+        if (!draft?.checked) return
+        this.tagDefaultChecked = { ...draft.checked }
+        this.form.fc.setFieldsValue({ __meta__: draft.checked })
+      },
+    })
+    this.bindDiskCreateFormFcDrafts()
+  },
   methods: {
+    bindDiskCreateFormFcDrafts () {
+      this._diskCreateFormFcDraftMap = Object.create(null)
+      const type = this.cloudEnv === 'onpremise' ? 'idc' : this.cloudEnv
+      ;(DISK_CREATE_FORM_DRAFT_FC_BINDINGS || []).forEach((item) => {
+        if (!item?.key || !item.formField) return
+        if (item.types && !item.types.includes(type)) return
+        this._diskCreateFormFcDraftMap[item.formField] = item.key
+        this.bindFormFcFieldDraft(item.key, {
+          formField: item.formField,
+          restore: item.restore !== false,
+        })
+      })
+    },
+    syncDiskCreateFormFcDrafts (newField) {
+      if (!this.canUseCreateFormDraft || !newField || typeof newField !== 'object') return
+      // 类型/容量程序回填期间勿落盘，避免默认 size=10 覆盖真实草稿
+      if (this._diskStorageDraftRestoring) return
+      // 仅用户交互后落盘，避免程序化 setFieldsValue 污染草稿
+      if (!this.createFormDraftUserInteracted) return
+      const map = this._diskCreateFormFcDraftMap || {}
+      Object.keys(newField).forEach((formField) => {
+        const draftKey = map[formField]
+        if (!draftKey) return
+        const val = newField[formField]
+        // capability 刷新会短暂清空字段，勿用空值覆盖已有草稿
+        if (val === undefined || val === null || val === '') return
+        this.writeCreateFormFieldDraft(draftKey, val)
+      })
+      if (Object.prototype.hasOwnProperty.call(newField, '__meta__')) {
+        const meta = newField.__meta__
+        this.writeCreateFormFieldDraft(
+          DISK_CREATE_FORM_DRAFT_FIELD.TAG,
+          meta && Object.keys(meta).length ? { checked: meta } : undefined,
+        )
+      }
+    },
     pickSingleAreaValue (value) {
       if (Array.isArray(value)) return value[0] || undefined
       return value || undefined
@@ -1032,16 +1047,19 @@ export default {
                 }
               } else {
                 const supportHypervisors = hypervisors.filter(item => ![HYPERVISORS_MAP.esxi.key, HYPERVISORS_MAP.pod.key].includes(item))
-                const draftHv = this.isCreateFormDraftHydrating ? this._draftInitFormData?.hypervisor : null
-                const firstHypervisor = (draftHv && supportHypervisors.includes(draftHv))
-                  ? draftHv
+                // 优先草稿 hypervisor，避免总是落到第一项冲掉回填
+                const draftHyper = this.canUseCreateFormDraft
+                  ? this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.HYPERVISOR)
+                  : null
+                const preferHyper = (draftHyper && supportHypervisors.includes(draftHyper))
+                  ? draftHyper
                   : supportHypervisors[0]
                 this.$nextTick(() => {
                   this.form.fc.setFieldsValue({
-                    hypervisor: firstHypervisor,
+                    hypervisor: preferHyper,
                   })
                 })
-                data_storage_types = this.dataStorageTypes[firstHypervisor] || []
+                data_storage_types = this.dataStorageTypes[preferHyper] || []
               }
             }
             this.getStorageOpts(data_storage_types, provider)
@@ -1090,15 +1108,68 @@ export default {
       }
       this.form.fc.setFieldsValue({ backend: '' })
       if (this.storageOpts.length > 0) {
-        const draftBackend = this._draftInitFormData?.backend
-        const preferDraft = this.isCreateFormDraftHydrating && draftBackend &&
-          this.storageOpts.some(o => o.value === draftBackend)
-        const backendVal = preferDraft ? draftBackend : this.storageOpts[0].value
+        // 先读草稿再改表单，避免 size=10 经 sync 冲掉 localStorage
+        const draftBackend = this.canUseCreateFormDraft
+          ? this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.BACKEND)
+          : null
+        const sizeDraft = this.canUseCreateFormDraft
+          ? this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.SIZE)
+          : null
+        const hit = draftBackend && this.storageOpts.find(o => o.value === draftBackend)
+        const backendVal = hit ? hit.value : this.storageOpts[0].value
+        const hasSizeDraft = sizeDraft != null && sizeDraft !== ''
+        this._diskStorageDraftRestoring = true
         this.form.fc.setFieldsValue({ backend: backendVal })
-        this.__newStorageChange(backendVal)
-        if (preferDraft) {
-          this.$nextTick(() => this.applyDiskDraftSecondaryFields(this._draftInitFormData))
+        this.__newStorageChange(backendVal, {
+          fromDraft: !!hit || hasSizeDraft,
+          preferSize: hasSizeDraft ? sizeDraft : undefined,
+        })
+        this.$nextTick(() => {
+          this.restoreDiskFieldDraftsAfterStorageReady({ sizeDraft })
+          this.$nextTick(() => {
+            this._diskStorageDraftRestoring = false
+          })
+        })
+      }
+    },
+    /**
+     * storageOpts 就绪后回填 size / storage / iops / throughput
+     * @param {{ sizeDraft?: * }} [preset] 调用前已读出的草稿，避免被 sync 冲掉
+     */
+    restoreDiskFieldDraftsAfterStorageReady (preset = {}) {
+      if (!this.canUseCreateFormDraft || !this.form?.fc) return
+      const sizeDraft = preset.sizeDraft !== undefined
+        ? preset.sizeDraft
+        : this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.SIZE)
+      if (sizeDraft != null && sizeDraft !== '') {
+        let size = Number(sizeDraft)
+        if (!Number.isNaN(size)) {
+          if (size > this.maxDiskData) size = this.maxDiskData
+          if (size < this.minDiskData) size = this.minDiskData
+          this.form.fc.setFieldsValue({ size })
+          this.$set(this.form.fd, 'size', size)
         }
+      }
+      const storageDraft = this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.STORAGE_ID)
+      if (storageDraft) {
+        this.showStorage = true
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ storage: storageDraft })
+        })
+      }
+      const iopsDraft = this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.IOPS)
+      if (iopsDraft != null && this.isShowIops) {
+        this.showIops = true
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ iops: iopsDraft })
+        })
+      }
+      const throughputDraft = this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.THROUGHPUT)
+      if (throughputDraft != null && this.isShowThroughput) {
+        this.showThroughput = true
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ throughput: throughputDraft })
+        })
       }
     },
     _translateStorageOps (data) {
@@ -1156,7 +1227,7 @@ export default {
         }
       })
     },
-    __newStorageChange (val) {
+    __newStorageChange (val, options = {}) {
       const item = this.storageOpts.find(v => v.value === val)
       this.storageItem = item
       try {
@@ -1166,8 +1237,17 @@ export default {
       } catch (error) {
         console.warn(this.$t('compute.text_413', [STORAGE_TYPES[this.provider], item.storage_type]))
       }
-      // 草稿回填中保留草稿容量，避免被重置为 10
-      if (!this.isCreateFormDraftHydrating) {
+      const fromDraft = !!(options && options.fromDraft) || this._diskStorageDraftRestoring
+      const preferSize = options && options.preferSize
+      // 有草稿容量时优先回填；用户手动切类型仍重置默认 10
+      if (preferSize != null && preferSize !== '') {
+        let size = Number(preferSize)
+        if (!Number.isNaN(size)) {
+          if (size > this.maxDiskData) size = this.maxDiskData
+          if (size < this.minDiskData) size = this.minDiskData
+          this.form.fc.setFieldsValue({ size })
+        }
+      } else if (!fromDraft) {
         this.form.fc.setFieldsValue({ size: 10 })
       }
       const size = this.form.fc.getFieldValue('size')
@@ -1203,257 +1283,8 @@ export default {
       const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
       this.getStorageOpts(data_storage_types, provider)
     },
-    serializeCreateFormDraft (env) {
-      try {
-        const formType = env || this.cloudEnv
-        const values = this.form.fc.getFieldsValue() || {}
-        if (!values.cloudregion && !values.zone && !values.backend && !values.hypervisor) {
-          return null
-        }
-        const domainId = values.domain?.key || this.form.fd.domain
-        const projectId = values.project?.key || this.form.fd.project
-        return buildDiskCreateDraftPayload({
-          ...values,
-          domain: domainId ? { key: domainId } : undefined,
-          project: projectId ? { key: projectId } : undefined,
-          project_id: projectId,
-        }, {
-          formType,
-          __resource_type__: 'disk',
-          domain_id: domainId,
-          showStorage: this.showStorage,
-          showIops: this.showIops,
-          showThroughput: this.showThroughput,
-        })
-      } catch (e) {
-        return null
-      }
-    },
-    /**
-     * 切 tab 时 cloudEnv/formScope 已是新环境，需显式写入旧 scope，避免三端互相覆盖
-     */
-    flushDiskDraftForEnv (env) {
-      if (!env) return
-      if (this._createFormDraftSaveTimer) {
-        clearTimeout(this._createFormDraftSaveTimer)
-        this._createFormDraftSaveTimer = null
-      }
-      // 未交互过则无需落盘（避免空表覆盖）
-      if (!this.createFormDraftUserInteracted && !this.draftRestored) return
-      const payload = this.serializeCreateFormDraft(env)
-      if (!payload || !isMeaningfulDiskCreateDraft(payload)) return
-      const omitted = omitIdentityFields(payload, this.getCreateFormDraftOmitKeys())
-      setDraft(`compute.disk.${env}`, omitted)
-    },
-    resetDiskDraftStateForEnvSwitch () {
-      this.createFormDraftUserInteracted = false
-      this.draftRestored = false
-      this._draftInitFormData = null
-      this._diskAreaApplied = false
-      this._diskAreaApplying = false
-      this.isDraftRestore = false
-      this._bindCreateFormDraftUserInteraction()
-    },
-    async applyDiskCreateDraft (draft) {
-      const data = mergeDiskCreateDraft(draft)
-      if (!data) return
-      this._draftInitFormData = data
-      this.isDraftRestore = true
-      this.draftRestored = true
-      const extra = data.extraData || {}
-      if (extra.showStorage) this.showStorage = true
-      if (extra.showIops) this.showIops = true
-      if (extra.showThroughput) this.showThroughput = true
-      const domainId = data.domain?.key || extra.domain_id
-      const projectId = data.project?.key || data.project_id
-      if (domainId) {
-        this.form.fc.setFieldsValue({ domain: { key: domainId } })
-      }
-      if (projectId) {
-        this.form.fc.setFieldsValue({ project: { key: projectId } })
-      }
-      if (data.enableWorldMap != null) {
-        this.form.fc.setFieldsValue({ enableWorldMap: data.enableWorldMap })
-        this.$set(this.form.fd, 'enableWorldMap', data.enableWorldMap)
-      }
-      // 标签：Tag 靠 defaultChecked 展示；同时写表单字段
-      if (data.__meta__ && !R.isEmpty(data.__meta__)) {
-        const ret = {}
-        R.forEachObjIndexed((value, key) => {
-          ret[key] = R.is(Array, value) ? value : [value]
-        }, data.__meta__)
-        this.tagDefaultChecked = ret
-        this.form.fc.setFieldsValue({ __meta__: data.__meta__ })
-      } else {
-        this.tagDefaultChecked = {}
-        this.form.fc.setFieldsValue({ __meta__: undefined })
-      }
-      // 区域/平台等与 AreaSelects.fetchs 竞态，等 @fetchsDone 再回填
-      await this.$nextTick()
-      await this.onAreaSelectsFetchsDone()
-      await this.waitApplyDiskDraftFields(data)
-    },
-    /**
-     * AreaSelects.fetchs 整链结束后再回填，避免与 resetSelect 竞态
-     * 只成功回填一次，防止 domain/params 变更再次 fetchs 导致死循环卡死
-     */
-    async onAreaSelectsFetchsDone () {
-      if (!this.isFormBackfill || !this._draftInitFormData) return
-      if (this._diskAreaApplied || this._diskAreaApplying) return
-      await this.applyDiskAreaFields()
-    },
-    async applyDiskAreaFields () {
-      const data = this._draftInitFormData
-      if (!this.isFormBackfill || !data) return
-      if (this._diskAreaApplied || this._diskAreaApplying) return
-      this._diskAreaApplying = true
-      try {
-        const areaRef = this.$refs.areaSelects
-        if (!areaRef) return
-        // 区域列表未就绪时不标记完成，留给后续 fetchsDone
-        if (!(areaRef.cloudregionList || []).length) return
-
-        if (this.isPublic) {
-          const provider = this.toAreaValue(data.provider).filter(Boolean)
-          if (provider.length) {
-            this.form.fc.setFieldsValue({ provider })
-            this.$set(this.form.fd, 'provider', provider)
-            await this.$nextTick()
-            if (typeof areaRef.fetchListsOnly === 'function') {
-              await areaRef.fetchListsOnly(['cloudregion'], { skipDefaultSelect: true })
-            }
-          }
-          const region = this.toAreaValue(data.cloudregion).filter(Boolean)
-          if (region.length) {
-            this.form.fc.setFieldsValue({ cloudregion: region })
-            this.$set(this.form.fd, 'cloudregion', region)
-            await this.$nextTick()
-            if (typeof areaRef.fetchListsOnly === 'function') {
-              await areaRef.fetchListsOnly(['zone'], { skipDefaultSelect: true })
-            }
-          }
-          const zone = this.pickSingleAreaValue(data.zone)
-          if (zone) {
-            this.form.fc.setFieldsValue({ zone })
-            this.$set(this.form.fd, 'zone', zone)
-          }
-        } else {
-          const region = this.pickSingleAreaValue(data.cloudregion)
-          if (region) {
-            this.form.fc.setFieldsValue({ cloudregion: region })
-            this.$set(this.form.fd, 'cloudregion', region)
-            await this.$nextTick()
-            if (typeof areaRef.fetchListsOnly === 'function') {
-              await areaRef.fetchListsOnly(['zone'], { skipDefaultSelect: true })
-            }
-          }
-          const zone = this.pickSingleAreaValue(data.zone)
-          if (zone) {
-            this.form.fc.setFieldsValue({ zone })
-            this.$set(this.form.fd, 'zone', zone)
-          }
-        }
-
-        // 触发磁盘类型拉取：有云订阅先回填订阅，再拉类型
-        if (data.hypervisor && this.showHypervisorRadio) {
-          await this.waitAndSetHypervisor(data.hypervisor)
-        }
-        if (data.manager_id && this.showCloudprovider) {
-          // 等 zone/fd 同步进 cloudproviderParams，再等订阅列表
-          await this.$nextTick()
-          await this.waitAndSetManagerId(data.manager_id)
-        } else {
-          await this.$nextTick()
-          this.handleAreaChange()
-        }
-        this._diskAreaApplied = true
-      } finally {
-        this._diskAreaApplying = false
-      }
-    },
-    async waitAndSetHypervisor (hypervisor, timeout = 10000) {
-      if (!hypervisor) return
-      const start = Date.now()
-      while (Date.now() - start < timeout) {
-        const list = (this.hypervisors || []).filter(item => ![HYPERVISORS_MAP.esxi.key, HYPERVISORS_MAP.pod.key].includes(item))
-        if (list.includes(hypervisor) || (this.hypervisors || []).includes(hypervisor)) {
-          this.form.fc.setFieldsValue({ hypervisor })
-          this.$set(this.form.fd, 'hypervisor', hypervisor)
-          this.changeHandle(hypervisor)
-          return
-        }
-        await new Promise(resolve => setTimeout(resolve, 200))
-      }
-      // 超时仍写入，避免完全丢失
-      this.form.fc.setFieldsValue({ hypervisor })
-      this.$set(this.form.fd, 'hypervisor', hypervisor)
-    },
-    async waitAndSetManagerId (managerId, timeout = 15000) {
-      if (!managerId || !this.showCloudprovider) return
-      const start = Date.now()
-      while (Date.now() - start < timeout) {
-        // 无 zone 时 cloudproviderParams 不完整，BaseSelect 列表可能对不上
-        if (!this.resolveZoneForCapability()) {
-          await new Promise(resolve => setTimeout(resolve, 200))
-          continue
-        }
-        const hit = this.cloudproviderData?.find(i => i.id === managerId)
-        if (hit) {
-          this.form.fc.setFieldsValue({ manager_id: managerId })
-          this.$set(this.form.fd, 'manager_id', managerId)
-          this.cloudproviderSelected(hit)
-          // paramsChange 可能 clearSelect，短等后校验，被清则继续重写
-          await new Promise(resolve => setTimeout(resolve, 300))
-          if ((this.form.fc.getFieldValue('manager_id') || this.form.fd.manager_id) === managerId) {
-            return
-          }
-          continue
-        }
-        await new Promise(resolve => setTimeout(resolve, 200))
-      }
-      // 超时兜底：先写入 id，列表稍后到了由 cloudproviderData watch 补齐
-      this.form.fc.setFieldsValue({ manager_id: managerId })
-      this.$set(this.form.fd, 'manager_id', managerId)
-    },
-    async waitApplyDiskDraftFields (data, timeout = 15000) {
-      const start = Date.now()
-      while (Date.now() - start < timeout) {
-        if (this.storageOpts?.length) {
-          this.applyDiskDraftSecondaryFields(data)
-          return
-        }
-        await new Promise(resolve => setTimeout(resolve, 200))
-      }
-      this.applyDiskDraftSecondaryFields(data)
-    },
-    applyDiskDraftSecondaryFields (data) {
-      if (!data || !this.isCreateFormDraftHydrating) return
-      const values = {}
-      if (data.backend && this.storageOpts.some(o => o.value === data.backend)) {
-        values.backend = data.backend
-      }
-      if (data.size != null) values.size = data.size
-      if (data.storage) values.storage = data.storage
-      if (data.iops != null) values.iops = data.iops
-      if (data.throughput != null) values.throughput = data.throughput
-      if (data.__meta__) values.__meta__ = data.__meta__
-      if (!Object.keys(values).length) return
-      if (values.backend) {
-        this.form.fc.setFieldsValue({ backend: values.backend })
-        this.__newStorageChange(values.backend)
-      }
-      const rest = { ...values }
-      delete rest.backend
-      if (Object.keys(rest).length) {
-        this.form.fc.setFieldsValue(rest)
-      }
-    },
     fetchDomainCallback () {
-      let domain = this.$route.query.domain_id
-      if (!domain && this.isFormBackfill) {
-        domain = this.effectiveInitFormData?.extraData?.domain_id ||
-          this.effectiveInitFormData?.domain?.key
-      }
+      const domain = this.$route.query.domain_id
       if (domain) {
         this.form.fc.setFieldsValue({
           domain: { key: domain },
@@ -1461,19 +1292,12 @@ export default {
       }
     },
     fetchProjectCallback () {
-      let project = this.$route.query.tenant_id
-      if (!project && this.isFormBackfill) {
-        project = this.effectiveInitFormData?.project_id ||
-          this.effectiveInitFormData?.project?.key
-      }
+      const project = this.$route.query.tenant_id
       if (project) {
         this.form.fc.setFieldsValue({
           project: { key: project },
         })
       }
-    },
-    onDiskCreateSuccess () {
-      this.saveCreateFormDraft(this.serializeCreateFormDraft(), { fromSubmit: true })
     },
   },
 }

@@ -42,6 +42,7 @@ export default {
     tailFormItemLayout: { default: null },
     scopeParams: { default: null },
     getCreateFormDraftPreferred: { default: undefined },
+    persistRdsSkuDraftField: { default: undefined },
   },
   components: {
     PageListEmpty,
@@ -154,6 +155,7 @@ export default {
     },
   },
   watch: {
+    // sku 列表拉取完成 / 变化：按草稿回填，不写草稿
     skuList (skuList) {
       if (skuList && skuList.length > 0) {
         const preferred = typeof this.getCreateFormDraftPreferred === 'function'
@@ -170,12 +172,16 @@ export default {
         if (!row) {
           row = skuList.find(item => this.isAvailable(item))
         }
-        this.handleSkuChange({ row })
+        this._skuListApplying = true
+        this.handleSkuChange({ row }).finally(() => {
+          this._skuListApplying = false
+        })
       }
     },
   },
   created () {
     this.form.getFieldDecorator('sku', { preserve: true })
+    this._skuListApplying = false
   },
   methods: {
     isAvailable (row) {
@@ -188,6 +194,10 @@ export default {
         sku: _row,
       })
       this.selectedSku = _row
+      // 仅用户点选落盘
+      if (!this._skuListApplying && _row && typeof this.persistRdsSkuDraftField === 'function') {
+        this.persistRdsSkuDraftField('sku', _row)
+      }
       await this.$nextTick()
       this.$refs.tableRef.setRadioRow(_row)
       this.$emit('change', _row)
