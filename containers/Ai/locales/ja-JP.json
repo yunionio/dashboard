@@ -426,6 +426,8 @@
   "aice.devices.add": "GPUを追加",
   "aice.devices.count_unit": "枚",
   "aice.devices.sharing_mode": "共有モード",
+  "aice.devices.vendor": "ベンダー",
+  "aice.devices.vendor.required": "GPU ベンダーを選択してください",
   "aice.devices.memory_mb": "VRAM",
   "aice.devices.memory_mb.placeholder": "任意",
   "aice.devices.memory_mb.placeholder_required": "必須",

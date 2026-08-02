@@ -39,7 +39,7 @@ export function applyCatalogSpecToDeployForm (deployForm, spec, catalogSet, llmT
 /**
  * 构造 POST llm_deployments 请求体（仅走 model_spec + sku_spec，不查 llm_instant_models）
  */
-export function buildCatalogDeploymentPayload (deployForm, spec, llmType) {
+export function buildCatalogDeploymentPayload (deployForm, spec, llmType, pciModelTypes = []) {
   const skuSpec = {
     llm_image_id: deployForm.llm_image_id,
     llm_type: llmType,
@@ -47,7 +47,7 @@ export function buildCatalogDeploymentPayload (deployForm, spec, llmType) {
     memory: deployForm.memory,
     volumes: [{ size_mb: deployForm.disk_size, storage_type: 'local' }],
   }
-  const expanded = expandRowsToDevices(deployForm.deviceRows)
+  const expanded = expandRowsToDevices(deployForm.deviceRows, pciModelTypes)
   if (expanded.length) {
     skuSpec.devices = expanded
   }

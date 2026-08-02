@@ -14,7 +14,7 @@
     <a-drawer
       wrap-class-name="catalog-drawer-wrap"
       :visible="drawerVisible"
-      :width="720"
+      :width="'50%'"
       destroy-on-close
       placement="right"
       @close="closeDrawer">
@@ -115,6 +115,9 @@ export default {
     deployFormKey () {
       return `${this.formRepoId}-${this.selectedBackend}-${this.deployLlmType}`
     },
+    podPciModels () {
+      return Object.values(this.$store.getters.capability?.pci_model_types || {}).filter(item => item.hypervisor === 'pod')
+    },
   },
   watch: {
     selectedBackend () {
@@ -158,6 +161,7 @@ export default {
           this.deployForm,
           this.hfCatalogSpec,
           this.deployLlmType,
+          this.podPciModels,
         )
         await this.deploymentsManager.create({ data: payload })
         this.$message.success(this.$t('common.success'))

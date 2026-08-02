@@ -200,18 +200,18 @@ function resolveSkuGenerateName (record) {
   return buildImportGenerateName(record)
 }
 
-function applySkuDevices (data, devices) {
+function applySkuDevices (data, devices, pciModelTypes = []) {
   if (!Array.isArray(devices) || !devices.length) return
   if (devices[0] && typeof devices[0] === 'object' && devices[0] != null && 'model' in devices[0]) {
-    const expanded = expandRowsToDevices(devices)
+    const expanded = expandRowsToDevices(devices, pciModelTypes)
     if (expanded.length) data.devices = expanded
     return
   }
-  const expanded = expandRowsToDevices(devices.map(model => ({ model, count: 1 })))
+  const expanded = expandRowsToDevices(devices.map(model => ({ model, count: 1 })), pciModelTypes)
   if (expanded.length) data.devices = expanded
 }
 
-function buildCommunitySkuCreateData (record, imageId, { devices } = {}) {
+function buildCommunitySkuCreateData (record, imageId, { devices, pciModelTypes } = {}) {
   const spec = resolveSkuSpec(record)
   if (!spec) return null
   const llmType = record.llm_type
@@ -231,7 +231,7 @@ function buildCommunitySkuCreateData (record, imageId, { devices } = {}) {
   if (portMappings.length) {
     data.port_mappings = portMappings
   }
-  applySkuDevices(data, devices)
+  applySkuDevices(data, devices, pciModelTypes)
   // vram_claim_mb is computed server-side from mounted InstantModel weights
   return data
 }
@@ -465,7 +465,7 @@ async function findOrCreateCommunityImage (record, imagesManager, existingIdMap,
  * 按 yaml bundle 定义创建 9 个 dify 镜像及含 llm_spec.dify 的 SKU。
  * @returns {{ imageIds: Record<string, string>, skuCreated: boolean, skuError: Error|null }}
  */
-export async function createDifyBundleAndSku (record, { imagesManager, skusManager, devices } = {}) {
+export async function createDifyBundleAndSku (record, { imagesManager, skusManager, devices, pciModelTypes } = {}) {
   const llmType = record.llm_type
   const existingIdMap = await buildExistingImageIdMap(llmType, imagesManager)
   const imageIds = {}
@@ -482,7 +482,7 @@ export async function createDifyBundleAndSku (record, { imagesManager, skusManag
   let skuError = null
   const spec = resolveSkuSpec(record)
   if (spec && skusManager) {
-    const data = buildCommunitySkuCreateData(record, '', { devices })
+    const data = buildCommunitySkuCreateData(record, '', { devices, pciModelTypes })
     if (data) {
       data.llm_spec = {
         dify: { ...imageIds },
@@ -504,9 +504,9 @@ export async function createDifyBundleAndSku (record, { imagesManager, skusManag
  * 创建 llm_image 及默认 llm_sku（若类型支持）。
  * @returns {{ imageId: string, skuCreated: boolean, skuError: Error|null, imageIds?: Record<string, string> }}
  */
-export async function createCommunityImageAndSku (record, { imagesManager, skusManager, devices } = {}) {
+export async function createCommunityImageAndSku (record, { imagesManager, skusManager, devices, pciModelTypes } = {}) {
   if (isBundleItem(record)) {
-    return createDifyBundleAndSku(record, { imagesManager, skusManager, devices })
+    return createDifyBundleAndSku(record, { imagesManager, skusManager, devices, pciModelTypes })
   }
 
   const existingIdMap = await buildExistingImageIdMap(record.llm_type, imagesManager)
@@ -515,7 +515,7 @@ export async function createCommunityImageAndSku (record, { imagesManager, skusM
   let skuError = null
   const spec = resolveSkuSpec(record)
   if (imageId && spec && skusManager) {
-    const data = buildCommunitySkuCreateData(record, imageId, { devices })
+    const data = buildCommunitySkuCreateData(record, imageId, { devices, pciModelTypes })
     if (data) {
       try {
         await skusManager.create({ data })
