@@ -14,7 +14,7 @@
     <a-drawer
       wrap-class-name="catalog-drawer-wrap"
       :visible="drawerVisible"
-      :width="720"
+      :width="'50%'"
       destroy-on-close
       placement="right"
       @close="clearTag">
