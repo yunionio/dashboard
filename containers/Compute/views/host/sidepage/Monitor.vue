@@ -7,7 +7,7 @@
 <script>
 import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
 import WindowsMixin from '@/mixins/windows'
-import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS, NIC_RSRC_MON_OPTS, RADEONTOP_OPTS, VASMI_OPTS } from '../constants'
+import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS, NIC_RSRC_MON_OPTS, RADEONTOP_OPTS, VASMI_OPTS, HYSMI_OPTS } from '../constants'
 export default {
   name: 'HostMonitorSidepage',
   components: {
@@ -56,6 +56,9 @@ export default {
         }
         if (this.isolatedDeviceTypes.some(type => ['VASTAITECH_GPU'].includes(type))) {
           list = [...list, ...VASMI_OPTS]
+        }
+        if (this.isolatedDeviceTypes.some(type => ['HYGON_DCU', 'HYGON_DCU_HAMI'].includes(type))) {
+          list = [...list, ...HYSMI_OPTS]
         }
       }
       return list

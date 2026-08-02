@@ -433,6 +433,8 @@
   "aice.devices.add": "添加 GPU",
   "aice.devices.count_unit": "张",
   "aice.devices.sharing_mode": "共享模式",
+  "aice.devices.vendor": "厂商",
+  "aice.devices.vendor.required": "请选择 GPU 厂商",
   "aice.devices.memory_mb": "显存",
   "aice.devices.memory_mb.placeholder": "可选",
   "aice.devices.memory_mb.placeholder_required": "必填",
