@@ -508,7 +508,7 @@ export default {
     networkParam () {
       if (!this.cloudregionZoneParams.cloudregion) return {}
       const params = {
-        filter: 'server_type.notin(ipmi, pxe, eip)',
+        filter: 'server_type.notin(ipmi, pxe, eip, hostlocal)',
         usable: true,
         ...this.cloudregionZoneParams,
         ...this.scopeParams,

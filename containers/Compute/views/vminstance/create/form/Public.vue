@@ -379,7 +379,7 @@ export default {
       if (!this.cloudregionZoneParams.cloudregion) return {}
       const { filter: areaFilter, ...areaParams } = this.cloudregionZoneParams
       const params = {
-        filter: 'server_type.notin(ipmi, pxe)',
+        filter: 'server_type.notin(ipmi, pxe, hostlocal)',
         usable: true,
         ...areaParams,
         ...this.scopeParams,
