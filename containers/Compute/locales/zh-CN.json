@@ -1704,7 +1704,7 @@
   "compute.custom_data.extra": "优先使用#cloud-config yaml格式，该操作依赖Cloud-init组件，需保证镜像中包含该组件，同时也支持shell脚本。",
   "compute.tooltip.check_domain_permission": "仅系统或@:dictionary.domain管理员支持该操作",
   "compute.tooltip.check_backup_host_transfer": "高可用机器不支持该操作",
-  "compute.tooltip.check_gpu_transfer": "GPU虚拟机不支持该操作",
+  "compute.tooltip.check_gpu_transfer": "挂载透传设备的虚拟机不支持迁移",
   "compute.tooltip.check_cdrom_transfer": "ISO虚拟机不支持该操作",
   "compute.tooltip.check_some_status_transfer": "请选择相同状态的虚拟机",
   "compute.tooltip.check_status_transfer": "请选择状态为运行中、关机的虚拟机",
