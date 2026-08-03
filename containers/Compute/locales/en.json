@@ -1653,7 +1653,7 @@
   "compute.disk.size.required_message": "The hard disk capacity number is required",
   "compute.tooltip.check_domain_permission": "Only system or @:dictionary.domain administrators support this operation",
   "compute.tooltip.check_backup_host_transfer": "Highly available machines do not support this operation",
-  "compute.tooltip.check_gpu_transfer": "GPU virtual machine does not support this operation",
+  "compute.tooltip.check_gpu_transfer": "Virtual machines mounted with transparent transmission devices do not support migration",
   "compute.tooltip.check_cdrom_transfer": "ISO virtual machine does not support this operation",
   "compute.tooltip.check_some_status_transfer": "Please select a virtual machine with the same status",
   "compute.tooltip.check_status_transfer": "Please select a virtual machine whose status is running, ready",
