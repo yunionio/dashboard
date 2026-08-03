@@ -334,7 +334,7 @@ export default {
     networkParam () {
       if (this.form.fd.hypervisor === HYPERVISORS_MAP.cnware.hypervisor) {
         return {
-          filter: 'server_type.notin(ipmi, pxe)',
+          filter: 'server_type.notin(ipmi, pxe, hostlocal)',
           usable: true,
           ...this.scopeParams,
         }
