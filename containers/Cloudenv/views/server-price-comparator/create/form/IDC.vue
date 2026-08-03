@@ -48,6 +48,9 @@
           :type="type"
           :sku-params="skuParam"
           :hypervisor="form.fd.hypervisor" />
+        <div slot="extra" v-if="showSkuCreateTip">
+          {{ $t('compute.text_196') }}<help-link href="/sku">{{ $t('compute.perform_create') }}</help-link>
+        </div>
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
         <system-disk
@@ -116,6 +119,7 @@ import { resolveValueChangeField } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
 import OsArch from '@/sections/OsArch'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
+import { hasPermission } from '@/utils/auth'
 import mixin from './mixin'
 
 export default {
@@ -187,6 +191,14 @@ export default {
         return true
       }
       return false
+    },
+    /** 仅 IDC 且有套餐页/创建权限时展示「没有您想要的？可以新建」 */
+    showSkuCreateTip () {
+      if (this.type !== 'idc') return false
+      if (this.$isScopedPolicyMenuHidden('sub_hidden_menus.sku')) return false
+      if (!hasPermission({ key: 'serverskus_list' })) return false
+      if (!hasPermission({ key: 'skus_create' })) return false
+      return true
     },
     skuParam () {
       return {
