@@ -77,6 +77,11 @@ import validateForm from '@/utils/validate'
 export default {
   name: 'LlmDeploymentCreate',
   components: { LlmSkuSelect, ServerNetwork, NameRepeated },
+  provide () {
+    return {
+      form: this.form,
+    }
+  },
   data () {
     return {
       loading: false,
