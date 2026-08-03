@@ -1734,7 +1734,7 @@
   "compute.custom_data.esxi_extra": "優先的に#cloud-config yamlフォーマットを使用して、shellスクリプトをサポートします。",
   "compute.tooltip.check_domain_permission": "この操作は、システム管理者または @:dictionary.domain 管理者のみがサポートします",
   "compute.tooltip.check_backup_host_transfer": "この操作は、高可用性マシンではサポートされていません",
-  "compute.tooltip.check_gpu_transfer": "この操作は、GPU 仮想マシンではサポートされていません",
+  "compute.tooltip.check_gpu_transfer": "トランスペアレントデバイスをマウントしているVMは移行をサポートしていません",
   "compute.tooltip.check_cdrom_transfer": "この操作は、ISO 仮想マシンではサポートされていません",
   "compute.tooltip.check_some_status_transfer": "同じ状態の仮想マシンを選択する",
   "compute.tooltip.check_status_transfer": "ステータスが「実行中」、「パワーオフ」の仮想マシンを選択します。",
