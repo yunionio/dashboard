@@ -878,6 +878,7 @@ export default {
         usable: true,
         host_type: 'container',
         vpc: this.form.fd.vpc,
+        filter: 'server_type.in(guest,hostlocal)',
       }
       return ret
     },
@@ -1360,14 +1361,7 @@ export default {
       return defaults[overrideUrlKey] || 'https://...'
     },
     networkResourceMapper (list) {
-      return (list || []).map(val => {
-        const isHostSubnet = val.server_type === 'host'
-        if (!isHostSubnet) return val
-        return {
-          ...val,
-          name: `${val.name}（Host IP 子网）`,
-        }
-      })
+      return (list || []).filter(val => val.server_type === 'guest' || val.server_type === 'hostlocal')
     },
     async genNetworks (values) {
       let ret = [{ exit: false }]

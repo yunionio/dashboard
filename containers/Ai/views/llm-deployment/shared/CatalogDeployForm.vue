@@ -117,6 +117,7 @@ export default {
         limit: 20,
         usable: true,
         host_type: 'container',
+        filter: 'server_type.in(guest,hostlocal)',
       }
     },
   },
