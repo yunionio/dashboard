@@ -73,7 +73,7 @@ import {
   normalizeDeviceRows,
   LLM_SHARING_MODE_VALUES,
   resolveSharingMode,
-  listPodVendors,
+  listVendorsForSharingMode,
   buildModelSelectEntries,
   resolveVendorForModel,
   getPodPciModelTypes,
@@ -174,13 +174,17 @@ export default {
   methods: {
     maybeAutoFillVendors (rows) {
       if (!Array.isArray(rows) || rows.length === 0) return
-      const podVendors = listPodVendors(this.podPciModels)
       let changed = false
       const next = rows.map((row) => {
         if (String(row?.vendor || '').trim()) return row
-        if (podVendors.length === 1) {
+        const sharingMode = resolveSharingMode(row?.sharing_mode)
+        const model = String(row?.model || '').trim()
+        const vendors = listVendorsForSharingMode(this.podPciModels, sharingMode, {
+          model: model || undefined,
+        })
+        if (vendors.length === 1) {
           changed = true
-          return { ...row, vendor: podVendors[0] }
+          return { ...row, vendor: vendors[0] }
         }
         return row
       })
@@ -189,7 +193,11 @@ export default {
       }
     },
     vendorOptionsForRow (row) {
-      const vendors = listPodVendors(this.podPciModels)
+      const sharingMode = resolveSharingMode(row?.sharing_mode)
+      const model = String(row?.model || '').trim()
+      const vendors = listVendorsForSharingMode(this.podPciModels, sharingMode, {
+        model: model || undefined,
+      })
       if (row?.vendor && !vendors.includes(row.vendor)) {
         vendors.push(String(row.vendor).trim())
         vendors.sort()
@@ -228,17 +236,20 @@ export default {
     },
     onSharingModeChange (index, sharingMode) {
       const mode = resolveSharingMode(sharingMode)
-      const podVendors = listPodVendors(this.podPciModels)
       const rows = this.innerRows.map((row, i) => {
         if (i !== index) return { ...row }
         const next = { ...row, sharing_mode: mode }
         delete next.memory_mb
+        const model = String(next.model || '').trim()
+        const scopedVendors = listVendorsForSharingMode(this.podPciModels, mode, {
+          model: model || undefined,
+        })
         const currentVendor = String(next.vendor || '').trim()
-        if (currentVendor && !podVendors.includes(currentVendor)) {
+        if (currentVendor && !scopedVendors.includes(currentVendor)) {
           delete next.vendor
         }
-        if (!next.vendor && podVendors.length === 1) {
-          next.vendor = podVendors[0]
+        if (!next.vendor && scopedVendors.length === 1) {
+          next.vendor = scopedVendors[0]
         }
         const options = this.modelOptionsForRow(next)
         if (next.model && !options.some(opt => opt.key === this.modelSelectValue(next))) {
@@ -310,9 +321,9 @@ export default {
     addRow () {
       this.rowKeys.push(uuid())
       const newRow = createEmptyDeviceRow()
-      const podVendors = listPodVendors(this.podPciModels)
-      if (podVendors.length === 1) {
-        newRow.vendor = podVendors[0]
+      const vendors = listVendorsForSharingMode(this.podPciModels, newRow.sharing_mode)
+      if (vendors.length === 1) {
+        newRow.vendor = vendors[0]
       }
       this.emitRows([...this.innerRows, newRow])
     },
