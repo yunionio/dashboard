@@ -17,6 +17,8 @@ const LEGACY_DEV_TYPE_TO_SHARING = {
   NVIDIA_HAMI: 'HAMI',
   HYGON_DCU: 'EXCLUSIVE',
   HYGON_DCU_HAMI: 'HAMI',
+  ASCEND_NPU: 'EXCLUSIVE',
+  ASCEND_NPU_HAMI: 'HAMI',
 }
 
 const LEGACY_DEV_TYPE_TO_VENDOR = {
@@ -26,6 +28,14 @@ const LEGACY_DEV_TYPE_TO_VENDOR = {
   NVIDIA_HAMI: 'NVIDIA',
   HYGON_DCU: 'HYGON',
   HYGON_DCU_HAMI: 'HYGON',
+  ASCEND_NPU: 'ASCEND',
+  ASCEND_NPU_HAMI: 'ASCEND',
+}
+
+/** Legacy container device types that normalize to NPU (not GPU). */
+const LEGACY_NPU_DEV_TYPES = {
+  ASCEND_NPU: true,
+  ASCEND_NPU_HAMI: true,
 }
 
 /** PCI vendor id prefix → canonical vendor name (align with compute ID_VENDOR_MAP). */
@@ -34,6 +44,7 @@ const PCI_VENDOR_ID_TO_NAME = {
   1002: 'AMD',
   '1d94': 'HYGON',
   '1ec6': 'VASTAITECH',
+  '19e5': 'ASCEND',
 }
 
 function isPodPciModelItem (item) {
@@ -109,14 +120,15 @@ export function hasPodGpuModelsForSharingMode (pciModelTypes = [], sharingMode) 
 }
 
 /**
- * Map legacy NVIDIA_* / HYGON_* device types onto GPU + sharing_mode + vendor (align with backend).
+ * Map legacy NVIDIA_* / HYGON_* / ASCEND_* device types onto GPU|NPU + sharing_mode + vendor
+ * (align with backend normalizeLLMSkuDevice).
  */
 export function normalizeLegacyDevice (device = {}) {
   const out = { ...device }
   const originalDevType = out.dev_type
   const legacyMode = LEGACY_DEV_TYPE_TO_SHARING[originalDevType]
   if (legacyMode) {
-    out.dev_type = DEFAULT_DEV_TYPE
+    out.dev_type = LEGACY_NPU_DEV_TYPES[originalDevType] ? 'NPU' : DEFAULT_DEV_TYPE
     if (!out.sharing_mode) {
       out.sharing_mode = legacyMode
     }
@@ -125,12 +137,45 @@ export function normalizeLegacyDevice (device = {}) {
     }
   }
   if (!out.dev_type) {
-    out.dev_type = DEFAULT_DEV_TYPE
+    out.dev_type = String(out.vendor || '').toUpperCase() === 'ASCEND' ? 'NPU' : DEFAULT_DEV_TYPE
   }
   if (!out.sharing_mode) {
     out.sharing_mode = DEFAULT_SHARING_MODE
   }
   return out
+}
+
+/** Canonicalize a raw / legacy pci_model_types.dev_type for API submit. */
+function canonicalizeDevType (devType, vendor) {
+  const raw = String(devType || '').trim()
+  if (LEGACY_NPU_DEV_TYPES[raw]) return 'NPU'
+  if (LEGACY_DEV_TYPE_TO_SHARING[raw]) return DEFAULT_DEV_TYPE
+  if (raw === 'NPU' || raw === 'GPU') return raw
+  if (!raw && String(vendor || '').toUpperCase() === 'ASCEND') return 'NPU'
+  return raw || DEFAULT_DEV_TYPE
+}
+
+/** Resolve dev_type for a model from pci_model_types capability list. */
+export function resolveDevTypeForModel (model, pciModelTypes = [], { sharingMode, vendor } = {}) {
+  const name = String(model || '').trim()
+  if (!name) return DEFAULT_DEV_TYPE
+  const mode = sharingMode ? resolveSharingMode(sharingMode) : undefined
+  const vendorFilter = normalizeVendor(vendor)
+  let matched
+  for (let i = 0; i < pciModelTypes.length; i++) {
+    const item = pciModelTypes[i]
+    if (!isPodPciModelItem(item)) continue
+    if (item?.model !== name) continue
+    if (mode && resolvePciModelSharingMode(item) !== mode) continue
+    const itemVendor = resolvePciModelVendor(item)
+    if (vendorFilter && itemVendor && itemVendor !== vendorFilter) continue
+    matched = item
+    break
+  }
+  if (!matched) {
+    return canonicalizeDevType('', vendorFilter)
+  }
+  return canonicalizeDevType(matched.dev_type, vendorFilter || resolvePciModelVendor(matched))
 }
 
 export function resolveSharingMode (value) {
@@ -243,11 +288,12 @@ export function expandRowsToDevices (rows, pciModelTypes = []) {
     if (!vendor && pciModelTypes.length) {
       vendor = resolveVendorForModel(model, pciModelTypes, { sharingMode })
     }
+    const devType = resolveDevTypeForModel(model, pciModelTypes, { sharingMode, vendor })
     for (let i = 0; i < count; i++) {
       const device = {
         model,
         sharing_mode: sharingMode,
-        dev_type: DEFAULT_DEV_TYPE,
+        dev_type: devType,
       }
       if (vendor) {
         device.vendor = vendor
@@ -338,12 +384,12 @@ export function resolveVendorForModel (model, pciModelTypes = [], { sharingMode 
 export function devicesFromModelKeys (models, pciModelTypes = [], { sharingMode = DEFAULT_SHARING_MODE } = {}) {
   if (!Array.isArray(models)) return []
   return models.map((model) => {
+    const vendor = resolveVendorForModel(model, pciModelTypes, { sharingMode })
     const device = {
       model,
       sharing_mode: sharingMode,
-      dev_type: DEFAULT_DEV_TYPE,
+      dev_type: resolveDevTypeForModel(model, pciModelTypes, { sharingMode, vendor }),
     }
-    const vendor = resolveVendorForModel(model, pciModelTypes, { sharingMode })
     if (vendor) {
       device.vendor = vendor
     }
