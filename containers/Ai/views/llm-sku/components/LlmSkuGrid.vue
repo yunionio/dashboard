@@ -89,6 +89,12 @@
               :title="mountedModelText(item)">
               {{ $t('aice.model') }}：{{ mountedModelText(item) }}
             </div>
+            <div
+              v-if="!isApplyType && !isDesktopType && deviceText(item)"
+              class="meta-row meta-ellipsis"
+              :title="deviceText(item)">
+              {{ $t('aice.device') }}：{{ deviceText(item) }}
+            </div>
             <llm-sku-mounted-models
               v-if="!isApplyType && !isDesktopType"
               :row="item"
@@ -130,6 +136,7 @@
 
 <script>
 import { getModelIcon, getModelIconLabel } from '@Ai/utils/index'
+import { formatDevicesDisplay } from '@Ai/utils/deviceFormUtils'
 import { sizestr } from '@/utils/utils'
 import { getLlmSkuListSteadyStatuses } from '@Ai/utils/llmSkuStatus'
 import Actions from '@/components/PageList/Actions'
@@ -262,6 +269,10 @@ export default {
       const list = item.mounted_model_details || []
       if (!list.length) return ''
       return list.map(v => v.fullname).join(', ')
+    },
+    deviceText (item) {
+      const text = formatDevicesDisplay(item?.devices, { fallbackMemoryMb: item?.vram_claim_mb })
+      return text === '-' ? '' : text
     },
     shortDesc (s) {
       if (!s) return ''
