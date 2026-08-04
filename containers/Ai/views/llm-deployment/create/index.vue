@@ -202,6 +202,7 @@ export default {
         usable: true,
         host_type: 'container',
         vpc: this.form.fd.vpc,
+        filter: 'server_type.in(guest,hostlocal)',
       }
     },
     resourcesParams () {
@@ -252,10 +253,7 @@ export default {
       })
     },
     networkResourceMapper (list) {
-      return (list || []).map(val => {
-        if (val.server_type !== 'host') return val
-        return { ...val, name: `${val.name}（Host IP 子网）` }
-      })
+      return (list || []).filter(val => val.server_type === 'guest' || val.server_type === 'hostlocal')
     },
     genNetworks (values) {
       const networkType = this.form.fd.networkType
