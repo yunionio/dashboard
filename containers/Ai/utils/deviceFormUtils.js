@@ -52,8 +52,16 @@ export function getPodPciModelTypes (capability) {
   return normalizePciModelTypes(capability?.pci_model_types).filter(isPodPciModelItem)
 }
 
+function resolvePciModelSharingMode (item) {
+  const direct = String(item?.sharing_mode || '').trim()
+  if (direct) return direct
+  return LEGACY_DEV_TYPE_TO_SHARING[item?.dev_type] || undefined
+}
+
 function matchesSharingMode (item, mode) {
-  return !item.sharing_mode || item.sharing_mode === mode
+  const itemMode = resolvePciModelSharingMode(item)
+  if (!itemMode) return false
+  return itemMode === mode
 }
 
 function collectVendors (pciModelTypes, { model, sharingMode, matchSharingMode = true } = {}) {
@@ -63,7 +71,7 @@ function collectVendors (pciModelTypes, { model, sharingMode, matchSharingMode =
   pciModelTypes.forEach((item) => {
     if (!isPodPciModelItem(item)) return
     if (modelName && item?.model !== modelName) return
-    if (matchSharingMode && mode && item.sharing_mode && item.sharing_mode !== mode) return
+    if (matchSharingMode && mode && resolvePciModelSharingMode(item) !== mode) return
     const vendor = resolvePciModelVendor(item)
     if (vendor) vendors.add(vendor)
   })
@@ -105,14 +113,15 @@ export function hasPodGpuModelsForSharingMode (pciModelTypes = [], sharingMode) 
  */
 export function normalizeLegacyDevice (device = {}) {
   const out = { ...device }
-  const legacyMode = LEGACY_DEV_TYPE_TO_SHARING[out.dev_type]
+  const originalDevType = out.dev_type
+  const legacyMode = LEGACY_DEV_TYPE_TO_SHARING[originalDevType]
   if (legacyMode) {
     out.dev_type = DEFAULT_DEV_TYPE
     if (!out.sharing_mode) {
       out.sharing_mode = legacyMode
     }
     if (!out.vendor) {
-      out.vendor = LEGACY_DEV_TYPE_TO_VENDOR[out.dev_type]
+      out.vendor = LEGACY_DEV_TYPE_TO_VENDOR[originalDevType]
     }
   }
   if (!out.dev_type) {
@@ -172,54 +181,43 @@ export function aggregateDevicesToRows (devices) {
   return order.map(key => ({ ...counts.get(key) }))
 }
 
-/** Build GPU model select options; relaxes sharing_mode filter when no strict matches. */
+/** Build GPU model select options scoped to sharing mode (and optional vendor). */
 export function buildModelSelectEntries (pciModelTypes = [], { sharingMode, vendor } = {}) {
   const mode = resolveSharingMode(sharingMode)
   const vendorFilter = normalizeVendor(vendor)
-
-  const build = (matchSharingMode) => {
-    const modelCounts = new Map()
-    pciModelTypes.forEach((item) => {
-      if (!isPodPciModelItem(item)) return
-      if (!item?.model) return
-      if (matchSharingMode && item.sharing_mode && item.sharing_mode !== mode) return
-      const itemVendor = resolvePciModelVendor(item)
-      if (vendorFilter && itemVendor && itemVendor !== vendorFilter) return
-      modelCounts.set(item.model, (modelCounts.get(item.model) || 0) + 1)
+  const modelCounts = new Map()
+  pciModelTypes.forEach((item) => {
+    if (!isPodPciModelItem(item)) return
+    if (!item?.model) return
+    if (resolvePciModelSharingMode(item) !== mode) return
+    const itemVendor = resolvePciModelVendor(item)
+    if (vendorFilter && itemVendor && itemVendor !== vendorFilter) return
+    modelCounts.set(item.model, (modelCounts.get(item.model) || 0) + 1)
+  })
+  const entries = []
+  pciModelTypes.forEach((item) => {
+    if (!isPodPciModelItem(item)) return
+    if (!item?.model) return
+    if (resolvePciModelSharingMode(item) !== mode) return
+    const itemVendor = resolvePciModelVendor(item)
+    if (vendorFilter && itemVendor && itemVendor !== vendorFilter) return
+    const dup = modelCounts.get(item.model) > 1
+    const key = itemVendor ? `${item.model}\0${itemVendor}` : item.model
+    if (entries.some(e => e.key === key)) return
+    entries.push({
+      key,
+      label: dup && itemVendor ? `${item.model} (${itemVendor})` : item.model,
+      model: item.model,
+      vendor: itemVendor || undefined,
     })
-    const entries = []
-    pciModelTypes.forEach((item) => {
-      if (!isPodPciModelItem(item)) return
-      if (!item?.model) return
-      if (matchSharingMode && item.sharing_mode && item.sharing_mode !== mode) return
-      const itemVendor = resolvePciModelVendor(item)
-      if (vendorFilter && itemVendor && itemVendor !== vendorFilter) return
-      const dup = modelCounts.get(item.model) > 1
-      const key = itemVendor ? `${item.model}\0${itemVendor}` : item.model
-      if (entries.some(e => e.key === key)) return
-      entries.push({
-        key,
-        label: dup && itemVendor ? `${item.model} (${itemVendor})` : item.model,
-        model: item.model,
-        vendor: itemVendor || undefined,
-      })
-    })
-    return entries
-  }
-
-  const strict = build(true)
-  return strict.length > 0 ? strict : build(false)
+  })
+  return entries
 }
 
-/** Unique GPU vendors for pod hypervisor; prefers entries matching sharing mode, falls back to all vendors for a model. */
+/** Unique GPU vendors for pod hypervisor matching the given sharing mode. */
 export function listVendorsForSharingMode (pciModelTypes = [], sharingMode, { model } = {}) {
   const mode = resolveSharingMode(sharingMode)
-  const scoped = collectVendors(pciModelTypes, { model, sharingMode: mode, matchSharingMode: true })
-  if (scoped.length > 0) return scoped
-  if (model) {
-    return collectVendors(pciModelTypes, { model, matchSharingMode: false })
-  }
-  return listPodVendors(pciModelTypes)
+  return collectVendors(pciModelTypes, { model, sharingMode: mode, matchSharingMode: true })
 }
 
 /** Whether a device row still needs an explicit vendor before submit. */
@@ -267,19 +265,10 @@ export function formatDevicesDisplay (devices, { fallbackMemoryMb } = {}) {
   const rows = aggregateDevicesToRows(devices)
   if (!rows.length) return '-'
   const fallback = normalizeMemoryMb(fallbackMemoryMb)
-  const modelVendors = new Map()
-  rows.forEach((r) => {
-    if (!r.model) return
-    const set = modelVendors.get(r.model) || new Set()
-    if (r.vendor) set.add(r.vendor)
-    modelVendors.set(r.model, set)
-  })
   return rows.map((r) => {
     const memMb = r.memory_mb > 0 ? r.memory_mb : fallback
     const mem = memMb > 0 ? ` ${memMb}MB` : ''
-    const vendors = modelVendors.get(r.model)
-    const showVendor = r.vendor && vendors && vendors.size > 1
-    const prefix = showVendor ? `${r.vendor} ` : ''
+    const prefix = r.vendor ? `${r.vendor} ` : ''
     return `${prefix}${r.model} ×${r.count} (${r.sharing_mode}${mem})`
   }).join(', ')
 }
