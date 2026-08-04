@@ -91,7 +91,7 @@
               is-iops-show
               is-throughput-show />
           </a-form-item>
-          <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
+          <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow || isOpenOrderSetWorkflow">
             <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_1106')">
@@ -134,9 +134,39 @@
               <div class="running-adjust-popconfirm-desc">{{ $t('compute.adjust_config_running_confirm_content') }}</div>
             </template>
             <span class="adjust-config-popconfirm-trigger d-inline-block" @click.stop="handleRunningAdjustTriggerClick">
-              <a-button type="primary" class="mr-3" :loading="loading">{{ confirmText }}</a-button>
+              <a-dropdown-button
+                v-if="showCartDropdown"
+                type="primary"
+                class="mr-3"
+                :loading="loading"
+                placement="topLeft"
+                @click="(e) => e && e.preventDefault && e.preventDefault()">
+                {{ confirmText }}
+                <a-menu slot="overlay" @click="handleMenuClick">
+                  <a-menu-item key="add">
+                    {{ $t('scope.shopcart.add') }}
+                  </a-menu-item>
+                </a-menu>
+                <a-icon slot="icon" type="down" />
+              </a-dropdown-button>
+              <a-button v-else type="primary" class="mr-3" :loading="loading">{{ confirmText }}</a-button>
             </span>
           </a-popconfirm>
+          <a-dropdown-button
+            v-else-if="showCartDropdown"
+            type="primary"
+            class="mr-3"
+            :loading="loading"
+            placement="topLeft"
+            @click="handleConfirmClick">
+            {{ confirmText }}
+            <a-menu slot="overlay" @click="handleMenuClick">
+              <a-menu-item key="add">
+                {{ $t('scope.shopcart.add') }}
+              </a-menu-item>
+            </a-menu>
+            <a-icon slot="icon" type="down" />
+          </a-dropdown-button>
           <a-button
             v-else
             type="primary"
@@ -175,7 +205,8 @@ import {
 } from '@/utils/common/tableColumn'
 import { findPlatform, diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
 import { isRequired } from '@/utils/validate'
-import { sizestr } from '@/utils/utils'
+import { hasPermission, hasServices } from '@/utils/auth'
+import { sizestr, uuid } from '@/utils/utils'
 import { STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
 import DiscountPrice from '@/sections/DiscountPrice'
 
@@ -194,6 +225,12 @@ export default {
     params: {
       type: Object,
     },
+  },
+  provide () {
+    // SystemDisk 等子组件 createFormFieldDraftMixin inject form；无 provide 时会盖住 prop
+    return {
+      form: this.form,
+    }
   },
   data () {
     function diskValidator (rule, value, callback) {
@@ -464,7 +501,10 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
     title () {
-      return this.isOpenWorkflow ? `${this.$t('compute.text_1100')} ${this.$route.query.workflow ? `(${this.$t('common.modify_workflow')})` : ''}` : this.$t('compute.text_1100')
+      if (this.isOpenWorkflow) {
+        return `${this.$t('compute.text_1100')} ${this.$route.query.workflow ? `(${this.$t('common.modify_workflow')})` : ''}`
+      }
+      return this.$t('compute.text_1100')
     },
     scopeParams () {
       if (this.$store.getters.isAdminMode) {
@@ -622,6 +662,15 @@ export default {
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG)
     },
+    isOpenOrderSetWorkflow () {
+      return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.EXECUTE_RESOURCE_ORDER_SET)
+    },
+    hasCartPermission () {
+      return hasServices('billing') && hasPermission({ key: 'resource_order_sets_create' })
+    },
+    showCartDropdown () {
+      return this.$appConfig.isPrivate && !this.$store.getters.isSysCE && this.hasCartPermission && !this.$route.query.workflow
+    },
     columns () {
       return [
         getNameDescriptionTableColumn({
@@ -713,7 +762,11 @@ export default {
       return diskValueArr.reduce((prevDisk, diskValue) => prevDisk + diskValue, 0)
     },
     confirmText () {
-      return this.isOpenWorkflow ? (this.$route.query.workflow ? this.$t('common.modify_workflow') : this.$t('compute.text_288')) : this.$t('compute.text_907')
+      if (this.isOpenWorkflow) {
+        return this.$route.query.workflow ? this.$t('common.modify_workflow') : this.$t('compute.text_288')
+      }
+      if (this.isOpenOrderSetWorkflow) return this.$t('compute.text_288')
+      return this.$t('compute.text_907')
     },
     cpuExtra () {
       if (this.runningArm) {
@@ -1020,6 +1073,16 @@ export default {
       this.$router.push('/workflow')
     },
     async doChangeSettingsSubmit (values) {
+      const params = this.buildChangeConfigParams(values)
+      const ids = this.dataList.map(item => item.id)
+      return this.serversManager.batchPerformAction({
+        ids,
+        steadyStatus: ['running', 'ready'],
+        action: 'change-config',
+        data: params,
+      })
+    },
+    buildChangeConfigParams (values) {
       const params = {
         sku: values.sku.name,
         auto_start: values.autoStart,
@@ -1028,19 +1091,170 @@ export default {
         params.force_stop = true
       }
       const { showCpuSockets, cpuSockets } = this.form.fi
-      const ids = this.dataList.map(item => item.id)
-      if (ids.length === 1 && this.selectedItem.provider !== HYPERVISORS_MAP.cnware.provider) {
+      if (this.dataList.length === 1 && this.selectedItem.provider !== HYPERVISORS_MAP.cnware.provider) {
         params.disks = this.genDiskData(values)
       }
       if (showCpuSockets) {
         params.cpu_sockets = cpuSockets
       }
-      return this.serversManager.batchPerformAction({
-        ids,
-        steadyStatus: ['running', 'ready'],
-        action: 'change-config',
-        data: params,
+      return params
+    },
+    formatFlavorConfig (vcpu, vmemMb, diskMb) {
+      if (!vcpu && !vmemMb) return '-'
+      return `${vcpu}C${(vmemMb / 1024)}G${diskMb ? sizestr(diskMb, 'M', 1024) : ''}`
+    },
+    getChangeConfigAfterDisk (values, server) {
+      if (this.dataList.length !== 1) return server.disk
+      const datadisks = this.form.fc.getFieldValue('dataDiskSizes')
+      let diskSize = 0
+      if (datadisks) {
+        R.forEachObjIndexed((value) => { diskSize += value }, datadisks)
+      }
+      const beforeDataDisks = (this.beforeDataDisks || []).map(item => item.value)
+      let beforeDiskSize = 0
+      if (beforeDataDisks.length > 0) {
+        beforeDiskSize = beforeDataDisks.reduce((sum, size) => sum + size, 0)
+      }
+      return +server.disk + (+diskSize - beforeDiskSize) * 1024
+    },
+    /** 与调整配置工单 serverConf 结构一致，供购物车查看详情复用 ServerConfig */
+    buildServerConfItem (values, server) {
+      const changeParams = this.buildChangeConfigParams(values)
+      const beforeSysDisks = (server.disks_info || []).filter(item => item.disk_type === 'sys').map(item => ({
+        medium_type: item.medium_type,
+        size: item.size,
+        type: item.storage_type,
+      }))
+      const beforeDataDisks = (server.disks_info || []).filter(item => item.disk_type === 'data').map(item => ({
+        medium_type: item.medium_type,
+        size: item.size,
+        type: item.storage_type,
+      }))
+      const datadisks = this.form.fc.getFieldValue('dataDiskSizes')
+      let diskSize = 0
+      if (datadisks) {
+        R.forEachObjIndexed((value) => { diskSize += value }, datadisks)
+      }
+      const beforeDataDiskSizes = (this.beforeDataDisks || []).map(item => item.value)
+      let beforeDiskSize = 0
+      if (beforeDataDiskSizes.length > 0) {
+        beforeDiskSize = beforeDataDiskSizes.reduce((sum, size) => sum + size, 0)
+      }
+      const isSingle = this.dataList.length === 1
+      return {
+        name: server.name,
+        project: server.tenant,
+        hypervisor: this.selectedItem.hypervisor,
+        before: {
+          cpu: server.vcpu_count,
+          memory: server.vmem_size,
+          disk: server.disk,
+          dataDisks: beforeDataDisks,
+          sysDisks: beforeSysDisks,
+          sku: server.instance_type,
+        },
+        after: {
+          cpu: this.form.fd.vcpu,
+          memory: this.form.fd.vmem,
+          disk: isSingle ? (+server.disk + (+diskSize - beforeDiskSize) * 1024) : null,
+          dataDisks: isSingle ? changeParams.disks : null,
+          sysDisks: isSingle ? beforeSysDisks : null,
+          sku: values.sku.name,
+        },
+      }
+    },
+    buildShopCartParameter (values, server) {
+      const changeParams = this.buildChangeConfigParams(values)
+      const afterDisk = this.getChangeConfigAfterDisk(values, server)
+      const serverConf = this.buildServerConfItem(values, server)
+      return {
+        action: 'perform',
+        perform_action_name: 'change-config',
+        resource: 'servers',
+        resource_id: server.id,
+        auto_execute: true,
+        count: 1,
+        user_id: this.userInfo.id,
+        project: server.tenant || server.tenant_id,
+        project_domain: server.project_domain || server.domain_id,
+        parameter: {
+          ...changeParams,
+          generate_name: server.name,
+          vcpu_count: this.form.fd.vcpu,
+          vmem_size: this.form.fd.vmem,
+          hypervisor: server.hypervisor,
+          provider: server.provider,
+          config_before: this.formatFlavorConfig(server.vcpu_count, server.vmem_size, server.disk),
+          config_after: this.formatFlavorConfig(this.form.fd.vcpu, this.form.fd.vmem, afterDisk),
+          // orderset 会裁掉顶层自定义字段，展示数据放 extraData 内
+          extraData: {
+            reason: values.reason,
+            __resource_type__: 'server',
+            change_type: 'change-config',
+            project: server.tenant || server.tenant_id,
+            serverConf,
+          },
+        },
+        resourceData: {
+          id: server.id,
+          name: server.name,
+        },
+      }
+    },
+    async doCreateOrderSetWorkflow (values) {
+      const { displayname, name } = this.userInfo
+      const shopCarts = this.dataList.map(server => this.buildShopCartParameter(values, server))
+      const orderSetRes = await new this.$Manager('resource_order_sets').create({
+        data: {
+          auto_execute: false,
+          name: this.$t('common.shopcart_workflow_name', [displayname || name, this.$moment().format('YYYY-MM-DD'), uuid()]),
+          parameters: shopCarts,
+        },
       })
+      const variables = {
+        process_definition_key: this.WORKFLOW_TYPES.EXECUTE_RESOURCE_ORDER_SET,
+        initiator: this.userInfo.id,
+        ids: orderSetRes.data.id,
+        parameter: '{}',
+        project: shopCarts[0].project,
+        project_domain: shopCarts[0].project_domain,
+      }
+      await new this.$Manager('process-instances', 'v1').create({ data: { variables } })
+      this.$message.success(this.$t('compute.text_1109'))
+      this.$router.push('/workflow')
+    },
+    async addShopCart () {
+      this.loading = true
+      try {
+        if (!this.form.fd.sku?.name) {
+          this.form.fc.setFieldsValue({ sku: null })
+        }
+        const values = await this.form.fc.validateFields()
+        const shopCarts = this.$store.state.shopcart?.shopCarts || []
+        const duplicates = this.dataList.filter(server => shopCarts.some(item => {
+          return item.user_id === this.userInfo.id &&
+            item.action === 'perform' &&
+            item.perform_action_name === 'change-config' &&
+            item.resource_id === server.id
+        }))
+        if (duplicates.length) {
+          this.$message.warning(this.$t('scope.shopcart.change_config_exists', [duplicates.map(s => s.name).join(', ')]))
+          return
+        }
+        this.dataList.forEach(server => {
+          this.$store.commit('shopcart/ADD_SHOP_CART', this.buildShopCartParameter(values, server))
+        })
+        this.$message.success(this.$t('common.success'))
+      } catch (error) {
+        // 表单校验失败等场景无需额外提示
+      } finally {
+        this.loading = false
+      }
+    },
+    handleMenuClick (e) {
+      if (e.key === 'add') {
+        this.addShopCart()
+      }
     },
     async performAdjustSubmit (values) {
       if (this.isOpenWorkflow) {
@@ -1050,6 +1264,13 @@ export default {
           return
         }
         await this.doChangeSettingsByWorkflowSubmit(values)
+      } else if (this.isOpenOrderSetWorkflow) {
+        const projects = new Set(this.dataList.map(item => item.tenant_id))
+        if (projects.size > 1) {
+          this.$message.error(this.$t('compute.text_1348'))
+          return
+        }
+        await this.doCreateOrderSetWorkflow(values)
       } else {
         const res = await this.doChangeSettingsSubmit(values)
         const isOk = res.data.data.every(item => item.status === 200)
