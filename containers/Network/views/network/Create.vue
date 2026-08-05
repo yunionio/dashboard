@@ -86,7 +86,7 @@
         </a-form-item>
         <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" required v-if="isGroupGuestIpPrefix">
           <template slot="extra">
-            <div>{{$t('network.text_578')}}</div>
+            <div>{{$t('network.prefix_in_cidr_range.prompt', [curVpcCidrText])}}</div>
             <div>{{$t('network.text_580')}}</div>
           </template>
           <!-- 网段 -->
