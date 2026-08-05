@@ -25,7 +25,7 @@ import {
 } from '@/utils/auth'
 import { SCOPES_MAP } from '@/constants'
 import router from '@/router'
-import { removeKeyIgnoreCase, getKeyIgnoreCase } from '@/utils/utils'
+import { removeKeyIgnoreCase, getKeyIgnoreCase, redirectAfterAuth } from '@/utils/utils'
 import storage from '@/utils/storage'
 import { aesEncryptWithCustomKey } from '@/utils/crypto'
 const initialState = {
@@ -528,10 +528,7 @@ export default {
           return
         }
         if (!pathAuthPage && pathAuth && path) {
-          router.replace({
-            path,
-            query: pathQuery && JSON.parse(pathQuery),
-          })
+          redirectAfterAuth(router, { path, pathQuery })
         } else {
           router.replace('/')
         }
