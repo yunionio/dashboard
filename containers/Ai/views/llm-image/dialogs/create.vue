@@ -54,10 +54,12 @@ export default {
     const data = this.params.type === 'edit' ? this.params.data[0] : {}
     const imageRouteCtx = parseLlmImageRoute(this.$route.path)
     const allowedTypes = getAllowedImageLlmTypes(this.$route.path)
-    const filteredOptions = LLM_TYPE_OPTIONS.filter(opt => allowedTypes.includes(opt.id))
+    const filteredOptions = allowedTypes
+      .map(id => LLM_TYPE_OPTIONS.find(opt => opt.id === id))
+      .filter(Boolean)
     const fallbackLlmType = imageRouteCtx.isDesktopImageRoute
       ? 'desktop'
-      : (imageRouteCtx.isAgentImageRoute ? 'openclaw' : 'ollama')
+      : (imageRouteCtx.isAgentImageRoute ? 'openclaw' : 'vllm')
     const defaultLlmType = (filteredOptions[0] && filteredOptions[0].id) || allowedTypes[0] || fallbackLlmType
     return {
       loading: false,
@@ -88,8 +90,9 @@ export default {
   computed: {
     llmTypeOptions () {
       const allowedTypes = getAllowedImageLlmTypes(this.$route.path)
-      return LLM_TYPE_OPTIONS
-        .filter(opt => allowedTypes.includes(opt.id))
+      return allowedTypes
+        .map(id => LLM_TYPE_OPTIONS.find(opt => opt.id === id))
+        .filter(Boolean)
         .map(opt => ({ id: opt.id, name: this.$t(opt.name) }))
     },
     llmTypeName () {

@@ -145,7 +145,10 @@
           :label="$t(field.label)">
           <llm-gpu-devices-editor
             v-decorator="decorators[field.fieldKey]"
-            :require-hami-memory-mb="isLocalPathSku" />
+            :require-hami-memory-mb="isLocalPathSku"
+            :allow-empty="!isDeviceRequired"
+            :sharing-mode-values="deviceSharingModeValues"
+            :default-sharing-mode="deviceDefaultSharingMode" />
         </a-form-item>
         <a-form-item v-else-if="field.component === 'input-number'" :key="field.fieldKey" :label="$t(field.label)">
           <a-input-number
@@ -451,6 +454,8 @@ import {
   getPodPciModelTypes,
   isValidDeviceRows,
   resolveSharingMode,
+  DESKTOP_SHARING_MODE_VALUES,
+  DESKTOP_DEFAULT_SHARING_MODE,
 } from '@Ai/utils/deviceFormUtils'
 import {
   formValuesToBackendParameters,
@@ -563,7 +568,15 @@ export default {
     const isCatalogImport = !!getCatalogSpecId(this.catalogSpec) && this.catalogSubmitType === 'import'
     const isLocalPathImport = this.importMode === 'local_path'
     const deviceRowsInit = aggregateDevicesToRows(devices)
-    const deviceInitialValue = deviceRowsInit.length ? deviceRowsInit : [createEmptyDeviceRow()]
+    const deviceFieldInit = (LLM_TYPE_FORM_CONFIG[initialLlmTypeForSpec] || []).find(f => f.fieldKey === 'device')
+    const isLocalPathSkuInit = isLocalPathImport || (this.mode === 'edit' && String(data?.source || '').trim() === 'local_path')
+    const hasInjectedDeviceInit = (isCatalogImport && !isApplyType && !isDesktopType) || isLocalPathSkuInit
+    const deviceRequiredInit = !!(deviceFieldInit?.rules?.some(r => r.required) || hasInjectedDeviceInit || isCatalogImport || isLocalPathImport)
+    const deviceInitialValue = deviceRowsInit.length
+      ? deviceRowsInit
+      : (deviceRequiredInit
+        ? [createEmptyDeviceRow(isDesktopType ? DESKTOP_DEFAULT_SHARING_MODE : undefined)]
+        : [])
     const typeLlmSpec = (llmSpec && (initialLlmTypeForSpec === 'vllm' || initialLlmTypeForSpec === 'sglang') && llmSpec[initialLlmTypeForSpec])
       ? llmSpec[initialLlmTypeForSpec]
       : {}
@@ -1050,6 +1063,21 @@ export default {
       const source = this.editData?.source ?? this.form?.fd?.source
       return String(source || '').trim() === 'local_path'
     },
+    isDeviceRequired () {
+      const type = (this.isCatalogMode || this.isLocalPathImportMode)
+        ? this.catalogLlmType
+        : (this.form?.fd?.llm_type)
+      const field = (LLM_TYPE_FORM_CONFIG[type] || []).find(f => f.fieldKey === 'device')
+      const hasInjectedDevice = (this.isCatalogMode && this.catalogSubmitType === 'import' && !this.isApplyType && !this.isDesktopType) || this.isLocalPathSku
+      const isCatalogImport = this.isCatalogMode && this.catalogSubmitType === 'import'
+      return !!(field?.rules?.some(r => r.required) || hasInjectedDevice || isCatalogImport || this.isLocalPathImportMode)
+    },
+    deviceSharingModeValues () {
+      return this.isDesktopType ? DESKTOP_SHARING_MODE_VALUES : null
+    },
+    deviceDefaultSharingMode () {
+      return this.isDesktopType ? DESKTOP_DEFAULT_SHARING_MODE : ''
+    },
     localPathMountPreview () {
       if (!this.isLocalPathImportMode) return null
       const path = String(this.form.fd.local_path || '').trim()
@@ -1396,7 +1424,12 @@ export default {
         if ((effectiveLlmType === 'vllm' || effectiveLlmType === 'sglang') && key === 'preferred_model') return
         if (key === 'device') {
           const expanded = expandRowsToDevices(v, this.podPciModels)
-          if (expanded.length) data.devices = expanded
+          if (expanded.length) {
+            data.devices = expanded
+          } else if (this.isEditMode) {
+            // 编辑时清空 GPU 需显式传空数组，否则后端保留原 devices
+            data.devices = []
+          }
         } else {
           data[key] = v
         }
