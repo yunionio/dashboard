@@ -5,7 +5,14 @@
  */
 import * as R from 'ramda'
 import { hasPermission, checkSessionUser, decodeToken } from '@/utils/auth'
-import { isCE, isSAAS } from '@/utils/utils'
+import {
+  isCE,
+  isSAAS,
+  getAuthRedirectPath,
+  getAuthRedirectPathQuery,
+  isExternalAuthPath,
+  normalizeAuthRedirectPath,
+} from '@/utils/utils'
 import router from './router'
 import store from './store'
 
@@ -20,10 +27,11 @@ scopePermission.keys().forEach(name => {
 const toLogin = (to, from, next) => {
   const query = {
     pathAuth: true,
-    path: to.path,
+    path: getAuthRedirectPath(to),
   }
-  if (!R.isNil(to.query) && !R.isEmpty(to.query)) {
-    query.pathQuery = JSON.stringify(to.query)
+  const pathQuery = getAuthRedirectPathQuery(to.query)
+  if (pathQuery) {
+    query.pathQuery = JSON.stringify(pathQuery)
   }
   return next({
     path: '/auth/login',
@@ -74,8 +82,12 @@ router.beforeEach(async (to, from, next) => {
       return
     }
     if (!pathAuthPage && pathAuth && path) {
+      if (isExternalAuthPath(path)) {
+        document.location.href = path
+        return
+      }
       return next({
-        path,
+        path: normalizeAuthRedirectPath(path),
         query: pathQuery && JSON.parse(pathQuery),
       })
     }
