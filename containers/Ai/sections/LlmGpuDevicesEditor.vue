@@ -1,7 +1,8 @@
 <!--
-  GPU 型号 + 共享模式 + 数量编辑，用于推理模板创建/编辑。
+  GPU 型号 + 共享模式 + 数量编辑，用于推理/桌面模板创建/编辑。
   HAMI 时可选手动显存（memory_mb）；留空则建 Pod 时回退模型估算 claim。
   local_path 场景下可通过 requireHamiMemoryMb 强制必填。
+  allowEmpty 为 true 时（如桌面模板）默认不展示空行，仅通过「添加 GPU」再填。
 -->
 <template>
   <div class="llm-gpu-devices-editor">
@@ -48,7 +49,7 @@
         <span class="llm-gpu-devices-editor__unit">MB</span>
       </template>
       <a-button
-        v-if="innerRows.length > 1"
+        v-if="canRemoveRow"
         shape="circle"
         icon="minus"
         size="small"
@@ -72,6 +73,7 @@ import {
   createEmptyDeviceRow,
   normalizeDeviceRows,
   LLM_SHARING_MODE_VALUES,
+  DEFAULT_SHARING_MODE,
   resolveSharingMode,
   listVendorsForSharingMode,
   buildModelSelectEntries,
@@ -102,6 +104,18 @@ export default {
       type: Boolean,
       default: false,
     },
+    allowEmpty: {
+      type: Boolean,
+      default: false,
+    },
+    sharingModeValues: {
+      type: Array,
+      default: null,
+    },
+    defaultSharingMode: {
+      type: String,
+      default: '',
+    },
   },
   data () {
     return {
@@ -112,8 +126,21 @@ export default {
     podPciModels () {
       return getPodPciModelTypes(this.$store.getters.capability)
     },
+    resolvedSharingModeValues () {
+      if (Array.isArray(this.sharingModeValues) && this.sharingModeValues.length) {
+        return this.sharingModeValues
+      }
+      return LLM_SHARING_MODE_VALUES
+    },
+    resolvedDefaultSharingMode () {
+      const preferred = String(this.defaultSharingMode || '').trim()
+      if (preferred && this.resolvedSharingModeValues.includes(preferred)) {
+        return preferred
+      }
+      return this.resolvedSharingModeValues[0] || DEFAULT_SHARING_MODE
+    },
     sharingModeOptions () {
-      return LLM_SHARING_MODE_VALUES.map(value => ({
+      return this.resolvedSharingModeValues.map(value => ({
         key: value,
         label: this.$t(SHARING_MODE_I18N[value] || value),
       }))
@@ -147,7 +174,10 @@ export default {
         : this.$t('aice.devices.memory_mb.help')
     },
     innerRows () {
-      return normalizeDeviceRows(this.value)
+      return this.resolveRows(this.value)
+    },
+    canRemoveRow () {
+      return this.allowEmpty ? this.innerRows.length >= 1 : this.innerRows.length > 1
     },
     showVendorField () {
       return shouldShowVendorSelect(this.podPciModels)
@@ -157,7 +187,7 @@ export default {
     value: {
       immediate: true,
       handler (val) {
-        const rows = normalizeDeviceRows(val)
+        const rows = this.resolveRows(val)
         while (this.rowKeys.length < rows.length) {
           this.rowKeys.push(uuid())
         }
@@ -165,6 +195,7 @@ export default {
           this.rowKeys.pop()
         }
         this.maybeAutoFillVendors(rows)
+        this.maybeCoerceSharingModes(rows)
       },
     },
     podPciModels () {
@@ -172,6 +203,46 @@ export default {
     },
   },
   methods: {
+    emptyRow () {
+      return createEmptyDeviceRow(this.resolvedDefaultSharingMode)
+    },
+    coerceSharingMode (mode) {
+      const raw = String(mode || '').trim()
+      if (this.resolvedSharingModeValues.includes(raw)) return raw
+      return this.resolvedDefaultSharingMode
+    },
+    resolveRows (rows) {
+      if (this.allowEmpty && (!Array.isArray(rows) || rows.length === 0)) {
+        return []
+      }
+      return normalizeDeviceRows(rows).map((row) => {
+        const sharingMode = this.coerceSharingMode(row.sharing_mode)
+        const next = { ...row, sharing_mode: sharingMode }
+        if (sharingMode !== 'HAMI') {
+          delete next.memory_mb
+        }
+        return next
+      })
+    },
+    maybeCoerceSharingModes (rows) {
+      if (!Array.isArray(rows) || rows.length === 0) return
+      let changed = false
+      const next = rows.map((row) => {
+        const sharingMode = this.coerceSharingMode(row.sharing_mode)
+        if (sharingMode === row.sharing_mode && (sharingMode === 'HAMI' || !row.memory_mb)) {
+          return row
+        }
+        changed = true
+        const coerced = { ...row, sharing_mode: sharingMode }
+        if (sharingMode !== 'HAMI') {
+          delete coerced.memory_mb
+        }
+        return coerced
+      })
+      if (changed) {
+        this.emitRows(next)
+      }
+    },
     maybeAutoFillVendors (rows) {
       if (!Array.isArray(rows) || rows.length === 0) return
       let changed = false
@@ -230,12 +301,14 @@ export default {
       return entries
     },
     emitRows (rows) {
-      const normalized = normalizeDeviceRows(rows)
+      const normalized = this.allowEmpty && (!Array.isArray(rows) || rows.length === 0)
+        ? []
+        : this.resolveRows(rows.length ? rows : (this.allowEmpty ? [] : [this.emptyRow()]))
       this.$emit('input', normalized)
       this.$emit('change', normalized)
     },
     onSharingModeChange (index, sharingMode) {
-      const mode = resolveSharingMode(sharingMode)
+      const mode = this.coerceSharingMode(sharingMode)
       const rows = this.innerRows.map((row, i) => {
         if (i !== index) return { ...row }
         const next = { ...row, sharing_mode: mode }
@@ -320,7 +393,7 @@ export default {
     },
     addRow () {
       this.rowKeys.push(uuid())
-      const newRow = createEmptyDeviceRow()
+      const newRow = this.emptyRow()
       const vendors = listVendorsForSharingMode(this.podPciModels, newRow.sharing_mode)
       if (vendors.length === 1) {
         newRow.vendor = vendors[0]
@@ -328,10 +401,14 @@ export default {
       this.emitRows([...this.innerRows, newRow])
     },
     removeRow (index) {
-      if (this.innerRows.length <= 1) return
+      if (!this.allowEmpty && this.innerRows.length <= 1) return
       this.rowKeys.splice(index, 1)
       const rows = this.innerRows.filter((_, i) => i !== index)
-      this.emitRows(rows.length ? rows : [createEmptyDeviceRow()])
+      if (rows.length === 0 && this.allowEmpty) {
+        this.emitRows([])
+        return
+      }
+      this.emitRows(rows.length ? rows : [this.emptyRow()])
     },
   },
 }
