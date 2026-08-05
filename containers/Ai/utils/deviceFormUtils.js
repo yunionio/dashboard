@@ -10,6 +10,10 @@ export const DEFAULT_DEV_TYPE = 'GPU'
 /** LLM-oriented sharing modes (subset of compute isolated-device modes). */
 export const LLM_SHARING_MODE_VALUES = ['HAMI', 'UNLIMITED', 'MPS', 'EXCLUSIVE']
 
+/** Desktop SKU: no HAMI/MPS; only exclusive or unlimited share. */
+export const DESKTOP_SHARING_MODE_VALUES = ['UNLIMITED', 'EXCLUSIVE']
+export const DESKTOP_DEFAULT_SHARING_MODE = 'UNLIMITED'
+
 const LEGACY_DEV_TYPE_TO_SHARING = {
   NVIDIA_GPU: 'EXCLUSIVE',
   NVIDIA_MPS: 'MPS',
@@ -343,8 +347,9 @@ export function deviceRowsHaveContent (rows) {
   return Array.isArray(rows) && rows.some(row => String(row?.model || '').trim())
 }
 
-export function createEmptyDeviceRow () {
-  return { model: undefined, count: 1, sharing_mode: DEFAULT_SHARING_MODE }
+export function createEmptyDeviceRow (sharingMode = DEFAULT_SHARING_MODE) {
+  const mode = String(sharingMode || '').trim() || DEFAULT_SHARING_MODE
+  return { model: undefined, count: 1, sharing_mode: mode }
 }
 
 export function normalizeDeviceRows (rows) {
