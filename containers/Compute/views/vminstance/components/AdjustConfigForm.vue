@@ -1141,6 +1141,7 @@ export default {
         beforeDiskSize = beforeDataDiskSizes.reduce((sum, size) => sum + size, 0)
       }
       const isSingle = this.dataList.length === 1
+      const afterDataDisks = (changeParams.disks && changeParams.disks.length) ? changeParams.disks : beforeDataDisks
       return {
         name: server.name,
         project: server.tenant,
@@ -1157,7 +1158,8 @@ export default {
           cpu: this.form.fd.vcpu,
           memory: this.form.fd.vmem,
           disk: isSingle ? (+server.disk + (+diskSize - beforeDiskSize) * 1024) : null,
-          dataDisks: isSingle ? changeParams.disks : null,
+          // 未调整磁盘时沿用原数据盘 / 系统盘，保证查看详情能展示
+          dataDisks: isSingle ? afterDataDisks : null,
           sysDisks: isSingle ? beforeSysDisks : null,
           sku: values.sku.name,
         },
