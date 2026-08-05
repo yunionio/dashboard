@@ -963,7 +963,7 @@ export function isSAAS () {
   return !!process.env.VUE_APP_IS_SAAS
 }
 
-export function getDocsUrl (scope, isSysCE) {
+export function getDocsUrl (scope, isSysCE, targetOrigin = window.location.origin) {
   let prefix = 'docs'
   const useCe = isCE() || isSysCE
   if (useCe) {
@@ -972,7 +972,7 @@ export function getDocsUrl (scope, isSysCE) {
   if (scope === 'domain' || scope === 'project') {
     prefix = prefix + '/domain'
   }
-  return `${window.location.origin}/${prefix}/zh/docs/`
+  return `${targetOrigin}/${prefix}/zh/docs/`
 }
 
 export function genDocsUrl ({ scope, isSysCE, cePath, eePath, anchor = '' }) {
