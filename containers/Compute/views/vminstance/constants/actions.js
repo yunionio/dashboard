@@ -5,7 +5,6 @@ import VncInfoFetcher from '@Compute/sections/VncInfoFetcher'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
-import { HOST_CPU_ARCHS } from '@/constants/compute'
 import { PROVIDER_MAP, BRAND_MAP } from '@/constants'
 import { hasSetupKey, isLicense2 } from '@/utils/auth'
 import { KVM_SHARE_STORAGES } from '@/constants/storage'
@@ -1028,10 +1027,6 @@ const getSingleActions = function (ctx) {
                   if (!rescueModeValid.validate) return rescueModeValid
                   if (obj.backup_host_id) {
                     ret.tooltip = i18n.t('compute.text_1111')
-                    return ret
-                  }
-                  if (obj.os_arch === HOST_CPU_ARCHS.arm.key && obj.status === 'running') {
-                    ret.tooltip = i18n.t('compute.text_1371')
                     return ret
                   }
                   if (obj.shutdown_mode === 'stop_charging' && obj.status === 'ready') {
