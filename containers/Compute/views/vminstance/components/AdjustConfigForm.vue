@@ -1,11 +1,6 @@
 <template>
   <div>
     <page-header :title="title" style="margin-bottom: 7px;" />
-    <a-alert class="mb-2" type="warning" v-if="tips">
-      <div slot="message">
-        {{ tips }}
-      </div>
-    </a-alert>
     <a-card :bordered="false" size="small">
       <template #title>
         <dialog-selected-tips :name="$t('dictionary.server')" :count="dataList.length" :action="$t('compute.text_1100')" />
@@ -21,9 +16,7 @@
             <cpu-radio
               :decorator="decorators.vcpu"
               :options="form.fi.cpuMem.cpus || []"
-              :disable-options="disableCpus"
-              :disabled="runningArm"
-              :extra="cpuExtra"
+              :disable-options="[]"
               :max="form.fd.vcpu < 32 ? 32 : 128"
               :form="form"
               :hypervisor="hypervisor"
@@ -33,7 +26,7 @@
               @change="cpuChange" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_369')" class="mb-0">
-            <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" :disabled="runningArm" :extra="cpuExtra" />
+            <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="[]" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_109')">
             <sku
@@ -119,7 +112,7 @@
             </div>
           </div>
           <a-popconfirm
-            v-if="isSomeRunningOther"
+            v-if="needForceStopConfirm"
             placement="topRight"
             overlay-class-name="running-adjust-popconfirm-overlay"
             :visible="runningAdjustPopVisible"
@@ -131,7 +124,7 @@
             @visibleChange="onRunningAdjustPopVisibleChange">
             <template slot="title">
               <div>{{ $t('compute.adjust_config_running_confirm_title') }}</div>
-              <div class="running-adjust-popconfirm-desc">{{ $t('compute.adjust_config_running_confirm_content') }}</div>
+              <div class="running-adjust-popconfirm-desc">{{ runningAdjustConfirmContent }}</div>
             </template>
             <span class="adjust-config-popconfirm-trigger d-inline-block" @click.stop="handleRunningAdjustTriggerClick">
               <a-dropdown-button
@@ -209,6 +202,23 @@ import { hasPermission, hasServices } from '@/utils/auth'
 import { sizestr, uuid } from '@/utils/utils'
 import { STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
 import DiscountPrice from '@/sections/DiscountPrice'
+
+// 支持开机直接调整配置的平台（降配时仍需先关机）
+const RUNNING_ADJUST_HYPERVISORS = [
+  HYPERVISORS_MAP.esxi.hypervisor,
+  HYPERVISORS_MAP.cloudpods.hypervisor,
+  HYPERVISORS_MAP.openstack.hypervisor,
+  HYPERVISORS_MAP.proxmox.hypervisor,
+  HYPERVISORS_MAP.ksyun.hypervisor,
+  HYPERVISORS_MAP.incloudsphere.hypervisor,
+  HYPERVISORS_MAP.azure.hypervisor,
+]
+
+// 支持开机调整配置，但需开启热扩容（hotplug_cpu_mem=enable）
+const HOTPLUG_RUNNING_ADJUST_HYPERVISORS = [
+  HYPERVISORS_MAP.kvm.hypervisor,
+  HYPERVISORS_MAP.zstack.hypervisor,
+]
 
 export default {
   name: 'VMInstanceAdjustConfig',
@@ -533,60 +543,29 @@ export default {
     isSomeRunning () {
       return this.dataList.some(val => val.status === 'running')
     },
-    isSomeArm () {
-      return this.selectedItem.os_arch === 'arm' && [HYPERVISORS_MAP.kvm.hypervisor].includes(this.hypervisor)
+    needForceStopServers () {
+      const vcpu = this.form.fd.vcpu
+      const vmem = this.form.fd.vmem
+      return this.dataList.filter(item => {
+        if (item.status !== 'running') return false
+        return !this.canHotAdjust(item) || this.isDowngradeFor(item, vcpu, vmem)
+      })
     },
-    runningArm () {
-      return this.isSomeArm && this.isSomeRunning
+    needForceStopConfirm () {
+      return this.needForceStopServers.length > 0
     },
-    isSomeRunningOther () {
-      const runningAdjustHypervisors = [
-        HYPERVISORS_MAP.kvm.hypervisor,
-        HYPERVISORS_MAP.esxi.hypervisor,
-        HYPERVISORS_MAP.cloudpods.hypervisor,
-        HYPERVISORS_MAP.openstack.hypervisor,
-        HYPERVISORS_MAP.zstack.hypervisor,
-        HYPERVISORS_MAP.proxmox.hypervisor,
-        HYPERVISORS_MAP.ksyun.hypervisor,
-        HYPERVISORS_MAP.incloudsphere.hypervisor,
-        HYPERVISORS_MAP.azure.hypervisor,
-      ]
-      return this.dataList.some(val => val.status === 'running' && !runningAdjustHypervisors.includes(val.hypervisor))
+    runningAdjustConfirmContent () {
+      if (this.dataList.length === 1) {
+        return this.$t('compute.adjust_config_running_confirm_content')
+      }
+      const names = this.needForceStopServers.map(item => item.name).join('、')
+      return this.$t('compute.adjust_config_running_confirm_content_servers', [names])
     },
     disableSkuType () {
       return [HYPERVISORS_MAP.aliyun.hypervisor, HYPERVISORS_MAP.huawei.hypervisor, HYPERVISORS_MAP.qcloud.hypervisor].includes(this.dataList[0].hypervisor)
     },
-    hotplug () { // 做热扩容校验，true 表示置灰 CPU 和 内存，不支持热扩容
-      if (this.dataList.every(val => val.status === 'ready')) {
-        return false
-      } else {
-        if (this.dataList.every(val => {
-          if ([HYPERVISORS_MAP.kvm.hypervisor, HYPERVISORS_MAP.zstack.hypervisor].includes(val.hypervisor)) {
-            if (val.status === 'ready') {
-              return true
-            } else {
-              return val.metadata && val.metadata.hotplug_cpu_mem === 'enable'
-            }
-          }
-          return true
-        })) {
-          return false
-        } else {
-          return true
-        }
-      }
-    },
     hypervisor () {
       return this.selectedItem.hypervisor
-    },
-    tips () {
-      if (this.hotplug) {
-        return this.$t('compute.text_1107')
-      }
-      if ([HYPERVISORS_MAP.kvm.hypervisor, HYPERVISORS_MAP.azure.hypervisor].includes(this.hypervisor)) {
-        return this.$t('compute.text_1108')
-      }
-      return ''
     },
     type () {
       const brand = this.selectedItem.brand
@@ -639,25 +618,6 @@ export default {
         }
       }
       return params
-    },
-    disableCpus () {
-      const runningList = this.dataList.filter(item => item.status === 'running')
-      const cpu = runningList.length ? runningList[0].vcpu_count : this.selectedItem.vcpu_count
-      const cpus = this.form.fi.cpuMem.cpus || []
-      if (this.isSomeRunning && cpus.length > 0) {
-        return cpus.filter((item) => { return item < cpu })
-      }
-      return []
-    },
-    disableMems () {
-      const runningList = this.dataList.filter(item => item.status === 'running')
-      runningList.sort((a, b) => b.vmem_size - a.vmem_size)
-      const vmem = runningList.length ? runningList[0].vmem_size : this.selectedItem.vmem_size
-      const mems = this.form.fi.cpuMem.mems_mb || []
-      if (this.isSomeRunning && mems.length > 0) {
-        return mems.filter((item) => { return item < vmem })
-      }
-      return []
     },
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG)
@@ -767,18 +727,6 @@ export default {
       }
       if (this.isOpenOrderSetWorkflow) return this.$t('compute.text_288')
       return this.$t('compute.text_907')
-    },
-    cpuExtra () {
-      if (this.runningArm) {
-        return this.$t('compute.text_1366')
-      }
-      return null
-    },
-    memExtra () {
-      if (this.runningArm) {
-        return this.$t('compute.text_1367')
-      }
-      return null
     },
     isPublic () {
       return this.dataList[0].cloud_env === SERVER_TYPE.public
@@ -891,6 +839,21 @@ export default {
     clearInterval(this.dataDiskInterval)
   },
   methods: {
+    // 是否支持开机直接调整（ARM 架构开机全平台不支持热调，需先关机）
+    canHotAdjust (item) {
+      if (this.isArmArch(item)) return false
+      if (HOTPLUG_RUNNING_ADJUST_HYPERVISORS.includes(item.hypervisor)) {
+        return item.metadata && item.metadata.hotplug_cpu_mem === 'enable'
+      }
+      return RUNNING_ADJUST_HYPERVISORS.includes(item.hypervisor)
+    },
+    isArmArch (item) {
+      const arch = (item.os_arch || '').toLowerCase()
+      return arch === HOST_CPU_ARCHS.arm.key || arch.includes('arm') || arch.includes('aarch64')
+    },
+    isDowngradeFor (item, vcpu, vmem) {
+      return vcpu < item.vcpu_count || vmem < item.vmem_size
+    },
     fetchModificationTypes () {
       if (this.disableSkuType) {
         Promise.all(this.dataList.map(item => this.serversManager.getSpecific({ id: item.id, spec: 'modification-types' }))).then((data) => {
@@ -1232,6 +1195,7 @@ export default {
           this.form.fc.setFieldsValue({ sku: null })
         }
         const values = await this.form.fc.validateFields()
+        const cartValues = this.needForceStopConfirm ? { ...values, force_stop: true } : values
         const shopCarts = this.$store.state.shopcart?.shopCarts || []
         const duplicates = this.dataList.filter(server => shopCarts.some(item => {
           return item.user_id === this.userInfo.id &&
@@ -1244,7 +1208,7 @@ export default {
           return
         }
         this.dataList.forEach(server => {
-          this.$store.commit('shopcart/ADD_SHOP_CART', this.buildShopCartParameter(values, server))
+          this.$store.commit('shopcart/ADD_SHOP_CART', this.buildShopCartParameter(cartValues, server))
         })
         this.$message.success(this.$t('common.success'))
       } catch (error) {
@@ -1345,8 +1309,10 @@ export default {
         if (R.is(Object, this.form.fi.cpuMem)) {
           const memOpts = _.get(this.form.fi, `cpuMem.cpu_mems_mb[${cpu}]`) || []
           this.form.fi.cpuMem.mems_mb = memOpts
+          const curVmem = this.form.fd.vmem
+          const vmem = memOpts.includes(curVmem) ? curVmem : memOpts[0]
           this.form.fc.setFieldsValue({
-            vmem: Math.max(this.selectedItem.vmem_size, memOpts[0]),
+            vmem,
             vcpu: cpu,
           })
         }
