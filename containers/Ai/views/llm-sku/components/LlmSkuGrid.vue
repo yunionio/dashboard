@@ -90,7 +90,7 @@
               {{ $t('aice.model') }}：{{ mountedModelText(item) }}
             </div>
             <div
-              v-if="!isApplyType && !isDesktopType && deviceText(item)"
+              v-if="!isApplyType && deviceText(item)"
               class="meta-row meta-ellipsis"
               :title="deviceText(item)">
               {{ $t('aice.device') }}：{{ deviceText(item) }}
