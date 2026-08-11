@@ -93,7 +93,7 @@
   "compute.text_91": "VM instance",
   "compute.text_92": "Baremetals",
   "compute.text_93": "@:dictionary.instancegroup",
-  "compute.text_94": "Templates",
+  "compute.text_94": "VM Templates",
   "compute.text_95": "Scaling Groups",
   "compute.text_96": "Images",
   "compute.text_97": "Images",
@@ -901,7 +901,7 @@
   "compute.text_870": "The port range is between 1～65535",
   "compute.text_871": "Weight:",
   "compute.text_872": "The weight range is between 1～256",
-  "compute.text_873": "Templates",
+  "compute.text_873": "VM Templates",
   "compute.text_874": "Number of current servers",
   "compute.text_875": "Expected number of servers",
   "compute.text_876": "Minimum number of servers",
@@ -2078,5 +2078,8 @@
   "compute.memory_size": "Memory Size",
   "compute.virtual_num": "Virtual Number",
   "compute.allocated_count": "Allocated Count",
-  "compute.memory_allocated": "Allocated Memory"
+  "compute.memory_allocated": "Allocated Memory",
+  "compute.group_and_template": "Templates",
+  "compute.servertemplate_container": "Container Host Templates",
+  "compute.servertemplate_baremetal": "Baremetal Templates"
 }
