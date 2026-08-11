@@ -157,17 +157,10 @@ export default {
           this.backupEnable = true
           const backupId = this.normalizeBackupId(draft.backup)
           if (backupId) this.setPendingBackup(backupId)
-          const values = { [this.decorator.backupEnable[0]]: true }
-          if (backupId) {
-            this.form.fc.getFieldDecorator(this.decorator.backup[0], {
-              ...(this.decorator.backup[1] || {}),
-              initialValue: backupId,
-            })
-            values[this.decorator.backup[0]] = backupId
-            if (this.form.fd) this.$set(this.form.fd, this.decorator.backup[0], backupId)
-          }
-          f.setFieldsValue(values)
+          // 开关可先写；具体宿主机等 hostList 校验后再写
+          f.setFieldsValue({ [this.decorator.backupEnable[0]]: true })
           this._backupDraftApplied = true
+          this.$nextTick(() => this.writePendingBackup())
         } else if (draft.backupEnable === false) {
           this.backupEnable = false
           this.setPendingBackup('')
@@ -210,6 +203,14 @@ export default {
     writePendingBackup () {
       if (!this.pendingBackup || !this.form?.fc || !this.backupEnable) return
       if (this._backupUserTouched && !this.backupDraftRestoring) return
+      const hostList = Array.isArray(this.hostList) ? this.hostList : []
+      // 空列表不回填；非空未命中则丢弃
+      if (!hostList.length) return
+      const hit = hostList.some(item => item.id === this.pendingBackup)
+      if (!hit) {
+        this.setPendingBackup('')
+        return
+      }
       const field = this.decorator.backup[0]
       this.form.fc.getFieldDecorator(field, {
         ...(this.decorator.backup[1] || {}),

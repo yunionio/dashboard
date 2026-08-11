@@ -123,6 +123,13 @@ export default {
       },
       immediate: true,
     },
+    'keyBaseSelectProps.options': {
+      handler () {
+        if (!this.pendingPairs.length || !this.keyBaseSelectProps?.options?.length) return
+        this.writePendingPairs()
+      },
+      deep: true,
+    },
   },
   created () {
     this._labelsDraftRestoring = false
@@ -154,9 +161,17 @@ export default {
         return { key, value }
       }).filter(Boolean)
     },
+    /** 有 keyBaseSelect 时：options 空不回填；非空只保留命中 key */
+    filterPairsByKeyOptions (pairs = []) {
+      if (!this.keyBaseSelectProps) return pairs
+      const options = this.keyBaseSelectProps.options
+      if (!Array.isArray(options) || !options.length) return []
+      const ids = new Set(options.map(o => o.id ?? o.key))
+      return pairs.filter(p => ids.has(p.key))
+    },
     /** pairs: [{ key, value }] 或 [{ port, host_port }] */
     initData (pairs = []) {
-      const normalized = this.normalizePairs(pairs)
+      const normalized = this.filterPairsByKeyOptions(this.normalizePairs(pairs))
       if (!normalized.length) return
       this._labelsDraftRestoring = true
       this.pendingPairs = normalized
@@ -174,8 +189,15 @@ export default {
     writePendingPairs () {
       const form = this.effectiveForm
       if (!form?.fc || !this.labelList.length || !this.pendingPairs.length) return
+      // options 晚于草稿就绪时再滤一次
+      const pairs = this.filterPairsByKeyOptions(this.pendingPairs)
+      if (pairs.length !== this.pendingPairs.length) {
+        this.pendingPairs = pairs
+        this.labelList = pairs.map(() => ({ key: uuid() }))
+        if (!pairs.length) return
+      }
       const values = {}
-      this.pendingPairs.forEach((pair, i) => {
+      pairs.forEach((pair, i) => {
         const rowKey = this.labelList[i]?.key
         if (!rowKey) return
         const keyField = this.decorators.key(rowKey)?.[0]
@@ -191,7 +213,7 @@ export default {
         const containerPorts = { ...(form.fd.containerPorts || {}) }
         const hostPorts = { ...(form.fd.hostPorts || {}) }
         this.labelList.forEach((row, i) => {
-          const pair = this.pendingPairs[i]
+          const pair = pairs[i]
           if (!pair || !row?.key) return
           containerPorts[row.key] = pair.key
           if (pair.value != null && pair.value !== '') {
