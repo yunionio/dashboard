@@ -163,11 +163,39 @@ export default {
       if (!draft?.bastionHostEnable) return
       if (typeof this.initData === 'function') this.initData(draft)
     },
+    /** 列表非空且命中才回填；空列表不写草稿 */
+    pickValidOptionId (options, id, idKey = 'key') {
+      if (id == null || id === '') return undefined
+      const list = Array.isArray(options) ? options : []
+      if (!list.length) return undefined
+      return list.some(o => (o[idKey] ?? o.id) === id) ? id : undefined
+    },
+    pickValidOptionIds (options, ids, idKey = 'key') {
+      if (!Array.isArray(ids)) return undefined
+      const list = Array.isArray(options) ? options : []
+      if (!list.length) return undefined
+      const set = new Set(list.map(o => o[idKey] ?? o.id))
+      return ids.filter(id => set.has(id))
+    },
 
-    initData (data) {
+    async initData (data) {
       this.bastionHostEnable = true
-      this.currentBastionHostId = data.bastion_host_id
-      this.fetchOrgs(data.bastion_host_id, data.bastion_org_id)
+      if (this.form?.fc) {
+        this.form.fc.setFieldsValue({ bastion_host_enable: true })
+      }
+      if (!this.bastionHosts.length) {
+        await this.fetchBastionHosts()
+      }
+      const hostId = this.pickValidOptionId(this.bastionHosts, data.bastion_host_id, 'id')
+      if (!hostId) {
+        this.currentBastionHostId = ''
+        return
+      }
+      this.currentBastionHostId = hostId
+      if (this.form?.fc) {
+        this.form.fc.setFieldsValue({ bastion_host_id: hostId })
+      }
+      this.fetchOrgs(hostId, data.bastion_org_id)
       this.fetchNodes(data.bastion_org_id, data.nodes)
       this.fetchAllAccounts(data.bastion_org_id, data.accounts)
       this.fetchDomains(data.bastion_org_id, data.bastion_domain_id)
@@ -204,7 +232,7 @@ export default {
           }
         })
         this.form.fc.setFieldsValue({
-          bastion_org_id: defaultOrgId,
+          bastion_org_id: this.pickValidOptionId(this.orgs, defaultOrgId),
         })
       } catch (error) {
         throw error
@@ -237,7 +265,7 @@ export default {
           }
         })
         this.form.fc.setFieldsValue({
-          nodes: defaultNodes,
+          nodes: this.pickValidOptionIds(this.nodes, defaultNodes),
         })
       } catch (error) {
         throw error
@@ -264,11 +292,11 @@ export default {
             label: o.name,
           }
         })
-        const privilegedAccounts = defaultAccounts.length ? defaultAccounts[0] : []
+        const privilegedAccounts = defaultAccounts.length ? defaultAccounts[0] : undefined
         const accounts = defaultAccounts.filter((_, index) => index !== 0)
         this.form.fc.setFieldsValue({
-          accounts,
-          privileged_accounts: privilegedAccounts,
+          accounts: this.pickValidOptionIds(this.accounts, accounts),
+          privileged_accounts: this.pickValidOptionId(this.privilegedAccounts, privilegedAccounts),
         })
       } catch (error) {
         throw error
@@ -289,7 +317,7 @@ export default {
           }
         })
         this.form.fc.setFieldsValue({
-          bastion_domain_id: defaultDomainId,
+          bastion_domain_id: this.pickValidOptionId(this.domains, defaultDomainId),
         })
       } catch (error) {
         throw error

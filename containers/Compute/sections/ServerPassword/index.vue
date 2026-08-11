@@ -13,12 +13,14 @@
         {{$t('compute.text_201')}}<help-link :href="href">{{$t('compute.text_202')}}</help-link>
       </template>
       <base-select
+        ref="keypairSelect"
         class="w-50"
         v-decorator="decorators.keypair"
         resource="keypairs"
         :isDefaultSelect="true"
         :showSync="true"
-        :select-props="{ allowClear: true, placeholder: $t('compute.text_203') }" />
+        :select-props="{ allowClear: true, placeholder: $t('compute.text_203') }"
+        @update:initLoaded="onKeypairInitLoaded" />
     </a-form-item>
     <a-form-item v-if="(loginTypeMap && loginTypeMap.password) && vmLoginType === loginTypeMap.password.key" class="mb-0">
       <a-input-password
@@ -81,6 +83,7 @@ export default {
     return {
       vmLoginType: 'random',
       disabled: false,
+      pendingKeypair: '',
     }
   },
   computed: {
@@ -126,6 +129,9 @@ export default {
       }
     },
   },
+  created () {
+    this._keypairListLoaded = false
+  },
   mounted () {
     this.setLoginType()
   },
@@ -146,9 +152,38 @@ export default {
         this.vmLoginType = draft.loginType
       }
       if (draft.loginType === 'keypair' && draft.keypair) {
-        values.keypair = draft.keypair
+        // 密钥等列表校验后再写，避免空列表时写入非法值
+        this.pendingKeypair = draft.keypair
+      } else {
+        this.pendingKeypair = ''
       }
       if (Object.keys(values).length) this.form.fc.setFieldsValue(values)
+      this.$nextTick(() => this.writePendingKeypair())
+    },
+    /** 仅 sourceList 非空且命中时回填密钥 */
+    writePendingKeypair () {
+      if (!this.pendingKeypair || !this.form?.fc) return
+      if (this.vmLoginType !== 'keypair' && this.vmLoginType !== this.loginTypeMap?.keypair?.key) return
+      const sourceList = this.$refs.keypairSelect?.sourceList || []
+      if (!sourceList.length) {
+        // 列表空：不写；已加载仍空则丢弃
+        if (this._keypairListLoaded) {
+          this.pendingKeypair = ''
+          this.form.fc.setFieldsValue({ keypair: undefined })
+        }
+        return
+      }
+      const hit = sourceList.some(item => item.id === this.pendingKeypair)
+      if (!hit) {
+        this.pendingKeypair = ''
+        this.form.fc.setFieldsValue({ keypair: undefined })
+        return
+      }
+      this.form.fc.setFieldsValue({ keypair: this.pendingKeypair })
+    },
+    onKeypairInitLoaded () {
+      this._keypairListLoaded = true
+      this.writePendingKeypair()
     },
 
     loginTypeChange (e) {

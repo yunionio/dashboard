@@ -6,6 +6,7 @@
           :wrapperCol="{ span: 24 }"
           class="mb-0 mr-1">
           <base-select
+            ref="vpcSelect"
             class="w-100"
             v-decorator="decorator.vpc"
             :resource="vpcResource"
@@ -16,7 +17,8 @@
             :params="vpcParmasConcat"
             :mapper="vpcResourceMapper"
             :item.sync="selectedVpc"
-            :select-props="{ allowClear: true, placeholder: $t('compute.text_194') }" />
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_194') }"
+            @update:initLoaded="onVpcInitLoaded" />
         </a-form-item>
       </a-col>
       <a-col :span="showIpConfig ? 8 : 12">
@@ -24,6 +26,7 @@
           :wrapperCol="{ span: 24 }"
           class="mb-0 mr-1">
           <base-select
+            ref="networkSelect"
             class="w-100"
             v-decorator="decorator.network"
             resource="networks"
@@ -32,7 +35,8 @@
             :isDefaultSelect="true"
             :params="networkParamsConcat"
             :mapper="networkResourceMapper"
-            :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" />
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }"
+            @update:initLoaded="onNetworkInitLoaded" />
             <div slot="extra" v-if="helplink">
               {{helplink.ipSubnetHelp}}<help-link :href="helplink.ipSubnetHref">{{$t('network.text_26')}}</help-link>
             </div>
@@ -257,28 +261,49 @@ export default {
         if (draft.ipShow) this.ipShow = true
 
         if (draft.vpc) {
+          const vpcList = this.$refs.vpcSelect?.sourceList || []
+          // 列表空：不写回；仍在重试窗口内则等待
+          if (!vpcList.length) {
+            this.scheduleIpSubnetDraftRetry()
+            return
+          }
+          if (!vpcList.some(item => item.id === draft.vpc)) {
+            this._pendingIpSubnetDraft = null
+            this._ipSubnetDraftRetryCount = 0
+            return
+          }
           this.form.fc.setFieldsValue({ [this.vpcField]: draft.vpc })
           if (!this.selectedVpc?.id || this.selectedVpc.id !== draft.vpc) {
-            // BaseSelect item.sync 可能尚未跟上，先写上 id 以便拉 network
             this.selectedVpc = { ...(this.selectedVpc || {}), id: draft.vpc }
           }
           await this.$nextTick()
         }
 
-        // network 依赖 vpc params 就绪；多等一拍让 BaseSelect 拉列表
         if (draft.network) {
           await this.$nextTick()
-          this.form.fc.setFieldsValue({ [this.networkField]: draft.network })
+          const networkList = this.$refs.networkSelect?.sourceList || []
+          if (!networkList.length) {
+            this.scheduleIpSubnetDraftRetry()
+            return
+          }
+          if (!networkList.some(item => item.id === draft.network)) {
+            draft.network = undefined
+            draft.ip_addr = undefined
+            this.form.fc.setFieldsValue({ [this.networkField]: undefined, [this.ipAddrField]: undefined })
+          } else {
+            this.form.fc.setFieldsValue({ [this.networkField]: draft.network })
+          }
         }
 
-        if (draft.ip_addr && this.ipShow) {
+        if (draft.ip_addr && this.ipShow && draft.network) {
           await this.$nextTick()
           this.form.fc.setFieldsValue({ [this.ipAddrField]: draft.ip_addr })
         }
 
         const vpcOk = !draft.vpc || this.form.fc.getFieldValue(this.vpcField) === draft.vpc
         const networkOk = !draft.network || this.form.fc.getFieldValue(this.networkField) === draft.network
-        const ipOk = !draft.ip_addr || !this.ipShow || this.form.fc.getFieldValue(this.ipAddrField) === draft.ip_addr
+        const ipOk = !draft.ip_addr || !this.ipShow || !draft.network ||
+          this.form.fc.getFieldValue(this.ipAddrField) === draft.ip_addr
         if (vpcOk && networkOk && ipOk) {
           this._pendingIpSubnetDraft = null
           this._ipSubnetDraftRetryCount = 0
@@ -291,6 +316,12 @@ export default {
           this.$nextTick(() => this.persistFormFieldDraftSnapshot())
         }
       }
+    },
+    onVpcInitLoaded () {
+      if (this._pendingIpSubnetDraft) this.$nextTick(() => this.tryApplyPendingIpSubnetDraft())
+    },
+    onNetworkInitLoaded () {
+      if (this._pendingIpSubnetDraft) this.$nextTick(() => this.tryApplyPendingIpSubnetDraft())
     },
     triggerShowIp () {
       this.ipShow = !this.ipShow

@@ -335,17 +335,24 @@ export default {
       const finish = () => {
         this.networkDraftRestoring = false
       }
-      if (draft.networkType) {
-        this.form.fc.setFieldsValue({ networkType: draft.networkType })
-        if (this.form.fd) this.form.fd.networkType = draft.networkType
+      // networkType 必须在当前可选 maps 中
+      let networkType = draft.networkType
+      if (networkType && !this.networkMaps?.[networkType] && !this.originNetworkMaps?.[networkType]) {
+        const keys = Object.keys(this.networkMaps || {})
+        networkType = keys[0]
+      }
+      if (networkType) {
+        this.form.fc.setFieldsValue({ networkType })
+        if (this.form.fd) this.form.fd.networkType = networkType
         this.syncNetworkComponentFromForm()
       }
+      const safeDraft = networkType ? { ...draft, networkType } : draft
       this.$nextTick(() => {
-        this.applyNetworkDraftNets(draft)
+        this.applyNetworkDraftNets(safeDraft)
         // NetworkConfig 异步挂载 / 子网列表未就绪时再补几次
-        setTimeout(() => this.applyNetworkDraftNets(draft), 800)
-        setTimeout(() => this.applyNetworkDraftNets(draft), 2000)
-        setTimeout(() => { this.applyNetworkDraftNets(draft); finish() }, 4000)
+        setTimeout(() => this.applyNetworkDraftNets(safeDraft), 800)
+        setTimeout(() => this.applyNetworkDraftNets(safeDraft), 2000)
+        setTimeout(() => { this.applyNetworkDraftNets(safeDraft); finish() }, 4000)
       })
     },
     applyNetworkDraftNets (draft) {

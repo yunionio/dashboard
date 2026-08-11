@@ -11,12 +11,14 @@
       </a-row>
       <a-row class="mt-4" v-if="isBind">
         <base-select
+          ref="eipSelect"
           remote
           v-decorator="decorators.eip"
           resource="eips"
           :params="params"
           :showSync="true"
-          :select-props="{ allowClear: true, placeholder: $t('compute.text_145') }" />
+          :select-props="{ allowClear: true, placeholder: $t('compute.text_145') }"
+          @update:initLoaded="onEipInitLoaded" />
       </a-row>
     </a-form-item>
     <a-form-item :label="$t('compute.text_1359')" v-if="isNew && showBgpTypes" v-bind="formItemLayout">
@@ -123,6 +125,7 @@ export default {
       type: this.decorators.type[1] && this.decorators.type[1].initialValue,
       chargeType: this.decorators.charge_type[1] && this.decorators.charge_type[1].initialValue,
       bgpTypeOptions: [],
+      pendingEip: '',
     }
   },
   computed: {
@@ -274,6 +277,7 @@ export default {
     },
   },
   created () {
+    this._eipListLoaded = false
     this.fetchBgpType()
   },
   methods: {
@@ -295,27 +299,78 @@ export default {
     applyCreateFormFieldDraft (draft) {
       if (!draft || !this.form?.fc) return
       if (draft.eip_type) {
+        // types 空或不含草稿类型 → 不回填
+        if (!this.types || !Object.keys(this.types).length || !this.types[draft.eip_type]) {
+          return
+        }
         this.type = draft.eip_type
         const values = { [this.decorators.type[0]]: draft.eip_type }
         if (draft.eip_type === 'bind' && draft.eip) {
-          values[this.decorators.eip[0]] = draft.eip
+          // 绑定 EIP 等列表校验后再写
+          this.pendingEip = draft.eip
+        } else {
+          this.pendingEip = ''
         }
         this.form.fc.setFieldsValue(values)
-        if (draft.eip_type === 'bind') return
+        if (draft.eip_type === 'bind') {
+          this.$nextTick(() => this.writePendingEip())
+          return
+        }
       }
       if (typeof this.initData !== 'function') return
-      // 复用 initData 形状：eip_charge_type / public_ip_charge_type
       const data = {}
+      let bgp = draft.bgp_type
+      // bgp options 空：不写 bgp；非空未命中则丢弃
+      if (bgp != null) {
+        if (!Array.isArray(this.bgpTypeOptions) || !this.bgpTypeOptions.length) {
+          bgp = undefined
+        } else if (!this.bgpTypeOptions.includes(bgp)) {
+          bgp = undefined
+        }
+      }
+      let bw = draft.bandwidth
+      if (bw != null && bw !== '') {
+        bw = Number(bw)
+        if (Number.isNaN(bw)) {
+          bw = undefined
+        } else {
+          const max = this.maxBindWidth
+          if (max != null && bw > max) bw = max
+          if (bw < 1) bw = 1
+        }
+      }
       if (draft.eip_type === 'new' || draft.charge_type) {
         data.eip_charge_type = draft.charge_type
-        data.eip_bw = draft.bandwidth
-        data.eip_bgp_type = draft.bgp_type
+        data.eip_bw = bw
+        data.eip_bgp_type = bgp
       } else if (draft.eip_type === 'public') {
         data.public_ip_charge_type = draft.charge_type
-        data.public_ip_bw = draft.bandwidth
-        data.public_ip_bgp_type = draft.bgp_type
+        data.public_ip_bw = bw
+        data.public_ip_bgp_type = bgp
       }
       if (Object.keys(data).length) this.initData(data)
+    },
+    /** 仅 EIP 列表非空且命中时回填绑定值 */
+    writePendingEip () {
+      if (!this.pendingEip || !this.form?.fc || !this.isBind) return
+      const sourceList = this.$refs.eipSelect?.sourceList || []
+      if (!sourceList.length) {
+        if (this._eipListLoaded) {
+          this.pendingEip = ''
+          this.form.fc.setFieldsValue({ [this.decorators.eip[0]]: undefined })
+        }
+        return
+      }
+      if (!sourceList.some(item => item.id === this.pendingEip)) {
+        this.pendingEip = ''
+        this.form.fc.setFieldsValue({ [this.decorators.eip[0]]: undefined })
+        return
+      }
+      this.form.fc.setFieldsValue({ [this.decorators.eip[0]]: this.pendingEip })
+    },
+    onEipInitLoaded () {
+      this._eipListLoaded = true
+      this.writePendingEip()
     },
 
     initData (data) {
@@ -332,17 +387,19 @@ export default {
           }
           setTimeout(() => {
             if (data.eip_charge_type) {
-              this.form.fc.setFieldsValue({
+              const payload = {
                 [this.decorators.charge_type[0]]: data.eip_charge_type,
-                [this.decorators.bandwidth[0]]: data.eip_bw,
-                [this.decorators.bgp_type[0]]: data.eip_bgp_type,
-              })
+              }
+              if (data.eip_bw != null) payload[this.decorators.bandwidth[0]] = data.eip_bw
+              if (data.eip_bgp_type != null) payload[this.decorators.bgp_type[0]] = data.eip_bgp_type
+              this.form.fc.setFieldsValue(payload)
             } else if (data.public_ip_charge_type) {
-              this.form.fc.setFieldsValue({
+              const payload = {
                 [this.decorators.charge_type[0]]: data.public_ip_charge_type,
-                [this.decorators.bandwidth[0]]: data.public_ip_bw,
-                [this.decorators.bgp_type[0]]: data.public_ip_bgp_type,
-              })
+              }
+              if (data.public_ip_bw != null) payload[this.decorators.bandwidth[0]] = data.public_ip_bw
+              if (data.public_ip_bgp_type != null) payload[this.decorators.bgp_type[0]] = data.public_ip_bgp_type
+              this.form.fc.setFieldsValue(payload)
             }
           }, 1000)
         }, 1000)
