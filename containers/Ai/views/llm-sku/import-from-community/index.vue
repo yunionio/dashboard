@@ -58,7 +58,9 @@
               :label-col="{ span: 6 }"
               :wrapper-col="{ span: 18 }">
               <a-form-model-item :label="$t('aice.devices')" prop="devices">
-                <llm-gpu-devices-editor v-model="importForm.devices" />
+                <llm-gpu-devices-editor
+                  v-model="importForm.devices"
+                  :require-hami-memory-mb="needsGpuSelection" />
               </a-form-model-item>
             </a-form-model>
           </template>
@@ -81,7 +83,7 @@
 
 <script>
 import marked from 'marked'
-import { createEmptyDeviceRow, deviceRowNeedsVendor, getPodPciModelTypes, isValidDeviceRows } from '@Ai/utils/deviceFormUtils'
+import { createEmptyDeviceRow, deviceRowNeedsVendor, getPodPciModelTypes, isValidDeviceRows, resolveSharingMode } from '@Ai/utils/deviceFormUtils'
 import CommunityImageGrid from '@Ai/sections/community-images/components/CommunityImageGrid.vue'
 import LlmGpuDevicesEditor from '@Ai/sections/LlmGpuDevicesEditor.vue'
 import { parseLlmRoute, getLlmSkuTypeFilter } from '@Ai/utils/llmRouteContext'
@@ -157,7 +159,12 @@ export default {
           type: 'array',
           validator: (rule, value, callback) => {
             const pciModelTypes = this.podPciModels
-            if (!isValidDeviceRows(value, { pciModelTypes })) {
+            const requireHamiMemoryMb = !!this.needsGpuSelection
+            if (!isValidDeviceRows(value, { requireHamiMemoryMb, pciModelTypes })) {
+              if (requireHamiMemoryMb && Array.isArray(value) && value.some(row => String(row?.model || '').trim() && resolveSharingMode(row.sharing_mode) === 'HAMI' && !(parseInt(row.memory_mb, 10) > 0))) {
+                callback(new Error(this.$t('aice.devices.memory_mb.required')))
+                return
+              }
               if (Array.isArray(value) && value.some(row => deviceRowNeedsVendor(row, pciModelTypes))) {
                 callback(new Error(this.$t('aice.devices.vendor.required')))
                 return
