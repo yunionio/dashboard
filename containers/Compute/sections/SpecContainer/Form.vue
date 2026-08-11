@@ -289,8 +289,16 @@ export default {
       if (argField) values[argField] = (item.args || []).filter(Boolean).join(' ')
       if (privilegedField) values[privilegedField] = !!item.privileged
       if (lxcfsField) values[lxcfsField] = item.enable_lxcfs !== false
-      if (capAddField) values[capAddField] = item.capabilities?.add || []
-      if (capDropField) values[capDropField] = item.capabilities?.drop || []
+      if (capAddField) {
+        const caps = item.capabilities?.add || []
+        const valid = caps.filter(c => this.capabilityOptions.some(o => o.value === c))
+        values[capAddField] = valid
+      }
+      if (capDropField) {
+        const caps = item.capabilities?.drop || []
+        const valid = caps.filter(c => this.capabilityOptions.some(o => o.value === c))
+        values[capDropField] = valid
+      }
       if (overlayField) values[overlayField] = !!item.rootfs
       if (rootfsPersistentField) values[rootfsPersistentField] = !!item.rootfs?.persistent
       // 延迟一拍，确保 v-decorator 已注册；再重试一次防止被 tabs 延迟渲染吞掉

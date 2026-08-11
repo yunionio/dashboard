@@ -9,6 +9,7 @@
     </a-form-item>
     <a-form-item v-if="showGroups">
       <base-select
+        ref="groupsSelect"
         v-decorator="groupsDec"
         :select-props="{ placeholder: $t('compute.text_148', [$t('dictionary.instancegroup')]), mode: 'multiple' }"
         resource="instancegroups"
@@ -61,12 +62,14 @@ export default {
   },
   computed: {
     groupsExtraOpts () {
+      // 仅作展示占位；列表就绪后会按 sourceList 求交丢掉无效 id
       return (this.pendingGroups || []).map(id => ({ id, name: id }))
     },
   },
   created () {
     this._groupsDraftApplying = false
     this._groupsUserTouched = false
+    this._groupsListLoaded = false
   },
   methods: {
     normalizeGroups (val) {
@@ -76,6 +79,18 @@ export default {
         if (typeof item === 'string' || typeof item === 'number') return String(item)
         return item.id || item.key || item.value || null
       }).filter(Boolean)
+    },
+    /**
+     * sourceList 非空才可回填；空列表不写非法 pending。
+     */
+    filterPendingGroupsByList () {
+      if (!this.pendingGroups.length) return false
+      const select = this.$refs.groupsSelect
+      const sourceList = select?.sourceList || []
+      if (!sourceList.length) return false
+      const idSet = new Set(sourceList.map(item => item.id))
+      this.pendingGroups = this.pendingGroups.filter(id => idSet.has(id))
+      return true
     },
     getCreateFormFieldDraftSnapshot () {
       const f = this.form?.fc
@@ -168,8 +183,24 @@ export default {
       })
     },
     writePendingGroups () {
-      if (!this.pendingGroups.length || !this.form?.fc || !this.showGroups) return
+      if (!this.form?.fc || !this.showGroups) return
       if (this._groupsUserTouched && !this._groupsDraftApplying) return
+      // 列表空：不回填 pending（等 initLoaded）；已加载仍空则清空
+      if (!this.filterPendingGroupsByList()) {
+        if (this._groupsListLoaded) {
+          this.pendingGroups = []
+          const groupsField = this.groupsDec[0]
+          this.form.fc.setFieldsValue({ [groupsField]: [] })
+          if (this.form.fd) this.$set(this.form.fd, groupsField, [])
+        }
+        return
+      }
+      if (!this.pendingGroups.length) {
+        const groupsField = this.groupsDec[0]
+        this.form.fc.setFieldsValue({ [groupsField]: [] })
+        if (this.form.fd) this.$set(this.form.fd, groupsField, [])
+        return
+      }
       const groupsField = this.groupsDec[0]
       this.form.fc.getFieldDecorator(groupsField, {
         ...(this.groupsDec[1] || {}),
@@ -179,6 +210,7 @@ export default {
       if (this.form.fd) this.$set(this.form.fd, groupsField, this.pendingGroups.slice())
     },
     onGroupsInitLoaded () {
+      this._groupsListLoaded = true
       this.writePendingGroups()
       if (!this._groupsUserTouched) {
         setTimeout(() => this.writePendingGroups(), 300)

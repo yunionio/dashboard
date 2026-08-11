@@ -1042,23 +1042,50 @@ export default {
     },
     // 多选专用：外部（如 RegionMap）批量设置选中并触发级联
     async applySingleSelection (draft = {}) {
-      if (draft.provider !== undefined && !this.isEmptyFieldValue('provider', draft.provider)) {
-        this.FC.setFieldsValue({ provider: this.normalizeFieldValue('provider', draft.provider) })
+      const pickValid = (name, raw) => {
+        if (raw === undefined || this.isEmptyFieldValue(name, raw)) return undefined
+        const normalized = this.normalizeFieldValue(name, raw)
+        // 单选：必须在当前列表中
+        if (!this.isMultiple(name)) {
+          const id = Array.isArray(normalized) ? normalized[0] : normalized
+          if (!id) return undefined
+          // 列表尚未就绪时先写入，等 fetch 后再由 prune/重放校正；已有列表则必须命中
+          const list = this[`${name}List`] || []
+          if (list.length && !this.findListItem(name, id)) return undefined
+          return normalized
+        }
+        // 多选：过滤到列表中存在的项
+        const ids = this.toArray(normalized).filter(Boolean)
+        if (!ids.length) return undefined
+        const list = this[`${name}List`] || []
+        if (!list.length) return normalized
+        const valid = ids.filter(id => !!this.findListItem(name, id))
+        return valid.length ? this.normalizeFieldValue(name, valid) : undefined
+      }
+      const provider = pickValid('provider', draft.provider)
+      if (provider !== undefined) {
+        this.FC.setFieldsValue({ provider })
         await this.fetchListsOnly(['cloudregion'], { skipDefaultSelect: true })
       }
-      if (draft.cloudregion !== undefined && !this.isEmptyFieldValue('cloudregion', draft.cloudregion)) {
-        this.FC.setFieldsValue({ cloudregion: this.normalizeFieldValue('cloudregion', draft.cloudregion) })
+      const cloudregion = pickValid('cloudregion', draft.cloudregion)
+      if (cloudregion !== undefined) {
+        this.FC.setFieldsValue({ cloudregion })
         await this.fetchListsOnly(['zone'], { skipDefaultSelect: true })
       }
-      if (draft.zone !== undefined && !this.isEmptyFieldValue('zone', draft.zone)) {
-        this.FC.setFieldsValue({ zone: this.normalizeFieldValue('zone', draft.zone) })
+      const zone = pickValid('zone', draft.zone)
+      if (zone !== undefined) {
+        this.FC.setFieldsValue({ zone })
       }
       ;['provider', 'cloudregion', 'zone'].forEach(name => {
         if (draft[name] !== undefined && this.names.includes(name)) {
           this.emitFieldChange(name, this.FC.getFieldValue(name))
         }
       })
-      this.syncAreaDraftToFormFd(draft)
+      this.syncAreaDraftToFormFd({
+        provider: this.FC.getFieldValue('provider'),
+        cloudregion: this.FC.getFieldValue('cloudregion'),
+        zone: this.FC.getFieldValue('zone'),
+      })
     },
     async applyMultipleSelection (fields = {}) {
       if (!this.providerMultiple && !this.cloudregionMultiple && !this.zoneMultiple) return

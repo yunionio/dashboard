@@ -172,9 +172,18 @@ export default {
           this.vpcList = data.data || []
         }
         if (this.defaultActiveFirstOption) {
-          this.FC.setFieldsValue({
-            vpc: !R.isEmpty(this.vpcList) ? this.vpcList[0].id : undefined,
-          }, this.fetchNetwork)
+          const prefer = this.FC.getFieldValue('vpc')
+          const hit = prefer && this.vpcList.some(item => item.id === prefer)
+          // 列表空：不写；有 prefer 但不在列表 → 回退首项（不保留非法值）
+          let next
+          if (R.isEmpty(this.vpcList)) {
+            next = undefined
+          } else if (hit) {
+            next = prefer
+          } else {
+            next = this.vpcList[0].id
+          }
+          this.FC.setFieldsValue({ vpc: next }, this.fetchNetwork)
         }
       } catch (err) {
         throw err
@@ -247,9 +256,17 @@ export default {
           this.networkList = (data.data || [])
         }
         if (this.defaultActiveFirstOption) {
-          this.FC.setFieldsValue({
-            network: !R.isEmpty(this.networkList) ? this.networkList[0].id : undefined,
-          })
+          const prefer = this.FC.getFieldValue('network')
+          const hit = prefer && this.networkList.some(item => item.id === prefer)
+          let next
+          if (R.isEmpty(this.networkList)) {
+            next = undefined
+          } else if (hit) {
+            next = prefer
+          } else {
+            next = this.networkList[0].id
+          }
+          this.FC.setFieldsValue({ network: next })
         }
       } catch (err) {
         this.networkList = []
