@@ -3010,7 +3010,7 @@
     "scheduledtask": "定时任务",
     "scalingpolicy": "弹性伸缩",
     "serverrecovery": "主机",
-    "servertemplate": "主机模板",
+    "servertemplate": "虚拟机模板",
     "service": "服务",
     "servicetree": "服务树",
     "sku": "套餐",
