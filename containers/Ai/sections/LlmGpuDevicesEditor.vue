@@ -1,7 +1,7 @@
 <!--
   GPU 型号 + 共享模式 + 数量编辑，用于推理/桌面模板创建/编辑。
   HAMI 时可选手动显存（memory_mb）；留空则建 Pod 时回退模型估算 claim。
-  local_path 场景下可通过 requireHamiMemoryMb 强制必填。
+  local_path / ComfyUI 等无法估算模型显存的场景可通过 requireHamiMemoryMb 强制必填。
   allowEmpty 为 true 时（如桌面模板）默认不展示空行，仅通过「添加 GPU」再填。
 -->
 <template>
@@ -311,22 +311,12 @@ export default {
       const mode = this.coerceSharingMode(sharingMode)
       const rows = this.innerRows.map((row, i) => {
         if (i !== index) return { ...row }
-        const next = { ...row, sharing_mode: mode }
+        const next = { ...row, sharing_mode: mode, model: undefined }
         delete next.memory_mb
-        const model = String(next.model || '').trim()
-        const scopedVendors = listVendorsForSharingMode(this.podPciModels, mode, {
-          model: model || undefined,
-        })
-        const currentVendor = String(next.vendor || '').trim()
-        if (currentVendor && !scopedVendors.includes(currentVendor)) {
-          delete next.vendor
-        }
-        if (!next.vendor && scopedVendors.length === 1) {
+        delete next.vendor
+        const scopedVendors = listVendorsForSharingMode(this.podPciModels, mode)
+        if (scopedVendors.length === 1) {
           next.vendor = scopedVendors[0]
-        }
-        const options = this.modelOptionsForRow(next)
-        if (next.model && !options.some(opt => opt.key === this.modelSelectValue(next))) {
-          next.model = undefined
         }
         return next
       })
