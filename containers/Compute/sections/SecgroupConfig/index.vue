@@ -302,18 +302,23 @@ export default {
       const typeField = this.decorators.type[0]
       const secgroupField = this.decorators.secgroup[0]
       const networkTagField = this.decorators.network_tags?.[0]
-      if (draft.secgroup_type) {
-        this.isBind = draft.secgroup_type === SECGROUP_OPTIONS_MAP.bind.key
-        this.isNetworkTag = draft.secgroup_type === SECGROUP_OPTIONS_MAP.networkTag.key
-        this.form.fc.setFieldsValue({ [typeField]: draft.secgroup_type })
+      let secgroupType = draft.secgroup_type
+      // 类型必须在当前可选 types 中
+      if (secgroupType && this.types && !this.types[secgroupType]) {
+        secgroupType = null
+      }
+      if (secgroupType) {
+        this.isBind = secgroupType === SECGROUP_OPTIONS_MAP.bind.key
+        this.isNetworkTag = secgroupType === SECGROUP_OPTIONS_MAP.networkTag.key
+        this.form.fc.setFieldsValue({ [typeField]: secgroupType })
       }
       const tagVal = draft.network_tags != null ? draft.network_tags : draft.network_tag
-      if (networkTagField && tagVal != null) {
+      if (networkTagField && tagVal != null && (secgroupType === SECGROUP_OPTIONS_MAP.networkTag.key || this.isNetworkTag)) {
         this.$nextTick(() => {
           this.form.fc.setFieldsValue({ [networkTagField]: tagVal })
         })
       }
-      if (draft.secgroup) {
+      if (draft.secgroup && (secgroupType === SECGROUP_OPTIONS_MAP.bind.key || !secgroupType)) {
         const ids = this.normalizeSecgroupIds(Array.isArray(draft.secgroup) ? draft.secgroup : [draft.secgroup])
         if (ids.length) {
           this.setPendingInitSecgroups(ids)
@@ -386,20 +391,24 @@ export default {
         const { data: { data = [] } } = await new this.$Manager('secgroups', 'v2').list({ params })
         if (this._secgroupNameFetchToken !== reqToken) return
         const next = { ...this.pendingSecgroupNameMap }
+        const foundIds = new Set()
         data.forEach((item) => {
-          if (item?.id) next[item.id] = item.name || item.id
-        })
-        missing.forEach((id) => {
-          if (!next[id]) next[id] = id
+          if (item?.id) {
+            next[item.id] = item.name || item.id
+            foundIds.add(item.id)
+          }
         })
         this.pendingSecgroupNameMap = next
+        // 接口未返回的 id 视为当前不可用，从 pending 中剔除
+        if (missing.some(id => !foundIds.has(id))) {
+          this.pendingInitSecgroups = this.pendingInitSecgroups.filter((id) => {
+            if (!missing.includes(id)) return true
+            return foundIds.has(id)
+          })
+          if (this.isBind) this.writePendingSecgroups()
+        }
       } catch (e) {
-        if (this._secgroupNameFetchToken !== reqToken) return
-        const next = { ...this.pendingSecgroupNameMap }
-        missing.forEach((id) => {
-          if (!next[id]) next[id] = id
-        })
-        this.pendingSecgroupNameMap = next
+        // 拉取失败时保留 pending，避免网络抖动误清空（含过期请求）
       }
     },
     /**

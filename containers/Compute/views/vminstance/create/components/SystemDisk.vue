@@ -388,10 +388,19 @@ export default {
   },
   watch: {
     imageMinDisk (val) {
+      if (!val || !this.form?.fc) return
+      const sizeKey = this.decorator.size[0]
+      const cur = this.form.fc.getFieldValue(sizeKey)
+      // VMware：系统盘需等于镜像最小盘
       if (this.isVMware) {
-        this.form.fc.setFieldsValue({
-          [this.decorator.size[0]]: val,
-        })
+        this.form.fc.setFieldsValue({ [sizeKey]: val })
+        if (this.form.fd) this.$set(this.form.fd, sizeKey, val)
+        return
+      }
+      // 其它平台：当前值小于镜像最小盘时抬到合法下限（草稿回填过小等）
+      if (cur == null || cur === '' || Number(cur) < val) {
+        this.form.fc.setFieldsValue({ [sizeKey]: val })
+        if (this.form.fd) this.$set(this.form.fd, sizeKey, val)
       }
     },
   },
@@ -425,25 +434,40 @@ export default {
       })
       return Object.keys(pick).length ? pick : undefined
     },
+    /** 草稿磁盘类型对照当前 typesMap，不可用则回退首项 */
+    resolveSysDiskTypeFromDraft (typeVal) {
+      if (!typeVal?.key) return typeVal
+      if (!this.typesMap || R.isEmpty(this.typesMap)) return typeVal
+      if (this.typesMap[typeVal.key]) {
+        return { key: typeVal.key, label: this.typesMap[typeVal.key].label || typeVal.label }
+      }
+      const backend = String(typeVal.key).split('/')[0]
+      const matched = Object.keys(this.typesMap).find(k => k === backend || k.startsWith(`${backend}/`))
+      if (matched) {
+        return { key: matched, label: this.typesMap[matched].label }
+      }
+      const firstKey = Object.keys(this.typesMap)[0]
+      return firstKey ? { key: firstKey, label: this.typesMap[firstKey].label } : typeVal
+    },
+    /** 草稿大小夹到 [镜像min / sysMin, sysMax]，保证合法 */
+    clampSysDiskDraftSize (sizeVal, typeKey) {
+      if (sizeVal == null || sizeVal === '') return sizeVal
+      let size = Number(sizeVal)
+      if (Number.isNaN(size)) return sizeVal
+      const diskMsg = (typeKey && this.typesMap?.[typeKey]) || {}
+      const min = Math.max(this.imageMinDisk || 0, diskMsg.sysMin || this.min || 0, 0)
+      const max = diskMsg.sysMax || this.max || Infinity
+      if (size < min) size = min
+      if (Number.isFinite(max) && size > max) size = max
+      return size
+    },
     applyCreateFormFieldDraft (draft) {
       if (!draft || !this.form?.fc) return
       this.sysDiskDraftRestoring = true
       if (this.form.fi) this.$set(this.form.fi, 'diskDraftRestoring', true)
       const apply = () => {
         if (!this.form?.fc || !draft) return
-        const typeKey = this.decorator.type[0]
-        const sizeKey = this.decorator.size[0]
-        const typeVal = draft[typeKey] || draft.systemDiskType
-        const sizeVal = draft[sizeKey] != null ? draft[sizeKey] : draft.systemDiskSize
-        const values = { ...draft }
-        if (typeVal) values[typeKey] = typeVal
-        if (sizeVal != null) values[sizeKey] = sizeVal
-        this.form.fc.setFieldsValue(values)
-        // setDefaultType 读 form.fd，需双写
-        if (this.form.fd) {
-          if (typeVal) this.$set(this.form.fd, typeKey, typeVal)
-          if (sizeVal != null) this.$set(this.form.fd, sizeKey, sizeVal)
-        }
+        this.applySysDiskDraftToForm(draft)
         const disk = this.$refs.disk
         if (!disk) return
         const hasAdv = !!(
@@ -477,7 +501,7 @@ export default {
     },
 
     setDefaultType () {
-      // 控件草稿回填窗口：勿用默认第一项盖草稿
+      // 控件草稿回填窗口：勿用默认第一项盖草稿（但仍按当前约束夹取）
       if (this.sysDiskDraftRestoring) {
         const draft = this.readFormFieldDraft()
         if (draft) this.applySysDiskDraftToForm(draft)
@@ -531,13 +555,9 @@ export default {
         const initSize = this.defaultSize && this.defaultSize > this.imageMinDisk ? this.defaultSize : this.imageMinDisk
 
         let newDiskSize = initSize || +diskMsg.sysMin
-        // 已有回填大小则优先保留（勿被镜像 min_disk 盖成 30G）
+        // 已有回填大小：尽量保留，但必须落在当前合法区间（含镜像 min_disk）
         if (systemDiskSize != null && sizeKey === 'systemDiskSize') {
-          const min = diskMsg.sysMin || 0
-          const max = diskMsg.sysMax || Infinity
-          if (systemDiskSize >= min && systemDiskSize <= max) {
-            newDiskSize = systemDiskSize
-          }
+          newDiskSize = this.clampSysDiskDraftSize(systemDiskSize, firstKey)
         }
         this.form.fc.setFieldsValue({
           [sizeKey]: newDiskSize,
@@ -552,23 +572,13 @@ export default {
       if (!draft || !this.form?.fc) return
       const typeKey = this.decorator.type[0]
       const sizeKey = this.decorator.size[0]
-      const typeVal = draft[typeKey] || draft.systemDiskType
-      const sizeVal = draft[sizeKey] != null ? draft[sizeKey] : draft.systemDiskSize
+      let typeVal = draft[typeKey] || draft.systemDiskType
+      let sizeVal = draft[sizeKey] != null ? draft[sizeKey] : draft.systemDiskSize
+      typeVal = this.resolveSysDiskTypeFromDraft(typeVal)
+      sizeVal = this.clampSysDiskDraftSize(sizeVal, typeVal?.key)
       const values = { ...draft }
       if (typeVal) values[typeKey] = typeVal
       if (sizeVal != null) values[sizeKey] = sizeVal
-      // typesMap 就绪后校正 key
-      if (typeVal?.key && this.typesMap && !R.isEmpty(this.typesMap)) {
-        if (!this.typesMap[typeVal.key]) {
-          const backend = String(typeVal.key).split('/')[0]
-          const matched = Object.keys(this.typesMap).find(k => k === backend || k.startsWith(`${backend}/`))
-          if (matched) {
-            values[typeKey] = { key: matched, label: this.typesMap[matched].label }
-          }
-        } else {
-          values[typeKey] = { key: typeVal.key, label: this.typesMap[typeVal.key].label || typeVal.label }
-        }
-      }
       this.form.fc.setFieldsValue(values)
       if (this.form.fd) {
         if (values[typeKey]) this.$set(this.form.fd, typeKey, values[typeKey])

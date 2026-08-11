@@ -38,6 +38,7 @@ export const RDS_CREATE_FORM_DRAFT_FC_BINDINGS = [
   { key: RDS_CREATE_FORM_DRAFT_FIELD.VMEM_SIZE_MB, formField: 'vmem_size_mb', restore: false },
   { key: RDS_CREATE_FORM_DRAFT_FIELD.ZONES, formField: 'zones', restore: false },
   { key: RDS_CREATE_FORM_DRAFT_FIELD.SKU, formField: 'sku', restore: false },
+  // 容量由 DiskInput 在 SKU 约束就绪后夹取（仍落盘）
   { key: RDS_CREATE_FORM_DRAFT_FIELD.DISK_SIZE, formField: 'disk_size_gb' },
 ]
 
