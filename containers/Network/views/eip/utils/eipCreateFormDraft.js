@@ -22,9 +22,10 @@ export const EIP_CREATE_FORM_DRAFT_FIELD = {
  */
 export const EIP_CREATE_FORM_DRAFT_FC_BINDINGS = [
   { key: EIP_CREATE_FORM_DRAFT_FIELD.ENABLE_WORLD_MAP, formField: 'enableWorldMap', types: ['public'] },
-  { key: EIP_CREATE_FORM_DRAFT_FIELD.BGP_TYPE, formField: 'bgp_type' },
+  // bgp / bandwidth 在 options / maxBandwidth 就绪后由页面夹取回填
+  { key: EIP_CREATE_FORM_DRAFT_FIELD.BGP_TYPE, formField: 'bgp_type', restore: false },
   { key: EIP_CREATE_FORM_DRAFT_FIELD.CHARGE_TYPE, formField: 'charge_type' },
-  { key: EIP_CREATE_FORM_DRAFT_FIELD.BANDWIDTH, formField: 'bandwidth' },
+  { key: EIP_CREATE_FORM_DRAFT_FIELD.BANDWIDTH, formField: 'bandwidth', restore: false },
   { key: EIP_CREATE_FORM_DRAFT_FIELD.CLOUDPROVIDER, formField: 'manager' },
 ]
 
