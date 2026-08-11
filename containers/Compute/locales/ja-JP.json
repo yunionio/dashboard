@@ -93,7 +93,7 @@
   "compute.text_91": "仮想マシン",
   "compute.text_92": "ベアメタル",
   "compute.text_93": "@:dictionary.instancegroup",
-  "compute.text_94": "テンプレート",
+  "compute.text_94": "仮想マシンテンプレート",
   "compute.text_95": "自動スケーリンググループ",
   "compute.text_96": "鏡像",
   "compute.text_97": "システムイメージ",
@@ -901,7 +901,7 @@
   "compute.text_870": "ポート範囲は 1 ~ 65535 の間です",
   "compute.text_871": "重量：",
   "compute.text_872": "重量範囲は 1 ~ 256 です",
-  "compute.text_873": "テンプレート",
+  "compute.text_873": "仮想マシンテンプレート",
   "compute.text_874": "現在のインスタンス数",
   "compute.text_875": "インスタンスの数を期待する",
   "compute.text_876": "インスタンスの最小数",
@@ -2080,5 +2080,8 @@
   "compute.memory_size": "メモリサイズ",
   "compute.virtual_num": "仮想数量",
   "compute.allocated_count": "割当数量",
-  "compute.memory_allocated": "割当メモリ"
+  "compute.memory_allocated": "割当メモリ",
+  "compute.group_and_template": "テンプレート",
+  "compute.servertemplate_container": "コンテナホストテンプレート",
+  "compute.servertemplate_baremetal": "ベアメタルテンプレート"
 }
