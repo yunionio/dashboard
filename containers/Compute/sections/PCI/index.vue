@@ -232,6 +232,8 @@ export default {
         } finally {
           this.$nextTick(() => {
             this.pciDraftRestoring = false
+            // 对照当前可选设备/型号，非法值回退
+            this.$nextTick(() => this.changeSelectedValue())
           })
         }
       })

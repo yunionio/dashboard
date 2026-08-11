@@ -564,10 +564,19 @@ export default {
     },
     /**
      * 写入指定宿主机。pendingPreferHost 本身即回填意图；用户改过后不再强写
+     * 宿主机列表已就绪时，不在列表中的草稿宿主机丢弃
      */
     writePendingPreferHost () {
       if (!this.pendingPreferHost || !this.form?.fc) return
       if (this._schedPolicyUserTouched && !this._schedPolicyDraftApplying && !this.preserveInitPreferHost) return
+      const hostList = Array.isArray(this.hostData) ? this.hostData : []
+      // 空列表不回填；非空未命中则丢弃
+      if (!hostList.length) return
+      const hit = hostList.some(h => (h.id || h.key) === this.pendingPreferHost)
+      if (!hit) {
+        this.setPendingPreferHost('')
+        return
+      }
       if (this.schedPolicyComponent !== 'host') {
         this.setSchedPolicyComponent('host')
       }

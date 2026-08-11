@@ -403,26 +403,37 @@ export default {
         // 工单/控件草稿回填期间：typesMap 就绪后校正已占位的磁盘类型，禁止清空数据盘
         if (this.isInitForm || this.diskDraftRestoring) {
           if (v && !R.isEmpty(v) && this.dataDisks && this.dataDisks.length) {
-            this.dataDisks.forEach((disk) => {
+            this.dataDisks.forEach((disk, index) => {
               const curKey = disk.diskType && disk.diskType.key
-              if (!curKey) return
-              let typeObj = v[curKey]
-              if (!typeObj) {
+              let typeObj = curKey ? v[curKey] : null
+              if (curKey && !typeObj) {
                 const backend = String(curKey).split('/')[0]
                 const matched = Object.keys(v).find(k => k === backend || k.startsWith(`${backend}/`))
                 if (matched) typeObj = v[matched]
               }
-              if (!typeObj) return
+              // 类型当前不可用：回退首个可用类型，避免留下无效草稿类型
+              if (!typeObj) {
+                const firstKey = Object.keys(v)[0]
+                if (!firstKey) return
+                typeObj = v[firstKey]
+              }
               disk.diskType = {
                 key: typeObj.key,
                 label: typeObj.label,
-                index: disk.diskType.index,
+                index: disk.diskType?.index ?? index,
               }
-              this.form.fc.setFieldsValue({
+              const sizeKey = this._fp('Sizes', disk.key)
+              const curSize = this.form.fc.getFieldValue(sizeKey)
+              const min = this.min(index)
+              const max = this.max(index)
+              const nextSize = this.clampDataDiskDraftSize(curSize, min, max)
+              const patch = {
                 [this._fp('Types', disk.key)]: disk.diskType,
-              })
+              }
+              if (nextSize != null) patch[sizeKey] = nextSize
+              this.form.fc.setFieldsValue(patch)
             })
-            // typesMap 就绪后再写一遍草稿字段（盖住异步默认值）
+            // typesMap 就绪后再写一遍草稿字段（盖住异步默认值），并做合法夹取
             if (this.diskDraftRestoring) {
               const draft = this.readFormFieldDraft()
               if (draft) this.$nextTick(() => this.applyDataDiskDraftFields(draft))
@@ -515,9 +526,10 @@ export default {
       const uniqKeys = [...new Set(keys)].filter(Boolean)
       if (uniqKeys.length) {
         this.dataDisks = uniqKeys.map((key, idx) => {
-          const typeVal = rest[this._fp('Types', key)] ||
+          let typeVal = rest[this._fp('Types', key)] ||
             rest.dataDiskTypes?.[key] ||
             { key: '', label: '', index: idx }
+          typeVal = this.resolveDataDiskTypeFromDraft(typeVal, idx)
           return {
             key,
             diskType: typeVal,
@@ -527,6 +539,33 @@ export default {
         })
       }
       this.$nextTick(() => this.applyDataDiskDraftFields(draft))
+    },
+    resolveDataDiskTypeFromDraft (typeVal, index = 0) {
+      const cur = typeVal && typeof typeVal === 'object' ? { ...typeVal, index: typeVal.index ?? index } : { key: '', label: '', index }
+      if (!this.typesMap || R.isEmpty(this.typesMap)) return cur
+      if (cur.key && this.typesMap[cur.key]) {
+        return { key: cur.key, label: this.typesMap[cur.key].label || cur.label, index: cur.index }
+      }
+      if (cur.key) {
+        const backend = String(cur.key).split('/')[0]
+        const matched = Object.keys(this.typesMap).find(k => k === backend || k.startsWith(`${backend}/`))
+        if (matched) {
+          return { key: matched, label: this.typesMap[matched].label, index: cur.index }
+        }
+      }
+      const firstKey = Object.keys(this.typesMap)[0]
+      if (!firstKey) return cur
+      return { key: firstKey, label: this.typesMap[firstKey].label, index: cur.index }
+    },
+    clampDataDiskDraftSize (sizeVal, min, max) {
+      if (sizeVal == null || sizeVal === '') return sizeVal
+      let size = Number(sizeVal)
+      if (Number.isNaN(size)) return sizeVal
+      const lo = min || DISK_MIN_SIZE
+      const hi = max || Infinity
+      if (size < lo) size = lo
+      if (Number.isFinite(hi) && size > hi) size = hi
+      return size
     },
     applyDataDiskDraftFields (draft) {
       if (!draft || !this.form?.fc) return
@@ -553,6 +592,20 @@ export default {
       delete flat.dataDiskMountPaths
       delete flat.dataDiskAutoReset
       delete flat.dataDiskPreallocation
+      // 对照当前 typesMap / min-max，保证回填合法
+      ;(this.dataDisks || []).forEach((disk, index) => {
+        const typeField = this._fp('Types', disk.key)
+        const sizeField = this._fp('Sizes', disk.key)
+        const resolvedType = this.resolveDataDiskTypeFromDraft(
+          flat[typeField] || disk.diskType,
+          index,
+        )
+        disk.diskType = resolvedType
+        flat[typeField] = resolvedType
+        const rawSize = flat[sizeField] != null ? flat[sizeField] : this.form.fc.getFieldValue(sizeField)
+        const nextSize = this.clampDataDiskDraftSize(rawSize, this.min(index), this.max(index))
+        if (nextSize != null) flat[sizeField] = nextSize
+      })
       if (Object.keys(flat).length) this.form.fc.setFieldsValue(flat)
       this.$nextTick(() => {
         const refs = this.$refs.disks

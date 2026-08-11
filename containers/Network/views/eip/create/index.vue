@@ -545,6 +545,7 @@ export default {
       this.charge_type = newValue === 'onpremise' ? 'bandwidth' : 'traffic'
       this.$nextTick(() => {
         this.form.fc.getFieldDecorator('charge_type', { initialValue: newValue === 'onpremise' ? 'bandwidth' : 'traffic' })
+        this.restoreEipBandwidthAndBgpDraft()
       })
       this.bandwidth = newValue === 'private' && !this.isHCSO && !this.isHCS ? 0 : 30
     },
@@ -553,10 +554,17 @@ export default {
         this.bgpTypeOptions = BGP_TYPES.map(item => item.value)
         this.$nextTick(() => {
           this.form.fc.setFieldsValue({ bgp_type: 'BGP' })
+          this.restoreEipBandwidthAndBgpDraft()
         })
       } else {
         this.fetchBgpType()
       }
+    },
+    maxBandwidth () {
+      this.clampEipBandwidthToMax()
+    },
+    bgpTypeOptions () {
+      this.clampEipBgpTypeToOptions()
     },
   },
   provide () {
@@ -594,6 +602,9 @@ export default {
     })
     this.bindEipCreateFormFcDrafts()
   },
+  mounted () {
+    this.$nextTick(() => this.restoreEipBandwidthAndBgpDraft())
+  },
   methods: {
     bindEipCreateFormFcDrafts () {
       this._eipCreateFormFcDraftMap = Object.create(null)
@@ -602,8 +613,57 @@ export default {
         if (!item?.key || !item.formField) return
         if (item.types && !item.types.includes(type)) return
         this._eipCreateFormFcDraftMap[item.formField] = item.key
-        this.bindFormFcFieldDraft(item.key, { formField: item.formField })
+        this.bindFormFcFieldDraft(item.key, {
+          formField: item.formField,
+          restore: item.restore !== false,
+        })
       })
+    },
+    /** 草稿带宽夹到 [1, maxBandwidth]；bgp 对照 options */
+    restoreEipBandwidthAndBgpDraft () {
+      if (!this.canUseCreateFormDraft || !this.form?.fc) return
+      if (this.createFormDraftUserInteracted) return
+      const bwDraft = this.readCreateFormFieldDraft(EIP_CREATE_FORM_DRAFT_FIELD.BANDWIDTH)
+      if (bwDraft != null && bwDraft !== '') {
+        let size = Number(bwDraft)
+        if (!Number.isNaN(size)) {
+          const max = this.maxBandwidth || Infinity
+          const min = this.cloudEnv === 'private' && !this.isHCSO && !this.isHCS ? 0 : 1
+          if (size > max) size = max
+          if (size < min) size = min
+          this.form.fc.setFieldsValue({ bandwidth: size })
+          this.bandwidth = size
+        }
+      }
+      const bgpDraft = this.readCreateFormFieldDraft(EIP_CREATE_FORM_DRAFT_FIELD.BGP_TYPE)
+      if (bgpDraft != null && Array.isArray(this.bgpTypeOptions) && this.bgpTypeOptions.length) {
+        if (this.bgpTypeOptions.includes(bgpDraft)) {
+          this.form.fc.setFieldsValue({ bgp_type: bgpDraft })
+          this.bgp_type = bgpDraft
+        }
+      }
+    },
+    clampEipBandwidthToMax () {
+      if (!this.form?.fc) return
+      const cur = this.form.fc.getFieldValue('bandwidth')
+      if (cur == null || cur === '') return
+      const max = this.maxBandwidth
+      if (max != null && Number(cur) > max) {
+        this.form.fc.setFieldsValue({ bandwidth: max })
+        this.bandwidth = max
+      }
+    },
+    clampEipBgpTypeToOptions () {
+      if (!this.form?.fc) return
+      const opts = this.bgpTypeOptions
+      if (!Array.isArray(opts) || !opts.length) return
+      const cur = this.form.fc.getFieldValue('bgp_type')
+      if (cur == null || cur === '') return
+      if (!opts.includes(cur)) {
+        const next = opts[0]
+        this.form.fc.setFieldsValue({ bgp_type: next })
+        this.bgp_type = next
+      }
     },
     syncEipCreateFormFcDrafts (newField) {
       if (!this.canUseCreateFormDraft || !newField || typeof newField !== 'object') return
@@ -861,6 +921,7 @@ export default {
         },
       }).then(({ data }) => {
         this.bgpTypeOptions = data.bgp_type
+        this.$nextTick(() => this.restoreEipBandwidthAndBgpDraft())
       })
     },
     handleBgpTypeChange (value) {

@@ -99,6 +99,7 @@
             <div class="d-flex">
               <disk-storage-select
                 v-if="showStorage"
+                ref="diskStorageSelect"
                 style="min-width: 480px; max-width: 500px;"
                 :decorators="decorators"
                 :form="form"
@@ -1153,24 +1154,51 @@ export default {
       const storageDraft = this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.STORAGE_ID)
       if (storageDraft) {
         this.showStorage = true
-        this.$nextTick(() => {
-          this.form.fc.setFieldsValue({ storage: storageDraft })
-        })
+        this.$nextTick(() => this.restoreDiskStorageDraft(storageDraft))
       }
       const iopsDraft = this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.IOPS)
       if (iopsDraft != null && this.isShowIops) {
         this.showIops = true
         this.$nextTick(() => {
-          this.form.fc.setFieldsValue({ iops: iopsDraft })
+          let iops = Number(iopsDraft)
+          if (Number.isNaN(iops)) return
+          const { min = 0, max } = this.iopsLimit || {}
+          if (max != null && iops > max) iops = max
+          if (iops < min) iops = min
+          this.form.fc.setFieldsValue({ iops })
         })
       }
       const throughputDraft = this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.THROUGHPUT)
       if (throughputDraft != null && this.isShowThroughput) {
         this.showThroughput = true
         this.$nextTick(() => {
-          this.form.fc.setFieldsValue({ throughput: throughputDraft })
+          let tp = Number(throughputDraft)
+          if (Number.isNaN(tp)) return
+          if (tp > 1000) tp = 1000
+          if (tp < 125) tp = 125
+          this.form.fc.setFieldsValue({ throughput: tp })
         })
       }
+    },
+    /** 指定存储：仅 options 非空且命中时回填；空列表放弃 */
+    restoreDiskStorageDraft (storageDraft, retry = 0) {
+      if (!storageDraft || !this.form?.fc) return
+      const select = this.$refs.diskStorageSelect
+      const options = (select && Array.isArray(select.options)) ? select.options : []
+      if (!options.length) {
+        if (retry < 8) {
+          setTimeout(() => this.restoreDiskStorageDraft(storageDraft, retry + 1), 300)
+          return
+        }
+        // 列表始终为空：不写非法草稿
+        this.form.fc.setFieldsValue({ storage: undefined })
+        return
+      }
+      if (!options.some(o => o.id === storageDraft)) {
+        this.form.fc.setFieldsValue({ storage: undefined })
+        return
+      }
+      this.form.fc.setFieldsValue({ storage: storageDraft })
     },
     _translateStorageOps (data) {
       const findStorageProvider = optItem => {
