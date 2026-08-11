@@ -41,6 +41,10 @@ const SecgroupCreate = () => import(/* webpackChunkName: "compute" */ /* webpack
 const IpSet = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/ipset')
 const Servertemplate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/servertemplate')
 const ServertemplateCreateServer = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/servertemplate/CreateServer')
+const ServertemplateContainer = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/servertemplate-container')
+const ServertemplateContainerCreateServer = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/servertemplate-container/CreateServer')
+const ServertemplateBaremetal = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/servertemplate-baremetal')
+const ServertemplateBaremetalCreateServer = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/servertemplate-baremetal/CreateServer')
 const DiskSnapshot = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/snapshot')
 const InstanceSnapshot = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/snapshot-instance')
 const SnapshotPolicy = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/snapshotpolicy')
@@ -165,30 +169,14 @@ export default {
             },
           ],
         },
-        {
-          path: '/instancegroup',
-          meta: {
-            label: i18n.t('compute.text_93'),
-            permission: 'instancegroups_list',
-            t: 'dictionary.instancegroup',
-            hidden: (userInfo, menu) => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.instancegroup')) {
-                return true
-              }
-              return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['onestack'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'InstanceGroup',
-              path: '',
-              meta: {},
-              component: InstanceGroup,
-            },
-          ],
-        },
+      ],
+    },
+    // 模板
+    {
+      meta: {
+        label: i18n.t('compute.group_and_template'),
+      },
+      submenus: [
         {
           path: '/servertemplate',
           meta: {
@@ -225,6 +213,106 @@ export default {
           ],
         },
         {
+          path: '/servertemplate-container',
+          meta: {
+            label: i18n.t('compute.servertemplate_container'),
+            permission: 'servertemplates_list',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.servertemplate_container')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ServertemplateContainer',
+              path: '',
+              meta: {},
+              component: ServertemplateContainer,
+            },
+            {
+              name: 'ServertemplateContainerCreate',
+              path: 'create',
+              meta: {},
+              component: VMContainerInstanceCreate,
+            },
+            {
+              name: 'ServertemplateContainerCreateServer',
+              path: 'create-server',
+              meta: {},
+              component: ServertemplateContainerCreateServer,
+            },
+          ],
+        },
+        {
+          path: '/servertemplate-baremetal',
+          meta: {
+            label: i18n.t('compute.servertemplate_baremetal'),
+            permission: 'servertemplates_list',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.servertemplate_baremetal')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ServertemplateBaremetal',
+              path: '',
+              meta: {},
+              component: ServertemplateBaremetal,
+            },
+            {
+              name: 'ServertemplateBaremetalCreate',
+              path: 'create',
+              meta: {},
+              component: BaremetalCreate,
+            },
+            {
+              name: 'ServertemplateBaremetalCreateServer',
+              path: 'create-server',
+              meta: {},
+              component: ServertemplateBaremetalCreateServer,
+            },
+          ],
+        },
+      ],
+    },
+    // 调度
+    {
+      meta: {
+        label: i18n.t('cloudenv.text_17'),
+      },
+      submenus: [
+        {
+          path: '/instancegroup',
+          meta: {
+            label: i18n.t('compute.text_93'),
+            permission: 'instancegroups_list',
+            t: 'dictionary.instancegroup',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.instancegroup')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onestack'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'InstanceGroup',
+              path: '',
+              meta: {},
+              component: InstanceGroup,
+            },
+          ],
+        },
+        {
           path: '/scalinggroup',
           meta: {
             label: i18n.t('compute.text_95'),
@@ -250,6 +338,73 @@ export default {
               path: 'create',
               meta: {},
               component: ScalingGroupCreate,
+            },
+          ],
+        },
+        {
+          path: '/schedtag',
+          meta: {
+            label: i18n.t('dictionary.schedtag'),
+            permission: 'schedtags_list',
+            t: 'dictionary.schedtag',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.schedtag')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private', 'baremetal'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Schedtag',
+              path: '',
+              component: Schedtag,
+            },
+          ],
+        },
+        {
+          path: '/schedpolicy',
+          meta: {
+            label: i18n.t('cloudenv.text_19'),
+            permission: 'schedpolicies_list',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.schedpolicy')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private', 'baremetal'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Schedpolicy',
+              path: '',
+              component: Schedpolicy,
+            },
+          ],
+        },
+        {
+          path: '/dynamicschedtag',
+          meta: {
+            label: i18n.t('cloudenv.text_20'),
+            permission: 'dynamicschedtags_list',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.dynamicschedtag')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+              // return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private', 'baremetal'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Dynamicschedtag',
+              path: '',
+              component: Dynamicschedtag,
             },
           ],
         },
@@ -855,80 +1010,6 @@ export default {
     //     },
     //   ],
     // },
-    {
-      meta: {
-        label: i18n.t('cloudenv.text_17'),
-      },
-      submenus: [
-        {
-          path: '/schedtag',
-          meta: {
-            label: i18n.t('dictionary.schedtag'),
-            permission: 'schedtags_list',
-            t: 'dictionary.schedtag',
-            hidden: (userInfo, menu) => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.schedtag')) {
-                return true
-              }
-              return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private', 'baremetal'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Schedtag',
-              path: '',
-              component: Schedtag,
-            },
-          ],
-        },
-        {
-          path: '/schedpolicy',
-          meta: {
-            label: i18n.t('cloudenv.text_19'),
-            permission: 'schedpolicies_list',
-            hidden: (userInfo, menu) => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.schedpolicy')) {
-                return true
-              }
-              return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private', 'baremetal'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Schedpolicy',
-              path: '',
-              component: Schedpolicy,
-            },
-          ],
-        },
-        {
-          path: '/dynamicschedtag',
-          meta: {
-            label: i18n.t('cloudenv.text_20'),
-            permission: 'dynamicschedtags_list',
-            hidden: (userInfo, menu) => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.dynamicschedtag')) {
-                return true
-              }
-              return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private', 'baremetal'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Dynamicschedtag',
-              path: '',
-              component: Dynamicschedtag,
-            },
-          ],
-        },
-      ],
-    },
     {
       meta: {
         label: i18n.t('compute.text_114'),

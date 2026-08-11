@@ -93,7 +93,7 @@
   "compute.text_91": "虚拟机",
   "compute.text_92": "裸金属",
   "compute.text_93": "@:dictionary.instancegroup",
-  "compute.text_94": "主机模板",
+  "compute.text_94": "虚拟机模板",
   "compute.text_95": "弹性伸缩组",
   "compute.text_96": "镜像",
   "compute.text_97": "系统镜像",
@@ -901,7 +901,7 @@
   "compute.text_870": "端口范围在 1～65535 之间",
   "compute.text_871": "权重：",
   "compute.text_872": "权重范围在 1～256 之间",
-  "compute.text_873": "主机模板",
+  "compute.text_873": "虚拟机模板",
   "compute.text_874": "当前实例数",
   "compute.text_875": "期望实例数",
   "compute.text_876": "最小实例数",
@@ -2082,5 +2082,8 @@
   "compute.memory_size": "内存大小",
   "compute.virtual_num": "虚拟数量",
   "compute.allocated_count": "已分配数量",
-  "compute.memory_allocated": "已分配内存"
+  "compute.memory_allocated": "已分配内存",
+  "compute.group_and_template": "模板",
+  "compute.servertemplate_container": "容器主机模板",
+  "compute.servertemplate_baremetal": "裸金属模板"
 }

@@ -2991,7 +2991,7 @@
     "scheduledtask": "Cron Job",
     "scalingpolicy": "Scaling Policy",
     "serverrecovery": "Host",
-    "servertemplate": "Server Template",
+    "servertemplate": "VM Template",
     "service": "Service",
     "servicetree": "Service Tree",
     "sku": "Package",
