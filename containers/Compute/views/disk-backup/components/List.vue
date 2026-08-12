@@ -61,65 +61,76 @@ export default {
       }),
       groupActions: [
         {
-          label: this.$t('compute.perform_sync_status'),
-          permission: 'diskbackups_perform_syncstatus',
-          action: () => {
-            this.onManager('batchPerformAction', {
-              steadyStatus: ['running', 'ready'],
-              managerArgs: {
-                action: 'syncstatus',
+          label: this.$t('compute.text_275'),
+          actions: () => {
+            return [
+              {
+                label: this.$t('compute.perform_sync_status'),
+                permission: 'diskbackups_perform_syncstatus',
+                action: () => {
+                  this.onManager('batchPerformAction', {
+                    steadyStatus: ['running', 'ready'],
+                    managerArgs: {
+                      action: 'syncstatus',
+                    },
+                  })
+                },
+                meta: () => {
+                  const hasSaving = this.list.selectedItems.some(item => item.status === 'saving')
+                  return {
+                    validate: this.list.selected.length && !hasSaving,
+                    tooltip: hasSaving ? this.$t('compute.text_1397') : '',
+                  }
+                },
               },
-            })
-          },
-          meta: () => ({
-            validate: this.list.selected.length,
-          }),
-        },
-        {
-          label: this.$t('table.action.set_tag'),
-          permission: 'diskbackups_perform_set_user_metadata',
-          action: () => {
-            this.createDialog('SetTagDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-              mode: 'add',
-              params: {
-                resources: 'diskbackups',
+              {
+                label: this.$t('table.action.set_tag'),
+                permission: 'diskbackups_perform_set_user_metadata',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'diskbackups',
+                    },
+                    tipName: this.$t('compute.text_462'),
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.selected.length,
+                    tooltip: null,
+                  }
+                },
               },
-              tipName: this.$t('compute.text_462'),
-            })
-          },
-          meta: () => {
-            return {
-              validate: this.list.selected.length,
-              tooltip: null,
-            }
-          },
-        },
-        {
-          label: this.$t('compute.perform_delete'),
-          permission: 'diskbackups_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-              title: this.$t('compute.perform_delete'),
-              name: this.$t('compute.text_462'),
-            })
-          },
-          meta: () => {
-            const ret = {
-              validate: this.list.selected.length,
-              tooltip: null,
-            }
-            if (this.list.selectedItems.some(item => !item.can_delete)) {
-              ret.validate = false
-              return ret
-            }
-            return ret
+              {
+                label: this.$t('compute.perform_delete'),
+                permission: 'diskbackups_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    title: this.$t('compute.perform_delete'),
+                    name: this.$t('compute.text_462'),
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: this.list.selected.length,
+                    tooltip: null,
+                  }
+                  if (this.list.selectedItems.some(item => !item.can_delete)) {
+                    ret.validate = false
+                    return ret
+                  }
+                  return ret
+                },
+              },
+            ]
           },
         },
       ],

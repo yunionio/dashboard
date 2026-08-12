@@ -4,22 +4,6 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('compute.perform_sync_status'),
-        permission: 'diskbackups_perform_syncstatus',
-        action: obj => {
-          this.onManager('performAction', {
-            steadyStatus: ['running', 'ready'],
-            id: obj.id,
-            managerArgs: {
-              action: 'syncstatus',
-            },
-          })
-        },
-        meta: () => ({
-          validate: true,
-        }),
-      },
-      {
         label: i18n.t('compute.text_478'),
         permission: 'diskbackups_perform_recovery',
         action: obj => {
@@ -36,27 +20,54 @@ export default {
         }),
       },
       {
-        label: i18n.t('compute.perform_delete'),
-        permission: 'diskbackups_delete',
-        action: obj => {
-          this.createDialog('DeleteResDialog', {
-            vm: this,
-            data: [obj],
-            columns: this.columns,
-            title: i18n.t('compute.perform_delete'),
-            onManager: this.onManager,
-            name: i18n.t('compute.disk_backup'),
-            content: () => {
-              const change = (bool) => {
-                this.deleteResProps.force = bool
-              }
-              return <a-checkbox onInput={ change }>{ this.$t('compute.text_655') }</a-checkbox>
+        label: i18n.t('compute.text_352'),
+        actions: obj => {
+          return [
+            {
+              label: i18n.t('compute.perform_sync_status'),
+              permission: 'diskbackups_perform_syncstatus',
+              action: obj => {
+                this.onManager('performAction', {
+                  steadyStatus: ['running', 'ready'],
+                  id: obj.id,
+                  managerArgs: {
+                    action: 'syncstatus',
+                  },
+                })
+              },
+              meta: obj => {
+                const isSaving = obj.status === 'saving'
+                return {
+                  validate: !isSaving,
+                  tooltip: isSaving ? i18n.t('compute.text_1397') : '',
+                }
+              },
             },
-            requestParams: this.deleteResProps,
-          })
-        },
-        meta: obj => {
-          return this.$getDeleteResult(obj)
+            {
+              label: i18n.t('compute.perform_delete'),
+              permission: 'diskbackups_delete',
+              action: obj => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  data: [obj],
+                  columns: this.columns,
+                  title: i18n.t('compute.perform_delete'),
+                  onManager: this.onManager,
+                  name: i18n.t('compute.disk_backup'),
+                  content: () => {
+                    const change = (bool) => {
+                      this.deleteResProps.force = bool
+                    }
+                    return <a-checkbox onInput={ change }>{ this.$t('compute.text_655') }</a-checkbox>
+                  },
+                  requestParams: this.deleteResProps,
+                })
+              },
+              meta: obj => {
+                return this.$getDeleteResult(obj)
+              },
+            },
+          ]
         },
       },
     ]
