@@ -85,6 +85,8 @@ export default {
     InvalidIdpStatus: '無効な認証ソースステータス',
     InvalidIdpStatusDetail: 'ユーザーホーム認証ソースが無効になっているか、またはステータスが無効であるかを確認してください',
     DuplicateNameError: '名前が重複しています',
+    OutOfResource: 'リソース不足',
+    OutOfQuotaError: 'クォータ不足',
 
     ServerError: 'サーバー側エラー',
     ClientError: 'クライアント側エラー',
