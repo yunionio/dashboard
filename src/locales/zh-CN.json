@@ -262,7 +262,7 @@
       "probing": "正在检测",
       "deleted": "已删除",
       "queued": "等待保存",
-      "killed": "状态异常",
+      "killed": "异常中断",
       "unknown": "未知",
       "pending_delete": "待删除",
       "converting": "格式转换中",
