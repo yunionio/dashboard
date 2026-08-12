@@ -84,6 +84,8 @@ export default {
     InvalidIdpStatus: 'Invalid IDP Status',
     InvalidIdpStatusDetail: 'Please check user\'s IDP was disabled or in invalid status.',
     DuplicateNameError: 'Name duplication',
+    OutOfResource: 'Insufficient resources',
+    OutOfQuotaError: 'Insufficient quota',
 
     ServerError: 'Server Side Error',
     ClientError: 'Client Side Error',
