@@ -12,7 +12,7 @@
         <li
           v-for="(item, idx) of errors.not_allow_reasons"
           :key="idx">
-          <div>{{ item }}</div>
+          <div>{{ translateNotAllowReason(item) }}</div>
         </li>
       </ul>
       <div class="mb-2">{{ $t('compute.reason_detail') }}</div>
@@ -56,6 +56,14 @@ export default {
     },
   },
   methods: {
+    translateNotAllowReason (reason) {
+      const map = {
+        'Out of resource': 'compute.not_allow_reason.out_of_resource',
+        'Out of quota': 'compute.not_allow_reason.out_of_quota',
+      }
+      const key = map[reason]
+      return key ? this.$t(key) : reason
+    },
     closeError () {
       this.$emit('update:errors', {})
     },
