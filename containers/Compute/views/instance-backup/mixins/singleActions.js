@@ -4,19 +4,19 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('compute.perform_sync_status'),
-        permission: 'instancebackups_perform_syncstatus',
+        label: i18n.t('compute.text_478'),
+        permission: 'instancebackups_perform_recovery',
         action: obj => {
-          this.onManager('performAction', {
-            steadyStatus: ['ready'],
-            id: obj.id,
-            managerArgs: {
-              action: 'syncstatus',
-            },
+          this.createDialog('InstanceBackupRollbackDialog', {
+            data: [obj],
+            columns: this.columns,
+            onManager: this.onManager,
+            refresh: this.refresh,
           })
         },
-        meta: () => ({
-          validate: true,
+        meta: obj => ({
+          validate: obj.status === 'ready',
+          tooltip: obj.status === 'ready' ? '' : i18n.t('compute.instance_backup_not_ready_alert'),
         }),
       },
       {
@@ -24,20 +24,24 @@ export default {
         actions: obj => {
           return [
             {
-              label: i18n.t('compute.text_478'),
-              permission: 'instancebackups_perform_recovery',
+              label: i18n.t('compute.perform_sync_status'),
+              permission: 'instancebackups_perform_syncstatus',
               action: obj => {
-                this.createDialog('InstanceBackupRollbackDialog', {
-                  data: [obj],
-                  columns: this.columns,
-                  onManager: this.onManager,
-                  refresh: this.refresh,
+                this.onManager('performAction', {
+                  steadyStatus: ['ready'],
+                  id: obj.id,
+                  managerArgs: {
+                    action: 'syncstatus',
+                  },
                 })
               },
-              meta: obj => ({
-                validate: obj.status === 'ready',
-                tooltip: obj.status === 'ready' ? '' : i18n.t('compute.instance_backup_not_ready_alert'),
-              }),
+              meta: obj => {
+                const isSaving = obj.status === 'saving'
+                return {
+                  validate: !isSaving,
+                  tooltip: isSaving ? i18n.t('compute.text_1397') : '',
+                }
+              },
             },
             {
               label: this.$t('compute.unpack'),
