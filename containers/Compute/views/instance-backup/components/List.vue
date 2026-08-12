@@ -105,9 +105,13 @@ export default {
                     },
                   })
                 },
-                meta: () => ({
-                  validate: this.list.selected.length,
-                }),
+                meta: () => {
+                  const hasSaving = this.list.selectedItems.some(item => item.status === 'saving')
+                  return {
+                    validate: this.list.selected.length && !hasSaving,
+                    tooltip: hasSaving ? this.$t('compute.text_1397') : '',
+                  }
+                },
               },
               {
                 label: this.$t('table.action.set_tag'),
