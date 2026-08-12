@@ -254,7 +254,7 @@
       "probing": "検波",
       "deleted": "削除",
       "queued": "保存を待つ",
-      "killed": "ステータス例外",
+      "killed": "異常終了",
       "unknown": "不明",
       "pending_delete": "削除対象",
       "converting": "フォーマット変換",
