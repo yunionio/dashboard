@@ -1,10 +1,13 @@
 import { message } from 'ant-design-vue'
 import i18n from '@/locales'
+import storage from '@/utils/storage'
+import { aesEncryptWithCustomKey } from '@/utils/crypto'
 import {
   getTokenFromCookie,
   decodeToken,
   getScopeFromCookie,
   getTenantFromCookie,
+  SESSION_LOGIN_USER_KEY,
 } from '@/utils/auth'
 
 export default {
@@ -32,6 +35,14 @@ export default {
         this._authTabHideLoading()
         this._authTabHideLoading = null
       }
+    },
+    // Cookie 用户与当前 Tab sessionStorage 对齐，避免 checkSessionUser 误判登出
+    syncSessionLoginUser (userId) {
+      if (!userId) {
+        storage.session.remove(SESSION_LOGIN_USER_KEY)
+        return
+      }
+      storage.session.set(SESSION_LOGIN_USER_KEY, aesEncryptWithCustomKey(userId, 'cloudpods'))
     },
     async syncAuthFromCookie () {
       if (document.visibilityState !== 'visible') return
@@ -73,6 +84,7 @@ export default {
       if (cookieLoggedIn && !storeLoggedIn) {
         if (this.authTabSyncing) return
         this.authTabSyncing = true
+        this.syncSessionLoginUser(cookieUserId)
         this.$store.commit('auth/SET_SCOPE', cookieScope)
         if (cookieTenant) this.$store.commit('auth/SET_TENANT', cookieTenant)
         this.$store.commit('auth/UPDATE_AUTH')
@@ -101,6 +113,9 @@ export default {
         const tenantChanged = cookieTenant !== storeTenant
         const scopeChanged = cookieScope !== storeScope
         if (userChanged || tenantChanged || scopeChanged) {
+          if (userChanged) {
+            this.syncSessionLoginUser(cookieUserId)
+          }
           this.$store.commit('auth/SET_SCOPE', cookieScope)
           if (cookieTenant) this.$store.commit('auth/SET_TENANT', cookieTenant)
           this.$store.commit('auth/UPDATE_AUTH')
