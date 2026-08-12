@@ -2081,5 +2081,7 @@
   "compute.memory_allocated": "Allocated Memory",
   "compute.group_and_template": "Templates",
   "compute.servertemplate_container": "Container Host Templates",
-  "compute.servertemplate_baremetal": "Baremetal Templates"
+  "compute.servertemplate_baremetal": "Baremetal Templates",
+  "compute.not_allow_reason.out_of_resource": "Out of resource",
+  "compute.not_allow_reason.out_of_quota": "Out of quota"
 }

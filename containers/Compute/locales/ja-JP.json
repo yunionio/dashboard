@@ -2083,5 +2083,7 @@
   "compute.memory_allocated": "割当メモリ",
   "compute.group_and_template": "テンプレート",
   "compute.servertemplate_container": "コンテナホストテンプレート",
-  "compute.servertemplate_baremetal": "ベアメタルテンプレート"
+  "compute.servertemplate_baremetal": "ベアメタルテンプレート",
+  "compute.not_allow_reason.out_of_resource": "空きリソース不足",
+  "compute.not_allow_reason.out_of_quota": "クォータ不足"
 }
