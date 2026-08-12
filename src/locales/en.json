@@ -254,7 +254,7 @@
       "probing": "Probing",
       "deleted": "Deleted",
       "queued": "Waiting to save",
-      "killed": "Status Abnormal",
+      "killed": "Killed",
       "unknown": "Unknown",
       "pending_delete": "Pending Delete",
       "converting": "Converting format",
