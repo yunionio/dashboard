@@ -85,6 +85,8 @@ export default {
     InvalidIdpStatus: '无效的认证源状态',
     InvalidIdpStatusDetail: '请检查用户归属认证源是否被禁用或状态无效',
     DuplicateNameError: '名称重复',
+    OutOfResource: '资源不足',
+    OutOfQuotaError: '配额不足',
 
     ServerError: '服务器端错误',
     ClientError: '客户端错误',
