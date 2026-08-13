@@ -71,7 +71,10 @@
 </template>
 
 <script>
-// import * as R from 'ramda'
+import * as R from 'ramda'
+import {
+  formatIsolatedDeviceSelectLabel,
+} from '@Compute/constants'
 import {
   getIpsTableColumn,
 } from '@/utils/common/tableColumn'
@@ -79,7 +82,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'VmAttachUsbDialog', // 目前只支持单挑操作，批量逻辑未调整
+  name: 'VmAttachUsbDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -126,6 +129,7 @@ export default {
       usbOptions: [],
       isOpenUsb: false,
       bindUsbs: [],
+      guestIsolatedDevices: [],
       usbOptionsLoading: false,
       columns: [
         {
@@ -157,22 +161,116 @@ export default {
     selectedItems () {
       return this.params.data
     },
+    usbParams () {
+      if (this.selectedItems && this.selectedItems.length > 0) {
+        let host = ''
+        this.selectedItems.map(item => {
+          host += item.host_id + ','
+        })
+        host = host.substring(0, host.lastIndexOf(','))
+        return {
+          'filter.0': `host_id.in(${host})`,
+          limit: 0,
+          'filter.1': 'dev_type.equals(USB)',
+          scope: this.$store.getters.scope,
+        }
+      }
+      return {}
+    },
+    disabledItems () {
+      if (this.isGroupAction) {
+        return this.usbOpt.filter(val => {
+          if (val.usedCount === val.totalCount) {
+            return true
+          } else if (val.totalCount - val.usedCount < this.params.data.length) {
+            return true
+          }
+          return false
+        }).map(item => { return item.id })
+      }
+      return this.usbOpt.filter(val => { return val.guest_id && val.guest_id !== this.selectedItems[0].id }).map(item => { return item.id })
+    },
+    isGroupAction () {
+      if (this.params.data.length > 1) return true
+      return false
+    },
     isOpenAutoStart () {
       return this.selectedItems.every(item => item.status === 'ready')
     },
   },
+  watch: {
+    disabledItems () {
+      if (this.disabledItems && this.disabledItems.length && this.isGroupAction) {
+        this.disabledItems.forEach(disabledId => {
+          this.usbOpt.forEach(item => {
+            if (disabledId === item.id) {
+              item.__disabled = true
+            }
+          })
+        })
+      }
+    },
+  },
   created () {
-    this.$D = new this.$Manager('servers', 'v1')
-    this.initUsb()
+    this.init()
   },
   methods: {
-    initUsb () {
-      const { isolated_devices = [] } = this.params.data[0]
-      const devices = isolated_devices.filter(item => item.dev_type === 'USB')
-      if (devices?.length > 0) {
-        this.isOpenUsb = true
+    isUsbDevice (item) {
+      return item.dev_type === 'USB'
+    },
+    getGuestIsolatedDeviceId (item) {
+      return item.isolated_device_id || item.device || item.id
+    },
+    getBoundDeviceIds () {
+      if (this.guestIsolatedDevices.length) {
+        return this.guestIsolatedDevices.map(item => this.getGuestIsolatedDeviceId(item))
       }
-      this.initUsbOptions()
+      return (this.selectedItems?.[0]?.isolated_devices || [])
+        .filter(item => this.isUsbDevice(item))
+        .map(item => item.id)
+    },
+    getCurrentlyBoundDevices () {
+      const list = this.guestIsolatedDevices.length
+        ? this.guestIsolatedDevices
+        : (this.selectedItems?.[0]?.isolated_devices || [])
+          .filter(item => this.isUsbDevice(item))
+      return list.map((item, idx) => {
+        const deviceId = this.getGuestIsolatedDeviceId(item)
+        return {
+          device: deviceId,
+          index: (item.index !== undefined && item.index !== null) ? item.index : idx,
+        }
+      })
+    },
+    async fetchGuestIsolatedDevices () {
+      const guest = this.selectedItems?.[0]
+      if (!guest?.id || !guest?.isolated_devices?.length) {
+        this.guestIsolatedDevices = []
+        return
+      }
+      try {
+        const res = await new this.$Manager('guestisolateddevices').list({
+          params: {
+            limit: 0,
+            guest_id: guest.id,
+            scope: this.$store.getters.scope,
+          },
+        })
+        this.guestIsolatedDevices = (res.data.data || []).filter(item => this.isUsbDevice(item))
+      } catch (e) {
+        this.guestIsolatedDevices = []
+      }
+    },
+    async init () {
+      if (!this.isGroupAction) {
+        await this.fetchGuestIsolatedDevices()
+        const bindDevices = this.getBoundDeviceIds()
+        if (bindDevices.length > 0) {
+          this.isOpenUsb = true
+          this.bindUsbs = bindDevices
+        }
+        await this.initUsbOptions()
+      }
     },
     async initUsbOptions () {
       try {
@@ -191,11 +289,9 @@ export default {
           },
         })
         const { data: probleDevList = [] } = probleDevRes.data
-        const device = acttachedList.filter(item => {
-          return item.dev_type === 'USB'
-        }).map(item => {
-          return item.id
-        })
+        const device = this.bindUsbs.length
+          ? this.bindUsbs
+          : acttachedList.filter(item => this.isUsbDevice(item)).map(item => item.id)
         this.bindUsbs = device
         this.form.fc.setFieldsValue({
           device,
@@ -207,7 +303,7 @@ export default {
           }
         })
         const usbOptions = list.filter(item => {
-          return item.dev_type === 'USB'
+          return this.isUsbDevice(item)
         }).map(item => {
           return {
             key: item.id,
@@ -225,26 +321,60 @@ export default {
         this.usbOptionsLoading = false
       }
     },
+    buildDeviceDiff (data) {
+      const formIds = (Array.isArray(data.device) ? data.device : [data.device]).filter(Boolean)
+      const boundPool = this.getCurrentlyBoundDevices().slice()
+      const addDevices = []
+      formIds.forEach(id => {
+        const matchIdx = boundPool.findIndex(b => b.device === id)
+        if (matchIdx >= 0) {
+          boundPool.splice(matchIdx, 1)
+        } else {
+          addDevices.push({ device: id })
+        }
+      })
+      return {
+        addDevices,
+        delDevices: boundPool.map(({ device, index }) => ({ device, index })),
+      }
+    },
+    buildDelDevices (boundDevices) {
+      const list = boundDevices || this.getCurrentlyBoundDevices()
+      return list.map(({ device, index }) => ({ device, index }))
+    },
     async doAttachSubmit (data) {
-      const add_devices = []
-      const del_devices = []
-
-      data.device.map(item => {
-        if (!this.bindUsbs.includes(item)) {
-          add_devices.push(item)
+      const ids = this.params.data.map(item => item.id)
+      if (ids.length > 1) {
+        const selectedNum = this.params.data.length
+        const { number: count } = data
+        const usbItem = this.usbOpt.find(item => item.id === (Array.isArray(this.form.fd.device) ? this.form.fd.device[0] : this.form.fd.device))
+        const model = usbItem.model
+        const remain = usbItem.totalCount - usbItem.usedCount
+        if (selectedNum * count > remain) {
+          this.$message.warning(this.$t('compute.text_1177'))
+          throw new Error(this.$t('compute.text_1178'))
         }
-      })
-      this.bindUsbs.map(item => {
-        if (!data.device.includes(item)) {
-          del_devices.push(item)
+        const attachData = {
+          model,
+          count,
+          auto_start: data.autoStart,
+          device: usbItem.id,
         }
-      })
+        return this.params.onManager('batchPerformAction', {
+          id: ids,
+          steadyStatus: ['running', 'ready'],
+          managerArgs: {
+            action: 'attach-isolated-device',
+            data: attachData,
+          },
+        })
+      }
+      const { addDevices, delDevices } = this.buildDeviceDiff(data)
       const params = {
-        add_devices,
-        del_devices,
+        add_devices: addDevices,
+        del_devices: delDevices,
         auto_start: data.autoStart,
       }
-      const ids = this.params.data.map(item => item.id)
       return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
@@ -255,11 +385,18 @@ export default {
       })
     },
     async doDetachSubmit (data) {
-      // 批量解除绑定
-      const params = {
-        add_devices: [],
-        del_devices: this.bindUsbs,
-        auto_start: data.autoStart,
+      let params = {}
+      if (this.isGroupAction) {
+        params = {
+          detach_all: true,
+          auto_start: data.autoStart,
+        }
+      } else {
+        params = {
+          add_devices: [],
+          del_devices: this.buildDelDevices(this.getCurrentlyBoundDevices()),
+          auto_start: data.autoStart,
+        }
       }
       const ids = this.params.data.map(item => item.id)
 
@@ -267,7 +404,7 @@ export default {
         id: ids,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
-          action: 'set-isolated-device',
+          action: this.isGroupAction ? 'detach-isolated-device' : 'set-isolated-device',
           data: params,
         },
       })
@@ -289,12 +426,111 @@ export default {
         throw error
       }
     },
+    mapper (data) {
+      let newData = []
+      newData = this.grpupMapper(data)
+      return newData
+    },
+    genResourceData (data) {
+      const obj = {}
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i]
+        if (!obj[item.model]) {
+          obj[item.model] = {
+            usedCount: item.guest ? 1 : 0,
+            totalCount: 1,
+          }
+          if (!item.guest) {
+            obj[item.model] = {
+              ...obj[item.model],
+              ...item,
+            }
+          }
+          if (item.guest && !obj[item.model].id) {
+            obj[item.model] = {
+              ...obj[item.model],
+              ...item,
+            }
+          }
+        } else {
+          obj[item.model].totalCount += 1
+          if (item.guest) {
+            obj[item.model].usedCount += 1
+          } else {
+            obj[item.model] = {
+              ...obj[item.model],
+              ...item,
+            }
+          }
+        }
+      }
+      const newData = []
+      R.forEachObjIndexed((value, key) => {
+        newData.push(value)
+      }, obj)
+      return newData
+    },
+    grpupMapper (data) {
+      const obj = {}
+      for (var i = 0; i < data.length; i++) {
+        const item = data[i]
+        if (!obj[item.host_id]) {
+          obj[item.host_id] = [
+            item,
+          ]
+        } else {
+          obj[item.host_id].push(item)
+        }
+      }
+      for (const key in obj) {
+        obj[key] = this.genResourceData(obj[key])
+      }
+      return this.filterSameModel(obj)
+    },
+    filterSameModel (obj) {
+      const arrs = []
+      Object.values(obj).map(item => arrs.push(item))
+      let arr = arrs.shift()
+      for (let i = arrs.length; i--;) {
+        const modelMap = {}
+        arr = arr.concat(arrs[i]).filter((item, key) => {
+          const objItem = modelMap[item.model]
+          if (!objItem) {
+            modelMap[item.model] = item
+            modelMap[item.model].inx = key
+          }
+          if (objItem && objItem.inx !== key) {
+            const readyRemain = objItem.totalCount - objItem.usedCount
+            const targetRemain = item.totalCount - item.usedCount
+            if (readyRemain > targetRemain) {
+              objItem.totalCount = item.totalCount
+              objItem.usedCount = item.usedCount
+            } else {
+              item.totalCount = objItem.totalCount
+              item.usedCount = objItem.usedCount
+            }
+            return true
+          }
+          return false
+        })
+      }
+      this.selectedItems.map(item => {
+        if (!obj[item.host_id]) {
+          arr = []
+        }
+      })
+      return arr
+    },
+    labelFormat (val) {
+      return formatIsolatedDeviceSelectLabel(val)
+    },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
-        if (key === 'device') {
-          this.form.fd[key] = values[key]
+        const value = values[key]
+        if (key === 'device' && this.isGroupAction) {
+          this.form.fd[key] = [value]
         } else {
-          this.form.fd[key] = values[key]
+          this.form.fd[key] = value
         }
       })
     },
