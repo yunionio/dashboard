@@ -945,15 +945,16 @@ export default {
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_config'),
                   },
-                  // 设置透传设备
+                  // 设置透传宿主机设备（批量仅 PCI，USB 仅单机支持）
                   {
-                    label: this.$t('compute.text_1112'),
+                    label: this.$t('compute.set_host_isolated_device'),
                     permission: 'attach-isolated-device,server_perform_detach_isolated_device,server_perform_set_isolated_device',
                     action: () => {
                       this.createDialog('VmAttachGpuDialog', {
                         data: this.list.selectedItems,
                         columns: this.columns,
                         onManager: this.onManager,
+                        availableTypes: ['pci'],
                       })
                     },
                     meta: () => {

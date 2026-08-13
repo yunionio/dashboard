@@ -11,6 +11,21 @@ import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip, validateRescueMode } from '../utils'
 
+// 策略仅保留 server_perform_set_gpu（展示名：设置透传宿主机设备）；PCI/USB 均由此控制
+const getHostIsolatedDeviceAvailableTypes = (vm, obj) => {
+  if (vm.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_gpu')) {
+    return []
+  }
+  const types = []
+  if (!obj || cloudEnabled('acttachGpu', obj)) {
+    types.push('pci')
+  }
+  if (!obj || cloudEnabled('acttachUsb', obj)) {
+    types.push('usb')
+  }
+  return types
+}
+
 const getSingleActions = function (ctx) {
   let hasBastionService = false
   const that = ctx || this
@@ -1041,15 +1056,16 @@ const getSingleActions = function (ctx) {
                 },
                 hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_config'),
               },
-              // 设置GPU卡
+              // 设置透传宿主机设备（PCI / USB）
               {
-                label: i18n.t('compute.text_1112'),
+                label: i18n.t('compute.set_host_isolated_device'),
                 permission: 'server_perform_set_isolated_device,attach-isolated-device,server_perform_detach_isolated_device',
                 action: () => {
                   this.createDialog('VmAttachGpuDialog', {
                     data: [obj],
                     columns: this.columns,
                     onManager: this.onManager,
+                    availableTypes: getHostIsolatedDeviceAvailableTypes(this, obj),
                   })
                 },
                 meta: () => {
@@ -1068,44 +1084,15 @@ const getSingleActions = function (ctx) {
                     ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                     return ret
                   }
-                  ret.validate = cloudEnabled('acttachGpu', obj)
+                  const availableTypes = getHostIsolatedDeviceAvailableTypes(this, obj)
+                  if (availableTypes.length) {
+                    ret.validate = true
+                    return ret
+                  }
                   ret.tooltip = cloudUnabledTip('acttachGpu', obj)
                   return ret
                 },
                 hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_gpu'),
-              },
-              // 设置USB透传
-              {
-                label: i18n.t('compute.text_1399'),
-                permission: 'server_perform_set_isolated_device,attach-isolated-device,server_perform_detach_isolated_device',
-                action: () => {
-                  this.createDialog('VmAttachUsbDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  const provider = obj.provider
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
-                  const rescueModeValid = validateRescueMode(obj)
-                  if (!rescueModeValid.validate) return rescueModeValid
-                  if (!this.isAdminMode && !this.isDomainMode) {
-                    ret.tooltip = i18n.t('compute.text_1279', [i18n.t('dictionary.domain')])
-                    return ret
-                  }
-                  if (findPlatform(obj.hypervisor, 'hypervisor') !== SERVER_TYPE.idc) {
-                    ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
-                    return ret
-                  }
-                  ret.validate = cloudEnabled('acttachUsb', obj)
-                  ret.tooltip = cloudUnabledTip('acttachUsb', obj)
-                  return ret
-                },
-                hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_usb'),
               },
               // 修改启动顺序
               {

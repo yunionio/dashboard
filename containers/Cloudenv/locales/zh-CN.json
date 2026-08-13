@@ -596,7 +596,7 @@
   "cloudenv.text_519": "更改项目",
   "cloudenv.text_520": "创建@:dictionary.snapshot",
   "cloudenv.text_521": "创建相同配置",
-  "cloudenv.text_522": "设置GPU卡",
+  "cloudenv.text_522": "设置透传宿主机设备",
   "cloudenv.text_523": "设置磁盘速度",
   "cloudenv.text_524": "到期释放",
   "cloudenv.text_525": "主机克隆",
