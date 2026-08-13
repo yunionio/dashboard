@@ -41,8 +41,6 @@ export function compositionToRingChart (items, options = {}) {
       ? sourceItems.reduce((sum, item) => sum + (item.success_rate || 0) * (item.request_count || 0), 0) / weight
       : 0
     subtitle = `${(weightedRate * 100).toFixed(1)}%`
-  } else if (valueKey === 'total_cost') {
-    subtitle = total.toFixed(4)
   }
   return {
     chartData: {
