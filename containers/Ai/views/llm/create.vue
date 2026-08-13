@@ -35,7 +35,7 @@
             :params="mountedModelParams"
             :selectProps="{ mode: 'multiple', placeholder: $t('common.tips.select', [$t('aice.model')]), allowClear: true }" />
         </a-form-item>
-        <a-form-item v-if="supportDevicesAndHostPaths" :label="$t('aice.devices')" :extra="$t('aice.llm_override_sku_extra')">
+        <a-form-item v-if="supportDevices" :label="$t('aice.devices')" :extra="$t('aice.llm_override_sku_extra')">
           <base-select
             v-decorator="decorators.device"
             :options="specList"
@@ -960,6 +960,10 @@ export default {
     supportDevicesAndHostPaths () {
       return ['ollama', 'vllm', 'sglang', 'comfyui', 'desktop'].includes((this.form.fd.llm_type || '').toLowerCase())
     },
+    /** ComfyUI 实例创建不覆盖 GPU（由 SKU 决定） */
+    supportDevices () {
+      return ['ollama', 'vllm', 'sglang', 'desktop'].includes((this.form.fd.llm_type || '').toLowerCase())
+    },
     supportMountedModels () {
       return ['ollama', 'vllm', 'sglang'].includes((this.form.fd.llm_type || '').toLowerCase())
     },
@@ -1004,9 +1008,13 @@ export default {
     'form.fd.llm_type' (val, oldVal) {
       if (val === oldVal) return
       this.form.fc.setFieldsValue({ llm_sku_id: undefined })
-      // 切到不支持 devices/host_paths 的类型时清空相关表单值，避免提交脏数据
-      if (!['ollama', 'vllm', 'sglang', 'comfyui'].includes((val || '').toLowerCase())) {
+      const llmType = (val || '').toLowerCase()
+      // 切到不支持 devices 的类型（含 ComfyUI）时清空 device，避免提交脏数据
+      if (!['ollama', 'vllm', 'sglang', 'desktop'].includes(llmType)) {
         this.form.fc.setFieldsValue({ device: [] })
+      }
+      // 切到不支持 host_paths 的类型时清空路径
+      if (!['ollama', 'vllm', 'sglang', 'comfyui', 'desktop'].includes(llmType)) {
         this.hostPathRows = []
       }
       // mounted_models 仅 ollama/vllm/sglang 支持；类型切换时模型过滤参数不同，统一清空
@@ -1420,7 +1428,7 @@ export default {
         if (this.collapseActive.includes('1') && values.prefer_host) {
           data.prefer_host = values.prefer_host
         }
-        if (this.supportDevicesAndHostPaths) {
+        if (this.supportDevices) {
           if (Array.isArray(values.device) && values.device.length > 0) {
             data.devices = devicesFromModelKeys(values.device, this.podPciModels)
           }
