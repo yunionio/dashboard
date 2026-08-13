@@ -298,15 +298,16 @@ const getSingleActions = function () {
                   return ret
                 },
               },
-              // 设置GPU卡
+              // 设置透传宿主机设备（容器主机仅 PCI）
               {
-                label: i18n.t('compute.text_1112'),
+                label: i18n.t('compute.set_host_isolated_device'),
                 permission: 'server_perform_set_isolated_device,attach-isolated-device,server_perform_detach_isolated_device',
                 action: () => {
                   this.createDialog('VmContainerAttachGpuDialog', {
                     data: [obj],
                     columns: this.columns,
                     onManager: this.onManager,
+                    availableTypes: ['pci'],
                   })
                 },
                 meta: () => {

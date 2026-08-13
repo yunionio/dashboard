@@ -596,7 +596,7 @@
   "cloudenv.text_519": "Change Project",
   "cloudenv.text_520": "Create @:dictionary.snapshot",
   "cloudenv.text_521": "Create Spec Server",
-  "cloudenv.text_522": "Set GPU Card",
+  "cloudenv.text_522": "Set host passthrough devices",
   "cloudenv.text_523": "Set Disk Speed",
   "cloudenv.text_524": "Release on Expiration",
   "cloudenv.text_525": "Server Clone",
