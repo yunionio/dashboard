@@ -6692,8 +6692,11 @@
   "aice.aiproxy.usage.token_trend": "Token 用量趋势",
   "aice.aiproxy.usage.composition": "构成分析",
   "aice.aiproxy.usage.api_key_composition": "API Key 构成",
+  "aice.aiproxy.usage.api_key_usage": "API Key 用量",
+  "aice.aiproxy.usage.ai_key": "供应商API Key",
+  "aice.aiproxy.usage.ai_key_usage": "供应商API Key 用量",
   "aice.aiproxy.usage.model_composition": "模型构成",
-  "aice.aiproxy.usage.auth_source": "AiKey/来源",
+  "aice.aiproxy.usage.auth_source": "供应商API Key 构成",
   "aice.aiproxy.usage.provider_composition": "Provider 构成",
   "aice.aiproxy.usage.heatmap": "时段热力图",
   "aice.aiproxy.usage.weekday": "星期",
@@ -6723,7 +6726,5 @@
   "aice.aiproxy.usage.endpoint": "接口路径",
   "aice.aiproxy.usage.failure_count": "失败数",
   "aice.aiproxy.usage.success_count": "成功数",
-  "aice.aiproxy.usage.total_cost": "总成本",
-  "aice.aiproxy.usage.cost_per_request": "每请求成本",
   "aice.aiproxy.usage.metric_token_count": "Token数"
 }

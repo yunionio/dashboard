@@ -1,5 +1,5 @@
 import { Manager } from '@/utils/manager'
-import { getAiproxySelectParams } from '@Ai/constants/aiproxyResources'
+import { getAiproxyVirtualKeySelectParams } from '@Ai/constants/aiproxyResources'
 import { isPlaceholderApiKey } from '@Ai/utils/aiproxyEndpoint'
 
 /** Shared virtual key select + secret fetch for aiproxy access panels. */
@@ -14,7 +14,7 @@ export default {
   },
   computed: {
     virtualKeySelectParams () {
-      return getAiproxySelectParams(this, 'ai_virtual_keys', { enabled: true, limit: 100 })
+      return getAiproxyVirtualKeySelectParams(this, { enabled: true, limit: 100 }, this.data)
     },
     hasConfiguredApiKey () {
       return !!this.selectedVirtualKey && !isPlaceholderApiKey(`Bearer ${this.selectedVirtualKey}`)
@@ -45,7 +45,7 @@ export default {
         const manager = new Manager('ai_virtual_keys')
         const { data } = await manager.get({
           id,
-          params: getAiproxySelectParams(this, 'ai_virtual_keys'),
+          params: getAiproxyVirtualKeySelectParams(this, {}, this.data),
         })
         this.selectedVirtualKey = data?.virtual_key || ''
         if (data?.id && data?.name) {
