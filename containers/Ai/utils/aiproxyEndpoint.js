@@ -70,6 +70,7 @@ export function buildClaudeCodeEnvExample ({
     `export ANTHROPIC_DEFAULT_HAIKU_MODEL=${haiku}`,
     `export CLAUDE_CODE_SUBAGENT_MODEL=${subagent}`,
     'export ENABLE_TOOL_SEARCH=false',
+    'export NODE_TLS_REJECT_UNAUTHORIZED="0"',
   ].join('\n')
 }
 
