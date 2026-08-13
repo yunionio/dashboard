@@ -595,7 +595,7 @@
   "cloudenv.text_519": "プロジェクトを変更する",
   "cloudenv.text_520": "@:dictionary.snapshotの作成",
   "cloudenv.text_521": "同じ構成を作成する",
-  "cloudenv.text_522": "GPU カードをセットアップする",
+  "cloudenv.text_522": "ホスト透過デバイスを設定する",
   "cloudenv.text_523": "ディスク速度を設定する",
   "cloudenv.text_524": "有効期限のリリース",
   "cloudenv.text_525": "ホストのクローン作成",

@@ -3,17 +3,18 @@
     <div slot="header">{{action}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <div slot="message" v-if="params.data.length === 1">{{$t('compute.text_1167')}}</div>
-        <div slot="message" v-else>
-          <p>{{$t('compute.text_1168')}}</p>
-          <p>{{$t('compute.text_1169')}}</p>
-        </div>
+        <div slot="message">{{$t('compute.text_1167')}}</div>
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
-      <dialog-table :data="params.data" :columns="columns" />
+      <dialog-table :data="params.data" :columns="tableColumns" />
       <a-form
         :form="form.fc"
         v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.isolated_device.category')">
+          <a-radio-group v-model="deviceCategory" :disabled="deviceCategoryOptions.length <= 1" @change="onDeviceCategoryChange">
+            <a-radio v-for="item in deviceCategoryOptions" :key="item.value" :value="item.value">{{ item.label }}</a-radio>
+          </a-radio-group>
+        </a-form-item>
         <a-form-item :label="$t('compute.text_1170')">
           <a-radio-group name="radioGroup" :defaultValue="true" v-if="isGroupAction" v-model="isOpenGpu">
             <a-radio :value="true">{{$t('compute.text_902')}}</a-radio>
@@ -23,14 +24,15 @@
         </a-form-item>
         <!-- 多对一：批量绑定同一透传设备 -->
         <template v-if="isOpenGpu && isGroupAction">
-          <a-form-item :extra="$t('compute.text_1171')">
+          <a-form-item :extra="isUsbMode ? $t('compute.text_1402') : $t('compute.text_1171')">
             <span slot="label">
-              {{ $t('compute.text_607') }}&nbsp;
-              <a-tooltip :title="$t('compute.vgpu_check.tooltip')">
+              {{ isUsbMode ? $t('compute.text_1401') : $t('compute.text_607') }}&nbsp;
+              <a-tooltip v-if="!isUsbMode" :title="$t('compute.vgpu_check.tooltip')">
                 <a-icon type="question-circle-o" />
               </a-tooltip>
             </span>
             <base-select
+              :key="`group-${deviceCategory}`"
               v-decorator="decorators.device"
               :params="gpuParams"
               :need-params="false"
@@ -41,7 +43,7 @@
               :resList.sync="gpuOpt"
               :mapper="mapper"
               resource="isolated_devices"
-              :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'default' }"
+              :select-props="{ allowClear: true, placeholder: isUsbMode ? $t('compute.text_1403') : $t('compute.text_1172'), mode: 'default' }"
               @change="groupDeviceChange">
               <template v-slot:optionTemplate>
                 <a-select-option v-for="item in gpuOpt" :key="item.id" :value="item.id" :disabled="item.__disabled">
@@ -54,11 +56,11 @@
               </template>
             </base-select>
           </a-form-item>
-          <a-form-item v-if="showGroupGpuType" :label="$t('gpu.device_type')">
+          <a-form-item v-if="!isUsbMode && showGroupGpuType" :label="$t('gpu.device_type')">
             <base-select v-decorator="decorators.gpuType" :options="groupGpuTypeOptions" />
           </a-form-item>
           <a-form-item
-            v-if="showGroupMemoryRequest"
+            v-if="!isUsbMode && showGroupMemoryRequest"
             :label="$t('compute.pci.memory_request')">
             <a-tooltip
               :title="groupMemoryRangeTooltip"
@@ -82,22 +84,23 @@
         </template>
         <!-- 一对多：每台设备一行，可单独配置 -->
         <template v-if="isOpenGpu && !isGroupAction">
-          <a-form-item :extra="$t('compute.text_1171')">
+          <a-form-item :extra="isUsbMode ? $t('compute.text_1402') : $t('compute.text_1171')">
             <span slot="label">
-              {{ $t('compute.text_607') }}&nbsp;
-              <a-tooltip :title="$t('compute.vgpu_check.tooltip')">
+              {{ isUsbMode ? $t('compute.text_1401') : $t('compute.text_607') }}&nbsp;
+              <a-tooltip v-if="!isUsbMode" :title="$t('compute.vgpu_check.tooltip')">
                 <a-icon type="question-circle-o" />
               </a-tooltip>
             </span>
             <div
               v-for="(k, index) in deviceKeys"
-              :key="k"
+              :key="`${deviceCategory}-${k}`"
               class="pci-device-row">
               <div class="pci-device-group">
                 <div class="pci-select-row">
                   <a-form-item class="pci-select-item pci-select-item--model mb-0">
-                    <fixed-label-filter :label="$t('compute.text_607')">
+                    <fixed-label-filter :label="isUsbMode ? $t('compute.text_1401') : $t('compute.text_607')">
                       <base-select
+                        :key="`row-${deviceCategory}-${k}`"
                         v-decorator="decorators.deviceItem(k)"
                         :params="gpuParams"
                         :need-params="false"
@@ -107,18 +110,18 @@
                         :resList.sync="gpuOpt"
                         :disabled-items="getRowDisabledItems(k)"
                         resource="isolated_devices"
-                        :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'default' }"
+                        :select-props="{ allowClear: true, placeholder: isUsbMode ? $t('compute.text_1403') : $t('compute.text_1172'), mode: 'default' }"
                         @change="(val) => onRowDeviceChange(val, k)" />
                     </fixed-label-filter>
                   </a-form-item>
-                  <a-form-item v-if="isRowGpuDevType(k)" class="pci-select-item pci-select-item--fixed mb-0">
+                  <a-form-item v-if="!isUsbMode && isRowGpuDevType(k)" class="pci-select-item pci-select-item--fixed mb-0">
                     <fixed-label-filter :label="$t('compute.pci.gpu_mode')">
                       <base-select v-decorator="decorators.gpuTypeItem(k)" :options="getRowGpuTypeOptions(k)" />
                     </fixed-label-filter>
                   </a-form-item>
                 </div>
                 <a-form-item
-                  v-if="isRowHamiSharingMode(k)"
+                  v-if="!isUsbMode && isRowHamiSharingMode(k)"
                   class="mb-0 pci-memory-item">
                   <fixed-label-filter :label="$t('compute.pci.memory_request')">
                     <a-tooltip
@@ -190,9 +193,11 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     this.deviceRowId = 0
+    const availableTypes = (this.params.availableTypes || ['pci']).filter(Boolean)
     return {
       loading: false,
-      action: this.$t('compute.text_1112'),
+      action: this.$t('compute.set_host_isolated_device'),
+      deviceCategory: availableTypes[0] || 'pci',
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
         fd: {
@@ -275,7 +280,28 @@ export default {
       deviceKeys: [0],
       groupMemoryUnit: 'GB',
       memoryUnits: {},
-      columns: [
+    }
+  },
+  computed: {
+    selectedItems () {
+      return this.params.data
+    },
+    availableTypes () {
+      const types = this.params.availableTypes || ['pci']
+      return types.filter(item => ['pci', 'usb'].includes(item))
+    },
+    deviceCategoryOptions () {
+      const map = {
+        pci: { value: 'pci', label: this.$t('compute.isolated_device.category.pci') },
+        usb: { value: 'usb', label: this.$t('compute.isolated_device.category.usb') },
+      }
+      return this.availableTypes.map(item => map[item]).filter(Boolean)
+    },
+    isUsbMode () {
+      return this.deviceCategory === 'usb'
+    },
+    tableColumns () {
+      return [
         {
           field: 'name',
           title: this.$t('compute.text_228'),
@@ -283,12 +309,13 @@ export default {
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'isolated_devices',
-          title: this.$t('compute.text_113'),
+          title: this.isUsbMode ? 'USB' : this.$t('compute.text_113'),
           slots: {
             default: ({ row }) => {
               const ret = []
               if (row.isolated_devices) {
                 row.isolated_devices.map(item => {
+                  if (!this.isAttachableGuestIsolatedDevice(item)) return
                   ret.push(<list-body-cell-wrap row={{ showName: `${item.addr || ''} ${item.model || ''}` }} field="showName" />)
                 })
               }
@@ -296,12 +323,7 @@ export default {
             },
           },
         },
-      ],
-    }
-  },
-  computed: {
-    selectedItems () {
-      return this.params.data
+      ]
     },
     gpuTypeOptions () {
       return getGpuTypeSelectOptions()
@@ -319,7 +341,7 @@ export default {
         return {
           'filter.0': `host_id.in(${host})`,
           limit: 0,
-          'filter.1': 'dev_type.notin(USB,NIC,NVME-PT)',
+          'filter.1': this.isUsbMode ? 'dev_type.equals(USB)' : 'dev_type.notin(USB,NIC,NVME-PT)',
           scope: this.$store.getters.scope,
         }
       }
@@ -330,10 +352,10 @@ export default {
       return this.gpuOpt.find(item => item.id === id)
     },
     showGroupGpuType () {
-      return this.selectedGroupDevice?.dev_type === 'GPU'
+      return !this.isUsbMode && this.selectedGroupDevice?.dev_type === 'GPU'
     },
     showGroupMemoryRequest () {
-      return this.selectedGroupDevice?.sharing_mode === 'HAMI'
+      return !this.isUsbMode && this.selectedGroupDevice?.sharing_mode === 'HAMI'
     },
     groupMemorySizeMb () {
       return this.getDeviceMemorySizeMb(this.selectedGroupDevice)
@@ -414,7 +436,25 @@ export default {
   },
   methods: {
     isAttachableGuestIsolatedDevice (item) {
+      if (this.isUsbMode) {
+        return item.dev_type === 'USB'
+      }
       return item.dev_type !== 'USB' && item.dev_type !== 'NIC' && item.dev_type !== 'NVME-PT'
+    },
+    async onDeviceCategoryChange () {
+      this.gpuOpt = []
+      this.bindGpus = []
+      this.guestIsolatedDevices = []
+      this.deviceRowId = 0
+      this.deviceKeys = [0]
+      this.isOpenGpu = false
+      this.memoryUnits = {}
+      this.groupMemoryUnit = 'GB'
+      this.form.fd = { device: [] }
+      this.$nextTick(() => {
+        this.form.fc.resetFields()
+        this.init()
+      })
     },
     getGuestIsolatedDeviceId (item) {
       return item.isolated_device_id || item.device || item.id
@@ -575,6 +615,10 @@ export default {
       return (left === '' && right === defaultGpuType) || (right === '' && left === defaultGpuType)
     },
     isSameDeviceConfig (a, b) {
+      // USB 与改前 AttachUsb 一致：仅按 device 对齐
+      if (this.isUsbMode) {
+        return a.device === b.device
+      }
       return a.device === b.device &&
         this.isSameGpuType(a.gpu_type, b.gpu_type) &&
         this.normalizeCompareValue(a.memory_request) === this.normalizeCompareValue(b.memory_request) &&
@@ -756,13 +800,15 @@ export default {
         if (matchIdx >= 0) {
           boundPool.splice(matchIdx, 1)
         } else {
-          // 提交时不带空字符串字段
+          // 提交时不带空字符串字段；USB 仅传 device（与改前 AttachUsb 一致）
           const payload = { device: item.device }
-          if (item.gpu_type) payload.gpu_type = item.gpu_type
-          if (item.memory_request !== undefined && item.memory_request !== null && item.memory_request !== '') {
-            payload.memory_request = item.memory_request
+          if (!this.isUsbMode) {
+            if (item.gpu_type) payload.gpu_type = item.gpu_type
+            if (item.memory_request !== undefined && item.memory_request !== null && item.memory_request !== '') {
+              payload.memory_request = item.memory_request
+            }
+            if (item.sharing_mode) payload.sharing_mode = item.sharing_mode
           }
-          if (item.sharing_mode) payload.sharing_mode = item.sharing_mode
           addDevices.push(payload)
         }
       })
