@@ -1,16 +1,5 @@
-// aiproxy catalog resources are system-scoped (see onecloud/pkg/cloudcommon/db/modelbase.go ResourceScope).
-// Project-scoped resources use the current dashboard scope (project/domain/system).
-const SYSTEM_SCOPED_RESOURCES = new Set([
-  'ai_providers',
-  'ai_models',
-  'ai_keys',
-  'ai_routing_models',
-])
-
+// Project-scoped aiproxy resources use the current dashboard scope (project/domain/system).
 export function getAiproxyResourceScope (resource, vm) {
-  if (SYSTEM_SCOPED_RESOURCES.has(resource)) {
-    return 'system'
-  }
   return vm.$store.getters.scope
 }
 
@@ -19,4 +8,18 @@ export function getAiproxySelectParams (vm, resource, extra = {}) {
     scope: getAiproxyResourceScope(resource, vm),
     ...extra,
   }
+}
+
+export function getAiproxyResourceProjectId (obj) {
+  if (!obj || typeof obj !== 'object') return ''
+  return obj.tenant_id || obj.project_id || ''
+}
+
+export function getAiproxyVirtualKeySelectParams (vm, extra = {}, owner) {
+  const params = getAiproxySelectParams(vm, 'ai_virtual_keys', extra)
+  const projectId = getAiproxyResourceProjectId(owner)
+  if (projectId) {
+    params.project_ids = [projectId]
+  }
+  return params
 }

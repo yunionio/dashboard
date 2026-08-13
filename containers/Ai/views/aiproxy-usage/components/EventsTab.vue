@@ -9,7 +9,8 @@
 
 <script>
 import ListMixin from '@/mixins/list'
-import { getTimeTableColumn } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
+import { getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import {
   buildUsageQueryParams,
   DEFAULT_EVENTS_PAGE_SIZE,
@@ -17,10 +18,11 @@ import {
   usageFiltersToSearchValue,
 } from '../constants'
 import { buildUsageSearchFilterOptions } from '../utils/filterOptions'
+import { isUsageVirtualKeyId } from '../utils/virtualKeyLink'
 
 export default {
   name: 'AiproxyUsageEventsTab',
-  mixins: [ListMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     filters: {
       type: Object,
@@ -65,9 +67,12 @@ export default {
           { label: 'ID', key: 'id' },
           { label: this.$t('aice.aiproxy.usage.time'), key: 'timestamp' },
           { label: this.$t('aice.aiproxy.usage.model'), key: 'model' },
-          { label: this.$t('aice.aiproxy.usage.provider'), key: 'provider' },
+          { label: this.$t('aice.aiproxy.usage.provider'), key: 'provider_name' },
           { label: this.$t('aice.aiproxy.usage.source'), key: 'source' },
           { label: this.$t('aice.aiproxy.usage.api_key'), key: 'api_key_label' },
+          { label: this.$t('aice.aiproxy.usage.ai_key'), key: 'auth_index_name' },
+          { label: this.$t('res.project'), key: 'project_name' },
+          { label: this.$t('res.domain'), key: 'domain_name' },
           { label: this.$t('aice.aiproxy.usage.input_token_short'), key: 'input_tokens' },
           { label: this.$t('aice.aiproxy.usage.output_token_short'), key: 'output_tokens' },
           { label: this.$t('aice.aiproxy.usage.total_token_short'), key: 'total_tokens' },
@@ -99,7 +104,7 @@ export default {
   },
   methods: {
     getParam () {
-      return {}
+      return buildUsageQueryParams(this.filters)
     },
     fetchEventsDistinctField (params) {
       return new this.$Manager('ai_proxy_usage', 'v2').getSpecific({
@@ -131,15 +136,48 @@ export default {
     initColumns () {
       this.columns = [
         { field: 'id', title: 'ID', minWidth: 120, formatter: ({ cellValue }) => cellValue || '-' },
+        getTimeTableColumn({
+          field: 'timestamp',
+          title: this.$t('aice.aiproxy.usage.time'),
+          minWidth: 160,
+          vm: this,
+        }),
         { field: 'model', title: this.$t('aice.aiproxy.usage.model'), minWidth: 160, formatter: ({ cellValue }) => cellValue || '-' },
-        { field: 'provider', title: this.$t('aice.aiproxy.usage.provider'), minWidth: 120, formatter: ({ cellValue }) => cellValue || '-' },
-        { field: 'source', title: this.$t('aice.aiproxy.usage.source'), minWidth: 100, formatter: ({ cellValue }) => cellValue || '-' },
+        { field: 'provider', title: this.$t('aice.aiproxy.usage.provider'), minWidth: 120, formatter: ({ row }) => row.provider_name || row.provider || '-' },
+        { field: 'source', title: this.$t('aice.aiproxy.usage.source'), minWidth: 180, formatter: ({ cellValue }) => cellValue || '-' },
         {
           field: 'api_key',
           title: this.$t('aice.aiproxy.usage.api_key'),
           minWidth: 140,
+          slots: {
+            default: ({ row }) => {
+              const text = this.formatKeyLabel(row)
+              const id = row.api_key_id || row.api_key
+              if (!isUsageVirtualKeyId(id)) return text
+              return [
+                <side-page-trigger permission="ai_virtual_keys_get" name="AiVirtualKeySidePage" id={id} vm={this}>{text}</side-page-trigger>,
+              ]
+            },
+          },
           formatter: ({ row }) => this.formatKeyLabel(row),
         },
+        {
+          field: 'auth_index',
+          title: this.$t('aice.aiproxy.usage.ai_key'),
+          minWidth: 140,
+          slots: {
+            default: ({ row }) => {
+              const text = this.formatAiKeyLabel(row)
+              const id = row.auth_index
+              if (!isUsageVirtualKeyId(id)) return text
+              return [
+                <side-page-trigger permission="ai_keys_get" name="AiKeySidePage" id={id} vm={this}>{text}</side-page-trigger>,
+              ]
+            },
+          },
+          formatter: ({ row }) => this.formatAiKeyLabel(row),
+        },
+        getProjectTableColumn({ field: 'project_name', domainField: 'domain_name', sortable: false, minWidth: 120 }),
         {
           field: 'input_tokens',
           title: this.$t('aice.aiproxy.usage.input_token_short'),
@@ -182,12 +220,6 @@ export default {
         },
         { field: 'status_code', title: this.$t('aice.aiproxy.usage.status_code'), minWidth: 80, formatter: ({ cellValue }) => cellValue ?? '-' },
         { field: 'error_message', title: this.$t('aice.aiproxy.usage.error'), minWidth: 160, formatter: ({ cellValue }) => cellValue || '-' },
-        getTimeTableColumn({
-          field: 'timestamp',
-          title: this.$t('aice.aiproxy.usage.time'),
-          minWidth: 160,
-          vm: this,
-        }),
       ]
     },
     resultLabel (val) {
@@ -197,6 +229,9 @@ export default {
     },
     formatKeyLabel (record) {
       return record.api_key_label || record.api_key_name || record.api_key || '-'
+    },
+    formatAiKeyLabel (record) {
+      return record.auth_index_name || record.auth_index_label || record.auth_index || '-'
     },
     formatDuration (ms) {
       if (ms == null) return '-'
