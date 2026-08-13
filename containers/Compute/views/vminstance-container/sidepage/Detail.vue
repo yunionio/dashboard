@@ -254,7 +254,7 @@ export default {
             },
             {
               field: 'isolated_devices',
-              title: this.$t('compute.text_113'),
+              title: this.$t('compute.isolated_device.category.pci'),
               formatter: ({ row }) => {
                 if (!row.isolated_devices?.length && !row.gpu_count) return '-'
                 const devices = this.getIsolatedDevicesForDisplay(row).filter(val => val.dev_type !== 'USB')
