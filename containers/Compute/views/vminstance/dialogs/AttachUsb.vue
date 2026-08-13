@@ -31,10 +31,12 @@
             :labelFormat="labelFormat"
             :disabled-items="disabledItems"
             filterable
+            show-sync
             :resList.sync="usbOpt"
             :mapper="mapper"
             resource="isolated_devices"
-            :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'default' }">
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'default' }"
+            @refreshOptions="refreshUsbOptions">
             <template v-slot:optionTemplate>
               <a-select-option v-for="item in usbOpt" :key="item.id" :value="item.id" :disabled="item.__disabled">
                 <div class="d-flex">
@@ -52,8 +54,10 @@
             :params="usbParams"
             :need-params="false"
             filterable
+            show-sync
             :options="usbOptions"
-            :select-props="{ allowClear: true, placeholder: $t('compute.text_1403'), mode: 'multiple', loading: usbOptionsLoading }" />
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_1403'), mode: 'multiple', loading: usbOptionsLoading }"
+            @refreshOptions="refreshUsbOptions" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_294')" v-show="isOpenUsb && isGroupAction" :extra="$t('compute.text_1175')">
           <a-input-number :min="1" v-decorator="decorators.number" />
@@ -272,47 +276,65 @@ export default {
         await this.initUsbOptions()
       }
     },
+    async fetchUsbOptionList () {
+      const acttachedRes = await new this.$Manager('isolated_devices', 'v2').list({
+        params: {
+          $t: 2,
+          guest_id: this.params.data[0].id,
+        },
+      })
+      const { data: acttachedList = [] } = acttachedRes.data
+      const probleDevRes = await new this.$Manager('isolated_devices', 'v2').list({
+        params: {
+          $t: 1,
+          host_id: this.params.data[0].host_id,
+        },
+      })
+      const { data: probleDevList = [] } = probleDevRes.data
+      const list = [...acttachedList]
+      probleDevList.forEach(item => {
+        if (!item.guest_id && !list.some(l => l.id === item.id)) {
+          list.push(item)
+        }
+      })
+      const usbOptions = list.filter(item => {
+        return this.isUsbDevice(item)
+      }).map(item => {
+        return {
+          key: item.id,
+          id: item.id,
+          name: `${item.addr || ''} ${item.model || ''}`,
+        }
+      })
+      usbOptions.sort((a, b) => {
+        return a.key - b.key
+      })
+      return {
+        acttachedList,
+        usbOptions,
+      }
+    },
+    async refreshUsbOptions () {
+      try {
+        this.usbOptionsLoading = true
+        const { usbOptions } = await this.fetchUsbOptionList()
+        this.usbOptions = usbOptions
+      } catch (err) {
+        throw err
+      } finally {
+        this.usbOptionsLoading = false
+      }
+    },
     async initUsbOptions () {
       try {
         this.usbOptionsLoading = true
-        const acttachedRes = await new this.$Manager('isolated_devices', 'v2').list({
-          params: {
-            $t: 2,
-            guest_id: this.params.data[0].id,
-          },
-        })
-        const { data: acttachedList = [] } = acttachedRes.data
-        const probleDevRes = await new this.$Manager('isolated_devices', 'v2').list({
-          params: {
-            $t: 1,
-            host_id: this.params.data[0].host_id,
-          },
-        })
-        const { data: probleDevList = [] } = probleDevRes.data
+        const { acttachedList, usbOptions } = await this.fetchUsbOptionList()
         const device = this.bindUsbs.length
           ? this.bindUsbs
           : acttachedList.filter(item => this.isUsbDevice(item)).map(item => item.id)
         this.bindUsbs = device
         this.form.fc.setFieldsValue({
           device,
-        })
-        const list = [...acttachedList]
-        probleDevList.forEach(item => {
-          if (!item.guest_id && !list.some(l => l.id === item.id)) {
-            list.push(item)
-          }
-        })
-        const usbOptions = list.filter(item => {
-          return this.isUsbDevice(item)
-        }).map(item => {
-          return {
-            key: item.id,
-            id: item.id,
-            name: `${item.addr || ''} ${item.model || ''}`,
-          }
-        })
-        usbOptions.sort((a, b) => {
-          return a.key - b.key
         })
         this.usbOptions = usbOptions
       } catch (err) {
