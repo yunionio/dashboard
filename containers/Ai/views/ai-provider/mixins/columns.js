@@ -1,6 +1,7 @@
 import {
   getNameDescriptionTableColumn,
   getEnabledTableColumn,
+  getProjectTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import AiproxyProviderLabel from '@Ai/components/AiproxyProviderLabel'
@@ -47,6 +48,7 @@ export default {
           return url || '-'
         },
       },
+      getProjectTableColumn(),
       getTimeTableColumn(),
     ]
   },

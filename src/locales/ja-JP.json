@@ -6676,8 +6676,11 @@
   "aice.aiproxy.usage.token_trend": "トークン使用傾向",
   "aice.aiproxy.usage.composition": "構成分析",
   "aice.aiproxy.usage.api_key_composition": "APIキー構成",
+  "aice.aiproxy.usage.api_key_usage": "APIキー使用量",
+  "aice.aiproxy.usage.ai_key": "プロバイダーAPIキー",
+  "aice.aiproxy.usage.ai_key_usage": "プロバイダーAPIキー使用量",
   "aice.aiproxy.usage.model_composition": "モデル構成",
-  "aice.aiproxy.usage.auth_source": "AiKey/ソース",
+  "aice.aiproxy.usage.auth_source": "プロバイダーAPIキー構成",
   "aice.aiproxy.usage.provider_composition": "プロバイダ構成",
   "aice.aiproxy.usage.heatmap": "時間ヒートマップ",
   "aice.aiproxy.usage.weekday": "曜日",
@@ -6707,7 +6710,5 @@
   "aice.aiproxy.usage.endpoint": "エンドポイント",
   "aice.aiproxy.usage.failure_count": "失敗数",
   "aice.aiproxy.usage.success_count": "成功数",
-  "aice.aiproxy.usage.total_cost": "総コスト",
-  "aice.aiproxy.usage.cost_per_request": "リクエストあたりコスト",
   "aice.aiproxy.usage.metric_token_count": "トークン数"
 }

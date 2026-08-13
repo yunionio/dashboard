@@ -13,6 +13,12 @@
     <!-- 区块 B：趋势图 -->
     <trend-charts :loading="loading" :overview-data="data" />
 
+    <!-- 区块 C：API Key 用量 -->
+    <api-key-usage-table :loading="loading" :overview-data="data" />
+
+    <!-- 区块 C2：AiKey 用量 -->
+    <ai-key-usage-table :loading="loading" :overview-data="data" />
+
     <!-- 区块 D：服务健康表 -->
     <service-health-table :loading="loading" :overview-data="data" />
   </div>
@@ -21,11 +27,13 @@
 <script>
 import StatCards from './StatCards'
 import TrendCharts from './TrendCharts'
+import ApiKeyUsageTable from './ApiKeyUsageTable'
+import AiKeyUsageTable from './AiKeyUsageTable'
 import ServiceHealthTable from './ServiceHealthTable'
 
 export default {
   name: 'AiproxyUsageOverviewTab',
-  components: { StatCards, TrendCharts, ServiceHealthTable },
+  components: { StatCards, TrendCharts, ApiKeyUsageTable, AiKeyUsageTable, ServiceHealthTable },
   props: {
     loading: {
       type: Boolean,

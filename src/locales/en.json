@@ -6663,8 +6663,11 @@
   "aice.aiproxy.usage.token_trend": "Token Usage Trend",
   "aice.aiproxy.usage.composition": "Composition Analysis",
   "aice.aiproxy.usage.api_key_composition": "API Key Composition",
+  "aice.aiproxy.usage.api_key_usage": "API Key Usage",
+  "aice.aiproxy.usage.ai_key": "Provider API Key",
+  "aice.aiproxy.usage.ai_key_usage": "Provider API Key Usage",
   "aice.aiproxy.usage.model_composition": "Model Composition",
-  "aice.aiproxy.usage.auth_source": "AiKey/Source",
+  "aice.aiproxy.usage.auth_source": "Provider API Key Composition",
   "aice.aiproxy.usage.provider_composition": "Provider Composition",
   "aice.aiproxy.usage.heatmap": "Time Heatmap",
   "aice.aiproxy.usage.weekday": "Weekday",
@@ -6694,7 +6697,5 @@
   "aice.aiproxy.usage.endpoint": "Endpoint",
   "aice.aiproxy.usage.failure_count": "Failures",
   "aice.aiproxy.usage.success_count": "Successes",
-  "aice.aiproxy.usage.total_cost": "Total Cost",
-  "aice.aiproxy.usage.cost_per_request": "Cost/Request",
   "aice.aiproxy.usage.metric_token_count": "Tokens"
 }

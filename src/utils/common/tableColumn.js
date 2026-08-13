@@ -16,7 +16,7 @@ import SystemIcon from '@/sections/SystemIcon'
 import RegionalAvailabilityPopover from '@/sections/RegionalAvailabilityPopover'
 const brandMap = typeClouds.getBrand()
 
-export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
+export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100, domainField } = {}) => {
   return {
     field,
     title,
@@ -36,7 +36,7 @@ export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.
         } else {
           ret.push(<list-body-cell-wrap copy field={field} row={{ [field]: project }} />)
         }
-        const domain = row.project_domain || row.domain
+        const domain = (domainField && row[domainField]) || row.project_domain || row.domain
         if (domain) {
           ret.push(
             <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>

@@ -1,6 +1,7 @@
 import {
   getNameDescriptionTableColumn,
   getEnabledTableColumn,
+  getProjectTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import { getAiProviderLinkColumn } from '@Ai/utils/aiproxyLlmLinkColumns'
@@ -30,6 +31,7 @@ export default {
           return parts.length ? parts.join(' ') : '-'
         },
       },
+      getProjectTableColumn(),
       getTimeTableColumn(),
     ]
   },

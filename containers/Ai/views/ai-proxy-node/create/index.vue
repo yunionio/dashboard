@@ -46,6 +46,11 @@ export default {
       },
     }
   },
+  created () {
+    if (this.$store.getters.isProjectMode) {
+      this.$router.replace('/ai-proxy-node')
+    }
+  },
   methods: {
     handleCancel () {
       this.$router.push('/ai-proxy-node')
