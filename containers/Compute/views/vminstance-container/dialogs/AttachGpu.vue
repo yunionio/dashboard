@@ -37,6 +37,7 @@
               :labelFormat="labelFormat"
               :disabled-items="disabledItems"
               filterable
+              show-sync
               :resList.sync="gpuOpt"
               :mapper="mapper"
               resource="isolated_devices"
