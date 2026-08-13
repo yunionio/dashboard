@@ -5,7 +5,7 @@
 <script>
 import AiproxyProviderLinkDetailMixin from '@Ai/mixins/aiproxyProviderLinkDetailMixin'
 import { getAiProviderDetailField, getVisualProviderDetailField } from '@Ai/utils/aiproxyLlmLinkColumns'
-import { getEnabledTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'AiModelDetail',
@@ -50,6 +50,7 @@ export default {
           title: this.$t('aice.aiproxy.visual_max_tokens'),
           formatter: () => this.visualConfig.max_tokens || '-',
         },
+        getProjectTableColumn(),
         getTimeTableColumn(),
       ]
     },

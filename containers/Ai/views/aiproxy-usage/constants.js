@@ -1,4 +1,5 @@
 import i18n from '@/locales'
+import store from '@/store'
 
 export const EVENTS_ONLY_FILTER_KEYS = ['id', 'status_code', 'error_message']
 
@@ -43,6 +44,7 @@ export function buildDefaultFilters () {
 
 export function buildUsageQueryParams (filters, extra = {}) {
   const params = { ...extra }
+  if (store.getters.scope) params.scope = store.getters.scope
   if (filters.range) params.range = filters.range
   if (filters.range === 'custom') {
     if (filters.start) params.start = filters.start

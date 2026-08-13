@@ -6,7 +6,7 @@
 import AiproxyLlmLinkDetailMixin from '@Ai/mixins/aiproxyLlmLinkDetailMixin'
 import AiproxyProviderLabel from '@Ai/components/AiproxyProviderLabel'
 import { getLlmDeploymentDetailField, getLlmInstanceDetailField } from '@Ai/utils/aiproxyLlmLinkColumns'
-import { getEnabledTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import { formatApiModeLabel, supportsDualAPIMode } from '@Ai/utils/aiproxyProviderApiMode'
 import { isCustomProviderKey } from '@Ai/utils/aiproxyProviderTypes'
 import { effectiveProviderBaseURL } from '@Ai/utils/aiproxyProviderDefaults'
@@ -67,6 +67,7 @@ export default {
         },
         getLlmDeploymentDetailField(this, { deploymentName: this.llmDeploymentName }),
         getLlmInstanceDetailField(this, { instanceName: this.llmInstanceName }),
+        getProjectTableColumn(),
         getTimeTableColumn(),
       ]
     },

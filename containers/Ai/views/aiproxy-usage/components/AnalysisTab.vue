@@ -108,7 +108,6 @@ const COMPOSITION_METRIC_KEYS = [
   'output_tokens',
   'input_tokens',
   'token_count',
-  'total_cost',
 ]
 
 export default {
@@ -151,7 +150,6 @@ export default {
         output_tokens: this.$t('aice.aiproxy.usage.output_tokens'),
         input_tokens: this.$t('aice.aiproxy.usage.input_tokens'),
         token_count: this.$t('aice.aiproxy.usage.token_count'),
-        total_cost: this.$t('aice.aiproxy.usage.total_cost'),
       }
       return COMPOSITION_METRIC_KEYS.map(key => ({
         key,
@@ -160,7 +158,6 @@ export default {
     },
     compositionYAxisFormat () {
       if (this.compositionMetric === 'success_rate') return '0.[00]%'
-      if (this.compositionMetric === 'total_cost') return '0.[0000]'
       return '0'
     },
     ringCharts () {
@@ -196,7 +193,6 @@ export default {
         { title: this.$t('aice.aiproxy.usage.request_count_short'), field: 'request_count', minWidth: 100, formatter: ({ cellValue }) => cellValue ?? 0 },
         { title: this.$t('aice.aiproxy.usage.tokens_per_request'), field: 'tokens_per_request', minWidth: 120, formatter: ({ cellValue }) => cellValue != null ? cellValue.toFixed(1) : '-' },
         { title: this.$t('aice.aiproxy.usage.output_tokens_per_request'), field: 'output_tokens_per_request', minWidth: 140, formatter: ({ cellValue }) => cellValue != null ? cellValue.toFixed(1) : '-' },
-        { title: this.$t('aice.aiproxy.usage.cost_per_request'), field: 'cost_per_request', minWidth: 120, formatter: ({ cellValue }) => cellValue != null ? cellValue.toFixed(4) : '-' },
       ]
     },
     latencyItems () {
