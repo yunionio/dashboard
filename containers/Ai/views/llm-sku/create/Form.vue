@@ -145,7 +145,7 @@
           :label="$t(field.label)">
           <llm-gpu-devices-editor
             v-decorator="decorators[field.fieldKey]"
-            :require-hami-memory-mb="isLocalPathSku"
+            :require-hami-memory-mb="requireHamiMemoryMb"
             :allow-empty="!isDeviceRequired"
             :sharing-mode-values="deviceSharingModeValues"
             :default-sharing-mode="deviceDefaultSharingMode" />
@@ -920,7 +920,7 @@ export default {
                   const field = (LLM_TYPE_FORM_CONFIG[type] || []).find(f => f.fieldKey === 'device')
                   const hasInjectedDevice = (this.isCatalogMode && this.catalogSubmitType === 'import' && !this.isApplyType && !this.isDesktopType) || this.isLocalPathSku
                   const required = !!(field?.rules?.some(r => r.required) || hasInjectedDevice || isCatalogImport || isLocalPathImport)
-                  const requireHamiMemoryMb = !!(this.isLocalPathSku || isLocalPathImport)
+                  const requireHamiMemoryMb = !!this.requireHamiMemoryMb
                   const pciModelTypes = this.podPciModels
                   if (!isValidDeviceRows(value, { allowEmpty: !required, requireHamiMemoryMb, pciModelTypes })) {
                     if (requireHamiMemoryMb && Array.isArray(value) && value.some(row => String(row?.model || '').trim() && resolveSharingMode(row.sharing_mode) === 'HAMI' && !(parseInt(row.memory_mb, 10) > 0))) {
@@ -1062,6 +1062,15 @@ export default {
       if (!this.isEditMode) return false
       const source = this.editData?.source ?? this.form?.fd?.source
       return String(source || '').trim() === 'local_path'
+    },
+    isComfyuiSku () {
+      const type = (this.isCatalogMode || this.isLocalPathImportMode)
+        ? this.catalogLlmType
+        : (this.form?.fd?.llm_type)
+      return String(type || '').toLowerCase() === 'comfyui'
+    },
+    requireHamiMemoryMb () {
+      return !!(this.isLocalPathSku || this.isComfyuiSku)
     },
     isDeviceRequired () {
       const type = (this.isCatalogMode || this.isLocalPathImportMode)
