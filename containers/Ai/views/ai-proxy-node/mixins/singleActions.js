@@ -33,7 +33,12 @@ export default {
                 onManager: this.onManager,
               })
             },
-            meta: () => this.$getDeleteResult(obj),
+            meta: () => {
+              if (obj.id === 'primary') {
+                return { validate: false, tooltip: this.$t('aice.aiproxy.primary_node_undeletable') }
+              }
+              return this.$getDeleteResult(obj)
+            },
           },
         ],
       },

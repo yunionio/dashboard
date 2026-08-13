@@ -2,7 +2,7 @@
   <div class="monitor-overview-chart mt-4">
     <div class="header mb-1">
       <div class="title-wrapper">
-        <div class="title">{{ $t('aice.aiproxy.usage.service_health') }}</div>
+        <div class="title">{{ $t('aice.aiproxy.usage.api_key_usage') }}</div>
       </div>
     </div>
     <a-spin :spinning="loading" class="table-loading-wrap">
@@ -33,8 +33,12 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
+import { isUsageVirtualKeyId } from '../utils/virtualKeyLink'
+
 export default {
-  name: 'AiproxyUsageServiceHealthTable',
+  name: 'AiproxyUsageApiKeyUsageTable',
+  mixins: [WindowsMixin],
   props: {
     loading: {
       type: Boolean,
@@ -56,8 +60,8 @@ export default {
     }
   },
   computed: {
-    serviceHealth () {
-      return (this.overviewData || {}).service_health || []
+    apiKeyComposition () {
+      return (this.overviewData || {}).api_key_composition || []
     },
     currentPageData () {
       if (!this.tableData.length) return []
@@ -67,26 +71,24 @@ export default {
     },
     vxeColumns () {
       return [
-        { title: this.$t('aice.aiproxy.usage.provider'), field: 'provider', minWidth: 140, formatter: ({ row }) => row.provider_name || row.provider || '-' },
-        { title: this.$t('aice.aiproxy.usage.model'), field: 'model', minWidth: 200, formatter: ({ cellValue }) => cellValue ?? '-' },
+        { title: this.$t('aice.aiproxy.usage.api_key'), field: 'name', minWidth: 160, slots: { default: ({ row }) => this.renderApiKeyCell(row) }, formatter: ({ row }) => this.apiKeyLabel(row) },
         { title: this.$t('aice.aiproxy.usage.request_count_short'), field: 'request_count', minWidth: 100, formatter: ({ cellValue }) => cellValue ?? 0 },
-        { title: this.$t('aice.aiproxy.usage.success_rate_short'), field: 'successRate', minWidth: 100 },
-        { title: this.$t('aice.aiproxy.usage.avg_latency_short'), field: 'avg_latency_ms', minWidth: 100, formatter: ({ cellValue }) => this.formatDuration(cellValue) },
-        { title: this.$t('aice.aiproxy.usage.last_status'), field: 'last_status_code', minWidth: 100, formatter: ({ cellValue }) => cellValue ?? '-' },
+        { title: this.$t('aice.aiproxy.usage.success_count'), field: 'success_count', minWidth: 100, formatter: ({ cellValue }) => cellValue ?? 0 },
+        { title: this.$t('aice.aiproxy.usage.failure_count'), field: 'failure_count', minWidth: 100, formatter: ({ cellValue }) => cellValue ?? 0 },
+        { title: this.$t('aice.aiproxy.usage.token_count'), field: 'token_count', minWidth: 100, formatter: ({ cellValue }) => cellValue ?? 0 },
+        { title: this.$t('aice.aiproxy.usage.input_token_short'), field: 'input_tokens', minWidth: 90, formatter: ({ cellValue }) => cellValue ?? 0 },
+        { title: this.$t('aice.aiproxy.usage.output_token_short'), field: 'output_tokens', minWidth: 90, formatter: ({ cellValue }) => cellValue ?? 0 },
       ]
     },
   },
   watch: {
-    serviceHealth: {
+    apiKeyComposition: {
       immediate: true,
       handler (val) {
         const raw = val || []
         this.tableData = raw.map((item, index) => ({
           ...item,
           index,
-          successRate: item.request_count > 0
-            ? ((item.success_count / item.request_count) * 100).toFixed(1) + '%'
-            : '-',
         }))
         this.page.total = this.tableData.length
         this.page.currentPage = 1
@@ -103,11 +105,19 @@ export default {
         this.page.currentPage = 1
       }
     },
-    formatDuration (ms) {
-      if (ms == null) return '-'
-      if (ms < 1000) return ms.toFixed(0) + 'ms'
-      if (ms < 60000) return (ms / 1000).toFixed(2) + 's'
-      return (ms / 60000).toFixed(2) + 'min'
+    apiKeyLabel (row) {
+      return row.name || row.label || row.id || '-'
+    },
+    canOpenVirtualKey (id) {
+      return isUsageVirtualKeyId(id)
+    },
+    renderApiKeyCell (row) {
+      const text = this.apiKeyLabel(row)
+      const id = row.id
+      if (!this.canOpenVirtualKey(id)) return text
+      return [
+        <side-page-trigger permission="ai_virtual_keys_get" name="AiVirtualKeySidePage" id={id} vm={this}>{text}</side-page-trigger>,
+      ]
     },
   },
 }

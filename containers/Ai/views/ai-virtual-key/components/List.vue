@@ -57,7 +57,14 @@ export default {
   },
   created () {
     this.initSidePageTab('detail')
-    this.list.fetchData()
+    this.list.fetchData().then(() => {
+      this.$nextTick(() => {
+        const id = this.$route.query.id
+        if (id) {
+          this.handleOpenSidepage({ id })
+        }
+      })
+    })
   },
   methods: {
     getParam () {

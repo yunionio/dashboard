@@ -59,6 +59,7 @@ export default {
             this.$router.push({ name: 'AiProxyNodeCreate' })
           },
           meta: () => ({ buttonType: 'primary', validate: true }),
+          hidden: () => this.$store.getters.isProjectMode,
         },
         {
           label: this.$t('common.batchAction'),
@@ -77,7 +78,13 @@ export default {
                   onManager: this.onManager,
                 })
               },
-              meta: () => ({ validate: this.list.allowDelete() }),
+              meta: () => {
+                const items = this.list.selectedItems || []
+                if (items.some(item => item.id === 'primary')) {
+                  return { validate: false, tooltip: this.$t('aice.aiproxy.primary_node_undeletable') }
+                }
+                return { validate: this.list.allowDelete() }
+              },
             },
           ],
         },

@@ -155,7 +155,7 @@
 import VueMarkdown from 'vue-markdown'
 import WindowsMixin from '@/mixins/windows'
 import { Manager } from '@/utils/manager'
-import { getAiproxySelectParams } from '@Ai/constants/aiproxyResources'
+import { getAiproxyVirtualKeySelectParams } from '@Ai/constants/aiproxyResources'
 import {
   buildAnthropicChatTestRequestConfig,
   buildChatTestRequestConfig,
@@ -277,7 +277,11 @@ export default {
       return this.$t('ai.mcp.chat_test.api_key_required')
     },
     virtualKeySelectParams () {
-      return getAiproxySelectParams(this, 'ai_virtual_keys', { enabled: true, limit: 100 })
+      return getAiproxyVirtualKeySelectParams(
+        this,
+        { enabled: true, limit: 100 },
+        this.isChatTest ? this.data : null,
+      )
     },
     virtualKeySelectProps () {
       return {
@@ -825,7 +829,7 @@ export default {
         const manager = new Manager('ai_virtual_keys')
         const { data } = await manager.get({
           id: virtualKeyId,
-          params: getAiproxySelectParams(this, 'ai_virtual_keys'),
+          params: getAiproxyVirtualKeySelectParams(this, {}, this.isChatTest ? this.data : null),
         })
         this.selectedVirtualKey = data?.virtual_key || cachedVirtualKey || ''
         if (data?.id && data?.name) {

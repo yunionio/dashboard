@@ -5,7 +5,7 @@
 <script>
 import AiproxyProviderLinkDetailMixin from '@Ai/mixins/aiproxyProviderLinkDetailMixin'
 import { getAiProviderDetailField } from '@Ai/utils/aiproxyLlmLinkColumns'
-import { getEnabledTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import { maskSecret } from '@Ai/utils/aiproxyUtils'
 
 export default {
@@ -39,6 +39,7 @@ export default {
           title: this.$t('aice.aiproxy.blocked_model_keys'),
           formatter: ({ row }) => (row.routing?.blocked_model_keys || []).join(', ') || '-',
         },
+        getProjectTableColumn(),
         getTimeTableColumn(),
       ]
     },
