@@ -514,7 +514,10 @@ export default {
       })
     },
     async loadOpts (query) {
-      if (this.options) return // 指定数据源是外传options,这里不请求
+      if (this.options) { // 指定数据源是外传options,这里不请求
+        this.$emit('refreshOptions')
+        return
+      }
       if (!query || (!R.isNil(query) && this.remote)) { // 没有query或者是有query但是需要有remote才执行
         const { manager, params } = this.genParams(query)
         this.loadMoreOffset = 0
