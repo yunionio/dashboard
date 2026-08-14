@@ -21,6 +21,7 @@ import {
   getPublicScopeTableColumn,
   getTagTableColumn,
   getOsArch,
+  getOsDist,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -82,6 +83,11 @@ export default {
         {
           title: this.$t('compute.text_629'),
           items: [
+            getOsDist({
+              title: this.$t('compute.text_267'),
+              show_label: true,
+              hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_columns.os_type'),
+            }),
             getOsArch({ field: 'properties.os_arch' }),
             {
               field: 'disk_format',

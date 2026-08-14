@@ -1591,6 +1591,7 @@
   "compute.gpu_associate_server": "パススルーデバイスと同じホスト上でシャットダウン状態の仮想マシンのみを選択できます",
   "compute.detach_eip": "最初にEIPのバインドを解除してください",
   "compute.disk_backup": "ハードディスクのバックアップ",
+  "compute.disk.details.backup": "バックアップ",
   "compute.create_disk_backup": "新しいバックアップを作成する",
   "compute.rollback_disk_backup": "バックアップをロールバックする",
   "compute.backup_name": "バックアップ名",
