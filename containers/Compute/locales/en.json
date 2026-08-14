@@ -1590,6 +1590,7 @@
   "compute.gpu_associate_server": "Only virtual machines with the same host as the Passthrough in the shutdown state can be selected",
   "compute.detach_eip": "Please unbind the EIP first",
   "compute.disk_backup": "Disk Backup",
+  "compute.disk.details.backup": "Backup",
   "compute.create_disk_backup": "Create Disk Backup",
   "compute.rollback_disk_backup": "Rollback Disk Backup",
   "compute.backup_name": "Backup Name",

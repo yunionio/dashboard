@@ -1405,30 +1405,29 @@ export const getOsDist = ({
     sortable: true,
     slots: {
       default: ({ row }, h) => {
-        if (!row.metadata) return
-        const dist = row.metadata.os_distribution || row.metadata.distro
-        const version = row.metadata.os_version || row.metadata.version
+        if (!row.metadata && !row.properties) return
+        const dist = row.metadata?.os_distribution || row.metadata?.distro || row.properties?.os_distribution || row.properties?.distro
+        const version = row.metadata?.os_version || row.metadata?.version || row.properties?.os_version || row.properties?.version
+        const osType = row.metadata?.os_type || row.properties?.os_type || row.os_type
 
         let name = ''
         let tooltip = ''
         if (dist) {
           tooltip = version ? (version.includes(dist) ? version : `${decodeURI(dist)} ${version}`) : dist
-        } else if (row.metadata.os_type) {
-          tooltip = row.metadata.os_type
-        } else if (row.os_type) {
-          tooltip = row.os_type
+        } else if (osType) {
+          tooltip = osType
         } else {
           tooltip = i18n.t('compute.text_339')
         }
 
-        name = dist || row.metadata.os_type || row.os_type || ''
+        name = dist || osType || ''
         if (name.includes('Windows') || name.includes('windows')) {
           name = 'Windows'
         } else if (name.startsWith('Linux') || name.startsWith('linux')) {
           name = 'Linux'
         } else if (name === 'Others Linux') {
           name = 'Linux'
-          tooltip = row.metadata.os_full_name || tooltip
+          tooltip = row.metadata?.os_full_name || tooltip
         }
         const ret = [
           <SystemIcon tooltip={tooltip} name={name} />,
