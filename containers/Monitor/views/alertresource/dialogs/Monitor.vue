@@ -51,14 +51,26 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const metricQuery = this.params.data.map(item => {
-      const alert_detail = item.data.alert_details
-      const tag = item.data.tags
-      const originTags = [{
-        key: 'vm_id',
-        operator: '=',
-        value: tag.vm_id,
-      }]
+    const metricQuery = (this.params.data || []).map(item => {
+      const data = item.data || {}
+      const alert_detail = data.alert_details || {}
+      const tag = data.tags || {}
+      const idKey = alert_detail.res_id_key
+      const idVal = idKey ? tag[idKey] : (tag.host_id || tag.vm_id)
+      const originTags = []
+      if (idKey && idVal) {
+        originTags.push({
+          key: idKey,
+          operator: '=',
+          value: idVal,
+        })
+      } else if (idVal) {
+        originTags.push({
+          key: tag.host_id ? 'host_id' : 'vm_id',
+          operator: '=',
+          value: idVal,
+        })
+      }
       if (alert_detail.measurement === 'agent_cpu') {
         originTags.push({
           key: 'cpu',
@@ -85,12 +97,17 @@ export default {
         },
       }
     })
-    const seriesDesc = this.params.data.map(item => {
-      const alert_detail = item.data.alert_details || {}
+    const seriesDesc = (this.params.data || []).map(item => {
+      const alert_detail = (item.data && item.data.alert_details) || {}
+      const resType = alert_detail.res_type
+      const resTypeLabel = resType && this.$te(`dictionary.${resType}`) ? this.$t(`dictionary.${resType}`) : ''
+      const measurementLabel = metric_zh[alert_detail.measurement_display_name] || alert_detail.measurement_display_name || ''
+      const fieldDisplayName = alert_detail.field_description && alert_detail.field_description.display_name
+      const fieldLabel = metric_zh[fieldDisplayName] || fieldDisplayName || ''
 
       return {
         description: alert_detail.field_description,
-        title: `${this.$t(`dictionary.${alert_detail.res_type}`)}${metric_zh[alert_detail.measurement_display_name]}(${metric_zh[alert_detail.field_description?.display_name]})`,
+        title: `${resTypeLabel}${measurementLabel}${fieldLabel ? `(${fieldLabel})` : ''}`,
       }
     })
     return {
@@ -109,7 +126,7 @@ export default {
   },
   computed: {
     isEmpty () {
-      return this.seriesList.length === 0
+      return !this.seriesList || this.seriesList.length === 0
     },
     isLoading () {
       return this.loadingList.some(v => v)
