@@ -12,7 +12,6 @@ export const USAGE_RANGE_OPTIONS = [
   { value: 'yesterday', label: i18n.t('aice.aiproxy.usage.range_yesterday') },
   { value: '7d', label: i18n.t('aice.aiproxy.usage.range_7d') },
   { value: '30d', label: i18n.t('aice.aiproxy.usage.range_30d') },
-  // { value: 'custom', label: i18n.t('aice.aiproxy.usage.range_custom') },
 ]
 
 export const USAGE_RESULT_OPTIONS = [
@@ -21,7 +20,7 @@ export const USAGE_RESULT_OPTIONS = [
   { value: 'failed', label: i18n.t('aice.aiproxy.usage.result_failed') },
 ]
 
-export const DEFAULT_USAGE_RANGE = '24h'
+export const DEFAULT_USAGE_RANGE = 'custom'
 export const DEFAULT_EVENTS_PAGE_SIZE = 50
 export const EVENTS_PAGE_SIZES = [20, 50, 100]
 
@@ -45,10 +44,11 @@ export function buildDefaultFilters () {
 export function buildUsageQueryParams (filters, extra = {}) {
   const params = { ...extra }
   if (store.getters.scope) params.scope = store.getters.scope
-  if (filters.range) params.range = filters.range
-  if (filters.range === 'custom') {
-    if (filters.start) params.start = filters.start
-    if (filters.end) params.end = filters.end
+  if (filters.start && filters.end) {
+    params.start = filters.start
+    params.end = filters.end
+  } else if (filters.range && filters.range !== 'custom') {
+    params.range = filters.range
   }
   if (filters.timezone) params.timezone = filters.timezone
   if (filters.api_key_label) params.api_key_label = filters.api_key_label
@@ -70,12 +70,14 @@ function pickSearchValue (searchValue, key) {
   return Array.isArray(val) ? val.join('|') : String(val)
 }
 
-export function usageFiltersToSearchValue (filters, { includeEventsFields = true } = {}) {
+export function usageFiltersToSearchValue (filters, { includeEventsFields = true, includeRange = true } = {}) {
   const value = {}
   const push = (key, val) => {
     if (val != null && val !== '') value[key] = Array.isArray(val) ? val : [String(val)]
   }
-  push('range', filters.range || DEFAULT_USAGE_RANGE)
+  if (includeRange) {
+    push('range', filters.range || DEFAULT_USAGE_RANGE)
+  }
   push('api_key_label', filters.api_key_label)
   push('model', filters.model)
   push('provider', filters.provider)
@@ -89,12 +91,14 @@ export function usageFiltersToSearchValue (filters, { includeEventsFields = true
   return value
 }
 
-export function searchValueToUsageFilters (searchValue, { preserveFilters = {} } = {}) {
+export function searchValueToUsageFilters (searchValue, { preserveFilters = {}, includeRange = true } = {}) {
   const filters = {
-    range: pickSearchValue(searchValue, 'range') || DEFAULT_USAGE_RANGE,
-    start: '',
-    end: '',
-    timezone: '',
+    range: includeRange
+      ? (pickSearchValue(searchValue, 'range') || preserveFilters.range || DEFAULT_USAGE_RANGE)
+      : (preserveFilters.range || DEFAULT_USAGE_RANGE),
+    start: preserveFilters.start || '',
+    end: preserveFilters.end || '',
+    timezone: preserveFilters.timezone || '',
     api_key_label: pickSearchValue(searchValue, 'api_key_label'),
     model: pickSearchValue(searchValue, 'model'),
     provider: pickSearchValue(searchValue, 'provider'),
