@@ -255,7 +255,7 @@ export default {
         commit('auth/SET_NO_ACTION_LOGOUT_SECONDS', identity.no_action_logout_seconds, { root: true })
         commit('SET_COMPUTEV2_GLOBAL_CONFIG', compute_v2)
         commit('SET_IMAGE_GLOBAL_CONFIG', image)
-        commit('UPDATE_OBJECT', { name: 'yunionapiGlobalConfig', data: yunionapi.totp_issuer || '云联壹云' })
+        commit('UPDATE_OBJECT', { name: 'yunionapiGlobalConfig', data: { totp_issuer: yunionapi.totp_issuer || '云联壹云' } })
         if (rootGetters['auth/isAdminMode']) {
           const response = await new Manager('services', 'v1').list({
             params: {
