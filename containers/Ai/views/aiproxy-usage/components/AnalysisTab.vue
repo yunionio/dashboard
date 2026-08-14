@@ -287,6 +287,6 @@ export default {
   border-radius: 4px;
 }
 .table-loading-wrap {
-  min-height: 200px;
+  // min-height: 200px;
 }
 </style>

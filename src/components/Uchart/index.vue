@@ -1,11 +1,14 @@
 <template>
   <div ref="chart" class="uplot-chart-wrapper">
-    <div id="uplot-chart-tooltip" class="uplot-chart-tooltip" v-if="tooltipShow && !isEmptyData" v-html="toolTipHtml" :style="tooltipStyle" />
+    <div
+      ref="tooltip"
+      class="uplot-chart-tooltip"
+      :class="{ 'uplot-chart-tooltip--top': tooltipPlacement === 'top' }"
+      v-show="tooltipShow && !isEmptyData"
+      v-html="toolTipHtml"
+      :style="tooltipStyle" />
     <div v-if="isEmptyData" class="empty-tip">
-      <div class="empty-info">
-        <icon class="empty-icon" type="data-empty" />
-        <div class="empty-text">{{ $t('common.notData') }}</div>
-      </div>
+      <data-empty />
     </div>
   </div>
 </template>
@@ -13,9 +16,13 @@
 <script>
 import UPlot from 'uplot'
 import 'uplot/dist/uPlot.min.css'
+import DataEmpty from '@/components/DataEmpty'
 
 export default {
   name: 'Uchart',
+  components: {
+    DataEmpty,
+  },
   props: {
     data: {
       type: Array,
@@ -45,8 +52,24 @@ export default {
     }
   },
   computed: {
+    tooltipPlacement () {
+      return this.options?.tooltip?.placement || 'follow'
+    },
     isEmptyData () {
-      return this.data.length === 0
+      if (!this.data || this.data.length === 0) return true
+      // 仅有时间轴，或所有系列值均为空
+      if (this.data.length <= 1) return true
+      for (let i = 1; i < this.data.length; i++) {
+        const row = this.data[i]
+        if (!Array.isArray(row)) continue
+        for (let j = 0; j < row.length; j++) {
+          const val = row[j]
+          if (val !== null && val !== undefined && !Number.isNaN(val)) {
+            return false
+          }
+        }
+      }
+      return true
     },
   },
   watch: {
@@ -85,6 +108,7 @@ export default {
   beforeDestroy () {
     if (this.chart) {
       this.chart.destroy()
+      this.chart = null
     }
   },
   destroyed () {
@@ -92,12 +116,21 @@ export default {
   },
   methods: {
     autoResizeContainer () {
+      if (!this.chart || this.isEmptyData) return
       const container = this.chart.root?.parentNode
+      if (!container) return
       const width = container.clientWidth
       const height = container.clientHeight
       this.chart.setSize({ width, height })
     },
     createChart () {
+      if (this.isEmptyData) {
+        if (this.chart) {
+          this.chart.destroy()
+          this.chart = null
+        }
+        return
+      }
       const { data, options } = this.$props
       const that = this
       this.chart = new UPlot({
@@ -110,11 +143,11 @@ export default {
               that.syncing = true
             }
             const index = self.posToIdx(x)
-            const data = []
+            const seriesData = []
             let time = ''
             that.data.forEach((d, idx) => {
               if (idx !== 0) {
-                data.push({
+                seriesData.push({
                   label: that.options.series[idx].label,
                   value: d[index],
                   unit: that.options.series[idx].unit,
@@ -124,19 +157,37 @@ export default {
                 time = d[index]
               }
             })
-            data.sort((a, b) => {
-              return b.value - a.value
+            const hideEmptyValues = !!that.options?.tooltip?.hideEmptyValues
+            const hideWhenAllEmpty = !!that.options?.tooltip?.hideWhenAllEmpty
+            const showTime = that.options?.tooltip?.showTime !== false
+            const visibleData = hideEmptyValues
+              ? seriesData.filter(d => d.value !== null && d.value !== undefined && !Number.isNaN(d.value))
+              : seriesData
+            // 全部为空时不展示 tooltip
+            if (hideWhenAllEmpty && visibleData.length === 0) {
+              that.toolTipHtml = ''
+              that.tooltipShow = false
+              if (options.cursorMove) {
+                options.cursorMove(x, y)
+                that.syncing = false
+              }
+              return [x, y]
+            }
+            visibleData.sort((a, b) => {
+              return (b.value || 0) - (a.value || 0)
             })
-            let html = '<div style="padding:10px">'
-            if (time) {
-              html += `<div>${that.$moment(time * 1000).format('YYYY-MM-DD HH:mm')}</div>`
+            let html = '<div class="uplot-tooltip-inner">'
+            if (showTime && time) {
+              const timeFormatter = that.options?.tooltip?.timeFormatter
+              html += `<div class="uplot-tooltip-time">${timeFormatter ? timeFormatter(time) : that.$moment(time * 1000).format('YYYY-MM-DD HH:mm')}</div>`
             }
             const textList = []
-            data.forEach(d => {
+            visibleData.forEach(d => {
               const label = d.label.startsWith('unknown-0-') ? d.label.replace('unknown-0-', '') : d.label
+              const shortLabel = d.label.length > 50 ? label.substring(0, 50) + '...' : label
               const valueUnit = that.options?.tooltip?.valueFormatter ? that.options.tooltip.valueFormatter(d.value, d.unit) : `${(d.value || 0).toFixed(2)}${d.unit || ''}`
-              html += `<div style="margin-bottom:5px;font-size:14px;line-height:18px"><span style="width:8px;height:8px;background-color:${d.color};border-radius:50%;display:inline-block;margin-right:5px;"></span>${d.label.length > 50 ? label.substring(0, 50) + '...' : label}: ${valueUnit}</div>`
-              textList.push(`${label.length > 50 ? label.substring(0, 50) + '...' : label}: ${valueUnit}`)
+              html += `<div class="uplot-tooltip-item"><span class="uplot-tooltip-dot" style="background-color:${d.color}"></span>${shortLabel}: ${valueUnit}</div>`
+              textList.push(`${shortLabel}: ${valueUnit}`)
             })
             html += '</div>'
             that.toolTipHtml = html
@@ -157,32 +208,47 @@ export default {
       }, data, this.$refs.chart)
     },
     updateChartTooltipStyle (cursor, x, y, textList) {
-      let width = 100
+      let width = 120
       textList.forEach(text => {
-        width = Math.max(width, this.pxWidth(text, '12px') + 20)
+        width = Math.max(width, this.pxWidth(text, '12px') + 40)
       })
-      this.tooltipStyle.boxShadow = '1px 1px 10px rgba(0, 0, 0, 0.2)'
-      if (x + 90 + width > cursor.width - 110) {
-        this.tooltipStyle.left = `${x - width - 50}px`
-      } else {
-        this.tooltipStyle.left = `${x + 90}px`
+      const placement = this.tooltipPlacement
+      if (placement === 'top') {
+        // 固定展示在图表上方居中
+        this.tooltipStyle = {
+          left: '50%',
+          top: '8px',
+          transform: 'translateX(-50%)',
+          minWidth: `${width}px`,
+        }
+        return
       }
-      const dom = document.getElementById('uplot-chart-tooltip')
+      const style = {
+        transform: '',
+        minWidth: `${width}px`,
+      }
+      if (x + 90 + width > cursor.width - 110) {
+        style.left = `${x - width - 50}px`
+      } else {
+        style.left = `${x + 90}px`
+      }
+      const dom = this.$refs.tooltip
       if (dom) {
         const rect = dom.getBoundingClientRect()
         const chartRect = this.$refs.chart.getBoundingClientRect()
         if (y + chartRect.y + rect.height > document.body.clientHeight) {
           if (document.body.clientHeight - rect.height < 0) {
-            this.tooltipStyle.top = `${0 - chartRect.y}px`
+            style.top = `${0 - chartRect.y}px`
           } else {
-            this.tooltipStyle.top = `${0 - (rect.height - (chartRect.height - y) - (document.body.clientHeight - chartRect.bottom)) + y}px`
+            style.top = `${0 - (rect.height - (chartRect.height - y) - (document.body.clientHeight - chartRect.bottom)) + y}px`
           }
         } else {
-          this.tooltipStyle.top = `${y + 20}px`
+          style.top = `${y + 20}px`
         }
       } else {
-        this.tooltipStyle.top = `${y + 20}px`
+        style.top = `${y + 20}px`
       }
+      this.tooltipStyle = style
     },
     pxWidth (text, font) {
       const canvas = document.createElement('canvas')
@@ -191,34 +257,65 @@ export default {
       const metrics = context.measureText(text)
       return metrics.width
     },
-    updateChartData (data) {
+    updateChartData () {
       if (this.chart) {
         this.chart.destroy()
-        this.createChart()
+        this.chart = null
       }
+      this.createChart()
     },
-    updateChartSeries (series) {
+    updateChartSeries () {
       if (this.chart) {
         this.chart.destroy()
-        this.createChart()
+        this.chart = null
       }
+      this.createChart()
     },
   },
 }
 </script>
 
 <style scoped>
-/* 添加一些样式以确保图表正确显示 */
 .uplot-chart-wrapper {
   width: 100%;
+  min-height: 300px;
   position: relative;
 }
 .uplot-chart-tooltip {
-  min-width: 100px;
-  min-height: 100px;
   position: absolute;
-  background: white;
   z-index: 1000;
+  pointer-events: none;
+  background: rgba(50, 50, 50, 0.9);
+  color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  min-width: 0;
+  min-height: 0;
+}
+.uplot-chart-tooltip ::v-deep .uplot-tooltip-inner {
+  padding: 10px 14px;
+}
+.uplot-chart-tooltip ::v-deep .uplot-tooltip-time {
+  margin-bottom: 6px;
+  font-size: 13px;
+  opacity: 0.85;
+}
+.uplot-chart-tooltip ::v-deep .uplot-tooltip-item {
+  margin-bottom: 4px;
+  font-size: 13px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+.uplot-chart-tooltip ::v-deep .uplot-tooltip-item:last-child {
+  margin-bottom: 0;
+}
+.uplot-chart-tooltip ::v-deep .uplot-tooltip-dot {
+  width: 22px;
+  height: 12px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: -1px;
 }
 .empty-tip {
   position: absolute;
@@ -226,15 +323,24 @@ export default {
   top: 0;
   width: 100%;
   height: 100%;
+  min-height: 300px;
   z-index: 1001;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.25);
 }
-.empty-info {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.empty-tip ::v-deep .wrap {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.25);
 }
-.empty-icon {
-  font-size: 50px;
+.empty-tip ::v-deep .data-empty {
+  margin-top: 0;
+  font-size: 60px;
+  color: rgba(0, 0, 0, 0.25);
+}
+.empty-tip ::v-deep .ant-empty-description {
+  color: rgba(0, 0, 0, 0.25);
 }
 </style>

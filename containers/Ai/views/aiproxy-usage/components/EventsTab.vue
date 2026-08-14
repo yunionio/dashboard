@@ -47,6 +47,7 @@ export default {
           t: key => this.$t(key),
           fetchEventsDistinctField: params => this.fetchEventsDistinctField(params),
           includeEventsFilters: true,
+          includeRange: false,
         }),
         fetchDataCb: res => {
           if (res.data?.truncated) {
@@ -56,6 +57,7 @@ export default {
       }),
       columns: [],
       syncingFilter: false,
+      lastTimeKey: '',
     }
   },
   computed: {
@@ -118,10 +120,19 @@ export default {
     },
     syncListFilter (filters, { fetch = true } = {}) {
       if (!this.list || this.syncingFilter) return
-      const nextFilter = usageFiltersToSearchValue(filters, { includeEventsFields: true })
-      if (JSON.stringify(this.list.filter) === JSON.stringify(nextFilter)) return
+      const nextFilter = usageFiltersToSearchValue(filters, {
+        includeEventsFields: true,
+        includeRange: false,
+      })
+      const filterChanged = JSON.stringify(this.list.filter) !== JSON.stringify(nextFilter)
+      const timeKey = `${filters.start || ''}|${filters.end || ''}`
+      const timeChanged = this.lastTimeKey !== timeKey
+      if (!filterChanged && !timeChanged) return
       this.syncingFilter = true
-      this.list.filter = nextFilter
+      if (filterChanged) {
+        this.list.filter = nextFilter
+      }
+      this.lastTimeKey = timeKey
       if (fetch) {
         this.list.refresh()
       }
@@ -131,7 +142,10 @@ export default {
     },
     onListFilterChange (filter) {
       if (this.syncingFilter) return
-      this.$emit('update:filters', searchValueToUsageFilters(filter))
+      this.$emit('update:filters', searchValueToUsageFilters(filter, {
+        preserveFilters: this.filters,
+        includeRange: false,
+      }))
     },
     initColumns () {
       this.columns = [

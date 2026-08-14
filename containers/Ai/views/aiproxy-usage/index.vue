@@ -6,10 +6,12 @@
       :currentTab.sync="currentTab" />
     <page-body>
       <filter-bar
-        v-if="currentTab !== 'events'"
         ref="filterBar"
         :filters="filters"
-        @update:filters="onFiltersUpdate" />
+        :show-search="currentTab !== 'events'"
+        :loading="filterLoading"
+        @update:filters="onFiltersUpdate"
+        @refresh="onRefresh" />
       <truncated-alert :visible="truncated" />
       <div v-show="currentTab === 'overview'" class="mt-3">
         <overview-tab
@@ -27,6 +29,7 @@
       <div v-show="currentTab === 'events'" class="mt-3">
         <events-tab
           v-if="eventsInited"
+          ref="eventsTab"
           :active="currentTab === 'events'"
           :filters="filters"
           @update:filters="onFiltersUpdate"
@@ -74,6 +77,13 @@ export default {
       manager: null,
     }
   },
+  computed: {
+    filterLoading () {
+      if (this.currentTab === 'overview') return this.overviewLoading
+      if (this.currentTab === 'analysis') return this.analysisLoading
+      return false
+    },
+  },
   watch: {
     currentTab (tab) {
       if (tab === 'analysis' && !this.analysisInited) {
@@ -90,13 +100,14 @@ export default {
   },
   created () {
     this.manager = new this.$Manager('ai_proxy_usage', 'v2')
-    this.tryFetchTab('overview')
+    // 首次请求由 FilterBar 的 DateTime 初始化触发
   },
   methods: {
     /* 当前 tab 的 filters 与上次请求时不同则重新请求 */
-    tryFetchTab (tab) {
+    tryFetchTab (tab, { force = false } = {}) {
+      if (!this.filters.start || !this.filters.end) return
       const snapshot = JSON.stringify(this.filters)
-      if (this.cachedFilters[tab] === snapshot) return
+      if (!force && this.cachedFilters[tab] === snapshot) return
       this.cachedFilters[tab] = snapshot
       if (tab === 'overview') this.fetchOverview()
       else if (tab === 'analysis') this.fetchAnalysis()
@@ -104,6 +115,14 @@ export default {
     onFiltersUpdate (newFilters) {
       this.filters = { ...this.filters, ...newFilters }
       this.tryFetchTab(this.currentTab)
+    },
+    onRefresh () {
+      if (this.currentTab === 'events') {
+        const refresh = this.$refs.eventsTab?.list?.refresh
+        if (refresh) refresh()
+        return
+      }
+      this.tryFetchTab(this.currentTab, { force: true })
     },
     async fetchOverview () {
       this.overviewLoading = true
