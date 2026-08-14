@@ -125,6 +125,6 @@ export default {
 
 <style lang="less" scoped>
 .table-loading-wrap {
-  min-height: 200px;
+  // min-height: 200px;
 }
 </style>
