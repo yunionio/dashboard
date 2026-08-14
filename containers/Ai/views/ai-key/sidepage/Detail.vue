@@ -27,7 +27,15 @@ export default {
         {
           field: 'secret',
           title: this.$t('aice.aiproxy.secret'),
-          formatter: ({ row }) => maskSecret(row.secret),
+          slots: {
+            default: ({ row }) => {
+              if (!row.secret) return '-'
+              return [
+                <span>{maskSecret(row.secret)}</span>,
+                <copy class="ml-1" message={row.secret} />,
+              ]
+            },
+          },
         },
         {
           field: 'routing.allowed_model_keys',
