@@ -11,7 +11,7 @@
     </div>
 
     <!-- 区块 B：趋势图 -->
-    <trend-charts :loading="loading" :overview-data="data" />
+    <trend-charts :loading="loading" :overview-data="data" :filters="filters" />
 
     <!-- 区块 C：API Key 用量 -->
     <api-key-usage-table :loading="loading" :overview-data="data" />
@@ -40,6 +40,10 @@ export default {
       default: false,
     },
     data: {
+      type: Object,
+      default: () => ({}),
+    },
+    filters: {
       type: Object,
       default: () => ({}),
     },

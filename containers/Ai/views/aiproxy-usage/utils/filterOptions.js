@@ -24,16 +24,9 @@ export function buildUsageSearchFilterOptions ({
   t,
   fetchEventsDistinctField,
   includeEventsFilters = false,
+  includeRange = true,
 }) {
   const options = {
-    range: {
-      label: t('aice.aiproxy.usage.range'),
-      dropdown: true,
-      items: USAGE_RANGE_OPTIONS.map(item => ({
-        key: item.value,
-        label: item.label,
-      })),
-    },
     api_key_label: getCustomDistinctFieldFilter({
       label: t('aice.aiproxy.usage.api_key'),
       field: 'api_key_label',
@@ -66,6 +59,16 @@ export function buildUsageSearchFilterOptions ({
         label: item.label,
       })),
     },
+  }
+  if (includeRange) {
+    options.range = {
+      label: t('aice.aiproxy.usage.range'),
+      dropdown: true,
+      items: USAGE_RANGE_OPTIONS.map(item => ({
+        key: item.value,
+        label: item.label,
+      })),
+    }
   }
   if (includeEventsFilters) {
     Object.assign(options, {

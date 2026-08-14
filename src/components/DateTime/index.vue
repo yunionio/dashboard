@@ -182,41 +182,53 @@ export default {
         })
       }, 1000)
     },
-    handleDateModeChange ({ ignoreEmitDataType = false } = {}) {
+    handleDateModeChange (e = {}) {
+      // a-radio-group 的 change 可能早于 v-model 回写，优先用 event 中的新值
+      if (e.target && e.target.value != null) {
+        this.time.dateMode = e.target.value
+      }
+      const dateMode = this.time.dateMode
       let start = this.$moment()
       let end = this.$moment()
-      if (this.time.dateMode === 'week') {
+      const relativeMatch = /^(\d+)(h|d|M)$/.exec(dateMode)
+      if (dateMode === 'week') {
         start = this.$moment().startOf('week')
-      } else if (this.time.dateMode === 'last_week') {
+      } else if (dateMode === 'last_week') {
         start = this.$moment().subtract(1, 'week').startOf('week')
         end = this.$moment().subtract(1, 'week').endOf('week')
-      } else if (this.time.dateMode === 'month') {
+      } else if (dateMode === 'month') {
         start = this.$moment().startOf('month')
-      } else if (this.time.dateMode === 'last_month') {
+      } else if (dateMode === 'last_month') {
         start = this.$moment().subtract(1, 'month').startOf('month')
         end = this.$moment().subtract(1, 'month').endOf('month')
-      } else if (this.time.dateMode === 'month_before_last_month') {
+      } else if (dateMode === 'month_before_last_month') {
         start = this.$moment().subtract(2, 'month').startOf('month')
         end = this.$moment().subtract(2, 'month').endOf('month')
-      } else if (this.time.dateMode === 'last_6_month') {
+      } else if (dateMode === 'last_6_month') {
         start = this.$moment().subtract(6, 'month').startOf('month')
         end = this.$moment().subtract(1, 'month').endOf('month')
-      } else if (this.time.dateMode === 'last_12_month') {
+      } else if (dateMode === 'last_12_month') {
         start = this.$moment().subtract(12, 'month').startOf('month')
         end = this.$moment().subtract(1, 'month').endOf('month')
-      } else if (this.time.dateMode === 'quarter') {
+      } else if (dateMode === 'quarter') {
         start = this.$moment().startOf('quarter')
-      } else if (this.time.dateMode === 'last_quarter') {
+      } else if (dateMode === 'last_quarter') {
         start = this.$moment().subtract(1, 'Q').startOf('quarter')
         end = this.$moment().subtract(1, 'Q').endOf('quarter')
-      } else if (this.time.dateMode === 'year') {
+      } else if (dateMode === 'year') {
         start = this.$moment().startOf('year')
+      } else if (relativeMatch) {
+        // 相对时间：1h / 6h / 12h / 1d / 7d / 1M
+        const amount = parseInt(relativeMatch[1], 10)
+        const unitMap = { h: 'hours', d: 'days', M: 'months' }
+        start = this.$moment().subtract(amount, unitMap[relativeMatch[2]])
+        end = this.$moment()
       } else { // 自定义
         start = this.customDate.start
         end = this.customDate.end
       }
-      if (['week', 'month', 'quarter', 'year'].includes(this.time.dateMode) && this.timeToEnd) {
-        end = this.$moment().endOf(this.time.dateMode)
+      if (['week', 'month', 'quarter', 'year'].includes(dateMode) && this.timeToEnd) {
+        end = this.$moment().endOf(dateMode)
       }
       this.time.date = [start, end]
       const params = {
@@ -225,8 +237,8 @@ export default {
         [this.end]: this.formatter(this.time.date[1]),
       }
       if (this.supportDatatype) {
-        if (this.time.dateMode !== 'custom') {
-          params.data_type = TIME_SIZE[this.time.dateMode]
+        if (dateMode !== 'custom') {
+          params.data_type = TIME_SIZE[dateMode]
         } else {
           let data_type = 'month'
           const diffMonth = this.$moment(end).add(1, 'seconds').diff(start, 'months') // 相差几个月
@@ -237,10 +249,10 @@ export default {
         this.$emit('update:dataType', params.data_type)
       }
       this.$emit('update:getParams', params)
-      this.$emit('update:dateMode', this.time.dateMode)
+      this.$emit('update:dateMode', dateMode)
       this.$emit('refresh')
       this.setLocalTime()
-      this.updateCustomTimeLabel(this.time.dateMode, params)
+      this.updateCustomTimeLabel(dateMode, params)
     },
     handleDateChange () {
       this.time.dateMode = ''
