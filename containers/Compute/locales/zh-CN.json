@@ -1591,6 +1591,7 @@
   "compute.gpu_associate_server": "只能选择与透传设备同一宿主机出于关机状态的虚拟机",
   "compute.detach_eip": "请先解绑EIP",
   "compute.disk_backup": "硬盘备份",
+  "compute.disk.details.backup": "备份",
   "compute.create_disk_backup": "新建备份",
   "compute.rollback_disk_backup": "回滚备份",
   "compute.backup_name": "备份名称",
