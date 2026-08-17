@@ -563,6 +563,13 @@ export default {
                 return row.bios || 'BIOS'
               },
             },
+            {
+              field: 'machine',
+              title: this.$t('compute.machine'),
+              formatter: ({ row }) => {
+                return row.machine?.toUpperCase() || '-'
+              },
+            },
           ],
           hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.os_arch'),
         },
