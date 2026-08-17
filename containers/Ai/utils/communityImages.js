@@ -10,12 +10,85 @@ export const LLM_TYPE_ICONS = {
   vllm: require('@/assets/images/llm-images/vllm.svg'),
   dify: require('@/assets/images/llm-images/dify.svg'),
   comfyui: require('@/assets/images/llm-images/comfyui.svg'),
-  desktop: require('@/assets/images/llm-images/linuxserver.png'),
+  desktop: require('@/assets/images/llm-images/desktop/linuxserver.svg'),
+}
+
+/**
+ * 桌面应用图标：来自 simple-icons (CC0)，见 src/assets/images/llm-images/desktop/
+ * @see https://github.com/simple-icons/simple-icons
+ */
+const DESKTOP_UBUNTU_ICON = require('@/assets/images/llm-images/desktop/ubuntu.svg')
+const DESKTOP_FEDORA_ICON = require('@/assets/images/llm-images/desktop/fedora.svg')
+
+export const DESKTOP_APP_ICONS = {
+  firefox: require('@/assets/images/llm-images/desktop/firefox.svg'),
+  chromium: require('@/assets/images/llm-images/desktop/chromium.svg'),
+  vscode: require('@/assets/images/llm-images/desktop/vscode.svg'),
+  weixin: require('@/assets/images/llm-images/desktop/weixin.svg'),
+  'wps-office': require('@/assets/images/llm-images/desktop/wps-office.svg'),
+  bambustudio: require('@/assets/images/llm-images/desktop/bambustudio.svg'),
+  'ubuntu-kde': DESKTOP_UBUNTU_ICON,
+  'ubuntu-xfce': DESKTOP_UBUNTU_ICON,
+  'fedora-kde': DESKTOP_FEDORA_ICON,
+  'fedora-xfce': DESKTOP_FEDORA_ICON,
 }
 
 const DEFAULT_ICON = require('@/assets/images/llm-images/default.svg')
 
-export function getTypeIcon (llmType) {
+export function getDesktopAppIcon (appName) {
+  const key = String(appName || '').toLowerCase().trim()
+  return DESKTOP_APP_ICONS[key] || LLM_TYPE_ICONS.desktop || DEFAULT_ICON
+}
+
+/** 「应用标识」单元格。layout: vertical 图标在上文字在下；horizontal 图标在左文字在右 */
+export function renderDesktopAppNameCell (h, appName, { layout = 'vertical' } = {}) {
+  const name = String(appName || '').trim()
+  if (!name) return '-'
+  const icon = getDesktopAppIcon(name)
+  const isHorizontal = layout === 'horizontal'
+  const imgSize = isHorizontal ? '20px' : '28px'
+  return h('div', {
+    class: ['desktop-app-name-cell', isHorizontal ? 'desktop-app-name-cell--horizontal' : 'desktop-app-name-cell--vertical'],
+    style: {
+      display: 'flex',
+      flexDirection: isHorizontal ? 'row' : 'column',
+      alignItems: 'center',
+      justifyContent: isHorizontal ? 'flex-start' : 'center',
+      lineHeight: '1.2',
+      padding: isHorizontal ? '0' : '4px 0',
+      minWidth: 0,
+    },
+  }, [
+    icon
+      ? h('img', {
+        attrs: { src: icon, alt: name },
+        style: {
+          width: imgSize,
+          height: imgSize,
+          objectFit: 'contain',
+          flexShrink: 0,
+        },
+      })
+      : null,
+    h('span', {
+      attrs: { title: name },
+      style: {
+        marginTop: isHorizontal ? '0' : '4px',
+        marginLeft: isHorizontal ? '8px' : '0',
+        fontSize: isHorizontal ? '13px' : '12px',
+        maxWidth: '100%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+      },
+    }, name),
+  ])
+}
+
+export function getTypeIcon (llmType, appName) {
+  if (llmType === 'desktop') {
+    return getDesktopAppIcon(appName)
+  }
   return LLM_TYPE_ICONS[llmType] || DEFAULT_ICON
 }
 
@@ -135,11 +208,12 @@ export function parseCommunityCatalogItem (item, index) {
   if (!llm_type) return null
 
   const image = resolveCatalogItemImage(item)
+  const app_name = item.app_name || item.appName || ''
   const base = {
     id: item.id || item.name || String(index + 1),
     llm_type,
     description: item.description || '-',
-    icon: getTypeIcon(llm_type),
+    icon: getTypeIcon(llm_type, app_name),
     import_kind: item.import_kind || item.importKind || 'single',
     sku: item.sku || null,
   }
@@ -164,7 +238,7 @@ export function parseCommunityCatalogItem (item, index) {
     image,
     image_name,
     image_label,
-    app_name: item.app_name || item.appName || '',
+    app_name,
     desktop: item.desktop || null,
   }
 }
