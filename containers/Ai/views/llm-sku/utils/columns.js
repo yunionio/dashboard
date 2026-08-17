@@ -149,7 +149,7 @@ export const getLlmTypeTableColumn = (opts = {}) => {
   const isApplyType = typeof opts === 'boolean' ? opts : opts.isApplyType
   const isDesktopType = typeof opts === 'object' ? opts.isDesktopType : false
   let title = i18n.t('aice.llm_type.llm')
-  if (isDesktopType) title = i18n.t('aice.llm_type.desktop')
+  if (isDesktopType) title = i18n.t('aice.llm_type.desktop_type')
   else if (isApplyType) title = i18n.t('aice.llm_type.app')
   return {
     field: 'llm_type',

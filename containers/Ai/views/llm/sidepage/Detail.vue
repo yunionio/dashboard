@@ -78,7 +78,7 @@ export default {
             getLlmIpColumn(),
             getLlmSkuColumn({ vm: this, isApplyType: this.isApplyType, isDesktopType: this.isDesktopType }),
             getLlmImageColumn({ vm: this }),
-            ...(this.isDesktopType ? [getAppNameTableColumn()] : []),
+            ...(this.isDesktopType ? [getAppNameTableColumn({ layout: 'horizontal' })] : []),
             getCpuTableColumn(),
             getMemoryTableColumn(),
             getBandwidthTableColumn(),
@@ -133,27 +133,29 @@ export default {
                 },
               },
             },
-            {
-              field: 'mounted_model_infos',
-              title: this.isApplyType ? this.$t('aice.app_llm_instantapp') : this.$t('aice.llm_instantapp'),
-              slots: {
-                default: ({ row }) => {
-                  const mounted_apps = row.mounted_model_infos
-                  if (mounted_apps?.length) {
-                    return mounted_apps.map((item, idx) => {
-                      return <list-body-cell-wrap copy hideField={true} field='mounted_model_infos' row={item} message={item.fullname}>
-                        <side-page-trigger permission='llm_instant_models_get' name='LlmInstantModelSidePage' id={item.id} vm={this}>{item.fullname}</side-page-trigger>
-                      </list-body-cell-wrap>
-                    })
-                  }
-                  return '-'
+            ...(this.isDesktopType
+              ? []
+              : [{
+                field: 'mounted_model_infos',
+                title: this.isApplyType ? this.$t('aice.app_llm_instantapp') : this.$t('aice.llm_instantapp'),
+                slots: {
+                  default: ({ row }) => {
+                    const mounted_apps = row.mounted_model_infos
+                    if (mounted_apps?.length) {
+                      return mounted_apps.map((item, idx) => {
+                        return <list-body-cell-wrap copy hideField={true} field='mounted_model_infos' row={item} message={item.fullname}>
+                          <side-page-trigger permission='llm_instant_models_get' name='LlmInstantModelSidePage' id={item.id} vm={this}>{item.fullname}</side-page-trigger>
+                        </list-body-cell-wrap>
+                      })
+                    }
+                    return '-'
+                  },
                 },
-              },
-            },
+              }]),
           ],
         },
         ...this.loginInfoSection,
-        ...getLlmSpecSections(this),
+        ...(this.isDesktopType ? [] : getLlmSpecSections(this)),
       ]
     },
   },
