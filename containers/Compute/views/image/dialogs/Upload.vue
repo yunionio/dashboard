@@ -11,14 +11,6 @@
         <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" class="mb-0" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_627')" v-bind="formItemLayout">
-          <a-input :placeholder="$t('compute.text_416')" v-decorator="decorators.name" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.text_1365')">
-          <os-arch
-            v-decorator="decorators.os_arch"
-            :form="form" />
-        </a-form-item>
         <a-form-item :label="$t('compute.text_667')" v-bind="formItemLayout">
           <a-radio-group @change="handleUploadTypeChange" v-decorator="decorators.uploadType">
             <a-radio-button value="file">{{$t('compute.text_668')}}</a-radio-button>
@@ -40,7 +32,10 @@
             status="active" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_672')" v-bind="formItemLayout" v-if="!byUpload">
-          <a-input :placeholder="$t('compute.text_673')" v-decorator="decorators.copy_from" />
+          <a-input :placeholder="$t('compute.text_673')" v-decorator="decorators.copy_from" @change="handleCopyFromChange" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_627')" v-bind="formItemLayout">
+          <a-input :placeholder="$t('compute.text_416')" v-decorator="decorators.name" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.os_type">
@@ -52,6 +47,11 @@
             </a-radio-button>
             <a-radio-button value="other">{{$t('compute.text_674')}}</a-radio-button>
           </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_1365')">
+          <os-arch
+            v-decorator="decorators.os_arch"
+            :form="form" />
         </a-form-item>
         <a-form-item v-if="enableEncryption" :label="$t('compute.image.encryption')" :extra="$t('compute.image.encryption.extra')">
           <encrypt-keys :decorators="decorators.encrypt_keys" />
@@ -222,6 +222,7 @@ export default {
         return Promise.reject(new Error(this.$t('compute.upload_app_package_format_tip')))
       }
       this.fileList = [file]
+      this.setImageName(file.name)
       return false
     },
     handleUploadReject () {
@@ -232,13 +233,18 @@ export default {
     handleUploadTypeChange (e) {
       if (e.target.value === 'url') {
         this.byUpload = false
+        this.$nextTick(() => {
+          this.setImageNameFromUrl(this.form.fc.getFieldValue('copy_from'))
+        })
       } else {
         this.byUpload = true
+        this.setImageNameFromFileList(this.fileList)
       }
     },
     handleUploadChange ({ fileList }) {
       if (!this.isAppPackage) {
         this.fileList = fileList
+        this.setImageNameFromFileList(fileList)
         return
       }
       const valid = (fileList || []).filter(f => this.isTarGzFile(f.name))
@@ -246,6 +252,41 @@ export default {
         this.$message.error(this.$t('compute.upload_app_package_format_tip'))
       }
       this.fileList = valid.length ? valid.slice(-1) : []
+      this.setImageNameFromFileList(this.fileList)
+    },
+    handleCopyFromChange (e) {
+      const url = e && e.target ? e.target.value : e
+      this.setImageNameFromUrl(url)
+    },
+    getFileNameFromUrl (url) {
+      if (!url || typeof url !== 'string') return ''
+      const trimmed = url.trim()
+      if (!trimmed) return ''
+      let pathname = trimmed
+      try {
+        pathname = new URL(trimmed).pathname
+      } catch (e) {
+        pathname = trimmed.split('?')[0].split('#')[0]
+      }
+      const segments = pathname.split('/').filter(Boolean)
+      if (!segments.length) return ''
+      let fileName = segments[segments.length - 1]
+      try {
+        fileName = decodeURIComponent(fileName)
+      } catch (e) { /* keep raw */ }
+      return fileName
+    },
+    setImageName (name) {
+      if (!name) return
+      this.form.fc.setFieldsValue({ name })
+    },
+    setImageNameFromFileList (fileList) {
+      const file = fileList && fileList[0]
+      const fileName = file && (file.name || (file.originFileObj && file.originFileObj.name))
+      this.setImageName(fileName)
+    },
+    setImageNameFromUrl (url) {
+      this.setImageName(this.getFileNameFromUrl(url))
     },
     checkTemplateName (rule, value, callback) {
       if (!value) {
