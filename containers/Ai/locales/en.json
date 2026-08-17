@@ -441,6 +441,7 @@
   "aice.llm_type": "Type",
   "aice.llm_type.llm": "LLM Type",
   "aice.llm_type.app": "App Type",
+  "aice.llm_type.desktop_type": "Desktop Type",
   "aice.llm_type.ollama": "Ollama",
   "aice.llm_type.comfyui": "ComfyUI",
   "aice.llm_type.dify": "Dify",

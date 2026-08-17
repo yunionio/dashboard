@@ -13,6 +13,7 @@
   "aice.llm_type": "类型",
   "aice.llm_type.llm": "LLM类型",
   "aice.llm_type.app": "应用类型",
+  "aice.llm_type.desktop_type": "桌面类型",
   "aice.llm_type.ollama": "Ollama",
   "aice.llm_type.comfyui": "ComfyUI",
   "aice.llm_type.dify": "Dify",
