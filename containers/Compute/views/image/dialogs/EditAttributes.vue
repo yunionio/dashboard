@@ -82,6 +82,14 @@
               :key="index">{{item.text}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
+        <a-form-item :label="$t('compute.machine')" v-bind="formItemLayout">
+          <a-radio-group v-decorator="decorators.machine_type">
+            <a-radio-button
+              v-for="(item, index) in machineTypeOptions"
+              :value="item.value"
+              :key="index">{{item.text}}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -191,6 +199,12 @@ export default {
             initialValue: 'vnc',
           },
         ],
+        machine_type: [
+          'machine_type',
+          {
+            initialValue: '',
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -279,8 +293,13 @@ export default {
       ],
       vdiOptions: [
         { text: this.$t('compute.text_661'), value: '' },
-        { text: 'vnc', value: 'vnc' },
-        { text: 'spice', value: 'spice' },
+        { text: 'VNC', value: 'vnc' },
+        { text: 'SPICE', value: 'spice' },
+      ],
+      machineTypeOptions: [
+        { text: this.$t('compute.text_661'), value: '' },
+        { text: 'PC', value: 'pc' },
+        { text: 'Q35', value: 'q35' },
       ],
       initMinDisk: 0,
     }
@@ -299,7 +318,7 @@ export default {
       this.manager.get({ id: this.params.data[0].id })
         .then((res) => {
           const { name, min_disk: minDisk } = res.data
-          const { os_type: osType, os_distribution: osDistribution, disk_driver: diskDriver, net_driver: netDriver, uefi_support: uefiSupport, bios_support: biosSupport, vdi_protocol: vdiProtocol } = res.data.properties
+          const { os_type: osType, os_distribution: osDistribution, disk_driver: diskDriver, net_driver: netDriver, uefi_support: uefiSupport, bios_support: biosSupport, vdi_protocol: vdiProtocol, machine_type: machineType } = res.data.properties
           this.initName = name
           this.initMinDisk = minDisk
           this.$nextTick(() => {
@@ -313,6 +332,7 @@ export default {
               netDriver: netDriver || '',
               bios: this.getBios(uefiSupport, biosSupport),
               vdi: vdiProtocol || 'vnc',
+              machine_type: machineType || '',
             })
           })
         })
@@ -387,7 +407,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        const { name, osType, osDistribution, osOtherDistribution, minDisk, diskDriver, netDriver, os_arch, bios, vdi } = values
+        const { name, osType, osDistribution, osOtherDistribution, minDisk, diskDriver, netDriver, os_arch, bios, vdi, machine_type } = values
         const params = {
           name,
           // protected: values.protected,
@@ -399,6 +419,7 @@ export default {
             net_driver: netDriver,
             os_arch,
             vdi_protocol: vdi,
+            machine_type,
           },
         }
         if (!this.isHostImage) {
