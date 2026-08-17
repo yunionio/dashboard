@@ -1,6 +1,7 @@
 import i18n from '@/locales'
 import { sizestr } from '@/utils/utils'
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { renderDesktopAppNameCell } from '@Ai/utils/communityImages'
 
 function llmTypeColumnTitle ({ isApplyType = false, isDesktopType = false } = {}) {
   if (isDesktopType) return i18n.t('aice.llm_type.desktop')
@@ -69,13 +70,21 @@ export const getLlmSkuColumn = ({ vm = {}, isApplyType = false, isDesktopType = 
   }
 }
 
-export const getAppNameTableColumn = () => {
+export const getAppNameTableColumn = ({ layout = 'vertical' } = {}) => {
+  const isHorizontal = layout === 'horizontal'
   return {
     field: 'app_name',
     title: i18n.t('aice.llm_image.app_name'),
-    width: 160,
+    width: isHorizontal ? 160 : 120,
+    align: isHorizontal ? 'left' : 'center',
     formatter: ({ row }) => {
       return row.app_name || '-'
+    },
+    slots: {
+      default: ({ row }, h) => {
+        if (!row.app_name) return '-'
+        return [renderDesktopAppNameCell(h, row.app_name, { layout })]
+      },
     },
   }
 }

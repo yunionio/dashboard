@@ -45,6 +45,7 @@ export default {
   data () {
     const { isDesktopType } = parseLlmRoute(this.$route.path)
     return {
+      isDesktopType,
       credentialNamesMap: {},
       difyImageNamesMap: {},
       hostNamesMap: {},
@@ -63,28 +64,32 @@ export default {
         getImageTableColumn({ vm: this }),
         ...(isDesktopType ? [getAppNameTableColumn()] : []),
         getBandwidthTableColumn(),
-        getLlmTypeTableColumn(),
-        getLlmModelNameTableColumn({ vm: this }),
-        getSourceTableColumn(),
-        {
-          field: 'backend_parameters',
-          title: this.$t('aice.backend_parameters'),
-          slots: {
-            default: ({ row }) => {
-              const type = (row.llm_type || '').toLowerCase()
-              if (type !== 'vllm' && type !== 'sglang') return '-'
-              const items = row.backend_parameters
-              if (!Array.isArray(items) || items.length === 0) return '-'
-              return (
-                <div>
-                  {items.map((item, idx) => (
-                    <a-tag key={idx} style={{ marginBottom: '4px' }}>{item}</a-tag>
-                  ))}
-                </div>
-              )
+        getLlmTypeTableColumn({ isDesktopType }),
+        ...(isDesktopType
+          ? []
+          : [
+            getLlmModelNameTableColumn({ vm: this }),
+            getSourceTableColumn(),
+            {
+              field: 'backend_parameters',
+              title: this.$t('aice.backend_parameters'),
+              slots: {
+                default: ({ row }) => {
+                  const type = (row.llm_type || '').toLowerCase()
+                  if (type !== 'vllm' && type !== 'sglang') return '-'
+                  const items = row.backend_parameters
+                  if (!Array.isArray(items) || items.length === 0) return '-'
+                  return (
+                    <div>
+                      {items.map((item, idx) => (
+                        <a-tag key={idx} style={{ marginBottom: '4px' }}>{item}</a-tag>
+                      ))}
+                    </div>
+                  )
+                },
+              },
             },
-          },
-        },
+          ]),
         {
           field: 'prefer_hosts',
           title: this.$t('aice.local_path_import.prefer_hosts'),
