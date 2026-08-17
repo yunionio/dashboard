@@ -1071,7 +1071,7 @@ export default {
       }, 3000)
     },
     getMachineDecorator () {
-      let initValue = 'pc'
+      let initValue = ''
       if (this.isArm) {
         initValue = 'virt'
       }
