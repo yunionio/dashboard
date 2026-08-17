@@ -136,6 +136,7 @@
 
 <script>
 import { getModelIcon, getModelIconLabel } from '@Ai/utils/index'
+import { getDesktopAppIcon } from '@Ai/utils/communityImages'
 import { formatDevicesDisplay } from '@Ai/utils/deviceFormUtils'
 import { sizestr } from '@/utils/utils'
 import { getLlmSkuListSteadyStatuses } from '@Ai/utils/llmSkuStatus'
@@ -232,9 +233,15 @@ export default {
       return item.llm_model_name || item.image || item.name || ''
     },
     getCardIcon (item) {
+      if (this.isDesktopType) {
+        return getDesktopAppIcon(item && item.app_name)
+      }
       return getModelIcon(this.getCardIconKey(item))
     },
     getCardIconLabel (item) {
+      if (this.isDesktopType) {
+        return getModelIconLabel((item && item.app_name) || this.getCardIconKey(item))
+      }
       return getModelIconLabel(this.getCardIconKey(item))
     },
     isSelected (item) {

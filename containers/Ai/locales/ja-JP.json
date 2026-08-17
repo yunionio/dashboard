@@ -440,6 +440,7 @@
   "aice.llm_type": "タイプ",
   "aice.llm_type.llm": "LLMタイプ",
   "aice.llm_type.app": "アプリケーションタイプ",
+  "aice.llm_type.desktop_type": "デスクトップタイプ",
   "aice.llm_type.ollama": "Ollama",
   "aice.llm_type.comfyui": "ComfyUI",
   "aice.llm_type.dify": "Dify",
