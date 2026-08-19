@@ -58,6 +58,10 @@
       <template v-slot:right>
         <a-button type="primary" :loading="loading" @click="handleSubmit">{{ $t('common.create') }}</a-button>
         <a-button class="ml-2" @click="handleCancel">{{ $t('common.cancel') }}</a-button>
+        <side-errors
+          :error-title="$t('aice.llm_deployment.create.schedulable_check.title')"
+          :errors="errors"
+          @update:errors="errors = {}" />
       </template>
     </page-footer>
   </div>
@@ -69,14 +73,16 @@ import ServerNetwork from '@Compute/sections/ServerNetwork'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import LlmSkuSelect from '@Ai/sections/LlmSkuSelect'
 import { normalizePreferHosts } from '@Ai/utils/localPathImport'
+import { checkSkuSchedulable, getSchedulableCheckErrors } from '@Ai/utils/skuSchedulableCheck'
 import NameRepeated from '@/sections/NameRepeated'
+import SideErrors from '@/sections/SideErrors'
 import { Manager } from '@/utils/manager'
 import { uuid } from '@/utils/utils'
 import validateForm from '@/utils/validate'
 
 export default {
   name: 'LlmDeploymentCreate',
-  components: { LlmSkuSelect, ServerNetwork, NameRepeated },
+  components: { LlmSkuSelect, ServerNetwork, NameRepeated, SideErrors },
   provide () {
     return {
       form: this.form,
@@ -86,6 +92,7 @@ export default {
     return {
       loading: false,
       selectedSkuDetail: null,
+      errors: {},
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -244,6 +251,7 @@ export default {
       }
     },
     handleSkuChange (skuId) {
+      this.errors = {}
       this.loadSkuDetail(skuId)
     },
     applyFromSku (skuId) {
@@ -301,6 +309,12 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         this.loading = true
+        this.errors = {}
+        const { data: check } = await checkSkuSchedulable(this.skuManager, values.llm_sku_id)
+        if (!check.schedulable) {
+          this.errors = getSchedulableCheckErrors(check)
+          return
+        }
         const payload = this.buildPayload(values)
         await this.manager.create({ data: payload })
         this.$message.success(this.$t('common.success'))

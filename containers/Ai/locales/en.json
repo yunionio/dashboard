@@ -468,6 +468,8 @@
   "aice.container_status": "Container Status",
   "aice.llm_deployment": "Inference Deployment",
   "aice.llm_deployment_create": "Create Inference Deployment",
+  "aice.llm_deployment.create.schedulable_check.failed": "Scheduling check failed",
+  "aice.llm_deployment.create.schedulable_check.title": "Unable to create inference deployment",
   "aice.llm_deployment.replicas": "Replicas",
   "aice.llm_deployment.backend": "Backend",
   "aice.llm_deployment.backend_version": "Backend Version",

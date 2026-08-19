@@ -467,6 +467,8 @@
   "aice.container_status": "コンテナ状態",
   "aice.llm_deployment": "推論デプロイ",
   "aice.llm_deployment_create": "推論デプロイ作成",
+  "aice.llm_deployment.create.schedulable_check.failed": "スケジューリングチェックに失敗しました",
+  "aice.llm_deployment.create.schedulable_check.title": "推論デプロイを作成できません",
   "aice.llm_deployment.replicas": "レプリカ数",
   "aice.llm_deployment.backend": "バックエンド",
   "aice.llm_deployment.backend_version": "バックエンドバージョン",
