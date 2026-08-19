@@ -4,7 +4,10 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <template v-slot:message>
-          <div>{{$t('compute.text_1234_1')}}</div>
+          <div v-if="isShowForceTip">
+            {{$t('compute.text_1234_2')}}
+          </div>
+          <div v-else>{{$t('compute.text_1234_1')}}</div>
         </template>
       </a-alert>
       <dialog-selected-tips :name="params.name || $t('dictionary.server')" :count="dataList.length" :action="action" />
@@ -131,6 +134,11 @@ export default {
           HYPERVISORS_MAP.cas?.hypervisor,
           HYPERVISORS_MAP.ksyun?.hypervisor,
         ].includes(item.hypervisor)
+      })
+    },
+    isShowForceTip () {
+      return this.dataList.length && this.dataList.some(item => {
+        return [HYPERVISORS_MAP.kvm.hypervisor].includes(item.hypervisor)
       })
     },
   },
