@@ -190,6 +190,12 @@ export default {
     isQcloud () {
       return String(this.regionProvider).toLowerCase() === 'qcloud'
     },
+    isCloudpods () {
+      return this.cloudEnv === 'private' || String(this.regionProvider).toLowerCase() === 'cloudpods'
+    },
+    skipRegionFilter () {
+      return this.isQcloud || this.isCloudpods
+    },
     areaselectsName () {
       if (this.cloudEnv === 'private') {
         return ['cloudregion']
@@ -249,14 +255,14 @@ export default {
     },
     cloudproviderParams () {
       if (this.isPublic && !this.regionProvider) return {}
-      if (!this.isQcloud && !this.regionId) return {}
+      if (!this.skipRegionFilter && !this.regionId) return {}
       const params = {
         limit: 0,
         enabled: true,
         read_only: false,
         'filter.0': 'status.equals("connected")',
       }
-      if (!this.isQcloud && this.regionId) {
+      if (!this.skipRegionFilter && this.regionId) {
         params.cloudregion = this.regionId
       }
       if (this.regionProvider) {
@@ -310,12 +316,13 @@ export default {
         }
       }
       if (cloudregion) {
-        const brand = cloudregion.provider || cloudregion.brand || this.regionProvider
+        const regionInfo = cloudregion.value || cloudregion
+        const brand = regionInfo.provider || regionInfo.brand || this.regionProvider || (this.cloudEnv === 'private' ? 'Cloudpods' : '')
         if (!this.isAllowedBrand(brand)) {
           this.regionId = ''
           return
         }
-        this.regionId = cloudregion.id || cloudregion
+        this.regionId = cloudregion.id || regionInfo.id || cloudregion
         if (!this.regionProvider && brand) {
           this.regionProvider = brand
         }
