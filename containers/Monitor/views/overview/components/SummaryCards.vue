@@ -3,7 +3,7 @@
     <a-icon type="sync" spin v-if="loading" />
     <a-row v-else-if="cards.length > 0" type="flex" style="margin-left: 128px;">
       <a-col v-for="card in cards" :key="card.title" :span="8" style="width: 400px" class="mt-4">
-        <overview-summary-card :card="card" @resourceClick="handleResClick" />
+        <overview-summary-card :card="card" />
       </a-col>
     </a-row>
     <a-row v-else type="flex" style="justify-content:center">
@@ -141,14 +141,14 @@ export default {
         throw e
       }
     },
-    handleResClick (res) {
-      if (['guest', 'host'].includes(res.resType)) {
-        this.$router.push({
-          path: `/monitorresources-${res.resType}`,
-          query: { defaultFilter: { alert_state: [res.alert_state] } },
-        })
-      }
-    },
+    // handleResClick (res) {
+    //   if (['guest', 'host'].includes(res.resType)) {
+    //     this.$router.push({
+    //       path: `/monitorresources-${res.resType}`,
+    //       query: { defaultFilter: { alert_state: [res.alert_state] } },
+    //     })
+    //   }
+    // },
   },
 }
 </script>
