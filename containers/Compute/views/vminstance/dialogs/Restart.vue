@@ -4,7 +4,8 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <template v-slot:message>
-          <div>{{$t('compute.text_1234')}}</div>
+          <div v-if="isShowForceTip">{{$t('compute.text_1234_3')}}</div>
+          <div v-else>{{$t('compute.text_1234')}}</div>
         </template>
       </a-alert>
       <dialog-selected-tips :name="params.name || $t('dictionary.server')" :count="dataList.length" :action="action" />
@@ -32,6 +33,7 @@ import WindowsMixin from '@/mixins/windows'
 import WorkflowMixin from '@/mixins/workflow'
 import { BATCH_OPERATE_SERVERS_MAX } from '@/constants/workflow'
 import { getNameDescriptionTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'VmRestartDialog',
@@ -82,6 +84,11 @@ export default {
     },
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_RESTART)
+    },
+    isShowForceTip () {
+      return this.dataList.length && this.dataList.some(item => {
+        return [HYPERVISORS_MAP.kvm.hypervisor].includes(item.hypervisor)
+      })
     },
   },
   created () {
