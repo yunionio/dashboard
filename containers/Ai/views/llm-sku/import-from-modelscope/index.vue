@@ -26,35 +26,23 @@
 
         <div class="catalog-drawer-scroll">
           <catalog-drawer-meta-panel :set="msCatalogSet" />
-          <a-divider orientation="left">{{ $t('aice.llm_type') }}</a-divider>
-          <a-radio-group v-model="selectedBackend" class="mb-3" button-style="solid">
-            <a-radio-button value="vLLM">vLLM</a-radio-button>
-            <a-radio-button value="SGLang">SGLang</a-radio-button>
-          </a-radio-group>
-
           <a-divider
-            v-if="catalogLlmType"
+            v-if="msCatalogSpec"
             orientation="left">
             {{ $t('aice.llm_catalog.import_config') }}
           </a-divider>
           <catalog-import-sku-form
-            v-if="catalogLlmType"
+            v-if="msCatalogSpec"
             ref="importFormRef"
-            :key="formKey"
+            :key="formModelId"
             :catalog-set="msCatalogSet"
             :catalog-spec="msCatalogSpec"
+            catalog-type-selectable
             @success="onImportSuccess"
             @cancel="closeDrawer" />
-
-          <a-alert
-            v-else
-            type="warning"
-            :message="$t('aice.llm_catalog.unsupported_backend')"
-            show-icon
-            class="mb-3" />
         </div>
 
-        <div v-if="catalogLlmType" class="catalog-drawer-footer">
+        <div v-if="msCatalogSpec" class="catalog-drawer-footer">
           <a-button class="mr-2" @click="closeDrawer">{{ $t('common.cancel') }}</a-button>
           <a-button type="primary" :loading="submitLoading" @click="handleImport">
             {{ $t('aice.import_model') }}
@@ -69,7 +57,6 @@
 import MsBrowsePane from '@Ai/sections/import-from-modelscope/components/MsBrowsePane.vue'
 import CatalogDrawerMetaPanel from '@Ai/sections/catalog-model-sets/components/CatalogDrawerMetaPanel.vue'
 import CatalogImportSkuForm from '@Ai/views/llm-sku/shared/CatalogImportSkuForm.vue'
-import { resolveCatalogLlmType } from '@Ai/utils/catalogSpec'
 import { parseLlmRoute } from '@Ai/utils/llmRouteContext'
 import { buildMsCatalogSet, buildMsCatalogSpec, modelIdOf } from '@Ai/utils/msImportSpec'
 
@@ -83,7 +70,6 @@ export default {
   data () {
     return {
       formRepo: null,
-      selectedBackend: 'vLLM',
       submitLoading: false,
     }
   },
@@ -106,36 +92,18 @@ export default {
     },
     msCatalogSpec () {
       if (!this.formModelId) return null
-      return buildMsCatalogSpec(this.formModelId, this.selectedBackend, this.formRepo)
-    },
-    catalogLlmType () {
-      return resolveCatalogLlmType(this.msCatalogSpec, { fallbackBackend: this.selectedBackend })
-    },
-    formKey () {
-      return `${this.formModelId}-${this.selectedBackend}`
-    },
-  },
-  watch: {
-    selectedBackend () {
-      this.$nextTick(() => {
-        const form = this.$refs.importFormRef
-        if (form && form.applyCatalogSpec) {
-          form.applyCatalogSpec()
-        }
-      })
+      return buildMsCatalogSpec(this.formModelId, 'vLLM', this.formRepo)
     },
   },
   methods: {
     onOpenDrawer (item) {
       this.formRepo = item
-      this.selectedBackend = 'vLLM'
       if (this.$refs.browse) {
         this.$refs.browse.ensurePreview(item)
       }
     },
     closeDrawer () {
       this.formRepo = null
-      this.selectedBackend = 'vLLM'
     },
     async handleImport () {
       const form = this.$refs.importFormRef

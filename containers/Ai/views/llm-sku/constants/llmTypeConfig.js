@@ -30,7 +30,7 @@ export function getParamsForType (llmType) {
 export const LLM_TYPE_DEFAULT_PORT_MAPPINGS = {
   ollama: [{ protocol: 'tcp', container_port: 11434 }],
   vllm: [{ protocol: 'tcp', container_port: 8000 }],
-  sglang: [{ protocol: 'tcp', container_port: 8000 }],
+  sglang: [{ protocol: 'tcp', container_port: 30000 }],
   comfyui: [{ protocol: 'tcp', container_port: 8188 }],
   dify: [{ protocol: 'tcp', container_port: 80 }],
   openclaw: [{ protocol: 'tcp', container_port: 3001 }],
