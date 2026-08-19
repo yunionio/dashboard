@@ -1,8 +1,25 @@
-import { getNameDescriptionTableColumn, getProjectTableColumn, getTimeTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import {
+  getNameDescriptionTableColumn,
+  getProjectTableColumn,
+  getTimeTableColumn,
+  getPublicScopeTableColumn,
+  getBrandTableColumn,
+  getAccountTableColumn,
+  getRegionTableColumn,
+  getStatusTableColumn,
+} from '@/utils/common/tableColumn'
 
 const IPSET_TYPE = {
   ipv4_cidr_list: 'IPv4',
   ipv6_cidr_list: 'IPv6',
+}
+
+function parseCidrList (data) {
+  if (Array.isArray(data)) {
+    return data.map(item => String(item).trim()).filter(Boolean)
+  }
+  if (!data) return []
+  return String(data).split(/[,\n]/).map(item => item.trim()).filter(Boolean)
 }
 
 export default {
@@ -17,6 +34,7 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'ipset', vm: this }),
       {
         field: 'ip_set_type',
         title: this.$t('compute.text_175'),
@@ -29,12 +47,14 @@ export default {
         title: 'CIDR',
         slots: {
           default: ({ row }, h) => {
-            const list = Array.isArray(row.data) ? row.data : (row.data ? [row.data] : [])
+            const list = parseCidrList(row.data)
             if (!list.length) return [<span>-</span>]
             return list.map(item => h('div', item))
           },
         },
       },
+      getBrandTableColumn(),
+      getAccountTableColumn(),
       {
         field: 'security_group_count',
         title: this.$t('compute.text_105'),
@@ -44,6 +64,7 @@ export default {
       },
       getProjectTableColumn(),
       getPublicScopeTableColumn({ vm: this, resource: 'ipsets' }),
+      getRegionTableColumn(),
       getTimeTableColumn(),
     ]
   },

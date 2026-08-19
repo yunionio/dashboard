@@ -272,6 +272,10 @@ export default {
     isKvm () {
       return this.params.brand === 'OneCloud'
     },
+    supportsIpSet () {
+      const brand = (this.params.brand || '').toLowerCase()
+      return ['onecloud', 'cloudpods', 'qcloud', 'aliyun'].includes(brand)
+    },
     targetTypeOptions () {
       const ret = [
         { label: this.$t('compute.secgroup.rule.target_type.all'), value: 'all' },
@@ -279,7 +283,7 @@ export default {
         // { label: this.$t('compute.title.ipsetGroup'), value: 'ip_set_group' },
         // { label: this.$t('dictionary.secgroup'), value: 'security_group' },
       ]
-      if (this.isKvm) {
+      if (this.supportsIpSet) {
         ret.push({ label: this.$t('compute.secgroup.rule.target_type.ip_set'), value: 'ip_set' })
       }
       if (this.isEdit) {
@@ -319,9 +323,22 @@ export default {
       return this.params.title === 'edit' && ['qcloud'].includes(this.params.brand.toLowerCase())
     },
     ipsetParams () {
-      return {
-        scope: 'maxallowed',
+      const params = {
+        scope: this.scope,
       }
+      const cloudregionId = this.params.cloudregion_id
+      const managerId = this.params.manager_id
+      const isQcloud = (this.params.brand || '').toLowerCase() === 'qcloud'
+      if (cloudregionId && !isQcloud) {
+        params.cloudregion_id = cloudregionId
+      }
+      if (managerId) {
+        params.manager_id = managerId
+      } else {
+        // local IDC / onpremise: only unmanaged ipsets
+        params.is_managed = false
+      }
+      return params
     },
     sourcePromptText () {
       if (this.targetType === 'ip_set') {

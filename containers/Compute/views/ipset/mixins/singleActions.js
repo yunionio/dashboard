@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   computed: {
@@ -64,6 +65,19 @@ export default {
             }, {
               permission: 'ipsets_perform_public',
             }),
+            {
+              label: this.$t('compute.perform_sync_status'),
+              permission: 'ipsets_perform_syncstatus',
+              action: () => {
+                this.onManager('performAction', {
+                  steadyStatus: Object.values(expectStatus.ipset).flat(),
+                  id: obj.id,
+                  managerArgs: {
+                    action: 'syncstatus',
+                  },
+                })
+              },
+            },
             {
               label: this.$t('compute.perform_delete'),
               permission: 'ipsets_delete',
