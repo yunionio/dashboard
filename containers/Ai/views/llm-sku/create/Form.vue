@@ -19,7 +19,7 @@
       </a-form-item>
       <a-form-item :label="$t('aice.llm_type')">
         <a-radio-group
-          v-if="!isEditMode && !isCatalogMode"
+          v-if="!isEditMode && (!isCatalogMode || catalogTypeSelectable)"
           class="llm-type-picker"
           button-style="solid"
           v-decorator="decorators.llm_type"
@@ -89,6 +89,7 @@
       <a-form-item v-else :label="$t('aice.llm_image')">
         <catalog-llm-image-select
           v-if="isCatalogImportMode"
+          :key="`catalog-image-${catalogLlmType}`"
           ref="catalogImageSelect"
           v-decorator="decorators.llm_image_id"
           :llm-type="catalogLlmType"
@@ -516,13 +517,19 @@ export default {
       type: String,
       default: null,
     },
+    catalogTypeSelectable: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     const data = this.mode === 'edit' && this.editData ? this.editData : {}
     const llmRouteCtx = parseLlmRoute(this.$route.path)
     const isApplyType = llmRouteCtx.isApplyType
     const isDesktopType = llmRouteCtx.isDesktopType
-    const catalogLlmTypeInit = this.catalogSpec ? backendToLlmType(this.catalogSpec.backend) : null
+    const catalogLlmTypeInit = this.catalogTypeSelectable
+      ? 'vllm'
+      : (this.catalogSpec ? backendToLlmType(this.catalogSpec.backend) : null)
     const catalogResourceDefaults = this.catalogSpec ? { cpu: 4, memory: 8192 } : null
     const isLocalPathImportInit = this.importMode === 'local_path'
     const localPathResourceDefaults = isLocalPathImportInit
@@ -533,7 +540,7 @@ export default {
       llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => opt.id === 'desktop')
     } else if (isApplyType) {
       llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => !['vllm', 'ollama', 'sglang', 'desktop'].includes(opt.id))
-    } else if (isLocalPathImportInit) {
+    } else if (isLocalPathImportInit || this.catalogTypeSelectable) {
       llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => ['vllm', 'sglang'].includes(opt.id))
     } else {
       llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => ['vllm', 'ollama', 'sglang'].includes(opt.id))
@@ -1108,7 +1115,11 @@ export default {
       return !!getCatalogSpecId(this.catalogSpec)
     },
     catalogLlmType () {
-      if (this.isLocalPathImportMode) return this.form?.fd?.llm_type || 'vllm'
+      if (this.isLocalPathImportMode || this.catalogTypeSelectable) {
+        const fromForm = this.form?.fd?.llm_type
+        if (fromForm === 'vllm' || fromForm === 'sglang') return fromForm
+        return 'vllm'
+      }
       return this.catalogSpec ? backendToLlmType(this.catalogSpec.backend) : ''
     },
     llmTypeName () {
@@ -1220,6 +1231,13 @@ export default {
           this.$nextTick(() => this.syncLocalPathHostPathRows(path))
         }
       }
+      if (this.catalogTypeSelectable && this.catalogSpec && oldVal) {
+        this.form.fc.setFieldsValue({
+          llm_image_id: undefined,
+          name: defaultNameFromSpec(this.catalogSpec, this.catalogSet, val),
+        })
+        this.$set(this.form.fd, 'llm_image_id', undefined)
+      }
     },
   },
   mounted () {
@@ -1233,6 +1251,15 @@ export default {
   methods: {
     resolveCreateLlmType (values = {}) {
       if (this.isCatalogMode) {
+        if (this.catalogTypeSelectable) {
+          const raw = values.llm_type ??
+            this.form.fc?.getFieldValue?.('llm_type') ??
+            this.form.fd?.llm_type ??
+            this.catalogLlmType
+          const llmType = String(raw || '').trim()
+          if (llmType === 'vllm' || llmType === 'sglang') return llmType
+          return 'vllm'
+        }
         return this.catalogLlmType
       }
       const raw = values.llm_type ??

@@ -162,6 +162,7 @@ import {
   isPlaceholderApiKey,
   resolveAiproxyAnthropicMessagesUrl,
   resolveAiproxyChatCompletionsUrl,
+  rewriteAiproxyUrlForBrowser,
 } from '@Ai/utils/aiproxyEndpoint'
 import {
   appendAnthropicStreamLine,
@@ -532,12 +533,15 @@ export default {
 
       this.anthropicStreamState = {}
 
-      const response = await fetch(url, {
+      const apiBase = this.$http.defaults.baseURL || process.env.VUE_APP_BASE_API || '/api'
+      const fetchUrl = rewriteAiproxyUrlForBrowser(url, apiBase)
+      const response = await fetch(fetchUrl, {
         method: 'POST',
         headers: {
           Accept: 'text/event-stream',
           ...headers,
         },
+        credentials: 'include',
         body: JSON.stringify(requestBody),
         signal: this.abortController.signal,
       })
