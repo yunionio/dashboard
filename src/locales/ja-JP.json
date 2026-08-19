@@ -367,6 +367,16 @@
       "update_failed": "更新に失敗しました",
       "unknown": "不明な状態"
     },
+    "ipset": {
+      "available": "利用できる",
+      "creating": "作成",
+      "create_failed": "作成に失敗しました",
+      "deleting": "削除",
+      "delete_failed": "削除に失敗しました",
+      "update_failed": "更新に失敗しました",
+      "sync_status": "同期中",
+      "unknown": "不明"
+    },
     "redisBackup": {
       "running": "正常",
       "creating": "バックアップ中",
