@@ -1,16 +1,18 @@
 <template>
   <div>
-    <page-header :title="$t('compute.title.ipset')" />
+    <page-header :title="$t('compute.title.ipset')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
       <list
         :id="listId"
-        :get-params="getParams" />
+        :cloud-env="cloudEnv"
+        :cloud-env-options="cloudEnvOptions" />
     </page-body>
   </div>
 </template>
 
 <script>
 import List from './components/List'
+import { getIpSetCloudEnvOptions } from './constants'
 
 export default {
   name: 'IpSetIndex',
@@ -20,9 +22,8 @@ export default {
   data () {
     return {
       listId: 'IpSetList',
-      getParams: {
-        details: true,
-      },
+      cloudEnvOptions: getIpSetCloudEnvOptions(),
+      cloudEnv: '',
     }
   },
 }

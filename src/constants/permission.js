@@ -528,6 +528,17 @@ export const PERMISSION = {
   secgrouprules_delete: ['compute', 'secgrouprules', 'delete'],
   secgrouprules_get: ['compute', 'secgrouprules', 'get'],
   secgrouprules_list: ['compute', 'secgrouprules', 'list'],
+  /**
+   * ipsets 相关操作
+   */
+  ipsets_list: ['compute', 'ipsets', 'list'],
+  ipsets_create: ['compute', 'ipsets', 'create'],
+  ipsets_update: ['compute', 'ipsets', 'update'],
+  ipsets_delete: ['compute', 'ipsets', 'delete'],
+  ipsets_get: ['compute', 'ipsets', 'get'],
+  ipsets_perform_syncstatus: ['compute', 'ipsets', 'perform', 'syncstatus'],
+  ipsets_perform_public: ['compute', 'ipsets', 'perform', 'public'],
+  ipsets_perform_change_owner: ['compute', 'ipsets', 'perform', 'change-owner'],
 
   // 报警
   nodealerts_create: ['compute', 'nodealerts', 'create'],
