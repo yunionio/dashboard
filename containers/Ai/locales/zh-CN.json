@@ -471,6 +471,8 @@
   "aice.container_status": "容器状态",
   "aice.llm_deployment": "推理部署",
   "aice.llm_deployment_create": "创建推理部署",
+  "aice.llm_deployment.create.schedulable_check.failed": "调度检查未通过",
+  "aice.llm_deployment.create.schedulable_check.title": "无法创建推理部署",
   "aice.llm_deployment.replicas": "副本数",
   "aice.llm_deployment.backend": "后端引擎",
   "aice.llm_deployment.backend_version": "后端版本",
