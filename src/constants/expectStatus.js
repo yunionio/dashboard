@@ -131,6 +131,11 @@ export default {
     success: ['ready'],
     info: ['init'],
   },
+  ipset: {
+    success: ['available'],
+    danger: ['create_failed', 'delete_failed', 'update_failed'],
+    info: ['unknown'],
+  },
   rdsAccount: {
     success: ['available'],
     danger: ['create_failed', 'delete_failed', 'reset_passwd_failed'],

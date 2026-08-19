@@ -363,6 +363,16 @@
       "update_failed": "Update failed",
       "unknown": "Unknown status"
     },
+    "ipset": {
+      "available": "Available",
+      "creating": "Creating",
+      "create_failed": "Create failed",
+      "deleting": "Deleting",
+      "delete_failed": "Delete failed",
+      "update_failed": "Update failed",
+      "sync_status": "Syncing",
+      "unknown": "Unknown"
+    },
     "redisBackup": {
       "running": "Normal",
       "creating": "Backing up",
