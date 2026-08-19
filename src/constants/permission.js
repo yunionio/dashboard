@@ -1537,6 +1537,7 @@ export const PERMISSION = {
   llm_skus_perform_syncstatus: ['llm', 'llm_skus', 'perform', 'syncstatus'],
   llm_skus_perform_change_owner: ['llm', 'llm_skus', 'perform', 'change-owner'],
   llm_skus_perform_public: ['llm', 'llm_skus', 'perform', 'public'],
+  'llm_skus_perform_schedulable-check': ['llm', 'llm_skus', 'perform', 'schedulable-check'],
 
   llm_images_list: ['llm', 'llm_images', 'list'],
   llm_images_get: ['llm', 'llm_images', 'get'],
