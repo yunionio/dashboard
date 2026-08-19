@@ -14,6 +14,8 @@ export default {
             type: this.type,
             brand: this.data.brand,
             cloud_env: this.data.cloud_env,
+            cloudregion_id: this.data.cloudregion_id,
+            manager_id: this.data.manager_id,
           })
         },
         meta: (obj) => {

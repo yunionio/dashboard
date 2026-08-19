@@ -9,7 +9,8 @@
           <domain-project
             :fc="form.fc"
             :form-layout="formItemLayout"
-            :decorators="{ project: decorators.project, domain: decorators.domain }" />
+            :decorators="{ project: decorators.project, domain: decorators.domain }"
+            @update:domain="handleDomainChange" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_228')" class="mb-0">
           <a-input :placeholder="$t('validator.resourceName')" v-decorator="decorators.name" />
@@ -17,6 +18,31 @@
         <a-form-item :label="$t('common.description')" class="mb-0">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" :placeholder="$t('common_367')" v-decorator="decorators.description" />
         </a-form-item>
+        <template v-if="isManaged">
+          <area-selects
+            class="mb-0"
+            ref="areaSelects"
+            :wrapperCol="formItemLayout.wrapperCol"
+            :labelCol="formItemLayout.labelCol"
+            :names="areaselectsName"
+            :providerParams="providerParams"
+            :cloudregionParams="cloudregionParams"
+            :providerMapper="providerMapper"
+            :cloudregionMapper="cloudregionMapper"
+            :cloudregionParamsMapper="cloudregionParamsMapper"
+            :isRequired="true"
+            @change="handleRegionChange" />
+          <a-form-item :label="$t('compute.text_15')" class="mb-0">
+            <base-select
+              resource="cloudproviders"
+              v-decorator="decorators.manager_id"
+              :params="cloudproviderParams"
+              :isDefaultSelect="true"
+              :needParams="true"
+              :showSync="true"
+              :select-props="{ placeholder: $t('compute.text_149') }" />
+          </a-form-item>
+        </template>
         <a-form-item :label="$t('compute.text_175')" class="mb-0">
           <a-radio-group v-decorator="decorators.ip_set_type" @change="ipsetTypeChange" :disabled="isEdit">
             <a-radio value="ipv4_cidr_list">IPv4</a-radio>
@@ -42,18 +68,27 @@
 import { mapGetters } from 'vuex'
 import { isRequired, REGEXP } from '@/utils/validate'
 import DomainProject from '@/sections/DomainProject'
+import AreaSelects from '@/sections/AreaSelects'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+
+import { IPSET_PRIVATE_BRANDS, IPSET_PUBLIC_BRANDS } from '../constants'
 
 export default {
   name: 'EditIpSetsDialog',
   components: {
     DomainProject,
+    AreaSelects,
   },
   mixins: [DialogMixin, WindowsMixin],
+  provide () {
+    return {
+      form: this.form,
+    }
+  },
   data () {
     const selectItem = (this.params.data && this.params.data[0]) || {}
-    const ipsetType = selectItem.ipset_type || 'ipv4_cidr_list'
+    const ipsetType = selectItem.ip_set_type || selectItem.ipset_type || 'ipv4_cidr_list'
     const dataValue = Array.isArray(selectItem.data)
       ? selectItem.data.join(',')
       : (selectItem.data || '')
@@ -62,6 +97,8 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
+      allowedPrivateBrands: IPSET_PRIVATE_BRANDS,
+      allowedPublicBrands: IPSET_PUBLIC_BRANDS,
       decorators: {
         domain: [
           'domain',
@@ -96,6 +133,14 @@ export default {
             initialValue: selectItem.description || '',
           },
         ],
+        manager_id: [
+          'manager_id',
+          {
+            rules: [
+              { required: true, message: this.$t('compute.text_149') },
+            ],
+          },
+        ],
         ip_set_type: [
           'ip_set_type',
           {
@@ -123,12 +168,42 @@ export default {
         },
       },
       ipsetType,
+      regionId: '',
+      regionProvider: '',
+      projectDomain: '',
     }
   },
   computed: {
-    ...mapGetters(['userInfo']),
+    ...mapGetters(['userInfo', 'isAdminMode', 'scope']),
     isEdit () {
       return this.params.title === 'edit'
+    },
+    cloudEnv () {
+      return this.params.cloudEnv || 'onpremise'
+    },
+    isManaged () {
+      return !this.isEdit && ['private', 'public'].includes(this.cloudEnv)
+    },
+    isPublic () {
+      return this.cloudEnv === 'public'
+    },
+    isQcloud () {
+      return String(this.regionProvider).toLowerCase() === 'qcloud'
+    },
+    areaselectsName () {
+      if (this.cloudEnv === 'private') {
+        return ['cloudregion']
+      }
+      return ['provider', 'cloudregion']
+    },
+    allowedBrands () {
+      if (this.cloudEnv === 'private') {
+        return this.allowedPrivateBrands
+      }
+      if (this.cloudEnv === 'public') {
+        return this.allowedPublicBrands
+      }
+      return []
     },
     dialogTitle () {
       if (this.isEdit) {
@@ -139,8 +214,115 @@ export default {
     decLabel () {
       return this.ipsetType === 'ipv6_cidr_list' ? 'IPv6 CIDR' : 'IPv4 CIDR'
     },
+    providerParams () {
+      const params = {
+        cloud_env: 'public',
+        usable: false,
+        read_only: false,
+      }
+      if (this.isAdminMode) {
+        params.project_domain = this.projectDomain || this.userInfo.projectDomainId
+      } else {
+        params.scope = this.scope
+      }
+      return params
+    },
+    cloudregionParams () {
+      const params = {
+        scope: this.scope,
+        limit: 0,
+        usable: false,
+        show_emulated: true,
+        read_only: false,
+      }
+      if (this.cloudEnv === 'private') {
+        params.is_private = true
+        params.provider = 'Cloudpods'
+      } else if (this.cloudEnv === 'public') {
+        params.is_public = true
+      }
+      if (this.isAdminMode) {
+        params.project_domain = this.projectDomain || this.userInfo.projectDomainId
+        delete params.scope
+      }
+      return params
+    },
+    cloudproviderParams () {
+      if (this.isPublic && !this.regionProvider) return {}
+      if (!this.isQcloud && !this.regionId) return {}
+      const params = {
+        limit: 0,
+        enabled: true,
+        read_only: false,
+        'filter.0': 'status.equals("connected")',
+      }
+      if (!this.isQcloud && this.regionId) {
+        params.cloudregion = this.regionId
+      }
+      if (this.regionProvider) {
+        params.brand = this.regionProvider
+      } else if (this.cloudEnv === 'private') {
+        params.brand = 'Cloudpods'
+      }
+      if (this.isAdminMode) {
+        params.project_domain = this.projectDomain || this.userInfo.projectDomainId
+      } else {
+        params.scope = this.scope
+      }
+      return params
+    },
   },
   methods: {
+    isAllowedBrand (brand) {
+      if (!brand) return false
+      return this.allowedBrands.some(item => item.toLowerCase() === String(brand).toLowerCase())
+    },
+    providerMapper (list = []) {
+      return list.filter(item => this.isAllowedBrand(item.name || item.provider || item.brand))
+    },
+    cloudregionMapper (list = []) {
+      return list.filter(item => this.isAllowedBrand(item.provider || item.brand))
+    },
+    cloudregionParamsMapper (params = {}) {
+      const next = { ...params }
+      if (this.cloudEnv === 'private') {
+        next.provider = 'Cloudpods'
+        return next
+      }
+      if (this.cloudEnv === 'public' && !next.provider) {
+        const hasProviderFilter = [].concat(next.filter || []).some(item => String(item).includes('provider.in'))
+        if (!hasProviderFilter) {
+          next.filter = [].concat(next.filter || [], [`provider.in(${this.allowedPublicBrands.join(',')})`])
+        }
+      }
+      return next
+    },
+    handleDomainChange (val) {
+      this.projectDomain = (val && val.key) || val || ''
+    },
+    handleRegionChange (data) {
+      const { provider, cloudregion } = data || {}
+      if (data && data.hasOwnProperty('provider')) {
+        const nextProvider = provider ? (provider.id || provider) : ''
+        this.regionProvider = this.isAllowedBrand(nextProvider) ? nextProvider : ''
+        if (!this.regionProvider) {
+          this.regionId = ''
+        }
+      }
+      if (cloudregion) {
+        const brand = cloudregion.provider || cloudregion.brand || this.regionProvider
+        if (!this.isAllowedBrand(brand)) {
+          this.regionId = ''
+          return
+        }
+        this.regionId = cloudregion.id || cloudregion
+        if (!this.regionProvider && brand) {
+          this.regionProvider = brand
+        }
+      } else if (data && data.hasOwnProperty('cloudregion')) {
+        this.regionId = ''
+      }
+    },
     ipsetTypeChange (e) {
       this.ipsetType = e.target.value
       this.form.fc.validateFields(['data'])
@@ -170,7 +352,7 @@ export default {
       return callback()
     },
     genData (values) {
-      const { project, domain, data, ...rest } = values
+      const { project, domain, data, cloudregion, provider, manager_id, ...rest } = values
       const payload = {
         ...rest,
         data: this.parseDataList(data).join(','),
@@ -178,6 +360,14 @@ export default {
       if (!this.isEdit) {
         payload.project_domain = (domain && domain.key) || this.userInfo.projectDomainId
         payload.project_id = (project && project.key) || this.userInfo.projectId
+        if (this.isManaged) {
+          const providerName = this.regionProvider || (provider && (provider.id || provider)) || ''
+          const isQcloud = String(providerName).toLowerCase() === 'qcloud'
+          if (!isQcloud) {
+            payload.cloudregion_id = this.regionId || cloudregion
+          }
+          payload.manager_id = manager_id
+        }
       }
       return payload
     },
