@@ -7,6 +7,31 @@ export function normalizeBaseUrl (url) {
   return raw.replace(/\/+$/, '')
 }
 
+/**
+ * Rewrite a public aiproxy inference URL to the same-origin apigateway
+ * reverse proxy so the browser does not hit an untrusted TLS cert on
+ * access_address. Only rewrites paths under /ai/.
+ *
+ * https://host/ai/openai/v1/chat/completions
+ *   -> /api/s/aiproxy/ai/openai/v1/chat/completions
+ */
+export function rewriteAiproxyUrlForBrowser (url, apiBase = '') {
+  const raw = String(url || '').trim()
+  if (!raw) return ''
+  let parsed
+  try {
+    parsed = new URL(raw, 'http://localhost')
+  } catch (e) {
+    return raw
+  }
+  const pathname = parsed.pathname || ''
+  if (!/^\/ai\//i.test(pathname)) {
+    return raw
+  }
+  const base = normalizeBaseUrl(apiBase) || '/api'
+  return `${base}/s/aiproxy${pathname}${parsed.search || ''}`
+}
+
 export function buildOpenAIBaseUrl (baseUrl) {
   const base = normalizeBaseUrl(baseUrl)
   if (!base) return ''

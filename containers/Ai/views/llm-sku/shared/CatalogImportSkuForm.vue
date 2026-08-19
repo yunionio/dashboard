@@ -8,6 +8,7 @@
     hide-footer
     :catalog-set="catalogSet"
     :catalog-spec="catalogSpec"
+    :catalog-type-selectable="catalogTypeSelectable"
     catalog-submit-type="import"
     v-bind="$attrs"
     v-on="$listeners" />
@@ -30,6 +31,10 @@ export default {
     catalogSpec: {
       type: Object,
       default: null,
+    },
+    catalogTypeSelectable: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
