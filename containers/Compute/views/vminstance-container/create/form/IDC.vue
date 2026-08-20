@@ -197,15 +197,16 @@
               :valuePlaceholder="$t('compute.repo.example', ['443'])" />
           </a-form-item>
       </advance-config-block>
-      <container-title :title="$t('compute.eci.container_config')" />
-      <spec-container
-        ref="specContainerRef"
-        :form="form"
-        :panes.sync="form.fi.containerPanes"
-        :errPanes="form.fi.errPanes"
-        :decorators="decorators.containers"
-        :initContainers="containerInitList"
-        :form-draft-key="containerDraftFields.containers" />
+      <advance-config-block :title="$t('compute.eci.container_config')">
+        <spec-container
+          ref="specContainerRef"
+          :form="form"
+          :panes.sync="form.fi.containerPanes"
+          :errPanes="form.fi.errPanes"
+          :decorators="decorators.containers"
+          :initContainers="containerInitList"
+          :form-draft-key="containerDraftFields.containers" />
+      </advance-config-block>
       <bottom-bar
         :loading="submiting"
         :form="form"
