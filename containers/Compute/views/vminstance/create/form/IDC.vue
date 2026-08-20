@@ -292,7 +292,11 @@
               :form-draft-key="vmDraftFields.instanceGroups" />
           </a-form-item>
           <a-form-item v-show="!isServertemplate" v-if="isKvm && enableEncryption" :label="$t('compute.server.encryption')" :extra="$t('compute.server.encryption.extra')">
-            <encrypt-keys :decorators="decorators.encrypt_keys" />
+            <encrypt-keys
+              ref="encryptKeysRef"
+              :form="form"
+              :decorators="decorators.encrypt_keys"
+              :form-draft-key="vmDraftFields.encryptKeys" />
           </a-form-item>
           <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" :form-draft-key="vmDraftFields.customData" />
           <!-- <a-form-item v-if="!isOpenSourceVersion" :label="$t('compute.bastionHost.bastion_host')">
