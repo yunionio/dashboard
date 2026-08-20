@@ -97,18 +97,25 @@ export default {
       if (!f) {
         return {
           groupsEnable: this.showGroups,
-          groups: this.pendingGroups.slice(),
+          groups: this.showGroups ? this.pendingGroups.slice() : [],
         }
       }
-      const prev = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
       const enableField = this.enableDec[0]
       const groupsField = this.groupsDec[0]
       const groupsEnable = !!f.getFieldValue(enableField)
+      // 关开关时强制空 groups，避免展示关闭但草稿/提交仍带旧实例组（阴阳表单）
+      if (!groupsEnable) {
+        return { groupsEnable: false, groups: [] }
+      }
       let groups = this.normalizeGroups(
         f.getFieldValue(groupsField) || this.pendingGroups,
       )
-      if (!groups.length && Array.isArray(prev && prev.groups)) {
-        groups = this.normalizeGroups(prev.groups)
+      // 仅程序化空窗（列表未就绪）才用 prev；用户已清空则写空
+      if (!groups.length && !this._groupsUserTouched) {
+        const prev = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
+        if (Array.isArray(prev && prev.groups)) {
+          groups = this.normalizeGroups(prev.groups)
+        }
       }
       return { groupsEnable, groups }
     },
@@ -119,16 +126,19 @@ export default {
       const enableField = this.enableDec[0]
       const groupsField = this.groupsDec[0]
       const groups = this.normalizeGroups(draft.groups)
+      // 显式关闭优先：不因子字段残留而重新打开
+      if (draft.groupsEnable === false) {
+        this.showGroups = false
+        this.pendingGroups = []
+        this.form.fc.setFieldsValue({ [enableField]: false })
+        if (this.form.fd) this.$set(this.form.fd, groupsField, undefined)
+        this._groupsDraftApplying = false
+        return
+      }
       if (draft.groupsEnable || groups.length) {
         this.showGroups = true
         this.pendingGroups = groups
         this.form.fc.setFieldsValue({ [enableField]: true })
-      } else if (draft.groupsEnable === false) {
-        this.showGroups = false
-        this.pendingGroups = []
-        this.form.fc.setFieldsValue({ [enableField]: false })
-        this._groupsDraftApplying = false
-        return
       }
       const writeGroups = () => {
         if (!this.form?.fc || !this.showGroups) return false
@@ -159,7 +169,12 @@ export default {
     change (val) {
       if (!this._groupsDraftApplying) this._groupsUserTouched = true
       this.showGroups = !!val
-      if (!val) this.pendingGroups = []
+      if (!val) {
+        this.pendingGroups = []
+        const groupsField = this.groupsDec[0]
+        if (this.form?.fc) this.form.fc.setFieldsValue({ [groupsField]: undefined })
+        if (this.form?.fd) this.$delete(this.form.fd, groupsField)
+      }
       this.$nextTick(() => {
         if (!this._groupsDraftApplying) this.persistFormFieldDraftSnapshot()
       })

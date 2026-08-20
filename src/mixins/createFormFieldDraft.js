@@ -87,6 +87,11 @@ export default {
     },
     writeFormFieldDraft (data, options = {}) {
       if (!this.canReadWriteFormFieldDraft()) return
+      // null：显式清空（删光/取消后保证展示与提交一致）
+      if (data === null) {
+        this.clearFormFieldDraft()
+        return
+      }
       if (data === undefined) return
       let next = data
       if (options.merge) {
@@ -137,6 +142,29 @@ export default {
       }
       return undefined
     },
+    /** setFieldsValue 后同步 form.fd（onValuesChange 不会走 fd 赋值） */
+    syncFormFieldValuesToFd (values) {
+      if (!this.form?.fd || !values || typeof values !== 'object') return
+      Object.keys(values).forEach((key) => {
+        this.$set(this.form.fd, key, values[key])
+      })
+      const fc = this.resolveFormFc()
+      if (!fc) return
+      const formValue = fc.getFieldsValue()
+      if (formValue.dataDiskSizes) {
+        this.$set(this.form.fd, 'dataDiskSizes', formValue.dataDiskSizes)
+      }
+      if (formValue.dataDiskTypes) {
+        this.$set(this.form.fd, 'dataDiskTypes', formValue.dataDiskTypes)
+      }
+    },
+    /** 写 fc 并同步 fd */
+    applyFormFieldValues (values) {
+      const fc = this.resolveFormFc()
+      if (!fc || !values || typeof values !== 'object') return
+      fc.setFieldsValue(values)
+      this.syncFormFieldValuesToFd(values)
+    },
     /**
      * 默认回填：优先子类 apply，否则 formDraftFields → setFieldsValue
      */
@@ -152,19 +180,27 @@ export default {
       if (this.formDraftFields?.length && fc && draft && typeof draft === 'object') {
         const values = pickFields(draft, this.formDraftFields)
         if (Object.keys(values).length) {
-          fc.setFieldsValue(values)
+          this.applyFormFieldValues(values)
           return true
         }
       }
       return false
     },
-    /** 用户改值后：写当前 snapshot（会话 + 可选落盘） */
+    /** 用户改值后：写当前 snapshot；null 表示清空草稿 */
     persistFormFieldDraftSnapshot (options = {}) {
       const data = this.serializeFormFieldDraft()
+      if (data === null) {
+        this.clearFormFieldDraft()
+        return
+      }
       if (data !== undefined) this.writeFormFieldDraft(data, options)
     },
     flushFormFieldDraftOnSubmit () {
       const data = this.serializeFormFieldDraft()
+      if (data === null) {
+        this.clearFormFieldDraft()
+        return
+      }
       if (data !== undefined) {
         this.writeFormFieldDraft(data, { fromSubmit: true })
       }

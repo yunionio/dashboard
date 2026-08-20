@@ -104,7 +104,7 @@
                 :decorators="decorators"
                 :form="form"
                 :storageParams="storageParams" />
-              <a-button class="mt-1" type="link" @click="showStorage = !showStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
+              <a-button class="mt-1" type="link" @click="toggleDiskShowStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
             </div>
           </a-col>
           <a-col v-if="isShowIops" :span="5">
@@ -118,7 +118,7 @@
                   :max="iopsLimit.max"
                   :precision="0" />
               </a-tooltip>
-              <a-button class="mt-1" type="link" @click="() => showIops = !showIops">{{ showIops ? $t('compute.text_135') : $t('compute.set_iops') }}</a-button>
+              <a-button class="mt-1" type="link" @click="() => toggleDiskShowIops(!showIops)">{{ showIops ? $t('compute.text_135') : $t('compute.set_iops') }}</a-button>
             </div>
           </a-col>
           <a-col v-if="isShowThroughput" :span="5">
@@ -132,7 +132,7 @@
                   :max="1000"
                   :precision="0" />
               </a-tooltip>
-              <a-button class="mt-1" type="link" @click="() => showThroughput = !showThroughput">{{ showThroughput ? $t('compute.text_135') : $t('compute.set_throughput') }}</a-button>
+              <a-button class="mt-1" type="link" @click="() => toggleDiskShowThroughput(!showThroughput)">{{ showThroughput ? $t('compute.text_135') : $t('compute.set_throughput') }}</a-button>
             </div>
           </a-col>
         </a-row>
@@ -781,7 +781,7 @@ export default {
       key: DISK_CREATE_FORM_DRAFT_FIELD.TAG,
       get: () => {
         const meta = this.form.fc.getFieldValue('__meta__')
-        if (!meta || !Object.keys(meta).length) return undefined
+        if (!meta || !Object.keys(meta).length) return null
         return { checked: meta }
       },
       set: (draft) => {
@@ -825,9 +825,33 @@ export default {
         const meta = newField.__meta__
         this.writeCreateFormFieldDraft(
           DISK_CREATE_FORM_DRAFT_FIELD.TAG,
-          meta && Object.keys(meta).length ? { checked: meta } : undefined,
+          meta && Object.keys(meta).length ? { checked: meta } : null,
         )
       }
+    },
+    toggleDiskShowStorage () {
+      if (this.showStorage) {
+        this.form.fc.setFieldsValue({ storage: undefined })
+        if (this.form.fd) this.$delete(this.form.fd, 'storage')
+        this.clearCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.STORAGE_ID)
+      }
+      this.showStorage = !this.showStorage
+    },
+    toggleDiskShowIops (show) {
+      if (this.showIops && !show) {
+        this.form.fc.setFieldsValue({ iops: undefined })
+        if (this.form.fd) this.$delete(this.form.fd, 'iops')
+        this.clearCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.IOPS)
+      }
+      this.showIops = show
+    },
+    toggleDiskShowThroughput (show) {
+      if (this.showThroughput && !show) {
+        this.form.fc.setFieldsValue({ throughput: undefined })
+        if (this.form.fd) this.$delete(this.form.fd, 'throughput')
+        this.clearCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.THROUGHPUT)
+      }
+      this.showThroughput = show
     },
     pickSingleAreaValue (value) {
       if (Array.isArray(value)) return value[0] || undefined

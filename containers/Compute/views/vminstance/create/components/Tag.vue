@@ -134,7 +134,23 @@ export default {
   },
   methods: {
     getCreateFormFieldDraftSnapshot () {
-      return this.checked && Object.keys(this.checked).length ? { checked: this.checked } : undefined
+      return this.checked && Object.keys(this.checked).length ? { checked: this.checked } : null
+    },
+    persistFormFieldDraftSnapshot (options = {}) {
+      const data = this.serializeFormFieldDraft()
+      if (data === null || data === undefined) {
+        this.clearFormFieldDraft()
+        return
+      }
+      this.writeFormFieldDraft(data, options)
+    },
+    flushFormFieldDraftOnSubmit () {
+      const data = this.serializeFormFieldDraft()
+      if (data === null || data === undefined) {
+        this.clearFormFieldDraft()
+        return
+      }
+      this.writeFormFieldDraft(data, { fromSubmit: true })
     },
     applyCreateFormFieldDraft (draft) {
       if (!draft?.checked || typeof draft.checked !== 'object') return

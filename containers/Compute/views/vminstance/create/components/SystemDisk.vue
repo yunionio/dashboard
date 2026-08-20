@@ -25,6 +25,7 @@
       :defaultIops="defaultIops"
       :defaultThroughput="defaultThroughput"
       @showStorageChange="showStorageChange"
+      @optionalChange="onDiskOptionalChange"
       @diskTypeChange="setDiskMedium"
       @storageHostChange="(val) => $emit('storageHostChange', val)" />
   </div>
@@ -393,14 +394,12 @@ export default {
       const cur = this.form.fc.getFieldValue(sizeKey)
       // VMware：系统盘需等于镜像最小盘
       if (this.isVMware) {
-        this.form.fc.setFieldsValue({ [sizeKey]: val })
-        if (this.form.fd) this.$set(this.form.fd, sizeKey, val)
+        this.setFormDiskFields({ [sizeKey]: val })
         return
       }
       // 其它平台：当前值小于镜像最小盘时抬到合法下限（草稿回填过小等）
       if (cur == null || cur === '' || Number(cur) < val) {
-        this.form.fc.setFieldsValue({ [sizeKey]: val })
-        if (this.form.fd) this.$set(this.form.fd, sizeKey, val)
+        this.setFormDiskFields({ [sizeKey]: val })
       }
     },
   },
@@ -409,6 +408,15 @@ export default {
     this.sysDiskDraftRestoring = false
   },
   methods: {
+    /** 写 fc 并同步 fd（setFieldsValue 不会触发 onValuesChange） */
+    setFormDiskFields (values) {
+      if (!this.form?.fc || !values || typeof values !== 'object') return
+      this.form.fc.setFieldsValue(values)
+      if (!this.form.fd) return
+      Object.keys(values).forEach((key) => {
+        this.$set(this.form.fd, key, values[key])
+      })
+    },
     // 磁盘回填由页面 restoreVmDiskFormFieldDrafts 在 capability/sku 就绪后编排
     restoreFormFieldDraftFields () {
       return false
@@ -417,18 +425,39 @@ export default {
       const f = this.form?.fc
       if (!f) return undefined
       const pick = {}
+      const disk = this.$refs.disk
+      const storageKey = this.decorator.storage?.[0]
+      const schedtagKey = this.decorator.schedtag?.[0]
+      const policyKey = this.decorator.policy?.[0]
+      const snapshotKey = this.decorator.snapshot?.[0]
+      const iopsKey = this.decorator.iops?.[0]
+      const throughputKey = this.decorator.throughput?.[0]
+      const preallocationKey = this.decorator.preallocation?.[0]
       const keys = [
         this.decorator.type?.[0],
         this.decorator.size?.[0],
-        this.decorator.storage?.[0],
-        this.decorator.schedtag?.[0],
-        this.decorator.policy?.[0],
-        this.decorator.iops?.[0],
-        this.decorator.throughput?.[0],
-        this.decorator.preallocation?.[0],
+        storageKey,
+        schedtagKey,
+        policyKey,
+        snapshotKey,
+        iopsKey,
+        throughputKey,
+        preallocationKey,
         this.decorator.auto_reset?.[0],
       ].filter(Boolean)
+      // 未展开的可选高级项不写入草稿，保证展示与提交一致
+      const skip = new Set()
+      if (!disk?.showStorage && storageKey) skip.add(storageKey)
+      if (!disk?.showSchedtag) {
+        if (schedtagKey) skip.add(schedtagKey)
+        if (policyKey) skip.add(policyKey)
+      }
+      if (!disk?.showSnapshot && snapshotKey) skip.add(snapshotKey)
+      if (!disk?.showIops && iopsKey) skip.add(iopsKey)
+      if (!disk?.showThroughput && throughputKey) skip.add(throughputKey)
+      if (!disk?.showPreallocation && preallocationKey) skip.add(preallocationKey)
       keys.forEach((k) => {
+        if (skip.has(k)) return
         const v = f.getFieldValue(k)
         if (v !== undefined) pick[k] = v
       })
@@ -526,7 +555,7 @@ export default {
         if (systemDiskSize || (systemDiskType && systemDiskType.key)) {
           return
         }
-        this.form.fc.setFieldsValue({
+        this.setFormDiskFields({
           [typeKey]: { key: '', label: '' },
           [sizeKey]: 0,
         })
@@ -547,9 +576,8 @@ export default {
         }
       }
       const diskMsg = this.typesMap[firstKey]
-      this.form.fc.setFieldsValue(this.defaultType || {
-        [typeKey]: { key: diskMsg.key, label: diskMsg.label },
-      })
+      const typeVal = { key: diskMsg.key, label: diskMsg.label }
+      this.setFormDiskFields(this.defaultType || { [typeKey]: typeVal })
       this.setDiskMedium(diskMsg)
       this.$nextTick(() => { // 解决磁盘大小 inputNumber 第一次点击变为0 的bug
         const initSize = this.defaultSize && this.defaultSize > this.imageMinDisk ? this.defaultSize : this.imageMinDisk
@@ -559,13 +587,10 @@ export default {
         if (systemDiskSize != null && sizeKey === 'systemDiskSize') {
           newDiskSize = this.clampSysDiskDraftSize(systemDiskSize, firstKey)
         }
-        this.form.fc.setFieldsValue({
+        this.setFormDiskFields({
+          [typeKey]: typeVal,
           [sizeKey]: newDiskSize,
         })
-        if (this.form.fd && systemDiskType?.key) {
-          this.$set(this.form.fd, typeKey, { key: diskMsg.key, label: diskMsg.label })
-          this.$set(this.form.fd, sizeKey, newDiskSize)
-        }
       })
     },
     applySysDiskDraftToForm (draft) {
@@ -579,11 +604,7 @@ export default {
       const values = { ...draft }
       if (typeVal) values[typeKey] = typeVal
       if (sizeVal != null) values[sizeKey] = sizeVal
-      this.form.fc.setFieldsValue(values)
-      if (this.form.fd) {
-        if (values[typeKey]) this.$set(this.form.fd, typeKey, values[typeKey])
-        if (values[sizeKey] != null) this.$set(this.form.fd, sizeKey, values[sizeKey])
-      }
+      this.setFormDiskFields(values)
     },
 
     getExtraDiskOpt (type) {
@@ -640,10 +661,20 @@ export default {
       if (this.form.fi) {
         this.$set(this.form.fi, 'showStorage', v)
       }
-      const decoratorKey = _.get(this.decorator, 'systemDisk.storage[0]') || 'systemDiskStorage'
+      const decoratorKey = this.decorator?.storage?.[0] || 'systemDiskStorage'
       if (!v) {
-        this.$set(this.form.fd, decoratorKey, undefined)
+        this.setFormDiskFields({ [decoratorKey]: undefined })
+        if (this.form.fd && Object.prototype.hasOwnProperty.call(this.form.fd, decoratorKey)) {
+          this.$delete(this.form.fd, decoratorKey)
+        }
+        if (!this.sysDiskDraftRestoring && !this.form?.fi?.diskDraftRestoring) {
+          this.$nextTick(() => this.persistFormFieldDraftSnapshot())
+        }
       }
+    },
+    onDiskOptionalChange ({ show }) {
+      if (show || this.sysDiskDraftRestoring || this.form?.fi?.diskDraftRestoring) return
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     setDiskMedium (v) {
       if (this.form.fi) {

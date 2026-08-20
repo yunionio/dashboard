@@ -209,11 +209,11 @@ export default {
         const hit = preferredStd != null && this.opts.some(item => item.key === preferredStd)
         if (hit) {
           this.showDuration = preferredStd === 'custom'
-          this.form.fc.setFieldsValue({ [stdField]: preferredStd })
+          this.applyFormFieldValues({ [stdField]: preferredStd })
           if (preferredStd === 'custom' && preferredDur) {
             // duration-input 在 v-if 后才注册，需 nextTick
             this.$nextTick(() => {
-              this.form.fc.setFieldsValue({ [durField]: preferredDur })
+              this.applyFormFieldValues({ [durField]: preferredDur })
             })
           }
           return
