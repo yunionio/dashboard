@@ -208,7 +208,6 @@ export default {
         limit: 20,
         usable: true,
         host_type: 'container',
-        vpc: this.form.fd.vpc,
         filter: 'server_type.in(guest,hostlocal)',
       }
     },
