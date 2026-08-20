@@ -496,7 +496,7 @@ export default {
           throw error
         }
       } else if (
-        !_.get(state.historyUsers, [getters.currentHistoryUserKey, 'secret']) &&
+        !_.get(getKeyIgnoreCase(state.historyUsers, getters.currentHistoryUserKey) || {}, 'secret') &&
         totp_on &&
         system_totp_on &&
         !totp_verified &&
@@ -509,7 +509,7 @@ export default {
           },
         })
       } else if (
-        _.get(state.historyUsers, [getters.currentHistoryUserKey, 'secret']) &&
+        _.get(getKeyIgnoreCase(state.historyUsers, getters.currentHistoryUserKey) || {}, 'secret') &&
         totp_on &&
         system_totp_on &&
         !totp_verified &&
