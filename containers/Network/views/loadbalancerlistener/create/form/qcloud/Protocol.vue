@@ -20,8 +20,7 @@
         :select-props="{ placeholder: $t('network.text_421') }" />
       <div slot="extra">{{$t('network.text_422')}}<help-link href="/lbcert">{{$t('network.text_321')}}</help-link></div>
     </a-form-item>
-    <a-collapse :bordered="false">
-      <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
+    <advance-config-block>
       <a-form-item :label="$t('network.text_423')" class="mb-0">
         <scheduler-types :decorators="decorators" :form="form" :schedulerTypeOpts="schedulerTypeOpts" />
       </a-form-item>
@@ -35,8 +34,7 @@
       <a-form-item :label="$t('network.text_428')" :extra="$t('network.text_429')" v-if="['http', 'https'].includes(form.fd.listener_type)">
         <a-checkbox v-decorator="decorators.xforwarded_for">X-Forwarded-For</a-checkbox>
       </a-form-item>
-      </a-collapse-panel>
-    </a-collapse>
+    </advance-config-block>
   </a-form>
 </template>
 

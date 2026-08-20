@@ -22,9 +22,7 @@
       <div slot="extra">{{$t('network.text_422')}}<help-link href="/lbcert">{{$t('network.text_321')}}</help-link></div>
     </a-form-item>
     <redirect-form-items v-if="['http', 'https'].includes(form.fd.listener_type)" :form="form" />
-    <!-- <a-divider orientation="left">{{$t('network.text_94')}}</a-divider> -->
-    <a-collapse :bordered="false">
-      <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
+    <advance-config-block>
         <!-- 开启重定向 -->
         <div v-if="isLbRedirected">
           <acl :decorators="decorators" :form="form" :lbDetail="lbDetail" :listenerData="listenerData" />
@@ -82,8 +80,7 @@
             <a-checkbox v-decorator="decorators.xforwarded_for">{{$t('network.text_445')}}</a-checkbox>
           </a-form-item>
         </div>
-      </a-collapse-panel>
-    </a-collapse>
+    </advance-config-block>
   </a-form>
 </template>
 

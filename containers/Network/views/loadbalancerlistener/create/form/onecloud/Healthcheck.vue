@@ -5,7 +5,7 @@
       <a-switch v-decorator="decorators.health_check" @change="healthCheckChange" />
     </a-form-item>
     <template v-if="form.fd.health_check">
-      <a-divider orientation="left">{{$t('network.text_94')}}</a-divider>
+      <advance-config-block>
       <a-form-item :label="$t('network.text_400')">
         <a-radio-group v-decorator="decorators.health_check_type">
           <a-radio-button v-for="item in healthCheckTypeOptsC" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
@@ -39,6 +39,7 @@
       <a-form-item :label="$t('network.text_416')">
         <a-input v-decorator="decorators.health_check_exp" :placeholder="$t('network.text_417')" />
       </a-form-item> -->
+      </advance-config-block>
     </template>
   </a-form>
 </template>

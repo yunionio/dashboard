@@ -1,6 +1,5 @@
 <template>
   <div>
-    <a-divider orientation="left">{{$t('compute.text_94')}}</a-divider>
     <slot />
     <a-form-item :label="$t('compute.text_1140')" help="" :extra="$t('validator.resourceName')">
       <a-input v-decorator="decorators.servertemplate_name" :placeholder="$t('compute.text_220')" />
