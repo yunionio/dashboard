@@ -311,7 +311,7 @@ export default {
         } else {
           this.pendingEip = ''
         }
-        this.form.fc.setFieldsValue(values)
+        this.applyFormFieldValues(values)
         if (draft.eip_type === 'bind') {
           this.$nextTick(() => this.writePendingEip())
           return
