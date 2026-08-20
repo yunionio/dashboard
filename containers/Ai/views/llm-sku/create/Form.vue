@@ -265,7 +265,7 @@
       </a-form-item>
 
       <a-form-item
-        v-if="isLocalPathImportMode"
+        v-if="isLocalPathSku"
         :label="$t('aice.local_path_import.prefer_hosts')"
         :extra="$t('aice.local_path_import.prefer_hosts_extra')">
         <base-select
@@ -711,7 +711,7 @@ export default {
         prefer_hosts: [
           'prefer_hosts',
           {
-            initialValue: [],
+            initialValue: normalizePreferHosts(data.prefer_hosts),
             rules: [
               {
                 type: 'array',
@@ -1809,6 +1809,10 @@ export default {
         }
         if (this.mode === 'edit' && this.onManager && this.editData) {
           if (request_sync_image) data.request_sync_image = true
+          if (this.isLocalPathSku) {
+            const mergedValues = { ...this.form.fc.getFieldsValue(), ...values }
+            data.prefer_hosts = normalizePreferHosts(mergedValues.prefer_hosts)
+          }
           await this.onManager('update', {
             id: this.editData.id,
             managerArgs: { data },
