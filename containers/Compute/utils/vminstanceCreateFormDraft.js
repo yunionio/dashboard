@@ -2,7 +2,7 @@
  * 虚拟机创建页：控件级草稿 fieldKey 注册表
  *
  * formScope + fieldKey；复合控件值为嵌套对象。
- * 不落盘：name / description / reason / password / loginPassword / keypair 材料 / encrypt_keys / hostName
+ * 不落盘：name / description / reason / password / loginPassword / keypair 材料 / hostName
  */
 export const VM_CREATE_FORM_DRAFT_FIELD = {
   DOMAIN_PROJECT: 'domainProject',
@@ -36,6 +36,7 @@ export const VM_CREATE_FORM_DRAFT_FIELD = {
   IS_DAEMON: 'isDaemon',
   INSTANCE_GROUPS: 'instanceGroups',
   PCI: 'pci',
+  ENCRYPT_KEYS: 'encryptKeys',
   CUSTOM_DATA: 'customData',
   BASTION_HOST: 'bastionHost',
   ADVANCE_CONFIG_OPEN: 'advanceConfigOpen',

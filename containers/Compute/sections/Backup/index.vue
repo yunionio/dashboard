@@ -130,14 +130,21 @@ export default {
     },
     getCreateFormFieldDraftSnapshot () {
       const f = this.form?.fc
-      if (!f) return { backupEnable: this.backupEnable }
-      const prev = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
+      if (!f) return { backupEnable: this.backupEnable, backup: '' }
+      const backupEnable = !!f.getFieldValue(this.decorator.backupEnable[0])
+      if (!backupEnable) {
+        return { backupEnable: false, backup: '' }
+      }
       let backup = this.normalizeBackupId(
         f.getFieldValue(this.decorator.backup[0]) || this.pendingBackup,
       )
-      if (!backup) backup = this.normalizeBackupId(prev && prev.backup)
+      // 仅程序化空窗保留 prev；用户清空写空，保证展示与提交一致
+      if (!backup && !this._backupUserTouched) {
+        const prev = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
+        backup = this.normalizeBackupId(prev && prev.backup)
+      }
       return {
-        backupEnable: !!f.getFieldValue(this.decorator.backupEnable[0]),
+        backupEnable: true,
         backup: backup || '',
       }
     },
@@ -158,13 +165,13 @@ export default {
           const backupId = this.normalizeBackupId(draft.backup)
           if (backupId) this.setPendingBackup(backupId)
           // 开关可先写；具体宿主机等 hostList 校验后再写
-          f.setFieldsValue({ [this.decorator.backupEnable[0]]: true })
+          this.applyFormFieldValues({ [this.decorator.backupEnable[0]]: true })
           this._backupDraftApplied = true
           this.$nextTick(() => this.writePendingBackup())
         } else if (draft.backupEnable === false) {
           this.backupEnable = false
           this.setPendingBackup('')
-          f.setFieldsValue({ [this.decorator.backupEnable[0]]: false })
+          this.applyFormFieldValues({ [this.decorator.backupEnable[0]]: false })
           this._backupDraftApplied = true
         }
       } finally {
@@ -177,7 +184,12 @@ export default {
     change (val) {
       if (!this.backupDraftRestoring) this._backupUserTouched = true
       this.backupEnable = val
-      if (!val) this.setPendingBackup('')
+      if (!val) {
+        this.setPendingBackup('')
+        const backupField = this.decorator.backup[0]
+        this.applyFormFieldValues({ [backupField]: undefined })
+        if (this.form?.fd) this.$delete(this.form.fd, backupField)
+      }
       this.$nextTick(() => {
         if (!this.backupDraftRestoring) this.persistFormFieldDraftSnapshot()
       })
