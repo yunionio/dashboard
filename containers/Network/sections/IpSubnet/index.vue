@@ -205,11 +205,11 @@ export default {
   methods: {
     getCreateFormFieldDraftSnapshot () {
       const fc = this.form?.fc
-      if (!fc) return undefined
+      if (!fc) return null
       const vpc = fc.getFieldValue(this.vpcField)
       const network = fc.getFieldValue(this.networkField)
-      const ipAddr = fc.getFieldValue(this.ipAddrField)
-      if (!vpc && !network && !ipAddr && !this.ipShow) return undefined
+      const ipAddr = this.ipShow ? fc.getFieldValue(this.ipAddrField) : undefined
+      if (!vpc && !network && !ipAddr && !this.ipShow) return null
       return {
         vpc,
         network,
@@ -237,7 +237,10 @@ export default {
       // 回填期间勿落盘，避免默认首项冲掉指定 IP / 网段草稿
       if (this._ipSubnetDraftRestoring || this._pendingIpSubnetDraft) return
       const data = this.serializeFormFieldDraft()
-      if (data === undefined) return
+      if (data === null || data === undefined) {
+        this.clearFormFieldDraft()
+        return
+      }
       this.writeFormFieldDraft(data, options)
     },
     scheduleIpSubnetDraftRetry () {
@@ -324,7 +327,15 @@ export default {
       if (this._pendingIpSubnetDraft) this.$nextTick(() => this.tryApplyPendingIpSubnetDraft())
     },
     triggerShowIp () {
-      this.ipShow = !this.ipShow
+      const next = !this.ipShow
+      if (!next) {
+        // 取消指定 IP：清字段，避免展示关闭但提交仍带 ip
+        if (this.form && this.form.fc) {
+          this.form.fc.setFieldsValue({ [this.ipAddrField]: undefined })
+        }
+        if (this.form && this.form.fd) this.$delete(this.form.fd, this.ipAddrField)
+      }
+      this.ipShow = next
       this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     vpcLabelFormat (item) {

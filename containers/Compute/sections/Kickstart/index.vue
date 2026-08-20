@@ -60,21 +60,46 @@ export default {
         }
       },
     },
+    'form.fd.kickstart_enabled' (val) {
+      if (!val) {
+        if (this.form && this.form.fc) {
+          this.form.fc.setFieldsValue({
+            [this.decorator.kickstart_config[0]]: undefined,
+          })
+        }
+        if (this.form && this.form.fd) this.$delete(this.form.fd, this.decorator.kickstart_config[0])
+      }
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
+    },
+    'form.fd.kickstart_config' () {
+      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
+    },
   },
   methods: {
     getCreateFormFieldDraftSnapshot () {
       const fc = this.form?.fc
       if (!fc) return undefined
+      const enabled = !!fc.getFieldValue(this.decorator.kickstart_enabled[0])
+      if (!enabled) {
+        return { kickstart_enabled: false, kickstart_config: '' }
+      }
       return {
-        kickstart_enabled: fc.getFieldValue('kickstart_enabled'),
-        kickstart_config: fc.getFieldValue('kickstart_config'),
+        kickstart_enabled: true,
+        kickstart_config: fc.getFieldValue(this.decorator.kickstart_config[0]) || '',
       }
     },
     applyCreateFormFieldDraft (draft) {
       if (!draft || !this.form?.fc || this.enableDisabled) return
+      const enableKey = this.decorator.kickstart_enabled[0]
+      const configKey = this.decorator.kickstart_config[0]
       const values = {}
-      if (draft.kickstart_enabled != null) values.kickstart_enabled = draft.kickstart_enabled
-      if (draft.kickstart_config) values.kickstart_config = draft.kickstart_config
+      if (draft.kickstart_enabled === false) {
+        values[enableKey] = false
+        values[configKey] = undefined
+      } else if (draft.kickstart_enabled) {
+        values[enableKey] = true
+        if (draft.kickstart_config) values[configKey] = draft.kickstart_config
+      }
       if (Object.keys(values).length) this.form.fc.setFieldsValue(values)
     },
   },

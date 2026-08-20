@@ -239,7 +239,8 @@ export default {
     },
     getCreateFormFieldDraftSnapshot () {
       const form = this.effectiveForm
-      if (!form?.fc || !this.labelList.length) return undefined
+      if (!form?.fc) return null
+      if (!this.labelList.length) return null
       const pairs = this.labelList.map((row) => {
         const keyField = this.decorators.key(row.key)?.[0]
         const valueField = this.decorators.value(row.key)?.[0]
@@ -249,7 +250,7 @@ export default {
         const value = valueField ? form.fc.getFieldValue(valueField) : undefined
         return { key, value }
       }).filter(Boolean)
-      return pairs.length ? pairs : undefined
+      return pairs.length ? pairs : null
     },
     applyCreateFormFieldDraft (draft) {
       if (!Array.isArray(draft) || !draft.length) return
@@ -258,6 +259,22 @@ export default {
     persistLabelsDraft () {
       if (this._labelsDraftRestoring) return
       this.persistFormFieldDraftSnapshot()
+    },
+    persistFormFieldDraftSnapshot (options = {}) {
+      const data = this.serializeFormFieldDraft()
+      if (data === null || data === undefined) {
+        this.clearFormFieldDraft()
+        return
+      }
+      this.writeFormFieldDraft(data, options)
+    },
+    flushFormFieldDraftOnSubmit () {
+      const data = this.serializeFormFieldDraft()
+      if (data === null || data === undefined) {
+        this.clearFormFieldDraft()
+        return
+      }
+      this.writeFormFieldDraft(data, { fromSubmit: true })
     },
   },
 }
