@@ -181,7 +181,7 @@ export default {
     async initData (data) {
       this.bastionHostEnable = true
       if (this.form?.fc) {
-        this.form.fc.setFieldsValue({ bastion_host_enable: true })
+        this.applyFormFieldValues({ bastion_host_enable: true })
       }
       if (!this.bastionHosts.length) {
         await this.fetchBastionHosts()
@@ -193,7 +193,7 @@ export default {
       }
       this.currentBastionHostId = hostId
       if (this.form?.fc) {
-        this.form.fc.setFieldsValue({ bastion_host_id: hostId })
+        this.applyFormFieldValues({ bastion_host_id: hostId })
       }
       this.fetchOrgs(hostId, data.bastion_org_id)
       this.fetchNodes(data.bastion_org_id, data.nodes)

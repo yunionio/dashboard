@@ -124,6 +124,11 @@ export default {
     },
     writeCreateFormFieldDraft (fieldKey, data, options = {}) {
       if (!fieldKey || !this.canUseCreateFormDraft) return
+      // null：显式清空该控件草稿（删光/取消后保证与表单一致）
+      if (data === null) {
+        this.clearCreateFormFieldDraft(fieldKey)
+        return
+      }
       if (data === undefined) return
       if (!this._createFormFieldDraftSession) {
         this._createFormFieldDraftSession = Object.create(null)
@@ -179,6 +184,10 @@ export default {
       this._boundCreateFormFieldDrafts[spec.key] = spec
       this.registerCreateFormFieldDraftFlush(() => {
         const value = spec.get()
+        if (value === null) {
+          this.clearCreateFormFieldDraft(spec.key)
+          return
+        }
         if (value !== undefined) {
           this.writeCreateFormFieldDraft(spec.key, value, { fromSubmit: true })
         }

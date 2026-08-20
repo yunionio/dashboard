@@ -591,7 +591,7 @@ export default {
       key: EIP_CREATE_FORM_DRAFT_FIELD.TAG,
       get: () => {
         const meta = this.form.fc.getFieldValue('__meta__')
-        if (!meta || !Object.keys(meta).length) return undefined
+        if (!meta || !Object.keys(meta).length) return null
         return { checked: meta }
       },
       set: (draft) => {
@@ -683,7 +683,7 @@ export default {
         const meta = newField.__meta__
         this.writeCreateFormFieldDraft(
           EIP_CREATE_FORM_DRAFT_FIELD.TAG,
-          meta && Object.keys(meta).length ? { checked: meta } : undefined,
+          meta && Object.keys(meta).length ? { checked: meta } : null,
         )
       }
     },

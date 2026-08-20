@@ -149,7 +149,11 @@ export default {
     persistFormFieldDraftSnapshot (options = {}) {
       if (this._containersDraftRestoring) return
       const data = this.serializeFormFieldDraft()
-      if (data !== undefined) this.writeFormFieldDraft(data, options)
+      if (data === null || data === undefined) {
+        this.clearFormFieldDraft()
+        return
+      }
+      this.writeFormFieldDraft(data, options)
     },
     getDecorators (k) {
       const ret = {}
@@ -164,7 +168,7 @@ export default {
      * 序列化为与工单/applyInitData 兼容的 containers 列表
      */
     getCreateFormFieldDraftSnapshot () {
-      if (!this.form?.fc || !this.panes?.length) return undefined
+      if (!this.form?.fc || !this.panes?.length) return null
       const values = this.form.fc.getFieldsValue()
       const list = this.panes.map((pane) => {
         const k = pane.key
@@ -253,7 +257,7 @@ export default {
           c.image_credential_id || c.rootfs || c.privileged ||
           (c.capabilities?.add?.length) || (c.capabilities?.drop?.length))
       })
-      return hasContent ? list : undefined
+      return hasContent ? list : null
     },
     applyCreateFormFieldDraft (draft) {
       if (!Array.isArray(draft) || !draft.length) return
