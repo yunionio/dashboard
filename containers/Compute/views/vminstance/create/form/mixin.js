@@ -361,7 +361,8 @@ export default {
     /** 草稿是否展开高级配置（关闭则不回填其中字段） */
     isDraftAdvanceConfigOpen () {
       if (!this.isFormBackfill) {
-        return Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
+        // AdvanceConfigBlock 常展开：不再依赖 collapseActive，避免旧「折叠关闭」草稿挡住回填
+        return true
       }
       return isAdvanceConfigOpenFromDraft(this.effectiveInitFormData)
     },
@@ -606,17 +607,17 @@ export default {
       this.price = price
     })
     this.$store.dispatch('app/fetchWorkflowEnabledKeys')
-    // 页面级：高级配置开关
+    // 页面级：高级配置开关（UI 已常展开，草稿固定为 true，兼容旧字段）
     this.bindCreateFormFieldDraft({
       key: VM_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN,
-      get: () => Array.isArray(this.collapseActive) && this.collapseActive.includes('1'),
+      get: () => true,
       set: (open) => {
         this.collapseActive = open ? ['1'] : []
       },
     })
     // 简单 form.fc 字段（数量 / 开关 / bios 等）批量绑定
     this.bindVmCreateFormFcDrafts()
-    // 子组件挂载前展开高级折叠，否则折叠内 EIP/安全组等无法挂载并回填
+    // 内部状态仍置为展开，保证 initPreferHost / 延迟重试等门闩通过
     this.ensureAdvanceConfigOpenForDraft()
   },
   mounted () {
@@ -631,9 +632,9 @@ export default {
       if (!this.canUseCreateFormDraft) return
       if (this.isFormBackfill) return
       if (this._advanceDraftRestoring) return
-      const open = Array.isArray(val) && val.includes('1')
-      this.writeCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN, open)
-      if (open && !this._advanceDraftRestoreScheduled) {
+      // UI 常展开：始终记为打开，避免旧 false 残留导致不回填
+      this.writeCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN, true)
+      if (!this._advanceDraftRestoreScheduled) {
         this._advanceDraftRestoreScheduled = true
         this.$nextTick(() => {
           this._advanceDraftRestoreScheduled = false
@@ -718,27 +719,21 @@ export default {
   },
   methods: {
     /**
-     * 按草稿决定是否展开高级配置。
-     * advanceConfigOpen === false：尊重用户关闭，不因子字段草稿强制展开。
-     * advanceConfigOpen === true：展开。
-     * 未记录（旧草稿）：仅当存在高级区字段草稿时展开（兼容）。
+     * 高级配置 UI 已常展开：内部 collapseActive 始终打开，保证草稿回填门闩通过。
+     * 不再尊重旧草稿 advanceConfigOpen === false（否则会出现「区块可见但不回填」）。
      */
     ensureAdvanceConfigOpenForDraft () {
       if (!this.canUseCreateFormDraft) return
       const alreadyOpen = Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
+      if (!alreadyOpen) {
+        this._advanceDraftRestoring = true
+        this.collapseActive = ['1']
+        this.$nextTick(() => {
+          this._advanceDraftRestoring = false
+        })
+      }
       const openDraft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN)
-      // 用户明确关过：保持折叠，高级区控件不挂载、不回填（草稿仍保留）
-      if (openDraft === false) return
-      const shouldOpen = openDraft === true || (openDraft == null && this.hasAdvanceFieldDrafts())
-      if (!shouldOpen || alreadyOpen) return
-      // 避免 collapseActive = ['1'] 新引用反复触发 watcher 死循环
-      this._advanceDraftRestoring = true
-      this.collapseActive = ['1']
-      this.$nextTick(() => {
-        this._advanceDraftRestoring = false
-      })
-      // 仅旧草稿缺开关时补写 true，绝不能把 false 覆盖成 true
-      if (openDraft == null) {
+      if (openDraft !== true) {
         this.writeCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN, true)
       }
     },

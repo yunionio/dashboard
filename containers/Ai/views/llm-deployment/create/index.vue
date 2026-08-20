@@ -38,20 +38,20 @@
             }" />
         </a-form-item>
 
-        <a-divider orientation="left">{{ $t('aice.llm_deployment.create.deployment') }}</a-divider>
-
-        <a-form-item :label="$t('compute.text_104')" class="mb-0">
-          <server-network
-            :form="form"
-            :decorator="decorators.network"
-            :network-list-params="networkParams"
-            :schedtag-params="resourcesParams.schedtag"
-            :network-resource-mapper="networkResourceMapper"
-            :hiddenNetworkOptions="['schedtag']"
-            defaultNetworkType="default"
-            :hiddenAdd="true"
-            :isDialog="true" />
-        </a-form-item>
+        <advance-config-block :title="$t('aice.llm_deployment.create.deployment')">
+          <a-form-item :label="$t('compute.text_104')" class="mb-0">
+            <server-network
+              :form="form"
+              :decorator="decorators.network"
+              :network-list-params="networkParams"
+              :schedtag-params="resourcesParams.schedtag"
+              :network-resource-mapper="networkResourceMapper"
+              :hiddenNetworkOptions="['schedtag']"
+              defaultNetworkType="default"
+              :hiddenAdd="true"
+              :isDialog="true" />
+          </a-form-item>
+        </advance-config-block>
       </a-form>
     </page-body>
     <page-footer>

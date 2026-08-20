@@ -122,8 +122,7 @@
           :default-checked="tagDefaultChecked"
           :form-draft-key="containerDraftFields.tag" />
       </a-form-item>
-      <a-collapse :bordered="false" v-model="collapseActive">
-        <a-collapse-panel :header="$t('compute.text_309')" key="1" :forceRender="true">
+      <advance-config-block>
           <eip-config
             v-if="showEip"
             ref="eipConfigRef"
@@ -197,8 +196,7 @@
               :keyPlaceholder="$t('compute.repo.example', ['443'])"
               :valuePlaceholder="$t('compute.repo.example', ['443'])" />
           </a-form-item>
-        </a-collapse-panel>
-      </a-collapse>
+      </advance-config-block>
       <container-title :title="$t('compute.eci.container_config')" />
       <spec-container
         ref="specContainerRef"

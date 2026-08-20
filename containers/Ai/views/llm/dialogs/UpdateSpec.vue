@@ -9,7 +9,7 @@
             <div class="text-color-secondary mt-1" style="font-size: 13px;">{{ $t('aice.openclaw.manual_config_tip') }}</div>
           </a-form-item>
           <template v-if="!form.fd.openclaw_manual_config">
-          <a-divider orientation="left" class="openclaw-section-divider">{{ $t('aice.openclaw.section.ai_providers') }}</a-divider>
+          <advance-config-block :title="$t('aice.openclaw.section.ai_providers')">
           <a-form-item :label="$t('aice.openclaw.provider_filter')" :extra="$t('aice.openclaw.provider_select_tip')">
             <a-select
               v-model="openclawSelectedProviders"
@@ -141,8 +141,9 @@
           <div v-else class="openclaw-filter-empty text-color-secondary">
             {{ openclawSelectedProviders.length === 0 ? $t('aice.openclaw.provider_select_first') : $t('aice.openclaw.provider_filter_empty') }}
           </div>
+          </advance-config-block>
 
-          <a-divider orientation="left" class="openclaw-section-divider">{{ $t('aice.openclaw.section.chat_channels') }}</a-divider>
+          <advance-config-block :title="$t('aice.openclaw.section.chat_channels')">
           <a-form-item :label="$t('aice.openclaw.channels')" :extra="$t('aice.openclaw.channels_extra')">
             <a-select
               v-decorator="decorators.openclaw_channels"
@@ -384,6 +385,7 @@
               </a-tab-pane>
             </a-tabs>
           </template>
+          </advance-config-block>
           </template>
         </template>
         <template v-else>
@@ -1241,7 +1243,6 @@ export default {
 <style scoped>
 .openclaw-channel-tabs { margin-top: 8px; }
 .openclaw-provider-tabs { margin-top: 8px; }
-.openclaw-section-divider { margin-top: 20px; }
 .openclaw-tab-with-close { display: inline-flex; align-items: center; gap: 6px; }
 .openclaw-tab-close { font-size: 12px; cursor: pointer; opacity: 0.6; }
 .openclaw-tab-close:hover { opacity: 1; }

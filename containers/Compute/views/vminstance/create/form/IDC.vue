@@ -199,112 +199,109 @@
         <tag
           v-decorator="decorators.tag" :default-checked="tagDefaultChecked" :form-draft-key="vmDraftFields.tag" />
       </a-form-item>
-      <!-- <a-divider orientation="left" v-if="showAdvanceConfig">{{$t('compute.text_309')}}</a-divider> -->
-      <a-collapse :bordered="false" v-model="collapseActive">
-        <a-collapse-panel :header="$t('compute.text_309')" key="1" :forceRender="true">
-          <eip-config
-            ref="eipConfigRef"
-            v-if="showEip"
-            :decorators="decorators.eip"
-            :eip-params="eipParams"
-            :hypervisor="form.fd.hypervisor"
-            :showBind="false"
-            :isServertemplate="isServertemplate"
-            :cloud-env="type"
+      <advance-config-block>
+        <eip-config
+          ref="eipConfigRef"
+          v-if="showEip"
+          :decorators="decorators.eip"
+          :eip-params="eipParams"
+          :hypervisor="form.fd.hypervisor"
+          :showBind="false"
+          :isServertemplate="isServertemplate"
+          :cloud-env="type"
+          :form="form"
+          :formItemLayout="formItemLayout"
+          :form-draft-key="vmDraftFields.eip" />
+        <a-form-item
+          v-if="!isServertemplate"
+          :validate-status="hostNameValidate.validateStatus"
+          :help="hostNameValidate.errorMsg">
+          <span slot="label">
+            {{ $t('common_388') }}&nbsp;
+            <a-tooltip :title="hostNameTips">
+              <a-icon type="question-circle-o" />
+            </a-tooltip>
+          </span>
+          <host-name v-decorator="decorators.hostName" :isWindows="isWindows" @change="handleHostNameChange" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_105')" v-if="isKvm">
+          <secgroup-config
+            ref="secgroupConfigRef"
             :form="form"
-            :formItemLayout="formItemLayout"
-            :form-draft-key="vmDraftFields.eip" />
-          <a-form-item
-            v-if="!isServertemplate"
-            :validate-status="hostNameValidate.validateStatus"
-            :help="hostNameValidate.errorMsg">
-            <span slot="label">
-              {{ $t('common_388') }}&nbsp;
-              <a-tooltip :title="hostNameTips">
-                <a-icon type="question-circle-o" />
-              </a-tooltip>
-            </span>
-            <host-name v-decorator="decorators.hostName" :isWindows="isWindows" @change="handleHostNameChange" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.text_105')" v-if="isKvm">
-            <secgroup-config
-              ref="secgroupConfigRef"
-              :form="form"
-              :isSnapshotImageType="isSnapshotImageType"
-              :decorators="decorators.secgroup"
-              :secgroup-params="secgroupParams"
-              :hypervisor="form.fd.hypervisor"
-              :showSecgroupBind="showSecgroupBind"
-              :ignore-auto-type-reset="preserveAdvanceInitProps"
-              :init-secgroups="draftInitSecgroups"
-              :form-draft-key="vmDraftFields.secgroup" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.text_311')" class="mb-0">
-            <sched-policy
-              ref="schedPolicyRef"
-              :form="form"
-              :server-type="form.fi.createType"
-              :disabled-host="policyHostDisabled"
-              :policy-host-params="policyHostParams"
-              :decorators="decorators.schedPolicy"
-              :policy-schedtag-params="policySchedtagParams"
-              :showSchedCloudprovider="showSchedCloudprovider"
-              :cloudproviderParamsExtra="cloudproviderParamsExtra"
-              :init-prefer-host="draftInitPreferHost"
-              :preserve-init-prefer-host="preserveAdvanceInitProps"
-              :init-schedtags="draftInitSchedtags"
-              :form-draft-key="vmDraftFields.schedPolicy" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.text_1155')" class="mb-0" v-if="isKvm">
-            <bios :decorator="decorators.bios" :uefi="uefi" :isArm="isArm" :showDefault="true" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.vdi_protocol')" class="mb-0" v-if="isKvm">
-            <vdi :decorator="decorators.vdi" :showDefault="true" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.vga')" class="mb-0" v-if="isKvm">
-            <vga :decorator="decorators.vga" :vdi="vdi" :form="form" :showDefault="true" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.machine')" class="mb-0" v-if="isKvm">
-            <machine :decorator="getMachineDecorator()" :isArm="isArm" :showDefault="true" />
-          </a-form-item>
-          <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" :label="$t('compute.text_1156')" :extra="$t('compute.text_1157')">
-            <backup
-              ref="backupRef"
-              :decorator="decorators.backup"
-              :disabled="form.fd.systemDiskType"
-              :disabled-items="backupDisableds"
-              :domain="form.fd.domain"
-              :availableHostCount="availableHostCount"
-              :hostParams="backupHostParams"
-              :form-draft-key="vmDraftFields.backup" />
-          </a-form-item>
-          <a-form-item v-if="isKvm" :label="$t('compute.text_494')" :extra="$t('compute.daemon.tooltip')">
-            <a-switch
-              v-decorator="decorators.is_daemon"
-              :checkedChildren="$t('compute.text_115')"
-              :unCheckedChildren="$t('compute.text_116')" />
-          </a-form-item>
-          <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" :extra="$t('compute.text_1158')">
-            <instance-groups
-              ref="instanceGroupsRef"
-              :decorators="instanceGroupDecorators"
-              :params="instanceGroupsParams"
-              :form-draft-key="vmDraftFields.instanceGroups" />
-          </a-form-item>
-          <a-form-item v-show="!isServertemplate" v-if="isKvm && enableEncryption" :label="$t('compute.server.encryption')" :extra="$t('compute.server.encryption.extra')">
-            <encrypt-keys
-              ref="encryptKeysRef"
-              :form="form"
-              :decorators="decorators.encrypt_keys"
-              :form-draft-key="vmDraftFields.encryptKeys" />
-          </a-form-item>
-          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" :form-draft-key="vmDraftFields.customData" />
-          <!-- <a-form-item v-if="!isOpenSourceVersion" :label="$t('compute.bastionHost.bastion_host')">
-            <bastion-host :decorator="decorators.bastion_host" :form="form" :form-draft-key="vmDraftFields.bastionHost" />
-          </a-form-item> -->
-          <bastion-host ref="bastionHostRef" v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" :form-draft-key="vmDraftFields.bastionHost" />
-        </a-collapse-panel>
-      </a-collapse>
+            :isSnapshotImageType="isSnapshotImageType"
+            :decorators="decorators.secgroup"
+            :secgroup-params="secgroupParams"
+            :hypervisor="form.fd.hypervisor"
+            :showSecgroupBind="showSecgroupBind"
+            :ignore-auto-type-reset="preserveAdvanceInitProps"
+            :init-secgroups="draftInitSecgroups"
+            :form-draft-key="vmDraftFields.secgroup" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_311')" class="mb-0">
+          <sched-policy
+            ref="schedPolicyRef"
+            :form="form"
+            :server-type="form.fi.createType"
+            :disabled-host="policyHostDisabled"
+            :policy-host-params="policyHostParams"
+            :decorators="decorators.schedPolicy"
+            :policy-schedtag-params="policySchedtagParams"
+            :showSchedCloudprovider="showSchedCloudprovider"
+            :cloudproviderParamsExtra="cloudproviderParamsExtra"
+            :init-prefer-host="draftInitPreferHost"
+            :preserve-init-prefer-host="preserveAdvanceInitProps"
+            :init-schedtags="draftInitSchedtags"
+            :form-draft-key="vmDraftFields.schedPolicy" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_1155')" class="mb-0" v-if="isKvm">
+          <bios :decorator="decorators.bios" :uefi="uefi" :isArm="isArm" :showDefault="true" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.vdi_protocol')" class="mb-0" v-if="isKvm">
+          <vdi :decorator="decorators.vdi" :showDefault="true" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.vga')" class="mb-0" v-if="isKvm">
+          <vga :decorator="decorators.vga" :vdi="vdi" :form="form" :showDefault="true" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.machine')" class="mb-0" v-if="isKvm">
+          <machine :decorator="getMachineDecorator()" :isArm="isArm" :showDefault="true" />
+        </a-form-item>
+        <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" :label="$t('compute.text_1156')" :extra="$t('compute.text_1157')">
+          <backup
+            ref="backupRef"
+            :decorator="decorators.backup"
+            :disabled="form.fd.systemDiskType"
+            :disabled-items="backupDisableds"
+            :domain="form.fd.domain"
+            :availableHostCount="availableHostCount"
+            :hostParams="backupHostParams"
+            :form-draft-key="vmDraftFields.backup" />
+        </a-form-item>
+        <a-form-item v-if="isKvm" :label="$t('compute.text_494')" :extra="$t('compute.daemon.tooltip')">
+          <a-switch
+            v-decorator="decorators.is_daemon"
+            :checkedChildren="$t('compute.text_115')"
+            :unCheckedChildren="$t('compute.text_116')" />
+        </a-form-item>
+        <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" :extra="$t('compute.text_1158')">
+          <instance-groups
+            ref="instanceGroupsRef"
+            :decorators="instanceGroupDecorators"
+            :params="instanceGroupsParams"
+            :form-draft-key="vmDraftFields.instanceGroups" />
+        </a-form-item>
+        <a-form-item v-show="!isServertemplate" v-if="isKvm && enableEncryption" :label="$t('compute.server.encryption')" :extra="$t('compute.server.encryption.extra')">
+          <encrypt-keys
+            ref="encryptKeysRef"
+            :form="form"
+            :decorators="decorators.encrypt_keys"
+            :form-draft-key="vmDraftFields.encryptKeys" />
+        </a-form-item>
+        <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" :form-draft-key="vmDraftFields.customData" />
+        <!-- <a-form-item v-if="!isOpenSourceVersion" :label="$t('compute.bastionHost.bastion_host')">
+          <bastion-host :decorator="decorators.bastion_host" :form="form" :form-draft-key="vmDraftFields.bastionHost" />
+        </a-form-item> -->
+        <bastion-host ref="bastionHostRef" v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" :form-draft-key="vmDraftFields.bastionHost" />
+      </advance-config-block>
       <bottom-bar
         :loading="submiting"
         :form="form"
@@ -546,9 +543,6 @@ export default {
         enabled: true,
         cloudregion: _.get(this.form.fd, 'cloudregion.key'),
       }
-    },
-    showAdvanceConfig () { // 是否展示高级配置
-      return this.isKvm || !this.isServertemplate
     },
     uefi () {
       const { pciEnable } = this.form.fd
