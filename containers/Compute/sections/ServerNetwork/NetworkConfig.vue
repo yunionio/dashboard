@@ -259,8 +259,8 @@ export default {
       if (!this.networkList[0]?.vpc?.id) return {}
       return {
         limit: 20,
-        vpc: this.networkList[0].vpc?.id,
         ...this.networkParams,
+        vpc: this.networkList[0].vpc.id,
       }
     },
     ipBtnTooltip () {
