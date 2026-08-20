@@ -4,7 +4,6 @@
       class="mt-3"
       :form="form.fc"
       @submit="handleConfirm">
-      <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider>
       <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-bind="formItemLayout">
         <domain-project
           :fc="form.fc"
@@ -98,7 +97,7 @@
         <tag
           v-decorator="decorators.__meta__" :allowNoValue="false" :default-checked="tagDefaultChecked" />
       </a-form-item>
-      <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider>
+      <advance-config-block>
       <a-form-item :label="$t('compute.text_104')" v-bind="formItemLayout" class="mb-0">
         <server-network
           ref="networkRef"
@@ -136,6 +135,7 @@
       <a-form-item :label="$t('compute.text_312')" v-bind="formItemLayout" v-if="isInstallOperationSystem">
         <a-input v-decorator="decorators.description" />
       </a-form-item>
+      </advance-config-block>
       <bottom-bar
         :loading="submiting"
         :form="form"

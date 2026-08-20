@@ -320,7 +320,8 @@ export default {
     /** 草稿是否展开高级配置（关闭则不回填其中字段） */
     isDraftAdvanceConfigOpen () {
       if (!this.isFormBackfill) {
-        return Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
+        // AdvanceConfigBlock 常展开：不再依赖 collapseActive
+        return true
       }
       return isAdvanceConfigOpenFromDraft(this.effectiveInitFormData)
     },
@@ -487,13 +488,13 @@ export default {
     this.$store.dispatch('app/fetchWorkflowEnabledKeys')
     this.bindCreateFormFieldDraft({
       key: CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN,
-      get: () => Array.isArray(this.collapseActive) && this.collapseActive.includes('1'),
+      get: () => true,
       set: (open) => {
         this.collapseActive = open ? ['1'] : []
       },
     })
     this.bindContainerCreateFormFcDrafts()
-    // 子组件挂载前展开高级折叠，否则折叠内 EIP/安全组等无法挂载并回填
+    // 内部状态置为展开，保证回填门闩通过
     this.ensureAdvanceConfigOpenForDraft()
   },
   mounted () {
@@ -509,9 +510,8 @@ export default {
       if (!this.canUseCreateFormDraft) return
       if (this.isFormBackfill) return
       if (this._advanceDraftRestoring) return
-      const open = Array.isArray(val) && val.includes('1')
-      this.writeCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN, open)
-      if (open && !this._advanceDraftRestoreScheduled) {
+      this.writeCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN, true)
+      if (!this._advanceDraftRestoreScheduled) {
         this._advanceDraftRestoreScheduled = true
         this.$nextTick(() => {
           this._advanceDraftRestoreScheduled = false
@@ -570,21 +570,20 @@ export default {
   },
   methods: {
     /**
-     * 按草稿决定是否展开高级配置。
+     * 高级配置 UI 已常展开：内部 collapseActive 始终打开，保证草稿回填门闩通过。
      */
     ensureAdvanceConfigOpenForDraft () {
       if (!this.canUseCreateFormDraft) return
       const alreadyOpen = Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
+      if (!alreadyOpen) {
+        this._advanceDraftRestoring = true
+        this.collapseActive = ['1']
+        this.$nextTick(() => {
+          this._advanceDraftRestoring = false
+        })
+      }
       const openDraft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN)
-      if (openDraft === false) return
-      const shouldOpen = openDraft === true || (openDraft == null && this.hasAdvanceFieldDrafts())
-      if (!shouldOpen || alreadyOpen) return
-      this._advanceDraftRestoring = true
-      this.collapseActive = ['1']
-      this.$nextTick(() => {
-        this._advanceDraftRestoring = false
-      })
-      if (openDraft == null) {
+      if (openDraft !== true) {
         this.writeCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN, true)
       }
     },
