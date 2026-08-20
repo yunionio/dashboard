@@ -301,8 +301,8 @@
       </a-form-item>
 
       <a-form-item v-if="!isLocalPathImportMode || localPathAdvancedHostPaths" :label="$t('aice.host_paths')" :extra="$t('aice.host_paths.extra')">
-        <div v-for="hp in hostPathRows" :key="hp.key" style="display: flex; align-items: stretch; gap: 10px; margin-bottom: 12px;">
-          <div style="flex: 1; border: 1px solid #e8e8e8; border-radius: 4px; padding: 12px;">
+        <div v-for="hp in hostPathRows" :key="hp.key" class="host-path-item">
+          <div class="host-path-item__body">
             <a-row :gutter="8">
               <a-col :span="8">
                 <a-form-item>
@@ -401,7 +401,7 @@
             </div> -->
           </div>
 
-          <div style="width: 34px; display: flex; align-items: center; justify-content: center;">
+          <div class="host-path-item__action">
             <a-button shape="circle" icon="minus" size="small" @click="delHostPath(hp)" />
           </div>
         </div>
@@ -1829,6 +1829,10 @@ export default {
 </script>
 
 <style scoped>
+.llm-sku-create-form {
+  max-width: 100%;
+  overflow-x: hidden;
+}
 .llm-sku-create-form .form-footer {
   margin-top: 24px;
   padding-top: 16px;
@@ -1838,6 +1842,10 @@ export default {
   gap: 8px;
 }
 .openclaw-channel-tabs { margin-top: 8px; }
+.llm-type-picker {
+  display: flex;
+  flex-wrap: wrap;
+}
 .llm-type-picker ::v-deep .ant-radio-button-wrapper {
   height: 36px;
   line-height: 34px;
@@ -1847,6 +1855,37 @@ export default {
 }
 .llm-type-picker ::v-deep .ant-radio-button-wrapper:first-child { border-radius: 4px; }
 .llm-type-picker ::v-deep .ant-radio-button-wrapper:last-child { border-radius: 4px; }
+.host-path-item {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin-bottom: 12px;
+  min-width: 0;
+  max-width: 100%;
+}
+.host-path-item__body {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  padding: 12px;
+}
+.host-path-item__action {
+  width: 34px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.llm-sku-create-form ::v-deep .profilter-wrapper {
+  min-width: 0;
+  width: 100%;
+}
+.llm-sku-create-form ::v-deep .profilter-wrapper .ant-select,
+.llm-sku-create-form ::v-deep .profilter-wrapper .ant-input {
+  flex: 1;
+  min-width: 0;
+}
 .openclaw-template-item { margin-bottom: 12px; }
 .openclaw-template-title { font-weight: 500; margin-bottom: 6px; }
 .openclaw-section-divider { margin-top: 20px; }

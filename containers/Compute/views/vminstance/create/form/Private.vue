@@ -158,47 +158,44 @@
         <tag
           v-decorator="decorators.tag" :default-checked="tagDefaultChecked" :form-draft-key="vmDraftFields.tag" />
       </a-form-item>
-      <!-- <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider> -->
-      <a-collapse :bordered="false" v-model="collapseActive">
-        <a-collapse-panel :header="$t('compute.text_309')" key="1" :forceRender="true">
-          <a-form-item v-if="!isServertemplate">
-            <span slot="label">
-              {{ $t('common_388') }}&nbsp;
-              <a-tooltip :title="hostNameTips">
-                <a-icon type="question-circle-o" />
-              </a-tooltip>
-            </span>
-            <host-name v-decorator="decorators.hostName" :isWindows="isWindows" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.text_105')" v-if="showSecgroup">
-            <secgroup-config
-              ref="secgroupConfigRef"
-              :decorators="decorators.secgroup"
-              :secgroup-params="secgroupParams"
-              :hypervisor="form.fd.hypervisor"
-              :showSecgroupBind="showSecgroupBind"
-              :ignore-auto-type-reset="preserveAdvanceInitProps"
-              :init-secgroups="draftInitSecgroups"
-              :form-draft-key="vmDraftFields.secgroup" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
-            <sched-policy
-              ref="schedPolicyRef"
-              :provider="cloudprovider"
-              :server-type="form.fi.createType"
-              :disabled-host="policyHostDisabled"
-              :policy-host-params="policyHostParams"
-              :decorators="decorators.schedPolicy"
-              :policy-schedtag-params="policySchedtagParams"
-              :init-prefer-host="draftInitPreferHost"
-              :preserve-init-prefer-host="preserveAdvanceInitProps"
-              :init-schedtags="draftInitSchedtags"
-              :form-draft-key="vmDraftFields.schedPolicy" />
-          </a-form-item>
-          <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" :form-draft-key="vmDraftFields.customData" />
-          <bastion-host ref="bastionHostRef" v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" :form-draft-key="vmDraftFields.bastionHost" />
-        </a-collapse-panel>
-      </a-collapse>
+      <advance-config-block>
+        <a-form-item v-if="!isServertemplate">
+          <span slot="label">
+            {{ $t('common_388') }}&nbsp;
+            <a-tooltip :title="hostNameTips">
+              <a-icon type="question-circle-o" />
+            </a-tooltip>
+          </span>
+          <host-name v-decorator="decorators.hostName" :isWindows="isWindows" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_105')" v-if="showSecgroup">
+          <secgroup-config
+            ref="secgroupConfigRef"
+            :decorators="decorators.secgroup"
+            :secgroup-params="secgroupParams"
+            :hypervisor="form.fd.hypervisor"
+            :showSecgroupBind="showSecgroupBind"
+            :ignore-auto-type-reset="preserveAdvanceInitProps"
+            :init-secgroups="draftInitSecgroups"
+            :form-draft-key="vmDraftFields.secgroup" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
+          <sched-policy
+            ref="schedPolicyRef"
+            :provider="cloudprovider"
+            :server-type="form.fi.createType"
+            :disabled-host="policyHostDisabled"
+            :policy-host-params="policyHostParams"
+            :decorators="decorators.schedPolicy"
+            :policy-schedtag-params="policySchedtagParams"
+            :init-prefer-host="draftInitPreferHost"
+            :preserve-init-prefer-host="preserveAdvanceInitProps"
+            :init-schedtags="draftInitSchedtags"
+            :form-draft-key="vmDraftFields.schedPolicy" />
+        </a-form-item>
+        <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" :form-draft-key="vmDraftFields.customData" />
+        <bastion-host ref="bastionHostRef" v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" :form-draft-key="vmDraftFields.bastionHost" />
+      </advance-config-block>
       <bottom-bar
         :loading="submiting"
         :form="form"
