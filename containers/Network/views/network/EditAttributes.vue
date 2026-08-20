@@ -60,8 +60,7 @@
         <a-form-item label="VLAN ID" v-bind="formItemLayout">
           <a-input v-decorator="decorators.vlan_id" :disabled="!isClassicNetwork" />
         </a-form-item>
-        <a-collapse :bordered="false" :active-key="getDefaultActiveKey">
-          <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
+        <advance-config-block>
             <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="hasBgpType">
               <a-input v-decorator="decorators.bgp_type" />
               <span slot="extra">{{$t('network.text_744')}}</span>
@@ -88,8 +87,7 @@
             <a-form-item label="dhcp_relay" v-bind="formItemLayout">
               <a-input class="w-50" v-decorator="decorators.guest_dhcp" :placeholder="$t('validator.IPs')" />
             </a-form-item>
-          </a-collapse-panel>
-        </a-collapse>
+        </advance-config-block>
       </a-form>
     </page-body>
     <page-footer>
