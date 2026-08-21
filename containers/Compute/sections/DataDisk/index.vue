@@ -518,6 +518,17 @@ export default {
           pick[this._fp('Types', key)] = disk.diskType
         }
       })
+      // 落盘前 clamp size，与回填规则一致，避免脏值写入草稿
+      keys.forEach((key, index) => {
+        const typeField = this._fp('Types', key)
+        const sizeField = this._fp('Sizes', key)
+        if (pick[typeField] !== undefined) {
+          pick[typeField] = this.resolveDataDiskTypeFromDraft(pick[typeField], index)
+        }
+        if (pick[sizeField] != null) {
+          pick[sizeField] = this.clampDataDiskDraftSize(pick[sizeField], this.min(index), this.max(index))
+        }
+      })
       return pick
     },
     dataDiskShowStorageChange (show) {

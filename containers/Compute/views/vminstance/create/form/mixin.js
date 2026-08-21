@@ -1934,9 +1934,9 @@ export default {
           } else {
             sizeVal = clampedFc
           }
-        } else {
-          sizeVal = sysRef.clampSysDiskDraftSize(sizeVal, typeKeyForClamp)
         }
+        // 无论 fc/fd 是否一致，最终都按当前镜像/类型下限 clamp（修复 value<min 仅展示抬升的情况）
+        sizeVal = sysRef.clampSysDiskDraftSize(sizeVal, typeKeyForClamp)
         const values = {}
         if (typeVal) values[typeKey] = typeVal
         if (sizeVal != null && sizeVal !== '') values[sizeKey] = sizeVal
