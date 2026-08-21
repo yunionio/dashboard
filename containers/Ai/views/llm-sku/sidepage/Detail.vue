@@ -26,6 +26,7 @@ import {
   getLlmTypeTableColumn,
   getLlmModelNameTableColumn,
   getSourceTableColumn,
+  getEnvsTableColumn,
 } from '../utils/columns'
 import { getLlmSpecSections, fetchLlmSpecCredentialNames, fetchLlmSpecDifyImages } from '../utils/llmSpecDetail'
 
@@ -114,6 +115,7 @@ export default {
         getCpuTableColumn(),
         getMemoryTableColumn(),
         getDiskTableColumn(),
+        getEnvsTableColumn(),
         {
           field: 'port_mappings',
           title: this.$t('aice.container_port_mapping'),
