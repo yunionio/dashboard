@@ -288,6 +288,22 @@ export default {
     elements (val, oldV) {
       if (!R.equals(val, oldV)) this.init()
     },
+    // iops 上下限随盘大小变化时，主动夹取已填值，避免仅展示受 min 限制
+    iopsLimit: {
+      handler (limit) {
+        if (!this.showIops || !this.decorator?.iops || !this.form?.fc) return
+        const key = this.decorator.iops[0]
+        const cur = Number(this.form.fc.getFieldValue(key))
+        if (!Number.isFinite(cur)) return
+        const min = Number(limit?.min)
+        const max = Number(limit?.max)
+        let next = cur
+        if (Number.isFinite(min) && next < min) next = min
+        if (Number.isFinite(max) && next > max) next = max
+        if (next !== cur) this.setDiskFormFields({ [key]: next })
+      },
+      deep: true,
+    },
   },
   methods: {
     syncDiskFieldsToFd (values) {

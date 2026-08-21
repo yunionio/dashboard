@@ -461,6 +461,15 @@ export default {
         const v = f.getFieldValue(k)
         if (v !== undefined) pick[k] = v
       })
+      // 落盘前 clamp，避免草稿写入展示已抬升但 fc 仍偏小的非法 size
+      const typeKey = this.decorator.type?.[0]
+      const sizeKey = this.decorator.size?.[0]
+      if (typeKey && pick[typeKey]) {
+        pick[typeKey] = this.resolveSysDiskTypeFromDraft(pick[typeKey])
+      }
+      if (sizeKey && pick[sizeKey] != null) {
+        pick[sizeKey] = this.clampSysDiskDraftSize(pick[sizeKey], pick[typeKey]?.key)
+      }
       return Object.keys(pick).length ? pick : undefined
     },
     /** 草稿磁盘类型对照当前 typesMap，不可用则回退首项 */
