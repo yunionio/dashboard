@@ -36,6 +36,7 @@ import * as R from 'ramda'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import storage from '@/utils/storage'
+import { getComponentDraft } from '@/utils/createFormDraft'
 import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 import ImageSelect from './ImageSelect'
 
@@ -193,35 +194,71 @@ export default {
   },
   watch: {
     hypervisor () {
+      this.lockDraftImageTypeFromStorage()
       const draft = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
-      const prefer = draft?.imageType || this.form.fd?.imageType || this.decorator.imageType[1].initialValue
+      const prefer = this._lockedDraftImageType || draft?.imageType || this.form.fd?.imageType || this.decorator.imageType[1].initialValue
       const availableKeys = this.mirrorTypeOptions.map(item => item.key)
+      // 草稿 imageType 尚未出现在 opts（如 kvm 未就绪）时，不要回落 standard 污染展示/后续逻辑
+      if (this._lockedDraftImageType && !availableKeys.includes(this._lockedDraftImageType)) return
       // CAS/UIS/SangFor 等仅支持 private_iso，不能继续沿用私有云默认的 private
       const imageType = availableKeys.includes(prefer) ? prefer : (availableKeys[0] || prefer)
-      this.imageType = imageType
-      this.form.fc.setFieldsValue({
-        [this.decorator.imageType[0]]: imageType,
-      })
+      this.applyImageTypeValue(imageType)
     },
     'form.fd.image.key': {
       handler () {
         const lastSelectedImageInfo = this.ignoreStorage ? {} : (storage.get('oc_selected_image') || {})
         const { imageType = lastSelectedImageInfo.imageType } = this.$route.query
         if (this.isFirstLoad && imageType) {
+          // 有控件草稿时不要被 query/storage 盖掉
+          this.lockDraftImageTypeFromStorage()
+          if (this._lockedDraftImageType) return
           setTimeout(() => {
-            this.form.fc.setFieldsValue({ imageType })
+            this.applyImageTypeValue(imageType)
           }, 0)
-          this.imageType = imageType
         }
       },
       immediate: true,
     },
   },
+  created () {
+    this.lockDraftImageTypeFromStorage()
+  },
   methods: {
+    /**
+     * 首屏 ImageSelect 默认 standard 拉镜像后会 persist；
+     * 挂载时锁定 storage 里的 imageType，避免被写成 standard。
+     */
+    lockDraftImageTypeFromStorage () {
+      if (!this.formDraftKey || this._lockedDraftImageType) return
+      const scope = this.resolveFormDraftScope?.()
+      if (!scope) return
+      const draft = getComponentDraft(scope, this.formDraftKey)
+      if (draft?.imageType) {
+        this._lockedDraftImageType = draft.imageType
+      }
+    },
+    /** 写 fc，并同步 fd/fi（setFieldsValue 不走 onValuesChange） */
+    applyImageTypeValue (imageType) {
+      if (!imageType || !this.form?.fc) return
+      const field = this.decorator.imageType[0]
+      this.imageType = imageType
+      this.form.fc.setFieldsValue({ [field]: imageType })
+      if (this.form.fd) {
+        this.$set(this.form.fd, 'imageType', imageType)
+      }
+      if (this.form.fi) {
+        this.$set(this.form.fi, 'imageType', imageType)
+      }
+    },
     getCreateFormFieldDraftSnapshot () {
+      this.lockDraftImageTypeFromStorage()
       const f = this.form?.fc
       if (!f) return undefined
-      const imageType = f.getFieldValue(this.decorator.imageType[0])
+      let imageType = f.getFieldValue(this.decorator.imageType[0])
+      // 用户未改镜像类型前：禁止用当前 UI（常为 standard）覆盖草稿
+      if (this.isFirstLoad && this._lockedDraftImageType) {
+        imageType = this._lockedDraftImageType
+      }
       const os = f.getFieldValue(this.decorator.os[0])
       const image = f.getFieldValue(this.decorator.image[0])
       return {
@@ -232,14 +269,14 @@ export default {
     },
     applyCreateFormFieldDraft (draft) {
       if (!draft || !this.form?.fc) return
+      if (draft.imageType && !this._lockedDraftImageType) {
+        this._lockedDraftImageType = draft.imageType
+      }
       // 仅先恢复镜像类型；os/image 等 ImageSelect 列表就绪后按 preferDraft 回填
       if (draft.imageType) {
         const available = this.mirrorTypeOptions.map(item => item.key)
         if (!available.length || available.includes(draft.imageType)) {
-          this.imageType = draft.imageType
-          this.form.fc.setFieldsValue({
-            [this.decorator.imageType[0]]: draft.imageType,
-          })
+          this.applyImageTypeValue(draft.imageType)
         }
       }
     },
@@ -249,7 +286,8 @@ export default {
     },
     change (e) {
       this.isFirstLoad = false
-      this.imageType = e.target.value
+      this._lockedDraftImageType = e.target.value
+      this.applyImageTypeValue(e.target.value)
       this.$emit('update:imageType', e.target.value)
       this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
@@ -267,6 +305,10 @@ export default {
         }
       }
       this.$emit('updateImageMsg', ...ret)
+      // 镜像类型尚未对齐草稿前不写，避免 standard 污染（snapshot 也会保护 imageType）
+      if (this.isFirstLoad && this._lockedDraftImageType && this.imageType !== this._lockedDraftImageType) {
+        return
+      }
       this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
   },
