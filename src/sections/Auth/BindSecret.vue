@@ -2,45 +2,67 @@
   <div class="wrap shadow-lg bg-white rounded">
     <a-card>
       <div class="wrap-inner">
-        <h5>{{$t('common_83')}}</h5>
-        <div class="setup-wrap-top">
-          <div class="setup-tip" style="width:70%">
-            <div>
-              <i class="tip-icon fa fa-hand-o-right" />
-              <span class="tip-text">{{$t('common_84')}}</span>
-            </div>
-            <div class="tip-text mt-4">{{ $t('common.mobile_end') }}<span style="font-size:12px">({{ $t('common.refer_nington') }})</span>:</div>
-            <div class="qr-wrap d-flex">
-              <div class="d-flex flex-column align-items-center">
-                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${miniprogramQr})` }" />
+        <h5 class="page-title">{{$t('common_83')}}</h5>
+        <div class="setup-grid">
+          <section class="step-col">
+            <header class="step-hd step-hd-with-sub">
+              <span class="step-no">1</span>
+              <div class="step-hd-main">
+                <span class="step-text">{{$t('common_84')}}</span>
+                <div class="step-sub">
+                  {{ $t('common.wechat_miniprogram_prefix') }}
+                  <span class="brand-em">{{ $t('common.brand_ycloud') }}</span>
+                  {{ $t('common.wechat_miniprogram_suffix') }}
+                </div>
               </div>
-              <div class="d-flex flex-column align-items-center">
-                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${ningtonQrIOS})` }" />
+            </header>
+            <div class="feature-client">
+              <div
+                class="feature-qr"
+                :style="{ backgroundImage: `url(${miniprogramQr})` }" />
+            </div>
+            <div class="alt-list">
+              <div class="alt-item">
+                <div class="alt-name">{{ $t('common.mobile_end') }}</div>
+                <div class="alt-desc">
+                  {{ $t('common.nington_get_tip_prefix') }}
+                  <span class="brand-em">Microsoft Authenticator</span>、
+                  <span class="brand-em">{{ $t('common.brand_nington') }}</span>、
+                  <span class="brand-em">DKEY Token</span>
+                  {{ $t('common.nington_get_tip_suffix') }}
+                </div>
               </div>
-              <div class="d-flex flex-column align-items-center">
-                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${ningtonQrAndroid})` }" />
+              <div class="alt-item">
+                <div class="alt-name">{{ $t('common.chrome_browser') }}</div>
+                <div class="alt-desc">
+                  {{ $t('common.mfa.qr_code_chrome_1_prefix') }}
+                  <span class="brand-em">Authenticator</span>
+                  {{ $t('common.mfa.qr_code_chrome_1_suffix') }}
+                  <help-link href="https://chrome.google.com/webstore/detail/authenticator/bhghoamapcdpbohphigoooaddinpkbai?hl=zh-CN">
+                    {{ $t('common.mfa.qr_code_chrome_2') }}
+                  </help-link>
+                </div>
               </div>
             </div>
-            <div class="tip-text-little mb-3">{{ $t('common.nington_get_tip') }}</div>
-            <div class="tip-text">{{ $t('common.chrome_browser') }}:</div>
-            <div class="tip-text-little">{{ $t('common.mfa.qr_code_chrome_1') }}<help-link href="https://chrome.google.com/webstore/detail/authenticator/bhghoamapcdpbohphigoooaddinpkbai?hl=zh-CN">{{ $t('common.mfa.qr_code_chrome_2') }}</help-link></div>
-          </div>
-          <div class="setup-tip">
-            <div>
-              <i class="tip-icon fa fa-hand-o-right" />
-              <span class="tip-text">{{$t('common_86')}}</span>
+          </section>
+          <section class="step-col step-col-scan">
+            <header class="step-hd">
+              <span class="step-no">2</span>
+              <span class="step-text">{{$t('common_86')}}</span>
+            </header>
+            <div class="scan-body">
+              <div class="secret-qr-wrap">
+                <img v-if="secretImg" :src="secretImg" alt="MFA QR Code" />
+              </div>
+              <p class="scan-tip">{{$t('common_87')}}</p>
             </div>
-            <div class="secret-qr-wrap mt-2">
-              <img v-if="secretImg" :src="secretImg" alt="MFA QR Code" />
-            </div>
-            <div class="qr-tip">{{$t('common_87')}}</div>
-          </div>
+          </section>
         </div>
-        <div class="setup-wrap-bottom">
-          <div class="setup-tip">
-            <i class="tip-icon fa fa-hand-o-right" />
-            <span class="tip-text">{{$t('common_88')}}</span>
-          </div>
+        <section class="setup-bottom">
+          <header class="step-hd">
+            <span class="step-no">3</span>
+            <span class="step-text">{{$t('common_88')}}</span>
+          </header>
           <div class="code-wrap">
             <security-code ref="security-code" v-model="securityCode" :error="error" @completed="onValid" @clear="onClear" blurOnComplete />
           </div>
@@ -48,7 +70,7 @@
             <div v-if="error" class="error">{{$t('common_89')}}</div>
             <div v-if="loading" class="loading"><i class="fa fa-refresh fa-spin" />{{$t('common_90')}}</div>
           </div>
-        </div>
+        </section>
       </div>
     </a-card>
   </div>
@@ -63,8 +85,6 @@ export default {
   data () {
     return {
       miniprogramQr: require('./assets/ycloud-miniprogram-qrcode.png'),
-      ningtonQrIOS: require('./assets/nington-qrcode-ios.png'),
-      ningtonQrAndroid: require('./assets/nington-qrcode-android.png'),
       // 本地缓存二维码，避免 historyUsers key 变化或 unset 后页面立刻空白
       secretQrcode: '',
       securityCode: '',
@@ -168,115 +188,165 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~@/styles/less/theme";
+
 .wrap {
   width: 710px;
   position: relative;
+  -webkit-font-smoothing: antialiased;
 }
 .wrap-inner {
-  padding: 0 70px;
+  padding: 4px 70px 12px;
 }
-.setup-wrap-top {
+.page-title {
+  margin: 0 0 30px;
+  font-size: 18px;
+  font-weight: 600;
+  color: @heading-color;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+.setup-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 0 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #edf1f7;
+}
+.step-col {
+  min-width: 0;
+  &.step-col-scan {
+    padding-left: 24px;
+    border-left: 1px solid #edf1f7;
+    .step-hd {
+      margin-bottom: 14px;
+    }
+  }
+}
+.step-hd {
   display: flex;
-  border-bottom: 1px solid #EDF1F7;
-  .setup-tip {
-    flex: 1;
-    padding: 20px 0;
-    &:first-child {
-      border-right: 1px solid #EDF1F7;
-      padding-right: 20px;
-    }
-    &:last-child {
-      padding-left: 30px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  &.step-hd-with-sub {
+    align-items: flex-start;
+    .step-no {
+      margin-top: 1px;
     }
   }
 }
-.setup-tip {
-  .tip-icon {
-    color: #4da1ff;
-  }
-  .tip-text {
-    font-size: 14px;
-  }
-  .tip-text-little {
-    font-size: 12px;
-  }
-}
-
-.qr-wrap {
-  margin: 0 0 15px 0;
-  display: flex;
-  height: 100px;
-  > div {
-    height: 100%;
-    &:not(:last-child) {
-      margin-right: 10px;
-    }
-    > img {
-      width: 150px;
-    }
-    .qr-code-bg-wrap {
-      width: 100px;
-      height: 100px;
-      background-repeat: no-repeat;
-      background-size: contain;
-      // background-position: center;
-      > div {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: rgba(255, 255, 255, .9);
-        color: #666;
-        font-size: 12px;
-        cursor: pointer;
-      }
-    }
-    .qr-code-andriod, .qr-code-chrome {
-      color: #000;
-      font-size: 12px;
-      transform: scale(0.9) translateY(-6px);
-    }
-    .qr-code-andriod {
-      width: 120px;
-    }
-    > p {
-      color: #666;
-      font-size: 12px;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-  }
-}
-
-.secret-qr-wrap {
-  height: 150px;
-  display: flex;
-  align-items: flex-start;
-  img {
-    width: 150px;
-    height: 150px;
-  }
-}
-
-.qr-tip {
-  color: #A6AEBC;
+.step-no {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: @primary-color;
+  color: #fff;
   font-size: 12px;
+  font-weight: 600;
+  line-height: 22px;
+  text-align: center;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
-
-.setup-wrap-bottom {
-  margin-top: 15px;
+.step-hd-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
-
+.step-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: @heading-color;
+  line-height: 1.4;
+}
+.step-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: @text-color;
+  line-height: 1.4;
+}
+.brand-em {
+  margin: 0 4px;
+  color: @heading-color;
+  font-weight: 500;
+}
+.feature-client {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 0 2px;
+}
+.feature-qr {
+  width: 120px;
+  height: 120px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border-radius: 50%;
+}
+.alt-list {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.alt-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.alt-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: @heading-color;
+  line-height: 1.5;
+}
+.alt-desc {
+  font-size: 12px;
+  color: @text-color-secondary;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+.scan-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 6px;
+}
+.secret-qr-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 152px;
+    height: 152px;
+    display: block;
+  }
+}
+.scan-tip {
+  margin: 14px 0 0;
+  max-width: 260px;
+  font-size: 12px;
+  color: @text-color-secondary;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.setup-bottom {
+  margin-top: 22px;
+  padding-bottom: 4px;
+}
 .code-wrap {
-  margin-top: 15px;
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
 }
-
 .status-tip {
   font-size: 12px;
-  margin-top: 15px;
+  margin-top: 14px;
   text-align: center;
+  min-height: 18px;
   .error {
     color: #DD2727;
   }
