@@ -264,6 +264,36 @@
         </a-row>
       </a-form-item>
 
+      <a-form-item :label="$t('aice.envs')">
+        <a-row v-for="item in envVars" :key="item.key" :gutter="4">
+          <a-col :span="11">
+            <a-form-item>
+              <a-input
+                v-decorator="decorators.envs.envKey(item.key)"
+                :placeholder="$t('common.tips.input', [$t('aice.env_key')])" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="11">
+            <a-form-item>
+              <a-input
+                v-decorator="decorators.envs.envValue(item.key)"
+                :placeholder="$t('common.tips.input', [$t('aice.env_value')])" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="2">
+            <a-button shape="circle" icon="minus" size="small" @click="delEnv(item)" class="mt-2 ml-2" />
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col>
+            <div class="d-flex align-items-center">
+              <a-button type="primary" shape="circle" icon="plus" size="small" @click="addEnv" />
+              <a-button type="link" @click="addEnv">{{ $t('aice.add_env') }}</a-button>
+            </div>
+          </a-col>
+        </a-row>
+      </a-form-item>
+
       <a-form-item
         v-if="isLocalPathSku"
         :label="$t('aice.local_path_import.prefer_hosts')"
@@ -981,6 +1011,16 @@ export default {
             { initialValue: getInitVal(customizedArgsRows, rowKey, 'argValue') },
           ],
         },
+        envs: {
+          envKey: rowKey => [
+            `env_key[${rowKey}]`,
+            { initialValue: getInitVal(envVars, rowKey, 'env_key') },
+          ],
+          envValue: rowKey => [
+            `env_value[${rowKey}]`,
+            { initialValue: getInitVal(envVars, rowKey, 'env_value') },
+          ],
+        },
         host_paths: {
           type: rowKey => [
             `host_path_type_${rowKey}`,
@@ -1389,6 +1429,8 @@ export default {
         container_port,
         customized_arg_key,
         customized_arg_value,
+        env_key,
+        env_value,
       } = values
       const effectiveLlmType = this.isEditMode
         ? (this.form.fd.llm_type || llm_type)
@@ -1450,6 +1492,15 @@ export default {
       }
       if (port_mappings.length > 0) data.port_mappings = port_mappings
       if (host_paths.length > 0) data.host_paths = host_paths
+      const envs = (this.envVars || []).map((item) => {
+        const k = String(env_key?.[item.key] ?? item.env_key ?? '').trim()
+        if (!k) return null
+        const v = env_value?.[item.key] ?? item.env_value
+        return { key: k, value: v == null ? '' : String(v) }
+      }).filter(Boolean)
+      if (envs.length > 0 || this.isEditMode) {
+        data.envs = envs
+      }
       if (!this.isEditMode && effectiveLlmType) {
         data.llm_type = effectiveLlmType
         data.llm_sku = { [effectiveLlmType]: {} }
@@ -1717,6 +1768,13 @@ export default {
     delCustomizedArg (item) {
       const idx = this.customizedArgsRows.findIndex(v => v.key === item.key)
       if (idx >= 0) this.customizedArgsRows.splice(idx, 1)
+    },
+    addEnv () {
+      this.envVars.push({ key: uuid(), env_key: '', env_value: '' })
+    },
+    delEnv (item) {
+      const idx = this.envVars.findIndex(v => v.key === item.key)
+      if (idx >= 0) this.envVars.splice(idx, 1)
     },
     addHostPath () {
       this.hostPathRows.push({ key: uuid(), containerRows: [{ key: uuid() }] })
