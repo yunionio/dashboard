@@ -163,6 +163,8 @@ export default {
     },
     async fetchNotices () {
       if (this.isResDeny) return
+      // immediate watch 早于 created，managers 尚未初始化
+      if (!this.noticesManager) return
       this.loading = true
       try {
         // const data = await load({
@@ -209,7 +211,7 @@ export default {
       }
     },
     async fetchReadmarks () {
-      if (this.isResDeny) return
+      if (this.isResDeny || !this.rm) return
       try {
         const response = await this.rm.list({
           params: {
