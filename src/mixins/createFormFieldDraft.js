@@ -1,7 +1,10 @@
 /**
  * 控件级创建草稿 mixin（独立子组件）
  *
- * - formDraftKey：页内稳定 fieldKey
+ * 仅以下「创建页」应传 form-draft-key 并 provide 草稿 scope（虚拟机 / 容器主机 / 裸金属 / 硬盘 / EIP / RDS / Redis）。
+ * 弹框、调整配置等复用同一组件时：不传 formDraftKey → 不读写、不回填，表现与接入草稿前一致。
+ *
+ * - formDraftKey：页内稳定 fieldKey；空则草稿全关
  * - formDraftFields：可选，自动从 form.fc 序列化/回填这些字段名
  * - 子类可实现 getCreateFormFieldDraftSnapshot / applyCreateFormFieldDraft 覆盖
  */
@@ -37,7 +40,8 @@ export default {
     getCreateFormDraftScope: { default: undefined },
     canUseCreateFormFieldDraft: { default: undefined },
     registerCreateFormFieldDraftFlush: { default: undefined },
-    form: { default: undefined },
+    // 勿 inject 名为 form：会盖住 props.form（dialog 未 provide 时变成 undefined）
+    providedForm: { from: 'form', default: undefined },
   },
   data () {
     return {
@@ -56,11 +60,20 @@ export default {
     this._unregisterFormFieldDraftFlush()
   },
   methods: {
+    /** props.form 优先，其次 provide */
+    resolveFormRef () {
+      return this.$props.form || this.providedForm || this.form || null
+    },
+    /** 创建页是否挂了草稿 key（未挂则组件应按草稿前逻辑跑，禁止副作用） */
+    isFormDraftKeyWired () {
+      return !!(this.formDraftKey && !this.disableFormDraft)
+    },
     canReadWriteFormFieldDraft () {
-      if (this.disableFormDraft || !this.formDraftKey) return false
+      if (!this.isFormDraftKeyWired()) return false
       if (typeof this.canUseCreateFormFieldDraft === 'function') {
         return !!this.canUseCreateFormFieldDraft()
       }
+      // 无父级 provide：即使误传了 key 也不启用
       return false
     },
     /** 仅回填：与读写同一开关（工单/修改期间禁用） */
@@ -74,7 +87,7 @@ export default {
       return null
     },
     resolveFormFc () {
-      return this.form?.fc || this.fc || null
+      return this.resolveFormRef()?.fc || this.fc || null
     },
     readFormFieldDraft () {
       if (!this.canReadWriteFormFieldDraft()) return null
@@ -144,18 +157,19 @@ export default {
     },
     /** setFieldsValue 后同步 form.fd（onValuesChange 不会走 fd 赋值） */
     syncFormFieldValuesToFd (values) {
-      if (!this.form?.fd || !values || typeof values !== 'object') return
+      const formRef = this.resolveFormRef()
+      if (!formRef?.fd || !values || typeof values !== 'object') return
       Object.keys(values).forEach((key) => {
-        this.$set(this.form.fd, key, values[key])
+        this.$set(formRef.fd, key, values[key])
       })
       const fc = this.resolveFormFc()
       if (!fc) return
       const formValue = fc.getFieldsValue()
       if (formValue.dataDiskSizes) {
-        this.$set(this.form.fd, 'dataDiskSizes', formValue.dataDiskSizes)
+        this.$set(formRef.fd, 'dataDiskSizes', formValue.dataDiskSizes)
       }
       if (formValue.dataDiskTypes) {
-        this.$set(this.form.fd, 'dataDiskTypes', formValue.dataDiskTypes)
+        this.$set(formRef.fd, 'dataDiskTypes', formValue.dataDiskTypes)
       }
     },
     /** 写 fc 并同步 fd */
