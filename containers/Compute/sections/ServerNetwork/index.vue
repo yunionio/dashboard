@@ -218,13 +218,22 @@ export default {
       }
       return this.$store.getters.capability?.auto_alloc_network_count
     },
+    /**
+     * 仅创建页（formDraftKey）或工单回填（ignoreAutoNetworkType）启用草稿期网络同步。
+     * 弹框等未传 formDraftKey → 与接入草稿前一致。
+     */
+    isCreateNetworkDraftContext () {
+      return !!(this.formDraftKey || this.ignoreAutoNetworkType)
+    },
   },
   watch: {
     effectiveAutoAllocNetworkCountTt: {
-      handler () {
+      handler (val, oldVal) {
         if (this.ignoreAutoNetworkType) return
         if (this.networkDraftRestoring) return
         if (this.canReadWriteFormFieldDraft() && this.readFormFieldDraft()?.networkType) return
+        // 非创建页：跳过 mount immediate，避免弹框被强改 networkType
+        if (!this.formDraftKey && oldVal === undefined) return
         this.applyNetworkTypeByAutoAllocCountTt()
       },
       immediate: true,
@@ -273,12 +282,14 @@ export default {
     },
   },
   mounted () {
-    // Decorator 可能已种好 networkType（工单/草稿），但 networkComponent 默认是空的，
-    // 必须同步挂出 VPC/子网区域，否则只见 radio 选中、下面空白
-    this.syncNetworkComponentFromForm()
+    // 仅创建草稿/工单回填：Decorator 已种 networkType 时需挂出 VPC/子网区
+    if (this.isCreateNetworkDraftContext) {
+      this.syncNetworkComponentFromForm()
+    }
   },
   methods: {
     getCreateFormFieldDraftSnapshot () {
+      if (!this.canReadWriteFormFieldDraft()) return undefined
       const f = this.form?.fc
       if (!f) return undefined
       const networkType = f.getFieldValue('networkType') || this.form.fd?.networkType
@@ -330,6 +341,7 @@ export default {
       return ret
     },
     applyCreateFormFieldDraft (draft) {
+      if (!this.canReadWriteFormFieldDraft() && !this.ignoreAutoNetworkType) return
       if (!draft || !this.form?.fc) return
       this.networkDraftRestoring = true
       const finish = () => {
@@ -421,8 +433,8 @@ export default {
       if (this.form.fd) {
         this.form.fd.networkType = e.target.value
         this.$nextTick(() => {
-          // 回填期间 syncNetworkComponentFromForm→change 不要落盘，避免 nets 未就绪冲掉草稿
-          if (!this.networkDraftRestoring) {
+          // 仅创建草稿可落盘；回填期间不要冲掉 nets
+          if (this.canReadWriteFormFieldDraft() && !this.networkDraftRestoring) {
             this.persistFormFieldDraftSnapshot()
           }
         })
