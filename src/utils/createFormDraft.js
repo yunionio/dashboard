@@ -1,6 +1,10 @@
 /**
  * 平台级创建表单配置记忆（create form draft）— 仅控件级
  *
+ * ## 启用范围（仅这些创建页传 form-draft-key + provide）
+ * 虚拟机 / 容器主机 / 裸金属 / 硬盘 / EIP / RDS / Redis
+ * 弹框、调整配置等复用同一 section 组件时不得传 formDraftKey，行为须与接入前一致。
+ *
  * ## 存包结构（单一 localStorage key）
  * key: __oc_create_form_draft__
  * value: {
