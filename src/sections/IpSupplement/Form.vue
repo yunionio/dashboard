@@ -6,6 +6,7 @@
     <a-alert class="mb-2" type="warning">
       <div slot="message">
         {{ $t('help.ipSupplement') }}
+        <div v-if="!localNics || localNics.length === 0">{{ $t('help.ipSupplementTip') }}</div>
       </div>
     </a-alert>
     <a-form-item :label="nicLabel(nic)" v-for="(nic, i) in localNics" :key="i">
@@ -36,7 +37,7 @@
       <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link :href="`/network/create?vpc=default&wire=${nic.wire}&domain=${domain}&project=${project}&type=idc`">{{$t('compute.perform_create')}}</help-link></div>
     </a-form-item>
     <div class="text-right">
-      <a-button type="primary" html-type="submit" :loading="loading">{{$t('common.ok')}}</a-button>
+      <a-button type="primary" html-type="submit" :loading="loading" v-if="localNics && localNics.length > 0">{{$t('common.ok')}}</a-button>
       <a-button class="ml-3" @click="cancel">{{$t('common.cancel')}}</a-button>
     </div>
   </a-form>
