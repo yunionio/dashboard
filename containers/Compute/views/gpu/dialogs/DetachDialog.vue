@@ -66,20 +66,14 @@ export default {
     }
   },
   computed: {
-    selectedItems () {
-      return this.params.data
-    },
-    isGuestAllRunning () {
-      return this.selectedItems.every(o => o.guest_status === 'running')
-    },
     isShowAutoStart () {
-      return !this.isGuestAllRunning
+      return !this.params.data.every(o => o.guest_status === 'running')
     },
     isGuestHasUnknown () {
-      return this.selectedItems.some(o => o.guest_status === 'unknown')
+      return this.params.data.some(o => o.guest_status === 'unknown')
     },
     isGuestHasReady () {
-      return this.selectedItems.some(o => o.guest_status === 'ready')
+      return this.params.data.some(o => o.guest_status === 'ready')
     },
   },
   mounted () {
@@ -109,9 +103,9 @@ export default {
         })
       })
     },
-    async fetchGuestIsolatedDeviceIndex (device) {
-      const guestId = device ? device.guest_id : this.params.data[0].id
-      const deviceId = device ? device.id : this.params.device.id
+    async fetchGuestIsolatedDeviceIndexs (bind) {
+      const guestId = bind.server_id
+      const deviceId = bind.gpu_ids.length
       if (!guestId || !deviceId) return undefined
       try {
         const res = await new this.$Manager('guestisolateddevices').list({
@@ -121,29 +115,31 @@ export default {
             scope: this.$store.getters.scope,
           },
         })
-        const record = (res.data.data || []).find(item => item.id === deviceId || item.isolated_device_id === deviceId)
-        if (record && record.index !== undefined && record.index !== null) {
-          return record.index
-        }
+        const record = (res.data.data || []).filter(item => bind.gpu_ids.includes(item.id) || bind.gpu_ids.includes(item.isolated_device_id))
+        return record.map(item => {
+          return {
+            device: item.id || item.isolated_device_id,
+            index: item.index,
+          }
+        })
       } catch (e) {
         // ignore
       }
       return undefined
     },
-    async doUpdate (values, device) {
+    async doUpdate (values, bind) {
       const data = {
         auto_start: this.isShowAutoStart ? values.autoStart : false,
-        device: device ? device.id : this.params.device.id,
       }
       if (values.is_force) {
         data.is_force = true
       }
-      const index = await this.fetchGuestIsolatedDeviceIndex(device)
+      const index = await this.fetchGuestIsolatedDeviceIndexs(bind)
       if (index !== undefined) {
-        data.index = index
+        data.devices = index
       }
       return new this.$Manager('servers').performAction({
-        id: device ? device.guest_id : this.params.data[0].id,
+        id: bind.server_id,
         action: 'detach-isolated-device',
         data,
       })
@@ -152,15 +148,9 @@ export default {
       try {
         this.loading = true
         const values = await this.validateForm()
-        if (this.params.devices) {
-          for (let i = 0; i < this.params.devices.length; i++) {
-            await this.doUpdate(values, this.params.devices[i])
-          }
-        } else {
-          if (this.params.data.length === 1) {
-            await this.doUpdate(values)
-          } else {
-            await this.doDetachSubmit(values)
+        if (this.params.binds) {
+          for (let i = 0; i < this.params.binds.length; i++) {
+            await this.doUpdate(values, this.params.binds[i])
           }
         }
         this.loading = false
@@ -169,20 +159,6 @@ export default {
       } catch (error) {
         this.loading = false
       }
-    },
-    doDetachSubmit (values) {
-      const data = {
-        detach_all: true,
-        auto_start: this.isShowAutoStart ? values.autoStart : false,
-      }
-      const selectedIds = this.params.data.map((item) => {
-        return item.guest_id
-      })
-      return new this.$Manager('servers').batchPerformAction({
-        ids: selectedIds,
-        action: 'detach-isolated-device',
-        data,
-      })
     },
   },
 }
