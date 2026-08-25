@@ -20,6 +20,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ResTemplateListMixin from '@/mixins/resTemplateList'
+import { getServerGpuBinds } from '../utils/index'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -161,7 +162,13 @@ export default {
           },
         },
         steadyStatus: {
-          guest_status: [...Object.values(expectStatus.server).flat(), '', undefined],
+          guest_status: (row) => {
+            const { guest_status } = row
+            if (guest_status === undefined || guest_status === null || guest_status === '') return false
+            const statuses = Array.isArray(guest_status) ? guest_status : [guest_status]
+            const validStatuses = Object.values(expectStatus.server).flat()
+            return statuses.some(status => !validStatuses.includes(status) && !/fail/.test(status))
+          },
         },
       }),
       groupActions: [
@@ -176,6 +183,7 @@ export default {
               name: this.$t('compute.text_113'),
               refresh: this.refresh,
               devices: this.list.selectedItems,
+              binds: getServerGpuBinds(this.list.selectedItems, this.gpuResource || 'isolated_devices'),
             })
           },
           meta: () => {

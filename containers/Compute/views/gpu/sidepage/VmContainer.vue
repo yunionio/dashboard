@@ -22,6 +22,7 @@ import {
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
+import { getServerGpuBinds } from '../utils/index'
 const commonUnabled = (value, statusArr = ['sched_fail', 'net_fail', 'disk_fail']) => {
   return statusArr.includes(value.status)
 }
@@ -204,6 +205,7 @@ export default {
               refresh: this.refresh,
               name: this.$t('dictionary.server_container'),
               device: this.data,
+              binds: getServerGpuBinds([obj], 'servers'),
             })
           },
           meta: obj => {
