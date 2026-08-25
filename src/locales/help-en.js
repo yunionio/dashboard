@@ -51,6 +51,7 @@ export default {
     `,
     monitorDashboardOverviewTips: 'Resource overview statistics have cycles, and statistics results will be delayed',
     ipSupplement: 'Please ensure that the IP submitted this time is consistent with the actual IP, and cannot be modified once the submission is successful',
+    ipSupplementTip: 'The network card information of the current host is not detected, please synchronize the virtual machine status or synchronize the cloud account again before retrying',
     disable_user_on_import: 'Enable means that the user status is enabled, then the users brought in this time can use the system, if disabled, you can reset it in the user list after the import is successful',
     defaultServerNetwork: 'The server will be assigned an IP address from the IP subnet that belongs to the automatically assigned address pool',
     deleteDiskAtTheSameTime: 'If it is not checked, only the system disk will be deleted. After checking, the mounted data disk will be deleted together with the system disk.',
