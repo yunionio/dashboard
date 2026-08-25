@@ -2,6 +2,8 @@ import i18n from '@/locales'
 import { HYPERVISORS_MAP } from '@/constants'
 import { arrayToObj } from '@/utils/utils'
 
+export { HOST_CPU_ARCHS, resolveHostCpuArch } from './computeArch'
+
 // 镜像类型
 export const IMAGES_TYPE_MAP = {
   standard: { key: 'standard', label: i18n.t('label.standardImage'), tooltip: i18n.t('common.text00016') },
@@ -901,27 +903,6 @@ export const DISK_MOUNT_POINT_OPTIONS = [
   { key: 'xfs', label: 'xfs' },
   // { key: 'swap', label: 'swap' },
 ]
-
-export const HOST_CPU_ARCHS = {
-  x86: {
-    key: 'x86',
-    label: 'x86_64',
-    capabilityKey: 'x86_64',
-    order: 1,
-  },
-  arm: {
-    key: 'arm',
-    label: 'aarch64',
-    capabilityKey: 'aarch64',
-    order: 2,
-  },
-  loongarch64: {
-    key: 'loongarch64',
-    label: 'loongarch64',
-    capabilityKey: 'loongarch64',
-    order: 3,
-  },
-}
 
 export const DISK_LABEL_MAP = {
   GPSSD: i18n.t('compute.disk.rotate_gpssd'),

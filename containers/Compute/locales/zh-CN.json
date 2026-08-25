@@ -185,6 +185,7 @@
   "compute.text_179": "CPU(核)",
   "compute.cpu_arch": "CPU(架构)",
   "compute.cpu_arch.aarch64": "ARM",
+  "compute.cpu_arch.riscv64": "RISC-V 64位",
   "compute.cpu_arch.x86": "x86",
   "compute.text_180": "内存(GB)",
   "compute.text_181": "价格",

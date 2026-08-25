@@ -254,7 +254,7 @@
             :form-draft-key="vmDraftFields.schedPolicy" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_1155')" class="mb-0" v-if="isKvm">
-          <bios :decorator="decorators.bios" :uefi="uefi" :isArm="isArm" :showDefault="true" />
+          <bios :decorator="decorators.bios" :uefi="uefi" :isArm="isArmOrRiscv" :showDefault="true" />
         </a-form-item>
         <a-form-item :label="$t('compute.vdi_protocol')" class="mb-0" v-if="isKvm">
           <vdi :decorator="decorators.vdi" :showDefault="true" />
@@ -263,7 +263,7 @@
           <vga :decorator="decorators.vga" :vdi="vdi" :form="form" :showDefault="true" />
         </a-form-item>
         <a-form-item :label="$t('compute.machine')" class="mb-0" v-if="isKvm">
-          <machine :decorator="getMachineDecorator()" :isArm="isArm" :showDefault="true" />
+          <machine :decorator="getMachineDecorator()" :isArm="isArmOrRiscv" :showDefault="true" />
         </a-form-item>
         <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" :label="$t('compute.text_1156')" :extra="$t('compute.text_1157')">
           <backup
@@ -330,7 +330,7 @@ import Machine from '@Compute/sections/Machine'
 import { NETWORK_OPTIONS_MAP, hasVgaGpuInPciForm } from '@Compute/constants'
 import Kickstart from '@Compute/sections/Kickstart'
 import OsArch from '@/sections/OsArch'
-import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
+import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS, resolveHostCpuArch } from '@/constants/compute'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { HYPERVISORS_MAP } from '@/constants'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
@@ -367,6 +367,12 @@ export default {
     },
     isArm () {
       return this.form.fd.os_arch === HOST_CPU_ARCHS.arm.key
+    },
+    isRiscv64 () {
+      return this.form.fd.os_arch === HOST_CPU_ARCHS.riscv64.key
+    },
+    isArmOrRiscv () {
+      return this.isArm || this.isRiscv64
     },
     isLoongarch64 () {
       return this.form.fd.os_arch === HOST_CPU_ARCHS.loongarch64.key
@@ -429,6 +435,7 @@ export default {
         params.image_type = 'system'
       }
       if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
+      if (this.isRiscv64) params.os_arch = HOST_CPU_ARCHS.riscv64.key
       return params
     },
     showSku () {
@@ -485,6 +492,7 @@ export default {
         }
         if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
         if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
+        if (this.isRiscv64) params.os_arch = HOST_CPU_ARCHS.riscv64.key
         return params
       }
       return {}
@@ -502,6 +510,7 @@ export default {
         }
         if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
         if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
+        if (this.isRiscv64) params.os_arch = HOST_CPU_ARCHS.riscv64.key
         return params
       }
       return {}
@@ -722,6 +731,7 @@ export default {
       }
       if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
       if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
+      if (this.isRiscv64) params.os_arch = HOST_CPU_ARCHS.riscv64.key
       return params
     },
     archOptions () {
@@ -731,6 +741,7 @@ export default {
           if (item === HOST_CPU_ARCHS.arm.capabilityKey) return HOST_CPU_ARCHS.arm
           if (item === HOST_CPU_ARCHS.x86.capabilityKey) return HOST_CPU_ARCHS.x86
           if (item === HOST_CPU_ARCHS.loongarch64.capabilityKey) return HOST_CPU_ARCHS.loongarch64
+          if (item === HOST_CPU_ARCHS.riscv64.capabilityKey) return HOST_CPU_ARCHS.riscv64
           return item
         })
       }
@@ -748,7 +759,7 @@ export default {
     isShowAgent () {
       if (this.isIso || !this.osType) return false
       if (this.isWindows) {
-        return !this.isArm
+        return !this.isArmOrRiscv
       }
       return true
     },
@@ -844,7 +855,7 @@ export default {
     uefi (val) {
       this.setBios(val)
     },
-    isArm (val, oldV) {
+    isArmOrRiscv (val, oldV) {
       this.setBios(val)
     },
     isShowAgent (val) {
@@ -1057,12 +1068,8 @@ export default {
         const { os_arch } = this.$route.query
         // 数据延迟回填
         if (os_arch) {
-          let canUseOsArch = ''
-          if (os_arch.indexOf('x86') !== -1) {
-            canUseOsArch = HOST_CPU_ARCHS.x86.key
-          } else if (os_arch.indexOf('aarch') !== -1) {
-            canUseOsArch = HOST_CPU_ARCHS.arm.key
-          }
+          const archConfig = resolveHostCpuArch(os_arch)
+          const canUseOsArch = archConfig ? archConfig.key : ''
           if (!canUseOsArch) return
           this.form.fc.setFieldsValue({ os_arch: canUseOsArch })
         }
@@ -1070,7 +1077,7 @@ export default {
     },
     getMachineDecorator () {
       let initValue = ''
-      if (this.isArm) {
+      if (this.isArmOrRiscv) {
         initValue = 'virt'
       }
       return [

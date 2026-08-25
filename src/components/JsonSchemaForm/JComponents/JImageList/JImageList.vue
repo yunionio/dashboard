@@ -93,6 +93,9 @@ export default {
     isLoongarch64 () {
       return this.fe.sku && this.fe.sku.cpu_arch === HOST_CPU_ARCHS.loongarch64.capabilityKey
     },
+    isRiscv64 () {
+      return this.fe.sku && this.fe.sku.cpu_arch === HOST_CPU_ARCHS.riscv64.capabilityKey
+    },
     isIDC () {
       return HYPERVISORS_MAP[this.hypervisor]?.env === 'idc'
     },
@@ -132,6 +135,7 @@ export default {
         params.os_arch = HOST_CPU_ARCHS.x86.key
         if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
         if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
+        if (this.isRiscv64) params.os_arch = HOST_CPU_ARCHS.riscv64.key
       }
       return params
     },
@@ -152,6 +156,7 @@ export default {
         params.os_arch = HOST_CPU_ARCHS.x86.key
         if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
         if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
+        if (this.isRiscv64) params.os_arch = HOST_CPU_ARCHS.riscv64.key
       }
       return params
     },
@@ -455,7 +460,11 @@ export default {
       const min_disk = sizestr(img.min_disk, 'M', 1024)
       const size = sizestr(img.size, 'B', 1024)
       const props = img.properties || (img.info ? img.info.properties : undefined)
-      const arch = props && props.os_arch && props.os_arch === 'aarch64' ? this.$t('compute.cpu_arch.aarch64') : props?.os_arch || 'x86_64'
+      const rawArch = props?.os_arch || HOST_CPU_ARCHS.x86.capabilityKey
+      let arch = rawArch === HOST_CPU_ARCHS.arm.capabilityKey ? this.$t('compute.cpu_arch.aarch64') : rawArch
+      if (String(rawArch).toLowerCase().startsWith('riscv')) {
+        arch = this.$t('compute.cpu_arch.riscv64')
+      }
       let bios = 'BIOS'
       if (props) {
         const { uefi_support, bios_support } = props

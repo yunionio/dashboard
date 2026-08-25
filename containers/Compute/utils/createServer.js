@@ -1983,7 +1983,8 @@ export class GenCreateData {
     }
     // 安装监控 agent
     if (this.isIDC) {
-      if ((this.isWindows() && this.fd.os_arch !== HOST_CPU_ARCHS.arm.key) || !this.isWindows()) {
+      const windowsAgentUnsupportedArchs = [HOST_CPU_ARCHS.arm.key, HOST_CPU_ARCHS.riscv64.key]
+      if ((this.isWindows() && !windowsAgentUnsupportedArchs.includes(this.fd.os_arch)) || !this.isWindows()) {
         if (this.fd.deploy_telegraf) {
           data.deploy_telegraf = this.fd.deploy_telegraf
         }

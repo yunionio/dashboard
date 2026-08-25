@@ -2525,6 +2525,15 @@ export const USAGE_CONFIG = {
   },
 }
 
+// Architecture-specific server metrics share the same units and scope rules.
+// Keep RISC-V in sync with the existing x86_64 metric set without duplicating
+// dozens of otherwise identical entries.
+Object.keys(USAGE_CONFIG).forEach(key => {
+  if (key.includes('.x86_64')) {
+    USAGE_CONFIG[key.replace('.x86_64', '.riscv64')] = { ...USAGE_CONFIG[key] }
+  }
+})
+
 export const K8S_USAGE_CONFIG = {
   'all.cluster.count': {
     unit: i18n.t('dashboard.text_1'),

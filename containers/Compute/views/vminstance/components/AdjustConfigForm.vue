@@ -615,6 +615,8 @@ export default {
           params.cpu_arch = HOST_CPU_ARCHS.x86.key
         } else if (this.selectedItem.os_arch.includes('arm') || this.selectedItem.os_arch.includes('aarch64')) {
           params.cpu_arch = HOST_CPU_ARCHS.arm.key
+        } else if (this.selectedItem.os_arch.toLowerCase().includes('riscv')) {
+          params.cpu_arch = HOST_CPU_ARCHS.riscv64.key
         }
       }
       return params
@@ -839,7 +841,7 @@ export default {
     clearInterval(this.dataDiskInterval)
   },
   methods: {
-    // 是否支持开机直接调整（ARM 架构开机全平台不支持热调，需先关机）
+    // 是否支持开机直接调整（ARM/RISC-V 架构开机全平台不支持热调，需先关机）
     canHotAdjust (item) {
       if (this.isArmArch(item)) return false
       if (HOTPLUG_RUNNING_ADJUST_HYPERVISORS.includes(item.hypervisor)) {
@@ -849,7 +851,7 @@ export default {
     },
     isArmArch (item) {
       const arch = (item.os_arch || '').toLowerCase()
-      return arch === HOST_CPU_ARCHS.arm.key || arch.includes('arm') || arch.includes('aarch64')
+      return arch === HOST_CPU_ARCHS.arm.key || arch.includes('arm') || arch.includes('aarch64') || arch.includes('riscv')
     },
     isDowngradeFor (item, vcpu, vmem) {
       return vcpu < item.vcpu_count || vmem < item.vmem_size

@@ -145,6 +145,12 @@ export default {
     isArm () {
       return this.form.fd.os_arch === HOST_CPU_ARCHS.arm.key
     },
+    isRiscv64 () {
+      return this.form.fd.os_arch === HOST_CPU_ARCHS.riscv64.key
+    },
+    isArmOrRiscv () {
+      return this.isArm || this.isRiscv64
+    },
     isLoongarch64 () {
       return this.form.fd.os_arch === HOST_CPU_ARCHS.loongarch64.key
     },
@@ -184,6 +190,7 @@ export default {
       if (this.form.fd.imageType === 'vmware') params.image_type = 'system'
       if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
       if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
+      if (this.isRiscv64) params.os_arch = HOST_CPU_ARCHS.riscv64.key
       return params
     },
     showSku () {
@@ -400,6 +407,7 @@ export default {
       }
       if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
       if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
+      if (this.isRiscv64) params.os_arch = HOST_CPU_ARCHS.riscv64.key
       return params
     },
     archOptions () {
@@ -409,6 +417,7 @@ export default {
           if (item === HOST_CPU_ARCHS.arm.capabilityKey) return HOST_CPU_ARCHS.arm.key
           if (item === HOST_CPU_ARCHS.x86.capabilityKey) return HOST_CPU_ARCHS.x86.key
           if (item === HOST_CPU_ARCHS.loongarch64.capabilityKey) return HOST_CPU_ARCHS.loongarch64.key
+          if (item === HOST_CPU_ARCHS.riscv64.capabilityKey) return HOST_CPU_ARCHS.riscv64.key
           return item
         })
       }
@@ -496,7 +505,7 @@ export default {
     uefi (val) {
       this.setBios(val)
     },
-    isArm (val, oldV) {
+    isArmOrRiscv (val, oldV) {
       this.setBios(val)
     },
   },

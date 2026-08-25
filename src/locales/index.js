@@ -6,6 +6,7 @@ import vxeTableEN from 'vxe-table/lib/locale/lang/en-US'
 import vxeTableJP from 'vxe-table/lib/locale/lang/ja-JP'
 import setting from '@/config/setting'
 import { getLanguage } from '@/utils/common/cookie'
+import { addRiscvUsageMessages } from '@/constants/computeArch'
 import en from './en'
 import zhCN from './zh-CN'
 import jaJP from './ja-JP'
@@ -35,6 +36,17 @@ const register = (ctx) => {
 
 register(moduleCtx)
 register(scopeCtx)
+
+const riscvUsageLabels = {
+  en: 'RISC-V 64-bit',
+  'zh-CN': 'RISC-V 64位',
+  'ja-JP': 'RISC-V 64ビット',
+}
+
+Object.keys(riscvUsageLabels).forEach(lang => {
+  const usageMessages = messages[lang].usage || {}
+  addRiscvUsageMessages(usageMessages, riscvUsageLabels[lang])
+})
 
 const i18n = new VueI18n({
   locale: getLanguage(),

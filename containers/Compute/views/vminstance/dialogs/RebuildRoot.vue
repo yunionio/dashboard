@@ -152,6 +152,9 @@ export default {
     },
     osArch () {
       const { instance_type = '', os_arch } = this.params.data[0]
+      if (String(os_arch).toLowerCase().startsWith('riscv')) {
+        return HOST_CPU_ARCHS.riscv64.capabilityKey
+      }
       if (instance_type.startsWith('k') || os_arch === HOST_CPU_ARCHS.arm.capabilityKey) {
         return HOST_CPU_ARCHS.arm.capabilityKey
       }
@@ -166,6 +169,9 @@ export default {
       }
       if (this.osArch === HOST_CPU_ARCHS.arm.capabilityKey) {
         params.os_arch = HOST_CPU_ARCHS.arm.key
+      }
+      if (this.osArch === HOST_CPU_ARCHS.riscv64.capabilityKey) {
+        params.os_arch = HOST_CPU_ARCHS.riscv64.key
       }
       return params
     },
@@ -373,7 +379,7 @@ export default {
       const { os } = this.form.fd
       if (![HYPERVISORS_MAP.kvm.key, HYPERVISORS_MAP.esxi.key].includes(this.hypervisor)) return false
       if (os === 'Windows') {
-        return this.osArch !== HOST_CPU_ARCHS.arm.capabilityKey
+        return ![HOST_CPU_ARCHS.arm.capabilityKey, HOST_CPU_ARCHS.riscv64.capabilityKey].includes(this.osArch)
       }
       return true
     },
