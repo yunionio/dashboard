@@ -355,13 +355,13 @@ export default {
           break
       }
     },
-    imageChange (imageObj) {
+    imageChange (imageObj, isAuto = false) {
       let imageMsg = {}
       if (imageObj && R.is(Object, imageObj)) {
         const list = this.imageOptions
         imageMsg = list.find(image => image.id === imageObj.key)
       }
-      this.$emit('updateImageMsg', { imageMsg })
+      this.$emit('updateImageMsg', { imageMsg, isAuto })
     },
     osChange (osValue, imageValue) {
       this.defaultSelect(osValue, imageValue)
@@ -726,7 +726,7 @@ export default {
           const currentImage = this.form.fc.getFieldValue(this.decorator.image[0])
           if (currentImage && imageValue && currentImage.key === imageValue.key) {
           } else {
-            this.imageChange(image)
+            this.imageChange(image, true)
           }
         }
         this.form.fc.setFieldsValue({ os })
@@ -811,7 +811,7 @@ export default {
           } else {
             this.form.fc.setFieldsValue({ image })
           }
-          this.imageChange(image)
+          this.imageChange(image, true)
         }
       } else {
         // 仅有镜像 id 草稿时：在 map 里反查 os

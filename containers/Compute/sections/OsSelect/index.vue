@@ -196,7 +196,9 @@ export default {
     hypervisor () {
       this.lockDraftImageTypeFromStorage()
       const draft = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
-      const prefer = this._lockedDraftImageType || draft?.imageType || this.form.fd?.imageType || this.decorator.imageType[1].initialValue
+      // 草稿关闭时优先读 oc_selected_image 里的 imageType，避免被 fd 初始值（standard）覆盖
+      const lastSelectedImageInfo = this.ignoreStorage ? {} : (storage.get('oc_selected_image') || {})
+      const prefer = this._lockedDraftImageType || draft?.imageType || lastSelectedImageInfo.imageType || this.form.fd?.imageType || this.decorator.imageType[1].initialValue
       const availableKeys = this.mirrorTypeOptions.map(item => item.key)
       // 草稿 imageType 尚未出现在 opts（如 kvm 未就绪）时，不要回落 standard 污染展示/后续逻辑
       if (this._lockedDraftImageType && !availableKeys.includes(this._lockedDraftImageType)) return
@@ -226,16 +228,25 @@ export default {
   methods: {
     /**
      * 首屏 ImageSelect 默认 standard 拉镜像后会 persist；
-     * 挂载时锁定 storage 里的 imageType，避免被写成 standard。
+     * 挂载时锁定草稿里的 imageType，避免被写成 standard。
+     * 仅草稿启用时生效；草稿关闭（开关/未挂 key）时不锁定，
+     * 让 oc_selected_image 里的 imageType 正常恢复。
      */
     lockDraftImageTypeFromStorage () {
       if (!this.formDraftKey || this._lockedDraftImageType) return
+      if (!this.canReadWriteFormFieldDraft()) return
       const scope = this.resolveFormDraftScope?.()
       if (!scope) return
       const draft = getComponentDraft(scope, this.formDraftKey)
       if (draft?.imageType) {
         this._lockedDraftImageType = draft.imageType
       }
+    },
+    /** 合并写入 oc_selected_image（修改即记录） */
+    persistSelectedImage (patch) {
+      if (this.ignoreStorage || !patch || typeof patch !== 'object') return
+      const last = storage.get('oc_selected_image') || {}
+      storage.set('oc_selected_image', { ...last, ...patch })
     },
     /** 写 fc，并同步 fd/fi（setFieldsValue 不走 onValuesChange） */
     applyImageTypeValue (imageType) {
@@ -286,22 +297,29 @@ export default {
     },
     change (e) {
       this.isFirstLoad = false
-      this._lockedDraftImageType = e.target.value
-      this.applyImageTypeValue(e.target.value)
-      this.$emit('update:imageType', e.target.value)
+      const imageType = e.target.value
+      this._lockedDraftImageType = imageType
+      this.applyImageTypeValue(imageType)
+      this.$emit('update:imageType', imageType)
+      // 切类型即写 imageType；自动选中的镜像由 updateImageMsg 补写 os/id
+      this.persistSelectedImage({ imageType })
       this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     updateImageMsg (...ret) {
-      const image = ret[0].imageMsg
-      if (!this.ignoreStorage && image?.properties) {
-        const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
-        let os_distribution = image.properties.os_distribution
+      const { imageMsg: image, isAuto } = ret[0] || {}
+      // 首屏自动选中不写，避免默认 standard 覆盖历史；用户切类型后 isFirstLoad=false 可写
+      const skipStorageWrite = isAuto && this.isFirstLoad
+      if (!skipStorageWrite && !this.ignoreStorage && image?.properties) {
+        const os_distribution = image.properties.os_distribution
         const os_type = image.properties.os_type
+        const patch = { imageType: this.imageType, imageId: image.id }
         if (os_distribution) {
-          os_distribution = os_distribution.includes('Windows') ? 'Windows' : os_distribution
-          storage.set('oc_selected_image', { ...lastSelectedImageInfo, imageOs: os_distribution, imageId: image.id })
+          patch.imageOs = os_distribution.includes('Windows') ? 'Windows' : os_distribution
         } else if (os_type) {
-          storage.set('oc_selected_image', { ...lastSelectedImageInfo, imageOs: os_type, imageId: image.id })
+          patch.imageOs = os_type
+        }
+        if (patch.imageOs) {
+          this.persistSelectedImage(patch)
         }
       }
       this.$emit('updateImageMsg', ...ret)
