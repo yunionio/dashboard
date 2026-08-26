@@ -49,8 +49,8 @@ export const DRAFT_TTL_MS = 7 * 24 * 60 * 60 * 1000
  * - 二者皆 false：功能关闭（不写不恢复）
  */
 export const CREATE_FORM_DRAFT_SWITCHES = {
-  saveOnChange: true,
-  saveOnSubmitSuccess: true,
+  saveOnChange: false,
+  saveOnSubmitSuccess: false,
 }
 
 /**
@@ -147,6 +147,7 @@ function writeStore (store) {
  * @returns {object|null}
  */
 export function getDraftEntry (formScope) {
+  if (!isCreateFormDraftEnabled()) return null
   if (!formScope) return null
   const store = readStore()
   const entry = store.forms[formScope]
@@ -179,6 +180,7 @@ export const getFieldDraft = getComponentDraft
  * @param {*} data
  */
 export function setComponentDraft (formScope, fieldKey, data) {
+  if (!isCreateFormDraftEnabled()) return
   if (!formScope || !fieldKey) return
   if (data === undefined) return
   const store = readStore()
@@ -250,6 +252,7 @@ export function clearAllDrafts () {
  * @returns {string[]}
  */
 export function listDraftScopes () {
+  if (!isCreateFormDraftEnabled()) return []
   const store = readStore()
   return Object.keys(store.forms || {})
 }

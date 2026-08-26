@@ -177,6 +177,12 @@ export default {
           }
           if (draftPreferred.project) {
             defaultProject = draftPreferred.project
+          } else if (this.project?.key) {
+            // 草稿关闭时兜底读本地记录；须在 domainChange（会 _resetProject 清空）之前取出
+            const projectData = await this.$store.dispatch('storage/getProjectById', { ...this.project, project_domain: defaultDomain.key })
+            if (projectData) {
+              defaultProject = { key: projectData.id, label: projectData.name }
+            }
           }
         }
         const projectInitialValue = _.get(this.decorators, 'project[1].initialValue')
