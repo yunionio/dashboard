@@ -46,7 +46,7 @@ const idcStandardImageParams = {
   status: 'active',
   is_guest_image: false,
   scope: 'system',
-  'filter.0': 'disk_format.notequals(iso)',
+  'filter.0': 'disk_format.notin(iso,tgz)',
   is_standard: true,
 }
 
