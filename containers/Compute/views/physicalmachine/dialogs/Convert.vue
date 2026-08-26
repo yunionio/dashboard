@@ -444,7 +444,7 @@ export default {
           is_standard: 'false',
           status: 'active',
           details: true,
-          'filter.0': 'disk_format.notequals(iso)',
+          'filter.0': 'disk_format.notin(iso,tgz)',
         }
       } else {
         this.isShowImages = false
