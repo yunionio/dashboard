@@ -588,7 +588,7 @@ export default {
         status: 'active',
         details: true,
         limit: 0,
-        'filter.0': 'disk_format.notequals(iso)',
+        'filter.0': 'disk_format.notin(iso,tgz)',
         scope: this.$store.getters.scope,
         is_standard: true,
       }
