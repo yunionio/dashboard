@@ -5417,6 +5417,7 @@
   },
   "common.yunion_cloud": "内蔵バーチャライゼーション",
   "common.not_limited": "制限なし",
+  "common.not_set": "未設定",
   "common.change_bandwidth": "帯域幅を調整する",
   "common.change_config": "構成を調整する",
   "common.share": "この操作は、共有{0}ではサポートされていません",
