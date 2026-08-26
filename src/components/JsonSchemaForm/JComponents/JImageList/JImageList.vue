@@ -247,7 +247,7 @@ export default {
       if (params.project_domain) {
         delete params.scope
       }
-      params['filter.0'] = 'disk_format.notequals(iso)'
+      params['filter.0'] = 'disk_format.notin(iso,tgz)'
       if (this.imageType === IMAGES_TYPE_MAP.customize.key) {
         params.owner = this.$store.getters.userInfo.projectId
         params.is_standard = false
