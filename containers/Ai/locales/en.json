@@ -69,6 +69,8 @@
   "aice.llm_sku.source.model_scope": "ModelScope",
   "aice.llm_sku.source.local_path": "Local Path",
   "aice.llm_sku.source.ollama": "Ollama Registry",
+  "aice.llm_sku.clone.importing": "Templates that are still importing cannot be cloned",
+  "aice.llm_sku.clone.import_failed": "Templates that failed to import cannot be cloned",
   "aice.app_llm_sku": "Agent Template",
   "aice.desktop_llm": "Desktop Instances",
   "aice.desktop_llm_create": "Create Desktop Instance",
