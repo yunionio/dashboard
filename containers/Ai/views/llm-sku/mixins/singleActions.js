@@ -28,6 +28,33 @@ export default {
         label: this.$t('common.more'),
         actions: (obj) => {
           return [
+            {
+              label: this.$t('common.action.clone'),
+              permission: 'llm_skus_perform_clone',
+              action: () => {
+                this.createDialog('LlmSkuCloneDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                if (obj.status === 'importing_model') {
+                  return {
+                    validate: false,
+                    tooltip: this.$t('aice.llm_sku.clone.importing'),
+                  }
+                }
+                if (obj.status === 'import_model_failed') {
+                  return {
+                    validate: false,
+                    tooltip: this.$t('aice.llm_sku.clone.import_failed'),
+                  }
+                }
+                return { validate: true }
+              },
+            },
             // 更改项目
             {
               label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
