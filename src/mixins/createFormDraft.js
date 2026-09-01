@@ -32,6 +32,7 @@ import {
   shouldUseCreateDraft,
   DEFAULT_PREFILL_QUERY_KEYS,
   CREATE_FORM_DRAFT_SWITCHES,
+  isCreateFormDraftEnabled,
 } from '@/utils/createFormDraft'
 
 export default {
@@ -238,10 +239,10 @@ export default {
       })
     },
     isCreateFormDraftSaveOnChangeEnabled () {
-      return !!CREATE_FORM_DRAFT_SWITCHES.saveOnChange
+      return isCreateFormDraftEnabled() && !!CREATE_FORM_DRAFT_SWITCHES.saveOnChange
     },
     isCreateFormDraftSaveOnSubmitSuccessEnabled () {
-      return !!CREATE_FORM_DRAFT_SWITCHES.saveOnSubmitSuccess
+      return isCreateFormDraftEnabled() && !!CREATE_FORM_DRAFT_SWITCHES.saveOnSubmitSuccess
     },
     _bindCreateFormDraftUserInteraction () {
       if (this._createFormDraftInteractionBound || this.createFormDraftUserInteracted) return
