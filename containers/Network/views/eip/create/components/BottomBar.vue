@@ -48,10 +48,14 @@ export default {
   },
   inject: {
     form: { default: undefined },
-    cloudEnv: { default: undefined },
     flushCreateFormFieldDrafts: { default: undefined },
+    resolvePublicSubmitLocation: { default: undefined },
   },
   props: {
+    cloudEnv: {
+      type: String,
+      default: undefined,
+    },
     currentCloudregion: {
       type: Object,
     },
@@ -185,18 +189,16 @@ export default {
         values.tenant = values.project.key
         Reflect.deleteProperty(values, 'project')
         Reflect.deleteProperty(values, 'enableWorldMap')
-        // 多选时收敛为单值提交
-        if (Array.isArray(values.cloudregion)) {
-          values.cloudregion = values.cloudregion[0]
-        }
-        if (Array.isArray(values.provider)) {
-          values.provider = values.provider[0]
-        }
-        // 优先用云订阅上的区域/平台
-        if (this.currentCloudregion && this.currentCloudregion.id) {
-          values.cloudregion = this.currentCloudregion.id
-          if (this.currentCloudregion.provider) {
-            values.provider = this.currentCloudregion.provider
+        if (this.cloudEnv === 'public' && typeof this.resolvePublicSubmitLocation === 'function') {
+          const resolved = this.resolvePublicSubmitLocation(values)
+          if (resolved.cloudregionId) values.cloudregion = resolved.cloudregionId
+          if (resolved.provider) values.provider = resolved.provider
+        } else {
+          if (Array.isArray(values.cloudregion)) {
+            values.cloudregion = values.cloudregion[0]
+          }
+          if (Array.isArray(values.provider)) {
+            values.provider = values.provider[0]
           }
         }
         if (this.cloudEnv === 'private' && !this.isHCSO && !this.isHCS) {
