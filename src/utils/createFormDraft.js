@@ -29,6 +29,8 @@
  * 4. 工单 / 预填：shouldUseCreateDraft === false 时不读写
  */
 import storage from '@/utils/storage'
+import store from '@/store'
+import { isCE } from '@/utils/utils'
 
 /** 所有创建表单草稿共用的唯一 localStorage key */
 export const DRAFT_STORAGE_KEY = '__oc_create_form_draft__'
@@ -47,6 +49,7 @@ export const DRAFT_TTL_MS = 7 * 24 * 60 * 60 * 1000
  * - saveOnChange：用户修改过程中是否写入（组件级）
  * - saveOnSubmitSuccess：表单提交成功后是否写入（flush）
  * - 二者皆 false：功能关闭（不写不恢复）
+ * - 开源版（isCE / isSysCE）：强制关闭，与开关无关
  */
 export const CREATE_FORM_DRAFT_SWITCHES = {
   saveOnChange: false,
@@ -54,10 +57,11 @@ export const CREATE_FORM_DRAFT_SWITCHES = {
 }
 
 /**
- * 草稿功能是否启用
+ * 草稿功能是否启用（开源版强制关闭；否则看 CREATE_FORM_DRAFT_SWITCHES）
  * @returns {boolean}
  */
 export function isCreateFormDraftEnabled () {
+  if (isCE() || store.getters.isSysCE) return false
   return !!(CREATE_FORM_DRAFT_SWITCHES.saveOnChange || CREATE_FORM_DRAFT_SWITCHES.saveOnSubmitSuccess)
 }
 
