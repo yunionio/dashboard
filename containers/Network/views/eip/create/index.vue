@@ -121,6 +121,7 @@
     </page-body>
     <bottom-bar
       :isHCSO="isHCSO || isHCS"
+      :cloud-env="cloudEnv"
       :current-cloudregion="selectedRegionItem"
       :size="bandwidth"
       :bgp-type="bgp_type"
@@ -390,10 +391,8 @@ export default {
         delete params.scope
       }
       // 单区域 cloudregion_id；多区域用独立 filter 字段，避免覆盖其它 filter
-      if (regionIds.length === 1) {
-        params.cloudregion_id = regionIds[0]
-      } else if (regionIds.length > 1) {
-        params['filter.0'] = `cloudregion_id.in(${regionIds.join(',')})`
+      if (regionIds.length) {
+        params.cloudregion_id = regionIds
       }
       // brand 多选直接传数组
       if (brands.length) {
@@ -534,16 +533,29 @@ export default {
   watch: {
     async cloudEnv (newValue) {
       this.bindEipCreateFormFcDrafts()
-      this.$refs.areaSelects && this.$refs.areaSelects.fetchs(this.areaselectsName)
-      this.form.fc.resetFields(['manager'])
+      // 跨 tab 共用 form.fc：清掉平台/区域/订阅，避免本地区域 default 残留到公有云
+      const isPublic = newValue === 'public'
+      this.form.fc.resetFields(['manager', 'provider', 'cloudregion', 'enableWorldMap'])
+      this.form.fc.setFieldsValue({
+        provider: isPublic ? [] : undefined,
+        cloudregion: isPublic ? [] : undefined,
+        manager: undefined,
+        enableWorldMap: false,
+      })
+      this.$set(this.form.fd, 'provider', isPublic ? [] : undefined)
+      this.$set(this.form.fd, 'cloudregion', isPublic ? [] : undefined)
+      this.$set(this.form.fd, 'enableWorldMap', false)
       this.manager = ''
       this.providerC = ''
       this.cloudproviderItem = null
       this.cloudproviderData = []
+      this.selectedRegionItem = {}
+      this.regionList = {}
       this.tagDefaultChecked = {}
       this.form.fc.setFieldsValue({ __meta__: undefined })
       this.charge_type = newValue === 'onpremise' ? 'bandwidth' : 'traffic'
       this.$nextTick(() => {
+        this.$refs.areaSelects && this.$refs.areaSelects.fetchs(this.areaselectsName)
         this.form.fc.getFieldDecorator('charge_type', { initialValue: newValue === 'onpremise' ? 'bandwidth' : 'traffic' })
         this.restoreEipBandwidthAndBgpDraft()
       })
@@ -570,7 +582,8 @@ export default {
   provide () {
     return {
       form: this.form,
-      cloudEnv: this.cloudEnv,
+      // 勿直接传 this.cloudEnv 字符串：provide 只取一次快照，tab 切换后 BottomBar 仍是旧值
+      getCloudEnv: () => this.cloudEnv,
       getCreateFormDraftScope: () => this.getCreateFormDraftScope(),
       canUseCreateFormFieldDraft: () => this.canUseCreateFormDraft,
       registerCreateFormFieldDraftFlush: (fn) => this.registerCreateFormFieldDraftFlush(fn),
@@ -578,6 +591,7 @@ export default {
       writeCreateFormFieldDraft: (key, data, options) => this.writeCreateFormFieldDraft(key, data, options),
       bindCreateFormFieldDraft: (spec) => this.bindCreateFormFieldDraft(spec),
       flushCreateFormFieldDrafts: () => this.flushCreateFormFieldDrafts(),
+      resolvePublicSubmitLocation: (values) => this.resolvePublicSubmitLocation(values),
     }
   },
   created () {
@@ -829,6 +843,32 @@ export default {
     isAreaProviderMatch (selected, itemProvider) {
       return this.normalizeAreaProviderKey(selected) === this.normalizeAreaProviderKey(itemProvider)
     },
+    /** 公有云：云订阅无区域，region 取已选中匹配该订阅 provider 的第一项 */
+    resolvePublicSubmitLocation (values) {
+      const regionIds = this.normalizeAreaValues(values.cloudregion)
+      const managerId = values.manager
+      if (!this.isPublic || !managerId) {
+        return {
+          cloudregionId: this.pickSingleAreaValue(values.cloudregion),
+          provider: this.pickSingleAreaValue(values.provider),
+        }
+      }
+      const cloudproviderItem = (this.cloudproviderData || []).find(i => i.id === managerId)
+      const subscriptionProvider = cloudproviderItem?.provider
+      let cloudregionId = this.pickSingleAreaValue(values.cloudregion)
+      if (subscriptionProvider && regionIds.length) {
+        const matched = regionIds.find((regionId) => {
+          const region = this.regionList[regionId]
+          if (!region) return false
+          return this.isAreaProviderMatch(subscriptionProvider, region.provider || region.brand)
+        })
+        cloudregionId = matched || regionIds[0]
+      }
+      return {
+        cloudregionId,
+        provider: subscriptionProvider || this.pickSingleAreaValue(values.provider),
+      }
+    },
     filterCloudregionListByProvider (list = []) {
       if (!this.isPublic) return list
       const providers = this.getSelectedProviderNames()
@@ -946,6 +986,16 @@ export default {
       }
     },
     cloudregionChange () {
+      if (this.isPublic && this.manager) {
+        const values = this.form.fc.getFieldsValue()
+        const { cloudregionId } = this.resolvePublicSubmitLocation({
+          ...values,
+          cloudregion: values.cloudregion || this.form.fd.cloudregion,
+          manager: this.manager,
+        })
+        this.selectedRegionItem = cloudregionId ? (this.regionList[cloudregionId] || {}) : {}
+        return
+      }
       const regionId = this.pickSingleAreaValue(
         this.form.fc.getFieldValue('cloudregion') || this.form.fd.cloudregion,
       )
@@ -959,9 +1009,14 @@ export default {
       if (e) {
         this.manager = e.id
         this.cloudproviderItem = e
-        // 多区域时用云订阅收敛到具体区域
-        if (e.cloudregion_id && this.regionList[e.cloudregion_id]) {
-          this.selectedRegionItem = this.regionList[e.cloudregion_id]
+        if (this.isPublic) {
+          const values = this.form.fc.getFieldsValue()
+          const { cloudregionId } = this.resolvePublicSubmitLocation({
+            ...values,
+            cloudregion: values.cloudregion || this.form.fd.cloudregion,
+            manager: e.id,
+          })
+          this.selectedRegionItem = cloudregionId ? (this.regionList[cloudregionId] || {}) : {}
         }
         if (e.provider.toLowerCase() === 'azure') {
           this.form.fc.setFieldsValue({ bandwidth: 0 })
