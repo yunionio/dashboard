@@ -1,5 +1,8 @@
 import { Manager } from '@/utils/manager'
 import { getAiproxyResourceScope } from '@Ai/constants/aiproxyResources'
+import { withClaudeCode1MSuffix } from './claudeCodeModelId'
+
+export { withClaudeCode1MSuffix }
 
 export function normalizeBaseUrl (url) {
   const raw = String(url || '').trim()
@@ -68,6 +71,14 @@ export function buildAnthropicMessagesUrl (baseUrl) {
   return `${anthropicBase}/v1/messages`
 }
 
+function contextWindowForClientModel (modelId, options = []) {
+  const id = String(modelId || '').trim()
+  if (!id) return 0
+  const hit = (options || []).find(o => o && o.id === id)
+  const n = Number(hit?.contextWindow)
+  return Number.isFinite(n) && n > 0 ? n : 0
+}
+
 export function buildClaudeCodeEnvExample ({
   anthropicBaseUrl,
   virtualKey = '<API Key>',
@@ -76,16 +87,21 @@ export function buildClaudeCodeEnvExample ({
   sonnetModel,
   haikuModel,
   subagentModel,
+  clientModelOptions = [],
 } = {}) {
   const base = anthropicBaseUrl
     ? `${normalizeBaseUrl(anthropicBaseUrl)}/`
     : '<endpoint>/ai/anthropic/'
   const key = virtualKey || '<API Key>'
-  const m = model || 'your-model'
-  const opus = opusModel || m
-  const sonnet = sonnetModel || m
-  const haiku = haikuModel || m
-  const subagent = subagentModel || haiku || m
+  const fallback = model || 'your-model'
+  const withSuffix = (id) => withClaudeCode1MSuffix(id, {
+    contextWindow: contextWindowForClientModel(id, clientModelOptions),
+  })
+  const m = withSuffix(fallback)
+  const opus = withSuffix(opusModel || fallback)
+  const sonnet = withSuffix(sonnetModel || fallback)
+  const haiku = withSuffix(haikuModel || fallback)
+  const subagent = withSuffix(subagentModel || haikuModel || fallback)
   return [
     `export ANTHROPIC_BASE_URL=${base}`,
     `export ANTHROPIC_AUTH_TOKEN=${key}`,
