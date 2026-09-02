@@ -2,7 +2,7 @@
   <div class="login-index-wrap flex-fill d-flex h-100 align-items-center" v-loading.fullscreen="!regionsLoading">
     <div class="login-index-left d-flex flex-fill align-items-center pl-4 pr-4 pt-4" :style="{backgroundImage: loginBg}">
       <div>
-        <h2 :style="{ color: getI18nColorVal(companyInfo, 'login_page_slogan'), lineHeight: getI18nVal(companyInfo, 'login_page_slogan').includes('<br') ? '1.5em' : '1em' }" v-html="getI18nVal(companyInfo, 'login_page_slogan') || $t('login.desc1')" />
+        <h2 :style="{ color: getI18nColorVal(companyInfo, 'login_page_slogan'), lineHeight: loginSlogan.includes('<br') ? '1.5em' : '1em' }" v-html="loginSlogan" />
         <h4 :style="{ color: getI18nColorVal(companyInfo, 'login_page_sub_slogan') }">{{ getI18nVal(companyInfo, 'login_page_sub_slogan') || $t('login.desc2') }}</h4>
       </div>
     </div>
@@ -35,6 +35,7 @@ import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
 import { getLoginDomain } from '@/utils/common/cookie'
 import { getI18nVal, getI18nColorVal } from '@/utils/i18n'
+import { sanitizeHtml } from '@/utils/sanitizeHtml'
 import { getLoginModeInStorage } from '@/utils/auth'
 
 export default {
@@ -86,6 +87,10 @@ export default {
       const bg_img = this.companyInfo.login_page_backgroup_image
       if (!bg_img) return `url(${require('./assets/bg.png')})`
       return `url(data:image/png;base64,${bg_img})`
+    },
+    loginSlogan () {
+      // slogan 来自 OEM 品牌配置，经 DOMPurify 消毒后再 v-html 渲染
+      return sanitizeHtml(getI18nVal(this.companyInfo, 'login_page_slogan') || this.$t('login.desc1'))
     },
   },
   async created () {
