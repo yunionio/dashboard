@@ -6,6 +6,7 @@ import { numerify } from '@/filters'
 import setting from '@/config/setting'
 import { currencyUnitMap } from '@/constants/currency'
 import { getLanguage } from '@/utils/common/cookie'
+import { safeAuthRedirectUrl } from '@/utils/safeRedirect'
 // import { encodeURI } from 'js-base64'
 
 let tIndex = 0
@@ -667,12 +668,17 @@ export const getAuthRedirectPathQuery = (routeQuery = {}) => {
 
 /**
  * 登录成功后跳转：外链用 location，站内用 router
- * @returns {boolean} 是否已处理跳转
+ * @param {Object} router vue-router 实例
+ * @param {Object} options { path, pathQuery }
+ * @param {Array|String} corsHosts 服务端 cors_hosts 白名单（可选）
+ * @returns {boolean} 是否已处理跳转；外链未通过安全校验时返回 false，由调用方兜底
  */
-export const redirectAfterAuth = (router, { path, pathQuery } = {}) => {
+export const redirectAfterAuth = (router, { path, pathQuery } = {}, corsHosts = []) => {
   if (!path) return false
   if (isExternalAuthPath(path)) {
-    document.location.href = path
+    const safePath = safeAuthRedirectUrl(path, corsHosts)
+    if (!safePath) return false
+    document.location.href = safePath
     return true
   }
   const nextPath = normalizeAuthRedirectPath(path)
