@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { sanitizeHtml } from '@/utils/sanitizeHtml'
+
 export default {
   name: 'HelpTooltip',
   props: {
@@ -22,10 +24,11 @@ export default {
   },
   computed: {
     content () {
+      // text 可能来自服务端错误消息（如 SSH/RDP 登录错误回显），需消毒后渲染
       if (this.text) {
-        return this.text
+        return sanitizeHtml(this.text)
       }
-      return this.$t(`help.${this.name}`)
+      return sanitizeHtml(this.$t(`help.${this.name}`))
     },
   },
 }
