@@ -38,6 +38,7 @@
 import * as R from 'ramda'
 import { mapState } from 'vuex'
 import { setSsoIdpIdInCookie } from '@/utils/auth'
+import { sanitizeSsoRedirectSearch } from '@/utils/safeRedirect'
 export default {
   name: 'LoginChooser',
   props: {
@@ -94,7 +95,7 @@ export default {
       if (item[1] && item[1].isSSO && item[1].idpId) {
         const { origin, search } = window.location
         setSsoIdpIdInCookie(item[1].idpId)
-        window.location.href = `${origin}/api/v1/auth/sso/redirect/${item[1].idpId}${search || ''}`
+        window.location.href = `${origin}/api/v1/auth/sso/redirect/${item[1].idpId}${sanitizeSsoRedirectSearch(search, this.$store.getters.auth?.regions?.cors_hosts)}`
         return
       }
       const username = this.getUsernameQuery ? this.getUsernameQuery(item) : item[1].name
