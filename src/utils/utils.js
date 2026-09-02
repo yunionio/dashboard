@@ -6,6 +6,7 @@ import { numerify } from '@/filters'
 import setting from '@/config/setting'
 
 import { getLanguage } from '@/utils/common/cookie'
+import { safeAuthRedirectUrl } from '@/utils/safeRedirect'
 // import { encodeURI } from 'js-base64'
 
 let tIndex = 0
@@ -597,6 +598,69 @@ export const cityMap = (cities, val) => {
     })
   }
   return result
+}
+
+/** 是否为 http(s) 完整外链（登录后应整页跳转） */
+export const isExternalAuthPath = (path) => {
+  return typeof path === 'string' && /^https?:\/\//i.test(path)
+}
+
+/** 站内路径规范化：保证以 / 开头；外链原样返回 */
+export const normalizeAuthRedirectPath = (path) => {
+  if (!path || typeof path !== 'string') return path
+  if (isExternalAuthPath(path)) return path
+  return path.startsWith('/') ? path : `/${path}`
+}
+
+/**
+ * 从当前 route 提取登录回跳目标 path
+ * 优先使用 query.path（pathAuth 场景），避免被当前页 path（如 /dashboard）覆盖
+ */
+export const getAuthRedirectPath = (route) => {
+  const queryPath = route?.query?.path
+  if (queryPath) return queryPath
+  return route?.path
+}
+
+/**
+ * 登录回跳用的其余 query（去掉 pathAuth 相关字段，避免嵌套覆盖目标 path）
+ */
+export const getAuthRedirectPathQuery = (routeQuery = {}) => {
+  if (R.isNil(routeQuery) || R.isEmpty(routeQuery)) return null
+  const restQuery = { ...routeQuery }
+  delete restQuery.path
+  delete restQuery.pathAuth
+  delete restQuery.pathAuthPage
+  delete restQuery.pathQuery
+  if (R.isEmpty(restQuery)) return null
+  return restQuery
+}
+
+/**
+ * 登录成功后跳转：外链用 location，站内用 router
+ * @param {Object} router vue-router 实例
+ * @param {Object} options { path, pathQuery }
+ * @param {Array|String} corsHosts 服务端 cors_hosts 白名单（可选）
+ * @returns {boolean} 是否已处理跳转；外链未通过安全校验时返回 false，由调用方兜底
+ */
+export const redirectAfterAuth = (router, { path, pathQuery } = {}, corsHosts = []) => {
+  if (!path) return false
+  if (isExternalAuthPath(path)) {
+    const safePath = safeAuthRedirectUrl(path, corsHosts)
+    if (!safePath) return false
+    document.location.href = safePath
+    return true
+  }
+  const nextPath = normalizeAuthRedirectPath(path)
+  let query = {}
+  if (pathQuery) {
+    query = typeof pathQuery === 'string' ? JSON.parse(pathQuery) : pathQuery
+  }
+  router.replace({
+    path: nextPath,
+    query,
+  })
+  return true
 }
 
 export const genReferRouteQuery = (route) => {
