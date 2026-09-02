@@ -1636,6 +1636,8 @@
   "compute.disk.rotate_gpssd": "通用型SSD",
   "compute.is_daemon": "Daemon虚拟机",
   "compute.qemu_cmdline": "启动命令行",
+  "compute.qemu_version": "QEMU版本",
+  "compute.last_start_at": "开机时间",
   "compute.vpc_extrnal_id": "VPC @:dictionary.external_id",
   "compute.mainternance_in_disabled_tip": "宿主机上的虚拟机数量为0",
   "compute.target_name": "目的名称",
