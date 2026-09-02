@@ -73,7 +73,7 @@ import { addMissingSeries } from '@Monitor/utils'
 import WindowsMixin from '@/mixins/windows'
 import DialogMixin from '@/mixins/dialog'
 import { getSignature } from '@/utils/crypto'
-import { getRequestT, transformUnit } from '@/utils/utils'
+import { getRequestT, transformUnit, escapeHTML } from '@/utils/utils'
 import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import OverviewCardLayout from '../layout'
 // import { currencyUnitMap } from '@/constants/currency'
@@ -398,10 +398,10 @@ export default {
                 } catch (err) { }
               }
             }
-            return `<div class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${name || ' '}</span>:&nbsp;<span>${value}</span></div>`
+            return `<div class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${escapeHTML(name || ' ')}</span>:&nbsp;<span>${escapeHTML(value)}</span></div>`
           }).join('')
           const wrapper = `<div>
-                        <div>${params[0].name}</div>
+                        <div>${escapeHTML(params[0].name)}</div>
                         <div class="lines-wrapper">${series}</div>
                       </div>`
           dom.style.border = 'none'
