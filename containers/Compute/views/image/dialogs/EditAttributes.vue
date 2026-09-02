@@ -90,6 +90,9 @@
               :key="index">{{item.text}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
+        <a-form-item :label="$t('compute.usb_kbd')" v-bind="formItemLayout">
+          <a-switch v-decorator="decorators.disable_usb_kbd" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -205,6 +208,13 @@ export default {
             initialValue: '',
           },
         ],
+        disable_usb_kbd: [
+          'disable_usb_kbd',
+          {
+            initialValue: false,
+            valuePropName: 'checked',
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -318,7 +328,7 @@ export default {
       this.manager.get({ id: this.params.data[0].id })
         .then((res) => {
           const { name, min_disk: minDisk } = res.data
-          const { os_type: osType, os_distribution: osDistribution, disk_driver: diskDriver, net_driver: netDriver, uefi_support: uefiSupport, bios_support: biosSupport, vdi_protocol: vdiProtocol, machine_type: machineType } = res.data.properties
+          const { os_type: osType, os_distribution: osDistribution, disk_driver: diskDriver, net_driver: netDriver, uefi_support: uefiSupport, bios_support: biosSupport, vdi_protocol: vdiProtocol, machine_type: machineType, disable_usb_kbd: disableUsbKbd } = res.data.properties
           this.initName = name
           this.initMinDisk = minDisk
           this.$nextTick(() => {
@@ -333,6 +343,7 @@ export default {
               bios: this.getBios(uefiSupport, biosSupport),
               vdi: vdiProtocol || 'vnc',
               machine_type: machineType || '',
+              disable_usb_kbd: disableUsbKbd === 'true',
             })
           })
         })
@@ -407,7 +418,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        const { name, osType, osDistribution, osOtherDistribution, minDisk, diskDriver, netDriver, os_arch, bios, vdi, machine_type } = values
+        const { name, osType, osDistribution, osOtherDistribution, minDisk, diskDriver, netDriver, os_arch, bios, vdi, machine_type, disable_usb_kbd } = values
         const params = {
           name,
           // protected: values.protected,
@@ -420,6 +431,7 @@ export default {
             os_arch,
             vdi_protocol: vdi,
             machine_type,
+            disable_usb_kbd: disable_usb_kbd ? 'true' : 'false',
           },
         }
         if (!this.isHostImage) {
