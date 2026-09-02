@@ -270,6 +270,7 @@ export default {
         sonnetModel: env.sonnetModel,
         haikuModel: env.haikuModel,
         subagentModel: env.subagentModel,
+        clientModelOptions: this.clientModelOptions,
       })
     },
     codexClimcExample () {
