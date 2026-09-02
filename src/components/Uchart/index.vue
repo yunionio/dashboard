@@ -17,6 +17,7 @@
 import UPlot from 'uplot'
 import 'uplot/dist/uPlot.min.css'
 import DataEmpty from '@/components/DataEmpty'
+import { escapeHTML } from '@/utils/utils'
 
 export default {
   name: 'Uchart',
@@ -186,7 +187,7 @@ export default {
               const label = d.label.startsWith('unknown-0-') ? d.label.replace('unknown-0-', '') : d.label
               const shortLabel = d.label.length > 50 ? label.substring(0, 50) + '...' : label
               const valueUnit = that.options?.tooltip?.valueFormatter ? that.options.tooltip.valueFormatter(d.value, d.unit) : `${(d.value || 0).toFixed(2)}${d.unit || ''}`
-              html += `<div class="uplot-tooltip-item"><span class="uplot-tooltip-dot" style="background-color:${d.color}"></span>${shortLabel}: ${valueUnit}</div>`
+              html += `<div class="uplot-tooltip-item"><span class="uplot-tooltip-dot" style="background-color:${escapeHTML(d.color)}"></span>${escapeHTML(shortLabel)}: ${escapeHTML(valueUnit)}</div>`
               textList.push(`${shortLabel}: ${valueUnit}`)
             })
             html += '</div>'
