@@ -25,6 +25,7 @@
 import _ from 'lodash'
 import * as R from 'ramda'
 import { numerify } from '@/filters'
+import { escapeHTML } from '@/utils/utils'
 import MonitorHeader from './Header'
 import MonitorList from './List'
 
@@ -266,12 +267,12 @@ export default {
                 }
                 return `<div style="color: #616161;">
                     ${line.marker}
-                    <span>${line.seriesName}</span>:
-                    <span>${value}${unit}</span>
+                    <span>${escapeHTML(line.seriesName)}</span>:
+                    <span>${escapeHTML(value)}${escapeHTML(unit)}</span>
                   </div>`
               }).join('')
               const wrapper = `<div class="chart-tooltip-wrapper">
-                <div style="color: #5D6F80;">${title}</div>
+                <div style="color: #5D6F80;">${escapeHTML(title)}</div>
                 <div class="lines-wrapper">${series}</div>
               </div>`
               dom.innerHTML = wrapper

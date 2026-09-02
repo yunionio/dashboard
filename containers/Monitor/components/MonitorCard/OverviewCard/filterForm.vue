@@ -372,17 +372,11 @@ export default {
       if (['system', 'project_domain', 'tenant'].indexOf(this.dimension.name) >= 0) {
         namecolumn.slots = {
           default: ({ row }, h) => {
+            // 文本节点由 Vue 自动转义，避免 innerHTML 注入
             if (!row[this.dimension.id]) {
-              return [h('span', {
-                domProps: {
-                  innerHTML: row[this.dimension.name] || '-',
-                },
-              })]
+              return [h('span', row[this.dimension.name] || '-')]
             }
             return [h('a', {
-              domProps: {
-                innerHTML: row[this.dimension.name] || '-',
-              },
               props: {
                 value: row[this.dimension.id] || '-',
               },
@@ -391,7 +385,7 @@ export default {
                   self.changeNav(row)
                 },
               },
-            })]
+            }, row[this.dimension.name] || '-')]
           },
         }
       }
