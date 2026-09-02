@@ -24,8 +24,9 @@ import {
 } from '@/utils/auth'
 import { SCOPES_MAP } from '@/constants'
 import router from '@/router'
-import { removeKeyIgnoreCase, getKeyIgnoreCase } from '@/utils/utils'
+import { removeKeyIgnoreCase, getKeyIgnoreCase, redirectAfterAuth } from '@/utils/utils'
 import { clear as clearDashboardCache } from '@Dashboard/utils/cache'
+import { safeAuthRedirectUrl } from '@/utils/safeRedirect'
 import storage from '@/utils/storage'
 import { aesEncryptWithCustomKey } from '@/utils/crypto'
 
@@ -525,14 +526,21 @@ export default {
       } else {
         const { rf, pathAuthPage, pathAuth, path, pathQuery } = router.currentRoute.query
         if (rf) {
-          document.location.href = rf
-          return
+          const safeRf = safeAuthRedirectUrl(rf, state.regions?.cors_hosts)
+          if (safeRf) {
+            document.location.href = safeRf
+            return
+          }
+          // 不安全的 rf 忽略，继续默认流程
         }
         if (!pathAuthPage && pathAuth && path) {
           router.replace({
             path,
             query: pathQuery && JSON.parse(pathQuery),
           })
+          if (!redirectAfterAuth(router, { path, pathQuery }, state.regions?.cors_hosts)) {
+            router.replace('/')
+          }
         } else {
           router.replace('/')
         }
