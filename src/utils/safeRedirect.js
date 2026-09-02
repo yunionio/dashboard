@@ -7,8 +7,9 @@
 
 /**
  * 归一化服务端 cors_hosts 配置（支持数组或逗号分隔字符串，可带协议前缀）
+ * 条目可以是 ip、域名（精确匹配）、含 * 通配符的 ip/域名、或单独 *
  * @param {Array|String} corsHosts 服务端 cors_hosts 配置
- * @returns {Array} 小写、无协议、无尾部斜杠的主机名列表
+ * @returns {Array} 小写、无协议、无尾部斜杠的条目列表
  */
 export const normalizeCorsHosts = (corsHosts) => {
   const list = Array.isArray(corsHosts)
@@ -19,12 +20,33 @@ export const normalizeCorsHosts = (corsHosts) => {
     .filter(Boolean)
 }
 
+const escapeRegExp = (str) => str.replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+
+/**
+ * 主机名是否匹配 cors_hosts 条目：
+ * - 不含 *：精确匹配
+ * - 含 *：* 匹配任意字符串（*.example.com 匹配 a.example.com、a.b.example.com；
+ *   192.168.* 匹配 192.168.1.2 等），即只匹配 * 前后的字符串
+ * - 单独 *：匹配所有
+ * 域名不区分大小写（条目已归一化为小写）
+ * @param {String} hostname 待校验主机名（小写，不含端口）
+ * @param {String} entry 白名单条目（已归一化）
+ * @returns {Boolean}
+ */
+const hostMatchesCorsEntry = (hostname, entry) => {
+  if (entry === '*') return true
+  if (!entry.includes('*')) return hostname === entry
+  const pattern = entry.split('*').map(escapeRegExp).join('.*')
+  return new RegExp(`^${pattern}$`, 'i').test(hostname)
+}
+
 /**
  * 校验登录回跳地址（rf/path）是否安全：
  * 1. 拒绝 javascript:/data:/vbscript:/file: 等非 http(s) 协议
  * 2. 拒绝协议相对地址（//、\\、/\ 开头）
- * 3. corsHosts 非空且不含 "*" 时启用跨域白名单：外链主机名必须与白名单条目
- *    或当前站点主机名一致（含其子域名）；相对路径（同源跳转）不受白名单限制
+ * 3. corsHosts 非空时启用跨域白名单：外链主机名必须匹配白名单条目
+ *    （ip/域名精确匹配、含 * 通配符条目、单独 * 匹配所有）或为当前站点主机名；
+ *    相对路径（同源跳转）不受白名单限制
  * @param {String} url 待校验的回跳地址
  * @param {Array|String} corsHosts 服务端 cors_hosts 配置
  * @returns {String} 安全则返回原值，否则返回空字符串
@@ -41,7 +63,7 @@ export const safeAuthRedirectUrl = (url, corsHosts = []) => {
     if (!/^https?$/i.test(schemeMatch[1])) return ''
     // 白名单校验（仅对 http(s) 外链生效）
     const hosts = normalizeCorsHosts(corsHosts)
-    if (hosts.length && !hosts.includes('*')) {
+    if (hosts.length) {
       const hostMatch = /^https?:\/\/([^/?#]+)/i.exec(target)
       let hostname = hostMatch && hostMatch[1].toLowerCase()
       if (!hostname) return ''
@@ -51,8 +73,7 @@ export const safeAuthRedirectUrl = (url, corsHosts = []) => {
         if (colonIdx > -1) hostname = hostname.slice(0, colonIdx)
       }
       const currentHost = (window.location.hostname || '').toLowerCase()
-      const allowed = [currentHost, ...hosts]
-      if (!allowed.some(host => host && (hostname === host || hostname.endsWith('.' + host)))) return ''
+      if (hostname !== currentHost && !hosts.some(entry => hostMatchesCorsEntry(hostname, entry))) return ''
     }
   }
   return url
