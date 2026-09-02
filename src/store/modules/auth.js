@@ -26,6 +26,7 @@ import {
 import { SCOPES_MAP } from '@/constants'
 import router from '@/router'
 import { removeKeyIgnoreCase, getKeyIgnoreCase, redirectAfterAuth } from '@/utils/utils'
+import { safeAuthRedirectUrl } from '@/utils/safeRedirect'
 import storage from '@/utils/storage'
 import { aesEncryptWithCustomKey } from '@/utils/crypto'
 const initialState = {
@@ -524,11 +525,17 @@ export default {
       } else {
         const { rf, pathAuthPage, pathAuth, path, pathQuery } = router.currentRoute.query
         if (rf) {
-          document.location.href = rf
-          return
+          const safeRf = safeAuthRedirectUrl(rf, state.regions?.cors_hosts)
+          if (safeRf) {
+            document.location.href = safeRf
+            return
+          }
+          // 不安全的 rf 忽略，继续默认流程
         }
         if (!pathAuthPage && pathAuth && path) {
-          redirectAfterAuth(router, { path, pathQuery })
+          if (!redirectAfterAuth(router, { path, pathQuery }, state.regions?.cors_hosts)) {
+            router.replace('/')
+          }
         } else {
           router.replace('/')
         }
