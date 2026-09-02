@@ -13,6 +13,7 @@ import {
   isExternalAuthPath,
   normalizeAuthRedirectPath,
 } from '@/utils/utils'
+import { getAuthRedirectCorsHosts, safeAuthRedirectUrl } from '@/utils/safeRedirect'
 import router from './router'
 import store from './store'
 
@@ -78,13 +79,24 @@ router.beforeEach(async (to, from, next) => {
     // sso登录携带query的情况
     const { rf, pathAuthPage, pathAuth, path, pathQuery } = to.query
     if (rf) {
-      document.location.href = rf
-      return
+      const corsHosts = await getAuthRedirectCorsHosts(store)
+      const safeRf = safeAuthRedirectUrl(rf, corsHosts)
+      if (safeRf) {
+        document.location.href = safeRf
+        return
+      }
+      // 不安全的 rf 忽略，继续默认流程
     }
     if (!pathAuthPage && pathAuth && path) {
       if (isExternalAuthPath(path)) {
-        document.location.href = path
-        return
+        const corsHosts = await getAuthRedirectCorsHosts(store)
+        const safePath = safeAuthRedirectUrl(path, corsHosts)
+        if (safePath) {
+          document.location.href = safePath
+          return
+        }
+        // 外链未通过安全校验：放弃回跳，回首页
+        return next('/')
       }
       return next({
         path: normalizeAuthRedirectPath(path),

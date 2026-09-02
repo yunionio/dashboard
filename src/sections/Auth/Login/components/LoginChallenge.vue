@@ -146,6 +146,7 @@ import { mapState } from 'vuex'
 import { Base64 } from 'js-base64'
 import { aesEncrypt } from '@/utils/crypto'
 import { setLoginDomain, getLoginDomain } from '@/utils/common/cookie'
+import { sanitizeSsoRedirectSearch } from '@/utils/safeRedirect'
 // import { removeQueryKeys } from '@/utils/utils'
 import EditForm from '@/components/Edit/Form'
 import { setSsoIdpIdInCookie, removeSsoIdpIdInCookie } from '@/utils/auth'
@@ -370,7 +371,7 @@ export default {
       const { origin, search } = window.location
       const { id } = idpItem
       setSsoIdpIdInCookie(id)
-      window.location.href = `${origin}/api/v1/auth/sso/redirect/${id}${search || ''}`
+      window.location.href = `${origin}/api/v1/auth/sso/redirect/${id}${sanitizeSsoRedirectSearch(search, this.$store.getters.auth?.regions?.cors_hosts)}`
     },
     submitLoginDomain (value) {
       this.showSetDomainPopover = false
