@@ -79,6 +79,7 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
 import { getKeyIgnoreCase } from '@/utils/utils'
+import { safeAuthRedirectUrl } from '@/utils/safeRedirect'
 
 export default {
   name: 'BindSecret',
@@ -169,8 +170,9 @@ export default {
           path: 'secret',
         })
         this.loading = false
-        if (this.$route.query.rf) {
-          document.location.href = this.$route.query.rf
+        const safeRf = safeAuthRedirectUrl(this.$route.query.rf, this.$store.getters.auth?.regions?.cors_hosts)
+        if (safeRf) {
+          document.location.href = safeRf
         } else {
           await this.$router.replace('/')
         }
