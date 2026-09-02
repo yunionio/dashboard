@@ -1635,6 +1635,8 @@
   "compute.disk.rotate_gpssd": "GPSSD",
   "compute.is_daemon": "Daemon VM",
   "compute.qemu_cmdline": "Qemu Cmdline",
+  "compute.qemu_version": "QEMU Version",
+  "compute.last_start_at": "Start Time",
   "compute.vpc_extrnal_id": "VPC @:dictionary.external_id",
   "compute.mainternance_in_disabled_tip": "The number of virtual machines on the host is 0",
   "compute.target_name": "Target Name",
