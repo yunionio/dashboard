@@ -1114,7 +1114,7 @@ export function getKeyIgnoreCase (dict, needle) {
 
 /* eslint-disable */
 export const escapeHTML = str =>
-  str.replace(
+  String(str == null ? '' : str).replace(
     /[&<>'"]/g,
     tag =>
     ({
