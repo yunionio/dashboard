@@ -54,9 +54,14 @@ export function listClientModelIdForEntry (routing, entry, catalogModel) {
   return clientFacingModelId(routing, entry, catalogModel)
 }
 
+function catalogContextWindow (catalog) {
+  const n = Number(catalog?.context_window)
+  return Number.isFinite(n) && n > 0 ? n : 0
+}
+
 /**
  * Build selectable client model options for access panel.
- * @returns {{ id: string, kind: 'flat'|'hierarchical', catalogKey: string, priority: number }[]}
+ * @returns {{ id: string, kind: 'flat'|'hierarchical', catalogKey: string, contextWindow: number, priority: number }[]}
  */
 export function buildRoutingClientModelOptions ({
   routing = {},
@@ -69,7 +74,7 @@ export function buildRoutingClientModelOptions ({
 
   if (!entries.length) {
     const fallback = trim(routing.model_key)
-    return fallback ? [{ id: fallback, kind: 'flat', catalogKey: '', priority: 0 }] : []
+    return fallback ? [{ id: fallback, kind: 'flat', catalogKey: '', contextWindow: 0, priority: 0 }] : []
   }
 
   const routeKey = trim(routing.model_key)
@@ -83,12 +88,13 @@ export function buildRoutingClientModelOptions ({
   }
 
   if (routeKey && entries.length > 1) {
-    push({ id: routeKey, kind: 'flat', catalogKey: '', priority: -1 })
+    push({ id: routeKey, kind: 'flat', catalogKey: '', contextWindow: 0, priority: -1 })
   }
 
   for (const entry of entries) {
     const catalog = catalogModelsById[entry.ai_model_id] || {}
     const catalogKey = trim(catalog.model_key)
+    const contextWindow = catalogContextWindow(catalog)
     if (routeKey) {
       const hierarchical = hierarchicalClientModelId(routing, entry, catalog)
       if (hierarchical) {
@@ -96,6 +102,7 @@ export function buildRoutingClientModelOptions ({
           id: hierarchical,
           kind: 'hierarchical',
           catalogKey,
+          contextWindow,
           priority: entry.priority || 0,
         })
       }
@@ -107,13 +114,14 @@ export function buildRoutingClientModelOptions ({
         id: flat,
         kind: 'flat',
         catalogKey,
+        contextWindow,
         priority: entry.priority || 0,
       })
     }
   }
 
   if (!options.length && routeKey) {
-    push({ id: routeKey, kind: 'flat', catalogKey: '', priority: 0 })
+    push({ id: routeKey, kind: 'flat', catalogKey: '', contextWindow: 0, priority: 0 })
   }
 
   return options
@@ -151,6 +159,7 @@ export function buildDeploymentClientModelOptions (instances = []) {
       id,
       kind: 'flat',
       catalogKey: id,
+      contextWindow: 0,
       priority: 0,
     })
   }
