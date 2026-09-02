@@ -8,10 +8,7 @@ import { hasPermission, checkSessionUser, decodeToken } from '@/utils/auth'
 import {
   isCE,
   isSAAS,
-  getAuthRedirectPath,
-  getAuthRedirectPathQuery,
   isExternalAuthPath,
-  normalizeAuthRedirectPath,
 } from '@/utils/utils'
 import { getAuthRedirectCorsHosts, safeAuthRedirectUrl } from '@/utils/safeRedirect'
 import router from './router'
