@@ -1636,6 +1636,8 @@
   "compute.disk.rotate_gpssd": "ユニバーサルSSD",
   "compute.is_daemon": "デーモン仮想マシン",
   "compute.qemu_cmdline": "コマンドラインを起動する",
+  "compute.qemu_version": "QEMU バージョン",
+  "compute.last_start_at": "開始時間",
   "compute.vpc_extrnal_id": "The VPC @:dictionary.external_id",
   "compute.mainternance_in_disabled_tip": "ホスト上の仮想マシンの数は 0 です",
   "compute.target_name": "インテント名",
