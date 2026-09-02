@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { escapeHTML } from '@/utils/utils'
 import mixin from './mixin'
 import { colors } from './constants'
 
@@ -74,7 +75,7 @@ export default {
             console.log(dom)
             let wrapper = ''
             if (params[0] && params[0].axisValueLabel) {
-              wrapper = `<div style="color: #5D6F80; margin-top:10px;">${params[0].axisValueLabel}</div>`
+              wrapper = `<div style="color: #5D6F80; margin-top:10px;">${escapeHTML(params[0].axisValueLabel)}</div>`
             }
             dom.innerHTML = wrapper + dom.innerHTML
           },

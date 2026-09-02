@@ -1072,7 +1072,7 @@ export function getKeyIgnoreCase (dict, needle) {
 }
 
 export const escapeHTML = str =>
-  str.replace(
+  String(str == null ? '' : str).replace(
     /[&<>'"]/g,
     tag =>
       ({
