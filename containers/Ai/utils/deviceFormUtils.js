@@ -23,6 +23,7 @@ const LEGACY_DEV_TYPE_TO_SHARING = {
   HYGON_DCU_HAMI: 'HAMI',
   ASCEND_NPU: 'EXCLUSIVE',
   ASCEND_NPU_HAMI: 'HAMI',
+  ILUVATAR_GPU: 'EXCLUSIVE',
 }
 
 const LEGACY_DEV_TYPE_TO_VENDOR = {
@@ -34,6 +35,7 @@ const LEGACY_DEV_TYPE_TO_VENDOR = {
   HYGON_DCU_HAMI: 'HYGON',
   ASCEND_NPU: 'ASCEND',
   ASCEND_NPU_HAMI: 'ASCEND',
+  ILUVATAR_GPU: 'ILUVATAR',
 }
 
 /** Legacy container device types that normalize to NPU (not GPU). */
@@ -49,6 +51,7 @@ const PCI_VENDOR_ID_TO_NAME = {
   '1d94': 'HYGON',
   '1ec6': 'VASTAITECH',
   '19e5': 'ASCEND',
+  '1e3e': 'ILUVATAR',
 }
 
 function isPodPciModelItem (item) {
@@ -124,7 +127,7 @@ export function hasPodGpuModelsForSharingMode (pciModelTypes = [], sharingMode) 
 }
 
 /**
- * Map legacy NVIDIA_* / HYGON_* / ASCEND_* device types onto GPU|NPU + sharing_mode + vendor
+ * Map legacy NVIDIA_* / HYGON_* / ASCEND_* / ILUVATAR_* device types onto GPU|NPU + sharing_mode + vendor
  * (align with backend normalizeLLMSkuDevice).
  */
 export function normalizeLegacyDevice (device = {}) {
