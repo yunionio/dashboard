@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import marked from 'marked'
+import { renderMarkdownSafe } from '@/utils/sanitizeHtml'
 import { parseLlmImageRoute, getAllowedImageLlmTypes } from '@Ai/utils/llmRouteContext'
 import {
   createCommunityImageAndSku,
@@ -201,8 +201,8 @@ export default {
       }
     },
     renderMarkdown (text) {
-      if (!text || text === '-') return text || '-'
-      return marked(text)
+      // marked 1.x 不内置 sanitize，输出必须经 DOMPurify 消毒（描述来自社区镜像 API，不可信）
+      return renderMarkdownSafe(text)
     },
     async handleImport (record) {
       try {
