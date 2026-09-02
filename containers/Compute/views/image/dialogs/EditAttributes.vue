@@ -71,7 +71,7 @@
               v-for="(item, index) in biosOptions"
               :value="item.value"
               :key="index"
-              :disabled="isArm && item.value==='BIOS'">{{item.text}}</a-radio-button>
+              :disabled="requiresUefi && item.value==='BIOS'">{{item.text}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item :label="$t('compute.vdi_protocol')">
@@ -119,7 +119,12 @@ export default {
     const data = this.params.data[0]
     let os_arch = data.os_arch || HOST_CPU_ARCHS.x86.key
     if (data.properties && data.properties.os_arch) {
-      os_arch = data.properties.os_arch.includes('x86') ? HOST_CPU_ARCHS.x86.key : HOST_CPU_ARCHS.arm.key
+      const propertyOsArch = data.properties.os_arch.toLowerCase()
+      if (propertyOsArch.includes('riscv')) {
+        os_arch = HOST_CPU_ARCHS.riscv64.key
+      } else {
+        os_arch = propertyOsArch.includes('x86') ? HOST_CPU_ARCHS.x86.key : HOST_CPU_ARCHS.arm.key
+      }
     }
     let bios = 'BIOS'
     const { properties = {} } = data
@@ -131,9 +136,9 @@ export default {
     } else if (uefi_support !== 'true') {
       bios = 'BIOS'
     }
-    const isArm = (os_arch === HOST_CPU_ARCHS.arm.key)
+    const requiresUefi = [HOST_CPU_ARCHS.arm.key, HOST_CPU_ARCHS.riscv64.key].includes(os_arch)
     return {
-      isArm: isArm,
+      requiresUefi,
       loading: false,
       form: {
         fc: this.$form.createForm(this),
@@ -375,7 +380,7 @@ export default {
       })
     },
     osArchChangeHandle (e) {
-      this.isArm = (e === HOST_CPU_ARCHS.arm.key)
+      this.requiresUefi = [HOST_CPU_ARCHS.arm.key, HOST_CPU_ARCHS.riscv64.key].includes(e)
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({ bios: 'UEFI' })
       })

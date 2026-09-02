@@ -349,7 +349,7 @@ export default {
                       validate: false,
                       tooltip: '',
                     }
-                  } else if (obj.cpu_architecture === HOST_CPU_ARCHS.arm.capabilityKey) {
+                  } else if ([HOST_CPU_ARCHS.arm.capabilityKey, HOST_CPU_ARCHS.riscv64.capabilityKey].includes(obj.cpu_architecture)) {
                     return {
                       validate: false,
                       tooltip: i18n.t('compute.text_1364'),

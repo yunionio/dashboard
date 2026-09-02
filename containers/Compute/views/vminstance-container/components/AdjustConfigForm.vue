@@ -198,7 +198,8 @@ export default {
       return this.params.data.some(val => val.status === 'running')
     },
     isSomeArm () {
-      return this.selectedItem.os_arch === 'arm'
+      const osArch = (this.selectedItem.os_arch || '').toLowerCase()
+      return osArch === 'arm' || osArch.startsWith('riscv')
     },
     runningArm () {
       return this.isSomeArm && this.isSomeRunning

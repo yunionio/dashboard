@@ -185,6 +185,7 @@
   "compute.text_179": "CPU (コア)",
   "compute.cpu_arch": "CPU (アーキテクチャ)",
   "compute.cpu_arch.aarch64": "腕",
+  "compute.cpu_arch.riscv64": "RISC-V 64ビット",
   "compute.cpu_arch.x86": "x86",
   "compute.text_180": "メモリ (GB)",
   "compute.text_181": "価格",

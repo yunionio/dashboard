@@ -185,6 +185,7 @@
   "compute.text_179": "CPU",
   "compute.cpu_arch": "CPU Arch",
   "compute.cpu_arch.aarch64": "ARM",
+  "compute.cpu_arch.riscv64": "RISC-V 64-bit",
   "compute.cpu_arch.x86": "x86",
   "compute.text_180": "Memory (GB)",
   "compute.text_181": "Price",
