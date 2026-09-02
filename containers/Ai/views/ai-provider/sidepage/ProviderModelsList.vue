@@ -58,6 +58,17 @@ export default {
           meta: () => ({ buttonType: 'primary', validate: true }),
         },
         {
+          label: this.$t('aice.aiproxy.set_models'),
+          permission: 'ai_providers_perform_set_models',
+          action: () => {
+            this.createDialog('AiProviderSetModelsDialog', {
+              data: [this.data],
+              refresh: () => this.list.fetchData(),
+            })
+          },
+          meta: () => ({ validate: true }),
+        },
+        {
           label: this.$t('common.batchAction'),
           actions: () => [
             ...getAiproxyBatchEnabledActions(this, 'ai_models', this.$t('aice.aiproxy.model')),

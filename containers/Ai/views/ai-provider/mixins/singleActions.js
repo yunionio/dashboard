@@ -18,6 +18,16 @@ export default {
               })
             },
           },
+          {
+            label: this.$t('aice.aiproxy.set_models'),
+            permission: 'ai_providers_perform_set_models',
+            action: () => {
+              this.createDialog('AiProviderSetModelsDialog', {
+                data: [obj],
+                refresh: this.refresh,
+              })
+            },
+          },
           ...getAiproxyRowEnabledActions(this, obj, 'ai_providers', this.$t('aice.aiproxy.provider')),
           {
             label: this.$t('table.action.delete'),
