@@ -88,8 +88,12 @@ export class Manager {
     return Vue.http.delete(`${this.contextPath(ctx)}${this.resource}`, { params: { id: ids, ...params }, data })
   }
 
-  performAction ({ id, action, data, params = {}, ctx = [] } = {}) {
-    return Vue.http.post(`${this.contextPath(ctx)}${this.resource}/${id}/${action}`, data, { params })
+  performAction ({ id, action, data, params = {}, ctx = [], timeout } = {}) {
+    const options = { params }
+    if (timeout != null) {
+      options.timeout = timeout
+    }
+    return Vue.http.post(`${this.contextPath(ctx)}${this.resource}/${id}/${action}`, data, options)
   }
 
   performClassAction ({ action, data, params = {}, ctx = [], timeout } = {}) {
