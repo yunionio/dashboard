@@ -6,6 +6,7 @@ import i18n from '@/locales'
 import store from '@/store'
 import windowsMixin from '@/mixins/windows'
 import { hasPermission } from '@/utils/auth'
+import { maskSensitiveData, maskSensitiveUrlQuery } from '@/utils/maskSensitive'
 
 const WindowVue = Vue.extend({
   mixins: [windowsMixin],
@@ -195,16 +196,16 @@ export const getHttpErrorMessage = (err, isErrorBody = false) => {
   }
 }
 
-// 获取http请求信息
+// 获取http请求信息（敏感字段已脱敏，避免密码/token 随错误详情回显）
 export const getHttpReqMessage = error => {
   const { headers, method, params, data, url } = error.config
   const req = {
     method,
-    url,
-    headers,
+    url: maskSensitiveUrlQuery(url),
+    headers: maskSensitiveData(headers),
   }
-  if (data) req.data = R.is(String, data) ? JSON.parse(data) : data
-  if (params) req.params = R.is(String, params) ? JSON.parse(params) : params
+  if (data) req.data = maskSensitiveData(R.is(String, data) ? JSON.parse(data) : data)
+  if (params) req.params = maskSensitiveData(R.is(String, params) ? JSON.parse(params) : params)
   return req
 }
 
