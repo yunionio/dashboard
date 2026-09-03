@@ -20,6 +20,7 @@
               dropdownClassName: 'oc-select-dropdown',
               labelInValueKeyName: 'key',
             }"
+            :beforeDefaultSelectCallBack="beforeDomainDefaultSelectCallBack"
             @change="domainChange"
             @update:resList="updateDomainList">
             <template #optionLabelTemplate="{ item }">
@@ -105,6 +106,11 @@ export default {
       type: String,
       default: '',
     },
+    /** selection：radio/单选 select/switch 类，local + session 双写、可跨 tab 回填 */
+    formDraftKind: {
+      type: String,
+      default: 'selection',
+    },
   },
   data () {
     return {
@@ -151,11 +157,151 @@ export default {
       return ret
     },
   },
+  created () {
+    // 进页互斥：有可回填草稿则不用 storage；无草稿才用 storage；最后 BaseSelect 兜底
+    this._domainProjectPreferDraft = this.resolvePreferDraft()
+  },
   mounted () {
     this.initDefaultData()
   },
   methods: {
+    /** 从草稿/表单值取出 id（兼容 string | { key } | { id }） */
+    pickId (val) {
+      if (val == null || val === '') return ''
+      if (typeof val === 'string' || typeof val === 'number') return String(val)
+      if (typeof val === 'object') return val.key || val.id || ''
+      return ''
+    },
+    pickLabel (val) {
+      if (val && typeof val === 'object') return val.label || val.name || undefined
+      return undefined
+    },
+    /**
+     * 回填写入形态：按当前表单需要转换
+     * - 需要 object（labelInValue）：存的是 id 也写成 { key, label }
+     * - 需要 id：存的是 object 也只写 id
+     */
+    toFormValue (val) {
+      const id = this.pickId(val)
+      if (!id) return undefined
+      if (this.labelInValue) {
+        return { key: id, label: this.pickLabel(val) }
+      }
+      return id
+    },
+    /** 内部匹配用统一 { key, label } */
+    toPrefer (val) {
+      const id = this.pickId(val)
+      if (!id) return null
+      return { key: id, label: this.pickLabel(val) }
+    },
+    /**
+     * 是否存在可回填的 domainProject 草稿
+     */
+    resolvePreferDraft () {
+      if (!this.canRestoreFormFieldDraft()) return false
+      const draft = this.readFormFieldDraft()
+      if (!draft || typeof draft !== 'object') return false
+      return !!(this.pickId(draft.domain) || this.pickId(draft.project))
+    },
+    /** 进页是否用 storage 回填 */
+    shouldRestoreFromStorage () {
+      return !this.ignoreStorage && !this._domainProjectPreferDraft
+    },
+    /** 草稿或 storage 偏好域（用于占位 + 远端插入） */
+    getPreferDomainForSelect () {
+      const cur = this.fc?.getFieldValue?.('domain')
+      const curKey = this.pickId(cur)
+      if (this._domainProjectPreferDraft) {
+        const prefer = this.toPrefer(this.readFormFieldDraft()?.domain)
+        if (prefer) {
+          return {
+            key: curKey || prefer.key,
+            label: this.pickLabel(cur) || prefer.label,
+          }
+        }
+      }
+      if (this.shouldRestoreFromStorage() && (curKey || this.domain?.key)) {
+        return {
+          key: curKey || this.domain.key,
+          label: this.pickLabel(cur) || this.domain.label,
+        }
+      }
+      if (curKey) {
+        return { key: curKey, label: this.pickLabel(cur) }
+      }
+      return null
+    },
+    /** 草稿或 storage 偏好项目（域不一致时不占用） */
+    getPreferProjectForSelect () {
+      const cur = this.fc?.getFieldValue?.('project')
+      const curKey = this.pickId(cur)
+      if (this._domainProjectPreferDraft) {
+        const draft = this.readFormFieldDraft()
+        const prefer = this.toPrefer(draft?.project)
+        if (prefer) {
+          const draftDomainId = this.pickId(draft?.domain)
+          if (draftDomainId && this.domainId && String(draftDomainId) !== String(this.domainId)) {
+            return null
+          }
+          return {
+            key: curKey || prefer.key,
+            label: this.pickLabel(cur) || prefer.label,
+          }
+        }
+      }
+      if (this.shouldRestoreFromStorage() && (curKey || this.project?.key)) {
+        return {
+          key: curKey || this.project.key,
+          label: this.pickLabel(cur) || this.project.label,
+        }
+      }
+      if (curKey) {
+        return { key: curKey, label: this.pickLabel(cur) }
+      }
+      return null
+    },
+    /**
+     * 偏好值不在首页：用 setFieldsValue 占住，交给 loadDefaultSelectedOpts 远端插入
+     * @returns {boolean} true=放行 defaultSelect；false=已处理偏好
+     */
+    holdPreferSelect (list, prefer, selectRef, setInit) {
+      if (!prefer?.key) return true
+      const hit = Array.isArray(list) && list.find(i => String(i.id) === String(prefer.key) || String(i.key) === String(prefer.key))
+      if (hit) {
+        const next = {
+          key: hit.id || hit.key || prefer.key,
+          label: hit.name || hit.label || prefer.label,
+        }
+        setInit(next)
+        const formVal = this.toFormValue(next)
+        if (selectRef && typeof selectRef.change === 'function' && formVal != null) {
+          selectRef.change(formVal)
+        }
+        return false
+      }
+      // 不在首页：只写表单 value（按表单需要 id/object），由 loadDefaultSelectedOpts 拉缺项
+      setInit({ key: prefer.key, label: prefer.label })
+      return false
+    },
+    /** 首页未命中时：先写表单，再调 BaseSelect.loadDefaultSelectedOpts 远端插入 */
+    async applyPreferViaRemote (selectRef, prefer, applyFn) {
+      if (!prefer?.key || !selectRef) return false
+      const next = { key: prefer.key, label: prefer.label }
+      if (typeof applyFn === 'function') applyFn(next)
+      await this.$nextTick()
+      if (typeof selectRef.loadDefaultSelectedOpts === 'function') {
+        await selectRef.loadDefaultSelectedOpts()
+      }
+      return true
+    },
     async initDefaultData () {
+      // 再读一次：父级 provide / scope 在 created 时可能尚未完全就绪
+      this._domainProjectPreferDraft = this.resolvePreferDraft()
+      // 必须在任何 domainChange/_resetProject 之前拷贝，否则 storage 项目会被清掉
+      const savedStorageProject = this.shouldRestoreFromStorage() && this.project?.key
+        ? { key: this.project.key, label: this.project.label }
+        : null
       if (this.isAdminMode && this.l3PermissionEnable) { // 系统视图
         let defaultDomain = { key: this.userInfo.projectDomainId, label: this.userInfo.projectDomain }
         let defaultProject = { key: this.userInfo.projectId, label: this.userInfo.projectName }
@@ -165,57 +311,74 @@ export default {
         } else if (R.is(String, initialValue) && initialValue) {
           defaultDomain = { key: initialValue }
         }
-        if (!this.ignoreStorage) {
-          const draftPreferred = await this.resolveDomainProjectDraftPreferred(defaultDomain.key)
-          if (draftPreferred.domain) {
-            defaultDomain = draftPreferred.domain
-          } else {
-            const domainData = await this.$store.dispatch('storage/getDomainById', this.domain)
-            if (domainData) {
-              defaultDomain = { key: domainData.id, label: domainData.name }
-            }
+        // 草稿 / storage 互斥预填域（未在首页时由 loadDefaultSelectedOpts 远端插入）
+        if (this._domainProjectPreferDraft) {
+          const prefer = this.toPrefer(this.readFormFieldDraft()?.domain)
+          if (prefer) {
+            defaultDomain = prefer
           }
-          if (draftPreferred.project) {
-            defaultProject = draftPreferred.project
-          } else if (this.project?.key) {
-            // 草稿关闭时兜底读本地记录；须在 domainChange（会 _resetProject 清空）之前取出
-            const projectData = await this.$store.dispatch('storage/getProjectById', { ...this.project, project_domain: defaultDomain.key })
-            if (projectData) {
-              defaultProject = { key: projectData.id, label: projectData.name }
-            }
+        } else if (this.shouldRestoreFromStorage()) {
+          const domainData = await this.$store.dispatch('storage/getDomainById', this.domain)
+          if (domainData) {
+            defaultDomain = { key: domainData.id, label: domainData.name }
           }
         }
         const projectInitialValue = _.get(this.decorators, 'project[1].initialValue')
-        const domainChange = () => {
-          this.domainChange(defaultDomain || {})
+        // 进页初始化：切域不清项目，避免清掉刚要回填的 storage / 草稿
+        const applyDomain = () => {
+          this.domainChange(defaultDomain || {}, { keepProject: true })
           this._setInitDomain(defaultDomain)
         }
-        const projectChange = async () => {
-          if (!this.ignoreStorage) {
-            const draft = this.readFormFieldDraft()
-            if (!(draft?.project?.key)) {
-              const projectData = await this.$store.dispatch('storage/getProjectById', { ...this.project, project_domain: defaultDomain.key })
+        const applyProject = async () => {
+          if (this.shouldRestoreFromStorage()) {
+            const prefer = savedStorageProject || (this.project?.key ? this.project : null)
+            if (prefer?.key) {
+              const projectData = await this.$store.dispatch('storage/getProjectById', {
+                ...prefer,
+                project_domain: defaultDomain.key,
+              })
               if (projectData) {
                 defaultProject = { key: projectData.id, label: projectData.name }
+                this.projectChange(defaultProject)
+                this._setInitProject(defaultProject)
+                return
               }
             }
+            // 无 storage / 无效：回填当前用户所在项目
+            if (defaultProject?.key) {
+              this.projectChange(defaultProject)
+              this._setInitProject(defaultProject)
+            }
+            return
           }
-          this.projectChange(defaultProject || {})
-          this._setInitProject(defaultProject || {})
+          // 草稿优先：预填草稿项目，首页未命中由 loadDefaultSelectedOpts 远端插入
+          if (this._domainProjectPreferDraft) {
+            const prefer = this.toPrefer(this.readFormFieldDraft()?.project)
+            if (prefer) {
+              defaultProject = prefer
+              this._setInitProject(defaultProject)
+              return
+            }
+          }
+          if (R.is(Object, projectInitialValue) && projectInitialValue.key) {
+            this.projectChange({ key: projectInitialValue.key, label: projectInitialValue.label })
+            this._setInitProject({ key: projectInitialValue.key, label: projectInitialValue.label })
+          } else if (R.is(String, projectInitialValue) && projectInitialValue) {
+            this.projectChange({ key: projectInitialValue })
+            this._setInitProject({ key: projectInitialValue })
+          }
         }
         if (R.is(Object, projectInitialValue) && projectInitialValue.key) {
           defaultProject = { key: projectInitialValue.key, label: projectInitialValue.label }
-          domainChange()
-          projectChange()
+          applyDomain()
+          await applyProject()
         } else if (R.is(String, projectInitialValue) && projectInitialValue) {
           defaultProject = { key: projectInitialValue }
-          domainChange()
-          projectChange()
-        } else {
-          if (this.isDefaultSelect) {
-            domainChange()
-            projectChange()
-          }
+          applyDomain()
+          await applyProject()
+        } else if (this.isDefaultSelect) {
+          applyDomain()
+          await applyProject()
         }
         if (this.isDomainFirstLoadData) {
           this.$emit('fetchDomainCallback')
@@ -235,7 +398,7 @@ export default {
             label: this.userInfo.projectDomain,
           }]
           this.domains = data
-          this.domainChange(data[0])
+          this.domainChange(data[0], { keepProject: true })
 
           let defaultProject = { key: this.userInfo.projectId, label: this.userInfo.projectName }
           const initialProject = _.get(this.decorators, 'project[1].initialValue')
@@ -244,29 +407,50 @@ export default {
           } else if (R.is(String, initialProject) && initialProject) {
             defaultProject = { key: initialProject }
           }
-          const projectChange = async () => {
-            if (!this.ignoreStorage) {
-              const draftPreferred = await this.resolveDomainProjectDraftPreferred(this.domain?.key || data[0]?.key)
-              if (draftPreferred.project) {
-                defaultProject = draftPreferred.project
-              } else {
-                const projectData = await this.$store.dispatch('storage/getProjectById', { ...this.project, project_domain: this.domain?.key })
+          const applyProject = async () => {
+            if (this.shouldRestoreFromStorage()) {
+              const prefer = savedStorageProject || (this.project?.key ? this.project : null)
+              if (prefer?.key) {
+                const projectData = await this.$store.dispatch('storage/getProjectById', {
+                  ...prefer,
+                  project_domain: data[0]?.key,
+                })
                 if (projectData) {
                   defaultProject = { key: projectData.id, label: projectData.name }
+                  this.projectChange(defaultProject)
+                  this._setInitProject(defaultProject)
+                  return
                 }
               }
+              // 无 storage / 无效：回填当前用户所在项目
+              if (defaultProject?.key) {
+                this.projectChange(defaultProject)
+                this._setInitProject(defaultProject)
+              }
+              return
             }
-            this.projectChange(defaultProject || {})
-            this._setInitProject(defaultProject || {})
+            if (this._domainProjectPreferDraft) {
+              const prefer = this.toPrefer(this.readFormFieldDraft()?.project)
+              if (prefer) {
+                defaultProject = prefer
+                this._setInitProject(defaultProject)
+                return
+              }
+            }
+            if (R.is(Object, initialProject) && initialProject.key) {
+              this.projectChange(defaultProject || {})
+              this._setInitProject(defaultProject || {})
+            } else if (R.is(String, initialProject) && initialProject) {
+              this.projectChange(defaultProject || {})
+              this._setInitProject(defaultProject || {})
+            }
           }
           if (R.is(Object, initialProject) && initialProject.key) {
-            projectChange()
+            await applyProject()
           } else if (R.is(String, initialProject) && initialProject) {
-            projectChange()
-          } else {
-            if (this.isDefaultSelect) {
-              projectChange()
-            }
+            await applyProject()
+          } else if (this.isDefaultSelect) {
+            await applyProject()
           }
           if (this.isProjectFirstLoadData) {
             this.$emit('fetchProjectCallback')
@@ -289,36 +473,17 @@ export default {
       }
     },
     /*
-     * @params {Object} domain { key: <domainId> }
+     * 回填写入：按表单需要 id / object 转换（与草稿存的形态无关）
      */
     _setInitDomain (domain) {
-      if (!R.isNil(domain) && !R.isEmpty(domain)) {
-        if (this.labelInValue) {
-          this.fc.setFieldsValue({
-            domain: { key: domain.key, label: domain.label },
-          })
-        } else {
-          this.fc.setFieldsValue({
-            domain: domain.key,
-          })
-        }
-      }
+      const formVal = this.toFormValue(domain)
+      if (formVal == null || formVal === '') return
+      this.fc.setFieldsValue({ domain: formVal })
     },
-    /*
-     * @params {Object} project { key: <projectId> }
-     */
     _setInitProject (project) {
-      if (!R.isNil(project) && !R.isEmpty(project)) {
-        if (this.labelInValue) {
-          this.fc.setFieldsValue({
-            project: { key: project.key, label: project.label },
-          })
-        } else {
-          this.fc.setFieldsValue({
-            project: project.key,
-          })
-        }
-      }
+      const formVal = this.toFormValue(project)
+      if (formVal == null || formVal === '') return
+      this.fc.setFieldsValue({ project: formVal })
     },
     updateDomainList (resList) {
       this.domains = resList
@@ -329,102 +494,25 @@ export default {
       this.tryMatchProjectDraftInOptions(resList)
     },
     /**
-     * 草稿中的域/项目仍可用则返回偏好值（用接口校验存在性）
-     * @param {string} [preferDomainId]
-     * @returns {Promise<{ domain?: object, project?: object }>}
-     */
-    async resolveDomainProjectDraftPreferred (preferDomainId) {
-      const ret = {}
-      if (!this.canReadWriteFormFieldDraft()) return ret
-      const draft = this.readFormFieldDraft()
-      if (!draft || typeof draft !== 'object') return ret
-      if (draft.domain?.key) {
-        try {
-          const domainData = await this.$store.dispatch('storage/getDomainById', draft.domain)
-          if (domainData) {
-            ret.domain = { key: domainData.id, label: domainData.name }
-          }
-        } catch (e) { /* ignore */ }
-      }
-      const domainKey = ret.domain?.key || preferDomainId
-      if (draft.project?.key && domainKey) {
-        try {
-          const projectData = await this.$store.dispatch('storage/getProjectById', {
-            ...draft.project,
-            project_domain: domainKey,
-          })
-          if (projectData) {
-            ret.project = { key: projectData.id, label: projectData.name }
-          }
-        } catch (e) { /* ignore */ }
-      }
-      return ret
-    },
-    tryMatchDomainDraftInOptions (resList) {
-      if (!this.canReadWriteFormFieldDraft() || !Array.isArray(resList) || !resList.length) return
-      const draft = this.readFormFieldDraft()
-      const hit = this.matchFormFieldDraftInOptions(resList, draft?.domain, {
-        getId: item => item.id || item.key,
-      })
-      if (!hit) return
-      const currentOk = this.domainId && resList.some(d => (d.id || d.key) === this.domainId)
-      if (currentOk) return
-      const val = { key: hit.id || hit.key, label: hit.name || hit.label }
-      this._domainProjectDraftRestoring = true
-      this.domainChange(val)
-      this._setInitDomain(val)
-      this.$nextTick(() => { this._domainProjectDraftRestoring = false })
-    },
-    tryMatchProjectDraftInOptions (resList) {
-      if (!this.canReadWriteFormFieldDraft() || !Array.isArray(resList) || !resList.length) return
-      const draft = this.readFormFieldDraft()
-      const hit = this.matchFormFieldDraftInOptions(resList, draft?.project, {
-        getId: item => item.id || item.key,
-      })
-      if (!hit) return
-      const currentId = R.is(Object, this.projectData) ? this.projectData.key : this.projectData
-      const currentOk = currentId && resList.some(p => (p.id || p.key) === currentId)
-      if (currentOk) return
-      const val = { key: hit.id || hit.key, label: hit.name || hit.label }
-      this._domainProjectDraftRestoring = true
-      this.projectChange(val)
-      this._setInitProject(val)
-      this.$nextTick(() => { this._domainProjectDraftRestoring = false })
-    },
-    serializeFormFieldDraft () {
-      const domain = this.fc?.getFieldValue?.('domain')
-      const project = this.fc?.getFieldValue?.('project')
-      const domainVal = domain && (domain.key || domain)
-        ? (R.is(Object, domain) ? { key: domain.key, label: domain.label } : { key: domain })
-        : (this.domainId ? { key: this.domainId } : null)
-      const projectVal = project && (project.key || project)
-        ? (R.is(Object, project) ? { key: project.key, label: project.label } : { key: project })
-        : (this.projectData?.key ? { key: this.projectData.key, label: this.projectData.label } : null)
-      if (!domainVal && !projectVal) return undefined
-      return { domain: domainVal, project: projectVal }
-    },
-    /**
      * domain {Object|String}
+     * @param {Object} [options]
+     * @param {boolean} [options.keepProject] 进页初始化时为 true，避免先清 storage 再读项目
      */
-    domainChange (domain) {
-      const domainId = R.is(Object, domain) ? domain.key : (domain || '')
+    domainChange (domain, options = {}) {
+      const formVal = this.toFormValue(domain)
+      const domainId = this.pickId(formVal != null ? formVal : domain)
       const domainChanged = domainId !== this.domainId
-      this.$store.commit('storage/SET_DOMAIN', domain)
+      // storage 仍用 { key, label }，与历史一致
+      this.$store.commit('storage/SET_DOMAIN', this.toPrefer(domain) || {})
       if (this.labelInValue) {
-        this.$emit('update:domain', domain)
+        this.$emit('update:domain', formVal)
       } else {
         this.$emit('update:domain', domainId)
       }
       this.domainId = domainId
-      if (domainChanged) {
+      if (domainChanged && !options.keepProject) {
         this._resetProject()
       }
-      this.$nextTick(() => {
-        // options 就绪后的程序化回填不落盘
-        if (this._domainProjectDraftRestoring) return
-        const data = this.serializeFormFieldDraft()
-        if (data !== undefined) this.writeFormFieldDraft(data)
-      })
     },
     _resetProject () {
       this.$store.commit('storage/SET_PROJECT', {})
@@ -436,31 +524,118 @@ export default {
      * project {Object|String}
      */
     projectChange (project) {
-      this.$store.commit('storage/SET_PROJECT', project)
-      const projectId = R.is(Object, project) ? project.key : project
-      this.projectData = project
+      const formVal = this.toFormValue(project)
+      const projectId = this.pickId(formVal != null ? formVal : project)
+      const prefer = this.toPrefer(project)
+      this.$store.commit('storage/SET_PROJECT', prefer || {})
+      this.projectData = prefer || {}
       if (this.labelInValue) {
-        this.$emit('update:project', project)
+        this.$emit('update:project', formVal)
       } else {
         this.$emit('update:project', projectId)
       }
-      this.$nextTick(() => {
-        if (this._domainProjectDraftRestoring) return
-        const data = this.serializeFormFieldDraft()
-        if (data !== undefined) this.writeFormFieldDraft(data)
-      })
     },
-    async beforeProjectDefaultSelectCallBack () {
-      try {
-        if (!this.project?.key) return true
-        const project = await this.$store.dispatch('storage/getProjectById', this.project)
-        if (project) {
-          this._setInitProject({ key: project.id, label: project.name })
-          return false
-        }
-      } catch (error) {
-        return true
+    /**
+     * 草稿 / storage 偏好域：不在首页时勿改第一项，交给 loadDefaultSelectedOpts
+     */
+    beforeDomainDefaultSelectCallBack (list) {
+      return this.holdPreferSelect(
+        list,
+        this.getPreferDomainForSelect(),
+        this.$refs.domain,
+        (next) => this._setInitDomain(next),
+      )
+    },
+    /**
+     * 草稿 / storage 偏好项目：不在首页时勿改第一项，交给 loadDefaultSelectedOpts
+     * 切域重建后无偏好 → return true，默认第一项
+     */
+    beforeProjectDefaultSelectCallBack (list) {
+      return this.holdPreferSelect(
+        list,
+        this.getPreferProjectForSelect(),
+        this.$refs.project,
+        (next) => this._setInitProject(next),
+      )
+    },
+    /**
+     * opts 拉取完成后回填草稿域：首页命中直接回填；未命中则远端校验插入（同 storage）
+     */
+    async tryMatchDomainDraftInOptions (resList) {
+      if (!this._domainProjectPreferDraft || !this.canRestoreFormFieldDraft()) return
+      if (!Array.isArray(resList) || !resList.length) return
+      const prefer = this.toPrefer(this.readFormFieldDraft()?.domain)
+      if (!prefer) return
+      const hit = this.matchFormFieldDraftInOptions(resList, prefer, {
+        getId: item => item.id || item.key,
+      })
+      if (!hit) {
+        if (this._domainDraftRemoteTried) return
+        this._domainDraftRemoteTried = true
+        await this.applyPreferViaRemote(
+          this.$refs.domain,
+          prefer,
+          (val) => {
+            this.domainChange(val, { keepProject: true })
+            this._setInitDomain(val)
+          },
+        )
+        return
       }
+      const currentOk = this.domainId && String(this.domainId) === String(hit.id || hit.key)
+      if (currentOk) return
+      const val = { key: hit.id || hit.key, label: hit.name || hit.label }
+      this.domainChange(val, { keepProject: true })
+      this._setInitDomain(val)
+    },
+    /**
+     * opts 拉取完成后回填草稿项目：首页命中直接回填；未命中则远端校验插入（同 storage）
+     */
+    async tryMatchProjectDraftInOptions (resList) {
+      if (!this._domainProjectPreferDraft || !this.canRestoreFormFieldDraft()) return
+      if (!Array.isArray(resList) || !resList.length) return
+      const draft = this.readFormFieldDraft()
+      if (!draft || typeof draft !== 'object') return
+      const prefer = this.toPrefer(draft.project)
+      if (!prefer) return
+      // 草稿域与当前域不一致：勿用旧项目回填（切域后由 BaseSelect 默认）
+      const draftDomainId = this.pickId(draft.domain)
+      if (draftDomainId && String(draftDomainId) !== String(this.domainId)) return
+      const hit = this.matchFormFieldDraftInOptions(resList, prefer, {
+        getId: item => item.id || item.key,
+      })
+      if (!hit) {
+        if (this._projectDraftRemoteTried) return
+        this._projectDraftRemoteTried = true
+        await this.applyPreferViaRemote(
+          this.$refs.project,
+          prefer,
+          (val) => {
+            this.projectChange(val)
+            this._setInitProject(val)
+          },
+        )
+        return
+      }
+      const currentId = this.pickId(this.projectData)
+      const currentOk = currentId && String(currentId) === String(hit.id || hit.key)
+      if (currentOk) return
+      const val = { key: hit.id || hit.key, label: hit.name || hit.label }
+      this.projectChange(val)
+      this._setInitProject(val)
+    },
+    /** 落盘：按表单当前值原样存（id 存 id，object 存 object） */
+    serializeFormFieldDraft () {
+      const domain = this.fc?.getFieldValue?.('domain')
+      const project = this.fc?.getFieldValue?.('project')
+      const domainVal = this.pickId(domain)
+        ? (typeof domain === 'object' ? { key: domain.key, label: domain.label } : this.pickId(domain))
+        : (this.domainId || null)
+      const projectVal = this.pickId(project)
+        ? (typeof project === 'object' ? { key: project.key, label: project.label } : this.pickId(project))
+        : (this.pickId(this.projectData) ? this.toPrefer(this.projectData) : null)
+      if (!domainVal && !projectVal) return undefined
+      return { domain: domainVal, project: projectVal }
     },
   },
 }

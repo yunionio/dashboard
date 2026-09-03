@@ -50,7 +50,6 @@
           :defaultActiveFirstOption="isPublic ? [] : true"
           :region.sync="regionList"
           filterBrandResource="network_manage"
-          :form-draft-key="eipDraftFields.areaSelects"
           @change="cloudregionChange"
           @fetchsDone="onAreaSelectsFetchsDone" />
         <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="showBgpTypes">
@@ -565,7 +564,11 @@ export default {
       if (newValue) {
         this.bgpTypeOptions = BGP_TYPES.map(item => item.value)
         this.$nextTick(() => {
-          this.form.fc.setFieldsValue({ bgp_type: 'BGP' })
+          // 无草稿时默认 BGP；有草稿由 restoreEipBandwidthAndBgpDraft 覆盖
+          if (this.form.fc.getFieldValue('bgp_type') == null && this.bgp_type == null) {
+            this.form.fc.setFieldsValue({ bgp_type: 'BGP' })
+            this.bgp_type = 'BGP'
+          }
           this.restoreEipBandwidthAndBgpDraft()
         })
       } else {
@@ -577,6 +580,7 @@ export default {
     },
     bgpTypeOptions () {
       this.clampEipBgpTypeToOptions()
+      this.$nextTick(() => this.restoreEipBandwidthAndBgpDraft())
     },
   },
   provide () {
@@ -585,34 +589,27 @@ export default {
       // 勿直接传 this.cloudEnv 字符串：provide 只取一次快照，tab 切换后 BottomBar 仍是旧值
       getCloudEnv: () => this.cloudEnv,
       getCreateFormDraftScope: () => this.getCreateFormDraftScope(),
-      canUseCreateFormFieldDraft: () => this.canUseCreateFormDraft,
+      canUseCreateFormFieldDraft: () => this.canRestoreCreateFormDraft,
+      canRestoreCreateFormFieldDraft: () => this.canRestoreCreateFormDraft,
+      canBackupCreateFormFieldDraft: () => this.canBackupCreateFormDraft,
+      canBackupCreateFormFieldDraftOnSubmit: () => this.canBackupCreateFormDraftOnSubmit,
       registerCreateFormFieldDraftFlush: (fn) => this.registerCreateFormFieldDraftFlush(fn),
       readCreateFormFieldDraft: (key) => this.readCreateFormFieldDraft(key),
       writeCreateFormFieldDraft: (key, data, options) => this.writeCreateFormFieldDraft(key, data, options),
       bindCreateFormFieldDraft: (spec) => this.bindCreateFormFieldDraft(spec),
       flushCreateFormFieldDrafts: () => this.flushCreateFormFieldDrafts(),
+      isCreateFormFieldTouched: (key) => this.isCreateFormFieldTouched(key),
+      markCreateFormFieldTouched: (key) => this.markCreateFormFieldTouched(key),
+      isCreateFormFieldDraftFromLocal: (key) => this.isCreateFormFieldDraftFromLocal(key),
+      persistEipDraftAfterValidate: (values) => this.persistEipDraftAfterValidate(values),
       resolvePublicSubmitLocation: (values) => this.resolvePublicSubmitLocation(values),
     }
   },
   created () {
     this._eipAreaApplying = false
-    this._eipAreaRestoreAgain = false
     this.fetchBgpType()
     this.$nextTick(() => {
       this.form.fc.getFieldDecorator('charge_type', { initialValue: this.cloudEnv === 'onpremise' ? 'bandwidth' : 'traffic' })
-    })
-    this.bindCreateFormFieldDraft({
-      key: EIP_CREATE_FORM_DRAFT_FIELD.TAG,
-      get: () => {
-        const meta = this.form.fc.getFieldValue('__meta__')
-        if (!meta || !Object.keys(meta).length) return null
-        return { checked: meta }
-      },
-      set: (draft) => {
-        if (!draft?.checked) return
-        this.tagDefaultChecked = { ...draft.checked }
-        this.form.fc.setFieldsValue({ __meta__: draft.checked })
-      },
     })
     this.bindEipCreateFormFcDrafts()
   },
@@ -629,33 +626,57 @@ export default {
         this._eipCreateFormFcDraftMap[item.formField] = item.key
         this.bindFormFcFieldDraft(item.key, {
           formField: item.formField,
-          restore: item.restore !== false,
+          kind: item.kind,
         })
       })
+      // 线路类型：flush 落盘；回填等 bgpTypeOptions 就绪后由 restoreEipBandwidthAndBgpDraft 处理
+      this._eipCreateFormFcDraftMap.bgp_type = EIP_CREATE_FORM_DRAFT_FIELD.BGP_TYPE
+      this.bindEipBgpTypeDraft()
     },
-    /** 草稿带宽夹到 [1, maxBandwidth]；bgp 对照 options */
+    /**
+     * bgp_type 只注册一次 flusher；cloudEnv 切换时只更新 get，避免重复 flush 误清
+     * get 无值返回 undefined（跳过），禁止返回 null（会 clearCreateFormFieldDraft）
+     */
+    bindEipBgpTypeDraft () {
+      const key = EIP_CREATE_FORM_DRAFT_FIELD.BGP_TYPE
+      const get = () => {
+        const fromFc = this.form?.fc?.getFieldValue?.('bgp_type')
+        if (fromFc !== undefined && fromFc !== null) return fromFc
+        const fromFd = this.form?.fd?.bgp_type
+        if (fromFd !== undefined && fromFd !== null) return fromFd
+        if (this.bgp_type !== undefined && this.bgp_type !== null) return this.bgp_type
+        return undefined
+      }
+      if (this._boundCreateFormFieldDrafts?.[key]) {
+        this._boundCreateFormFieldDrafts[key] = { key, kind: 'selection', get }
+        if (!this._createFormFieldKinds) this._createFormFieldKinds = Object.create(null)
+        this._createFormFieldKinds[key] = 'selection'
+        return
+      }
+      this.bindCreateFormFieldDraft({ key, kind: 'selection', get })
+    },
+    /** validateFields 后按 values 补写 bgp（避免 getFieldValue 空导致未落盘） */
+    persistEipDraftAfterValidate (values) {
+      if (!values || !Object.prototype.hasOwnProperty.call(values, 'bgp_type')) return
+      if (values.bgp_type === undefined || values.bgp_type === null) return
+      this.bgp_type = values.bgp_type
+      if (this.form?.fd) this.$set(this.form.fd, 'bgp_type', values.bgp_type)
+      this.writeCreateFormFieldDraft(EIP_CREATE_FORM_DRAFT_FIELD.BGP_TYPE, values.bgp_type, {
+        fromSubmit: true,
+        kind: 'selection',
+      })
+    },
+    /** 草稿 bgp 对照 options；bandwidth 为输入字段不回填 */
     restoreEipBandwidthAndBgpDraft () {
       if (!this.canUseCreateFormDraft || !this.form?.fc) return
       if (this.createFormDraftUserInteracted) return
-      const bwDraft = this.readCreateFormFieldDraft(EIP_CREATE_FORM_DRAFT_FIELD.BANDWIDTH)
-      if (bwDraft != null && bwDraft !== '') {
-        let size = Number(bwDraft)
-        if (!Number.isNaN(size)) {
-          const max = this.maxBandwidth || Infinity
-          const min = this.cloudEnv === 'private' && !this.isHCSO && !this.isHCS ? 0 : 1
-          if (size > max) size = max
-          if (size < min) size = min
-          this.form.fc.setFieldsValue({ bandwidth: size })
-          this.bandwidth = size
-        }
-      }
+      if (!this.showBgpTypes) return
       const bgpDraft = this.readCreateFormFieldDraft(EIP_CREATE_FORM_DRAFT_FIELD.BGP_TYPE)
-      if (bgpDraft != null && Array.isArray(this.bgpTypeOptions) && this.bgpTypeOptions.length) {
-        if (this.bgpTypeOptions.includes(bgpDraft)) {
-          this.form.fc.setFieldsValue({ bgp_type: bgpDraft })
-          this.bgp_type = bgpDraft
-        }
-      }
+      if (bgpDraft === null || bgpDraft === undefined) return
+      if (!Array.isArray(this.bgpTypeOptions) || !this.bgpTypeOptions.length) return
+      if (!this.bgpTypeOptions.includes(bgpDraft)) return
+      this.form.fc.setFieldsValue({ bgp_type: bgpDraft })
+      this.bgp_type = bgpDraft
     },
     clampEipBandwidthToMax () {
       if (!this.form?.fc) return
@@ -693,123 +714,12 @@ export default {
         if (Array.isArray(val) && !val.length) return
         this.writeCreateFormFieldDraft(draftKey, val)
       })
-      if (Object.prototype.hasOwnProperty.call(newField, '__meta__')) {
-        const meta = newField.__meta__
-        this.writeCreateFormFieldDraft(
-          EIP_CREATE_FORM_DRAFT_FIELD.TAG,
-          meta && Object.keys(meta).length ? { checked: meta } : null,
-        )
-      }
     },
     /**
-     * AreaSelects.fetchs 结束后再回填平台/区域，避免与 resetSelect 竞态（同 VM Public）
+     * AreaSelects.fetchs 结束后：不接线 areaSelects 草稿，仅保留钩子供后续扩展
      */
     onAreaSelectsFetchsDone () {
-      if (this._eipAreaApplying) {
-        this._eipAreaRestoreAgain = true
-        return
-      }
-      if (this.createFormDraftUserInteracted) return
-      this.restoreEipAreaFormFieldDraft()
-    },
-    /**
-     * 将草稿平台名对齐到 providerList 的 name（option value）
-     */
-    resolveEipDraftProviderNames (list = [], draftProviders = []) {
-      const names = []
-      this.toAreaValue(draftProviders).filter(Boolean).forEach((p) => {
-        const matched = this.matchProviderFromList(list, p)
-        const name = matched ? matched.name : p
-        if (name && !names.includes(name)) names.push(name)
-      })
-      // 列表已就绪时只保留仍存在的项，避免 Select 因非法 value 清空
-      if (list.length) {
-        return names.filter(n => list.some(item => item.name === n))
-      }
-      return names
-    },
-    async restoreEipAreaFormFieldDraft () {
-      if (!this.canUseCreateFormDraft) return
-      if (this.createFormDraftUserInteracted) return
-      if (this._eipAreaApplying) {
-        this._eipAreaRestoreAgain = true
-        return
-      }
-      const areaRef = this.$refs.areaSelects
-      if (!areaRef) return
-
-      // 优先读控件草稿（与落盘路径一致），再回退页面 session/localStorage
-      const draft = (typeof areaRef.readFormFieldDraft === 'function' && areaRef.readFormFieldDraft()) ||
-        this.readCreateFormFieldDraft(EIP_CREATE_FORM_DRAFT_FIELD.AREA_SELECTS)
-      if (!draft || typeof draft !== 'object') return
-
-      const region = this.toAreaValue(draft.cloudregion).filter(Boolean)
-      const list = areaRef.providerList || []
-      // public 必须等平台列表就绪再回填
-      if (this.isPublic && this.areaselectsName.includes('provider') && !list.length) return
-
-      const provider = this.isPublic
-        ? this.resolveEipDraftProviderNames(list, draft.provider)
-        : this.toAreaValue(draft.provider).filter(Boolean)
-      if (!provider.length && !region.length) return
-
-      this._eipAreaApplying = true
-      if (areaRef.areaDraftRestoring !== undefined) areaRef.areaDraftRestoring = true
-      try {
-        // 先写 fd.provider，保证 cloudregion-mapper 能按平台过滤
-        if (provider.length) {
-          const providerVal = this.isPublic ? provider : provider[0]
-          this.form.fc.setFieldsValue({ provider: providerVal })
-          this.$set(this.form.fd, 'provider', providerVal)
-          await this.$nextTick()
-        }
-
-        if (this.isPublic && typeof areaRef.applyMultipleSelection === 'function') {
-          await areaRef.applyMultipleSelection({
-            provider,
-            cloudregion: region,
-          })
-          // 固化锁定草稿，防止后续 params watch 的 fetchs 冲掉
-          if (areaRef._lockedAreaDraft !== undefined) {
-            areaRef._lockedAreaDraft = {
-              provider: this.form.fc.getFieldValue('provider') || provider,
-              cloudregion: this.form.fc.getFieldValue('cloudregion') || region,
-              zone: this.form.fc.getFieldValue('zone'),
-            }
-            areaRef._pendingAreaDraft = null
-            areaRef._areaDraftApplied = true
-          }
-        } else if (typeof areaRef.applyCreateFormFieldDraft === 'function') {
-          await areaRef.applyCreateFormFieldDraft({
-            provider: draft.provider,
-            cloudregion: draft.cloudregion,
-            zone: draft.zone,
-          })
-        }
-
-        const values = {
-          provider: this.form.fc.getFieldValue('provider'),
-          cloudregion: this.form.fc.getFieldValue('cloudregion'),
-        }
-        Object.keys(values).forEach((key) => {
-          if (values[key] !== undefined) this.$set(this.form.fd, key, values[key])
-        })
-        this.cloudregionChange()
-
-        // 平台仍空则下一轮 fetchsDone 再试
-        const appliedProvider = this.toAreaValue(values.provider).filter(Boolean)
-        if (this.isPublic && provider.length && !appliedProvider.length) {
-          this._eipAreaRestoreAgain = true
-        }
-      } finally {
-        this._eipAreaApplying = false
-        await this.$nextTick()
-        if (areaRef) areaRef.areaDraftRestoring = false
-        if (this._eipAreaRestoreAgain) {
-          this._eipAreaRestoreAgain = false
-          this.$nextTick(() => this.onAreaSelectsFetchsDone())
-        }
-      }
+      // intentionally empty：按约定不落盘/回填 areaSelects
     },
     pickSingleAreaValue (value) {
       if (Array.isArray(value)) return value[0] || undefined

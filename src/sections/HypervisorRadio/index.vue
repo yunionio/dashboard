@@ -50,6 +50,11 @@ export default {
       type: String,
       default: '',
     },
+    /** selection：radio/单选 select/switch 类，local + session 双写、可跨 tab 回填 */
+    formDraftKind: {
+      type: String,
+      default: 'selection',
+    },
   },
   inject: {
     form: { default: undefined },
@@ -65,7 +70,7 @@ export default {
       if (this.ignoreBaremetal) {
         hyperItems = hyperItems.filter(val => val.key !== 'baremetal')
       }
-      return hyperItems.filter(Boolean)
+      return hyperItems
     },
     isEmpty () {
       return !this.hypervisorOpts?.length
@@ -74,16 +79,18 @@ export default {
   watch: {
     hypervisorOpts: {
       immediate: true,
-      handler (opts) {
+      handler (opts, oldOpts) {
         this.$nextTick(() => this.tryRestoreHypervisorDraft(opts))
       },
     },
   },
   methods: {
     changeHandle (e) {
-      const value = e.target.value
-      this.writeFormFieldDraft(value)
-      this.$emit('change', value)
+      // 回填触发的 change 不记 touched
+      if (!this._hypervisorDraftRestoring) {
+        this.markFormFieldDraftTouched()
+      }
+      this.$emit('change', e.target.value)
     },
     getLabel (item) {
       if (!item) return ''
@@ -94,6 +101,8 @@ export default {
     },
     tryRestoreHypervisorDraft (opts) {
       if (!Array.isArray(opts) || !opts.length) return
+      // 用户已手改：不再用草稿/首项覆盖
+      if (this.isFormFieldDraftTouched()) return
       const hit = this.matchFormFieldDraftInOptions(opts)
       let next = hit?.key
       if (next && this.disabledHypervisorMap?.[next]) next = undefined
@@ -106,10 +115,17 @@ export default {
       const fieldName = Array.isArray(this.decorator) ? this.decorator[0] : 'hypervisor'
       const current = this.form?.fc?.getFieldValue?.(fieldName)
       if (current === next) return
-      if (this.form?.fc) {
-        this.form.fc.setFieldsValue({ [fieldName]: next })
+      this._hypervisorDraftRestoring = true
+      try {
+        if (this.form?.fc) {
+          this.form.fc.setFieldsValue({ [fieldName]: next })
+        }
+        this.$emit('change', next)
+      } finally {
+        this.$nextTick(() => {
+          this._hypervisorDraftRestoring = false
+        })
       }
-      this.$emit('change', next)
     },
     serializeFormFieldDraft () {
       const fieldName = Array.isArray(this.decorator) ? this.decorator[0] : 'hypervisor'

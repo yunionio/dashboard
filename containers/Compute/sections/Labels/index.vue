@@ -5,14 +5,14 @@
         <a-input-group compact v-if="keyBaseSelectProps">
           <div class="d-flex">
             <a-input class="oc-addonBefore ant-input-group-addon" style="width: 80px;" :defaultValue="keyLabel" readonly />
-            <base-select v-decorator="decorators.key(item.key)" v-bind="getBindProps(item.key)" @change="onPairChange" />
+            <base-select v-decorator="decorators.key(item.key)" v-bind="getBindProps(item.key)" />
           </div>
         </a-input-group>
-        <a-input v-else :addonBefore="keyLabel" v-decorator="decorators.key(item.key)" :placeholder="keyPlaceholder" @change="onPairChange" />
+        <a-input v-else :addonBefore="keyLabel" v-decorator="decorators.key(item.key)" :placeholder="keyPlaceholder" />
       </a-form-item>
       <div class="mx-3"> = </div>
       <a-form-item :wrapperCol="{ span: 24 }">
-        <a-input :addonBefore="valueLabel" v-decorator="decorators.value(item.key)" :placeholder="valuePlaceholder" @change="onPairChange" />
+        <a-input :addonBefore="valueLabel" v-decorator="decorators.value(item.key)" :placeholder="valuePlaceholder" />
       </a-form-item>
       <a-button v-if="firstCanDelete || labelList.length > 1" shape="circle" icon="minus" size="small" @click="del(item)" class="mt-2 ml-2" />
     </div>
@@ -29,16 +29,10 @@
 import * as R from 'ramda'
 import { uuid } from '@/utils/utils'
 import i18n from '@/locales'
-import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 
 export default {
   name: 'ContainerLables',
-  mixins: [createFormFieldDraftMixin],
   props: {
-    formDraftKey: {
-      type: String,
-      default: '',
-    },
     title: {
       type: String,
       default: i18n.t('compute.repo.label'),
@@ -84,7 +78,7 @@ export default {
       default: null,
     },
     /**
-     * 工单/草稿端口映射：[{ port, host_port }] 或 [{ key, value }]
+     * 工单端口映射：[{ port, host_port }] 或 [{ key, value }]
      * 挂载后自动回填
      */
     initPairs: {
@@ -124,6 +118,7 @@ export default {
       immediate: true,
     },
     'keyBaseSelectProps.options': {
+      immediate: true,
       handler () {
         if (!this.pendingPairs.length || !this.keyBaseSelectProps?.options?.length) return
         this.writePendingPairs()
@@ -131,25 +126,17 @@ export default {
       deep: true,
     },
   },
-  created () {
-    this._labelsDraftRestoring = false
-  },
   methods: {
     add () {
       this.labelList.push({ key: uuid() })
-      this.$nextTick(() => this.persistLabelsDraft())
     },
     del (item) {
       const index = this.labelList.findIndex(val => val.key === item.key)
       this.labelList.splice(index, 1)
-      this.$nextTick(() => this.persistLabelsDraft())
     },
     reset () {
       this.labelList = []
       this.pendingPairs = []
-    },
-    onPairChange () {
-      this.$nextTick(() => this.persistLabelsDraft())
     },
     normalizePairs (pairs = []) {
       return (pairs || []).map((pair) => {
@@ -173,23 +160,18 @@ export default {
     initData (pairs = []) {
       const normalized = this.filterPairsByKeyOptions(this.normalizePairs(pairs))
       if (!normalized.length) return
-      this._labelsDraftRestoring = true
       this.pendingPairs = normalized
       this.labelList = normalized.map(() => ({ key: uuid() }))
       this.$nextTick(() => {
         this.writePendingPairs()
-        // 字段注册后再补一次
-        setTimeout(() => this.writePendingPairs(), 100)
-        setTimeout(() => {
+        this.$nextTick(() => {
           this.writePendingPairs()
-          this._labelsDraftRestoring = false
-        }, 500)
+        })
       })
     },
     writePendingPairs () {
       const form = this.effectiveForm
       if (!form?.fc || !this.labelList.length || !this.pendingPairs.length) return
-      // options 晚于草稿就绪时再滤一次
       const pairs = this.filterPairsByKeyOptions(this.pendingPairs)
       if (pairs.length !== this.pendingPairs.length) {
         this.pendingPairs = pairs
@@ -208,7 +190,7 @@ export default {
         }
       })
       form.fc.setFieldsValue(values)
-      // 同步嵌套对象到 fd，便于 GenCreateData / 草稿序列化
+      // 同步嵌套对象到 fd，便于 GenCreateData
       if (form.fd) {
         const containerPorts = { ...(form.fd.containerPorts || {}) }
         const hostPorts = { ...(form.fd.hostPorts || {}) }
@@ -236,45 +218,6 @@ export default {
         }),
       }
       return bindProps
-    },
-    getCreateFormFieldDraftSnapshot () {
-      const form = this.effectiveForm
-      if (!form?.fc) return null
-      if (!this.labelList.length) return null
-      const pairs = this.labelList.map((row) => {
-        const keyField = this.decorators.key(row.key)?.[0]
-        const valueField = this.decorators.value(row.key)?.[0]
-        if (!keyField) return null
-        const key = form.fc.getFieldValue(keyField)
-        if (key == null || key === '') return null
-        const value = valueField ? form.fc.getFieldValue(valueField) : undefined
-        return { key, value }
-      }).filter(Boolean)
-      return pairs.length ? pairs : null
-    },
-    applyCreateFormFieldDraft (draft) {
-      if (!Array.isArray(draft) || !draft.length) return
-      this.initData(draft)
-    },
-    persistLabelsDraft () {
-      if (this._labelsDraftRestoring) return
-      this.persistFormFieldDraftSnapshot()
-    },
-    persistFormFieldDraftSnapshot (options = {}) {
-      const data = this.serializeFormFieldDraft()
-      if (data === null || data === undefined) {
-        this.clearFormFieldDraft()
-        return
-      }
-      this.writeFormFieldDraft(data, options)
-    },
-    flushFormFieldDraftOnSubmit () {
-      const data = this.serializeFormFieldDraft()
-      if (data === null || data === undefined) {
-        this.clearFormFieldDraft()
-        return
-      }
-      this.writeFormFieldDraft(data, { fromSubmit: true })
     },
   },
 }

@@ -72,6 +72,11 @@ export default {
     showCpuSocketsInit: {
       type: Boolean,
     },
+    /** selection：radio/单选 select/switch 类，local + session 双写、可跨 tab 回填 */
+    formDraftKind: {
+      type: String,
+      default: 'selection',
+    },
   },
   data () {
     const max = Math.max.apply(null, this.options)
@@ -111,10 +116,11 @@ export default {
   },
   watch: {
     options: {
+      immediate: true,
       handler (opts) {
         const max = Math.max.apply(null, opts || [])
         this.showMore = max > this.max
-        // options 变化：尝试草稿回填（不写草稿）
+        // options 变化：尝试草稿回填
         this.$nextTick(() => this.tryRestoreCpuDraft(opts))
       },
     },
@@ -142,9 +148,22 @@ export default {
       const cpu = e.target.value
       this.cpuSockets = this.isServerRunning ? cpu / this.cpuSocketsInit : 1
       this.cpu = cpu
-      // 仅用户点选写草稿
-      this.writeFormFieldDraft(cpu)
       this.$emit('change', e.target.value)
+    },
+    disableOptionHandle (item) {
+      return this.disableOptions.includes(item)
+    },
+    showCpuSocketsHandle () {
+      this.showCpuSockets = !this.showCpuSockets
+      this.form.fi.showCpuSockets = this.showCpuSockets
+    },
+    cpuSocketsChangeHandle (v) {
+      this.cpuSockets = v
+    },
+    getCpuSocketsOptions (cpuSocketsOptions, cpu) {
+      return cpuSocketsOptions.filter(item => {
+        return cpu % item.value === 0
+      })
     },
     tryRestoreCpuDraft (opts) {
       if (!this.formDraftKey || !Array.isArray(opts)) return
@@ -172,6 +191,10 @@ export default {
         }
       }
       if (next == null) return
+      // 草稿在「更多」折叠区（>= max）：展开以便选中态可见
+      if (next !== 0 && Number(next) >= this.max) {
+        this.showMore = false
+      }
       const current = this.form?.fc?.getFieldValue?.(fieldName)
       if (current === next || String(current) === String(next)) return
       if (this.form?.fc) {
@@ -180,26 +203,14 @@ export default {
       this.cpu = next
       this.$emit('change', next)
     },
+    /**
+     * 提交时获取表单草稿
+     */
     serializeFormFieldDraft () {
       const fieldName = Array.isArray(this.decorator) ? this.decorator[0] : 'vcpu'
       const value = this.form?.fc?.getFieldValue?.(fieldName)
       // 0 表示不限，需可序列化
       return value != null && value !== '' ? value : undefined
-    },
-    disableOptionHandle (item) {
-      return this.disableOptions.includes(item)
-    },
-    showCpuSocketsHandle () {
-      this.showCpuSockets = !this.showCpuSockets
-      this.form.fi.showCpuSockets = this.showCpuSockets
-    },
-    cpuSocketsChangeHandle (v) {
-      this.cpuSockets = v
-    },
-    getCpuSocketsOptions (cpuSocketsOptions, cpu) {
-      return cpuSocketsOptions.filter(item => {
-        return cpu % item.value === 0
-      })
     },
   },
 }

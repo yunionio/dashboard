@@ -126,7 +126,7 @@
           :decorators="decorators.schedPolicy"
           :policy-schedtag-params="policySchedtagParams"
           :init-schedtags="schedPolicyInitSchedtags"
-          :init-prefer-host="draftInitPreferHost"
+          :init-prefer-host="workflowInitPreferHost"
           :preserve-init-prefer-host="preserveAdvanceInitProps"
           :form-draft-key="baremetalDraftFields.schedPolicy"
           @change="hostChange"

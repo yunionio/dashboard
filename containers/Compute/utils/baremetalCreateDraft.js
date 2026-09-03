@@ -1,10 +1,6 @@
 /**
  * 裸金属创建：工单回填辅助（非整表草稿）
  */
-
-/**
- * 解析管理员密码方式（优先 extraData.loginType）
- */
 export function resolveDraftLoginType (initData) {
   const fromExtra = initData?.extraData?.loginType
   if (fromExtra) return fromExtra
