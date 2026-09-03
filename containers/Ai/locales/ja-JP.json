@@ -373,6 +373,8 @@
   "aice.detail": "詳細",
   "aice.event": "操作ログ",
   "aice.perform_sync_status": "同期状態",
+  "aice.perform_resume_import": "インポートを再開",
+  "aice.perform_resume_import.tooltip": "失敗（killed）したモデルのみ再開できます",
   "aice.add": "{0}を追加",
   "aice.screenshot": "スクリーンショット",
   "aice.desktop_status": "アプリケーション状態",
