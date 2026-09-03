@@ -36,14 +36,8 @@ import { HYPERVISORS_MAP } from '@/constants'
 // import yaml from 'js-yaml'
 // import * as R from 'ramda'
 
-import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 export default {
-  mixins: [createFormFieldDraftMixin],
   props: {
-    formDraftKey: {
-      type: String,
-      default: '',
-    },
     decorators: Object,
     form: Object,
   },
@@ -78,21 +72,6 @@ export default {
     },
   },
   methods: {
-    getCreateFormFieldDraftSnapshot () {
-      const type = this.form?.fd?.custom_data_type || this.form?.fc?.getFieldValue?.('custom_data_type')
-      if (!type || type === 'file') return { custom_data_type: type || '' }
-      return {
-        custom_data_type: type,
-        user_data: this.normalizeUserData(this.codeMirrorData || this.customData),
-      }
-    },
-    applyCreateFormFieldDraft (draft) {
-      if (!draft || typeof draft !== 'object') return
-      if (typeof this.restoreFromDraft === 'function') {
-        this.restoreFromDraft(draft.custom_data_type, draft.user_data)
-      }
-    },
-
     normalizeUserData (content) {
       if (content == null || content === '') return ''
       if (typeof content === 'string') return content
@@ -105,7 +84,6 @@ export default {
       const newFileList = this.fileList.slice()
       newFileList.splice(index, 1)
       this.fileList = newFileList
-      // file 模式不参与草稿落盘，不 emit content-change
     },
     beforeUpload (file) {
       if (file.size > 32768) {
@@ -119,58 +97,24 @@ export default {
         const result = info.target.result
         this.fileList = [file]
         this.customData = result
-        // file 模式不参与草稿落盘，不 emit content-change
       }
       return false
     },
     handleTypeChange () {
-      // 草稿回填时 setFieldsValue 会触发 change，勿清空已写入正文
-      if (this._restoring) return
       this.errorTip = ''
       this.fileList = []
       this.codeMirrorData = ''
       this.customData = []
-      this.persistFormFieldDraftSnapshot(); this.$emit('content-change')
+      this.$emit('content-change')
     },
     handleCodeInput (_value) {
       this.customData = _value
-      this.persistFormFieldDraftSnapshot(); this.$emit('content-change')
+      this.$emit('content-change')
     },
     handleMirrorDataChange (_value) {
       const text = this.normalizeUserData(_value)
       this.codeMirrorData = text
       this.customData = text
-    },
-    /**
-     * 草稿回填：先设类型，等 CodeMirror 挂载后再写正文（避免 handleTypeChange 清空）
-     */
-    restoreFromDraft (type, content) {
-      // 草稿不处理 file 模式
-      if (type === 'file') return
-      const customType = type || (content ? 'input' : '')
-      if (customType && customType !== 'input') return
-      const text = this.normalizeUserData(content)
-      this._restoring = true
-      this.errorTip = ''
-      this.fileList = []
-      this.$set(this.form.fd, 'custom_data_type', customType)
-      if (this.form.fc) {
-        this.form.fc.setFieldsValue({ custom_data_type: customType })
-      }
-      const applyText = () => {
-        if (customType !== 'input' || !text) return
-        this.codeMirrorData = text
-        this.customData = text
-      }
-      this.$nextTick(() => {
-        applyText()
-        this.$nextTick(applyText)
-        // 延后解除，避免 setFieldsValue 异步 change 仍清空正文
-        setTimeout(() => {
-          applyText()
-          this._restoring = false
-        }, 300)
-      })
     },
   },
 }

@@ -24,14 +24,14 @@
       </a-radio-group>
     </a-form-item>
      <a-form-item :label="$t('db.text_272')" v-bind="formItemLayout">
-      <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]" @change="onPerformanceChange">
+      <a-radio-group v-decorator="decorators.performance_type || ['performance_type', { initialValue: 'standard' }]">
         <template v-for="item in performance_types">
            <a-radio-button v-if="item" :key="item" :value="item">{{PERFORMANCE_TYPE[item] || item}}</a-radio-button>
         </template>
       </a-radio-group>
     </a-form-item>
     <a-form-item :label="$t('db.text_132')" v-bind="formItemLayout" v-if="memorys && memorys.length > 0">
-      <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb']" @change="onMemoryChange">
+      <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb']">
         <a-radio-button v-for="size in memorys" :key="size" :value="size" v-show="(size / 1024) < max || !showMore" :disabled="getIsMemoryDisabled(size)">{{sizestr(size, 'M', 1024)}}</a-radio-button>
         <a-radio-button v-if="showMore" @click="showMore = !showMore">...</a-radio-button>
       </a-radio-group>
@@ -48,7 +48,6 @@ export default {
     form: { default: null },
     redisItem: { default: null },
     getCreateFormDraftPreferred: { default: undefined },
-    persistRedisSkuDraftField: { default: undefined },
   },
   props: {
     decorators: {
@@ -147,38 +146,17 @@ export default {
       }
       return list[0]
     },
-    persistSkuField (formField, val) {
-      if (typeof this.persistRedisSkuDraftField === 'function') {
-        this.persistRedisSkuDraftField(formField, val)
-      }
-    },
-    onMemoryChange (e) {
-      const val = e && e.target ? e.target.value : this.getFieldValue('memory_size_mb')
-      this.persistSkuField('memory_size_mb', val)
-    },
     onEngineChange (e) {
-      const val = e && e.target ? e.target.value : this.getFieldValue('engine')
-      this.persistSkuField('engine', val)
       this.getVersion(e)
     },
     onVersionChange (e) {
-      const val = e && e.target ? e.target.value : this.getFieldValue('engine_version')
-      this.persistSkuField('engine_version', val)
       this.getArcha(e)
     },
     onCategoryChange (e) {
-      const val = e && e.target ? e.target.value : this.getFieldValue('local_category')
-      this.persistSkuField('local_category', val)
       this.getNodeTypes(e)
     },
     onNodeTypeChange (e) {
-      const val = e && e.target ? e.target.value : this.getFieldValue('node_type')
-      this.persistSkuField('node_type', val)
       this.getPerformanceTypes(e)
-    },
-    onPerformanceChange (e) {
-      const val = e && e.target ? e.target.value : this.getFieldValue('performance_type')
-      this.persistSkuField('performance_type', val)
     },
     setInitValue (key, callback = () => {}) {
       const draft = this.readDraft(key)

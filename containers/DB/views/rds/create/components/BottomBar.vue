@@ -152,13 +152,13 @@ export default {
     },
     async doCreate () {
       if (!this.validateForm()) return false
+      if (typeof this.flushCreateFormFieldDrafts === 'function') {
+        this.flushCreateFormFieldDrafts()
+      }
       this.loading = true
       const manager = new Manager('dbinstances', 'v2')
       try {
         await manager.create({ data: this.formatParams() })
-        if (typeof this.flushCreateFormFieldDrafts === 'function') {
-          this.flushCreateFormFieldDrafts()
-        }
         this.$emit('create-success')
         this.$router.push('/rds')
       } catch (err) {

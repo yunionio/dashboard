@@ -42,7 +42,6 @@ export default {
     tailFormItemLayout: { default: null },
     scopeParams: { default: null },
     getCreateFormDraftPreferred: { default: undefined },
-    persistRdsSkuDraftField: { default: undefined },
   },
   components: {
     PageListEmpty,
@@ -194,10 +193,6 @@ export default {
         sku: _row,
       })
       this.selectedSku = _row
-      // 仅用户点选落盘
-      if (!this._skuListApplying && _row && typeof this.persistRdsSkuDraftField === 'function') {
-        this.persistRdsSkuDraftField('sku', _row)
-      }
       await this.$nextTick()
       this.$refs.tableRef.setRadioRow(_row)
       this.$emit('change', _row)

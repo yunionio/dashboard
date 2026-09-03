@@ -1,5 +1,5 @@
 /**
- * 虚拟机创建：工单 initForm 回填辅助（非 localStorage 草稿）
+ * 虚拟机创建：工单 initForm 回填辅助（非整表草稿）
  */
 import { NETWORK_OPTIONS_MAP, LOGIN_TYPES_MAP } from '@Compute/constants'
 
@@ -50,11 +50,11 @@ export function resolveDraftNetworkType (initData) {
 }
 
 /**
- * 是否需要展开高级配置（有高级字段内容）
+ * 工单 initData 是否含高级区字段（仅用于跳过空回填，与 UI 展开无关）
  * @param {object} initData
  * @returns {boolean}
  */
-export function needOpenAdvanceConfig (initData) {
+export function hasAdvanceConfigInitFields (initData) {
   if (!initData || typeof initData !== 'object') return false
   return !!(
     initData.hostname ||
@@ -79,24 +79,4 @@ export function needOpenAdvanceConfig (initData) {
     initData.is_daemon ||
     (Array.isArray(initData.groups) && initData.groups.length)
   )
-}
-
-/**
- * 工单是否明确要求展开高级配置
- * @param {object} initData
- * @returns {boolean}
- */
-export function isAdvanceConfigOpenFromDraft (initData) {
-  const flag = initData?.extraData?.advance_config_open
-  if (typeof flag === 'boolean') return flag
-  return needOpenAdvanceConfig(initData)
-}
-
-/**
- * 高级配置折叠面板初始 activeKey
- * @param {object} initData
- * @returns {string[]}
- */
-export function resolveAdvanceConfigCollapseActive (initData) {
-  return isAdvanceConfigOpenFromDraft(initData) ? ['1'] : []
 }

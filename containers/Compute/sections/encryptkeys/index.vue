@@ -8,14 +8,14 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item v-if="showAlgs">
-      <a-radio-group v-decorator="decorators.encrypt_key_alg" @change="onEncryptFieldChange">
+      <a-radio-group v-decorator="decorators.encrypt_key_alg">
         <a-radio-button value="">{{ $t('compute.text_1') }}</a-radio-button>
         <a-radio-button value="aes-256">AES256</a-radio-button>
         <!--a-radio-button value="sm4">SM4</a-radio-button-->
       </a-radio-group>
     </a-form-item>
     <a-form-item v-if="showKeys">
-      <a-select v-decorator="decorators.encrypt_key_id" :placeholder="$t('compute.prompt.encrypt_key')" @change="onEncryptFieldChange">
+      <a-select v-decorator="decorators.encrypt_key_id" :placeholder="$t('compute.prompt.encrypt_key')">
         <a-select-option v-for="item in encryptKeyOptions" :key="item.value" :value="item.value">
           {{item.text}}
         </a-select-option>
@@ -34,6 +34,11 @@ export default {
     formDraftKey: {
       type: String,
       default: '',
+    },
+    /** selection：radio/单选 select/switch 类，local + session 双写、可跨 tab 回填 */
+    formDraftKind: {
+      type: String,
+      default: 'selection',
     },
     form: {
       type: Object,
@@ -60,16 +65,35 @@ export default {
       encryptKeyOptions: [],
     }
   },
+  watch: {
+    encryptKeyOptions: {
+      immediate: true,
+      handler () {
+        this.$nextTick(() => {
+          // 跨 tab：仅当用户已切到 existing 时补密钥；同 tab 走完整回填
+          if (this.isFormFieldDraftFromLocal()) {
+            this.tryRestoreEncryptSubFields(this.getCurrentEncryptEnable())
+            return
+          }
+          this.restoreFormFieldDraftFields()
+        })
+      },
+    },
+  },
   created () {
-    this._encryptDraftRestoring = false
     this.fetchEncryptKeyOptions()
   },
   methods: {
     fieldName (dec) {
       return Array.isArray(dec) ? dec[0] : dec
     },
+    getCurrentEncryptEnable () {
+      const fc = this.resolveFormFc()
+      if (!fc) return ''
+      return fc.getFieldValue(this.fieldName(this.decorators.encryptEnable)) || ''
+    },
     getCreateFormFieldDraftSnapshot () {
-      const fc = this.form && this.form.fc
+      const fc = this.resolveFormFc()
       if (!fc) return undefined
       const enableKey = this.fieldName(this.decorators.encryptEnable)
       const algKey = this.fieldName(this.decorators.encrypt_key_alg)
@@ -89,69 +113,52 @@ export default {
       }
       return ret
     },
-    persistFormFieldDraftSnapshot (options = {}) {
-      if (this._encryptDraftRestoring) return
-      const data = this.serializeFormFieldDraft()
-      if (data === null || data === undefined) {
-        this.clearFormFieldDraft()
-        return
-      }
-      this.writeFormFieldDraft(data, options)
-    },
-    flushFormFieldDraftOnSubmit () {
-      const data = this.serializeFormFieldDraft()
-      if (data === null || data === undefined) {
-        this.clearFormFieldDraft()
-        return
-      }
-      this.writeFormFieldDraft(data, { fromSubmit: true })
-    },
     applyCreateFormFieldDraft (draft) {
-      if (!draft || !this.form || !this.form.fc) return
-      this._encryptDraftRestoring = true
-      const run = () => {
-        if (!this.tryApplyEncryptDraft(draft)) return
-        this._encryptDraftRestoring = false
-      }
-      this.$nextTick(run)
-      // options 异步就绪后再补写 existing key
-      setTimeout(run, 800)
-      setTimeout(() => {
-        run()
-        this._encryptDraftRestoring = false
-      }, 2000)
+      if (!draft || !this.resolveFormFc()) return
+      // 跨 tab：不自动回填类型；用户切换类型后再回填子选项
+      if (this.isFormFieldDraftFromLocal()) return
+      this.tryApplyEncryptDraft(draft)
     },
+    /**
+     * 同 tab：完整回填类型 + 子选项
+     */
     tryApplyEncryptDraft (draft) {
-      if (!draft || !this.form || !this.form.fc) return true
-      const enableKey = this.fieldName(this.decorators.encryptEnable)
-      const algKey = this.fieldName(this.decorators.encrypt_key_alg)
-      const idKey = this.fieldName(this.decorators.encrypt_key_id)
+      if (!draft || !this.resolveFormFc()) return false
       const encryptEnable = draft.encryptEnable || ''
       this.showKeys = encryptEnable === 'existing'
       this.showAlgs = encryptEnable === 'new'
+      const enableKey = this.fieldName(this.decorators.encryptEnable)
       const values = { [enableKey]: encryptEnable }
+      this.applyFormFieldValues(values)
+      this.$nextTick(() => this.applyEncryptSubFields(draft, encryptEnable))
+      return true
+    },
+    /**
+     * 用户已选中的类型与草稿一致时，回填算法 / 密钥
+     * @returns {boolean} existing 且 options 未就绪时返回 false，便于列表到了再试
+     */
+    tryRestoreEncryptSubFields (encryptEnable) {
+      if (!this.canRestoreFormFieldDraft() || !encryptEnable) return true
+      const draft = this.readFormFieldDraft()
+      if (!draft || draft.encryptEnable !== encryptEnable) return true
+      return this.applyEncryptSubFields(draft, encryptEnable)
+    },
+    applyEncryptSubFields (draft, encryptEnable) {
+      const fc = this.resolveFormFc()
+      if (!fc || !draft) return true
+      const algKey = this.fieldName(this.decorators.encrypt_key_alg)
+      const idKey = this.fieldName(this.decorators.encrypt_key_id)
       if (encryptEnable === 'new') {
-        values[algKey] = draft.encrypt_key_alg || ''
+        const alg = draft.encrypt_key_alg != null ? draft.encrypt_key_alg : ''
+        this.applyFormFieldValues({ [algKey]: alg })
+        return true
       }
       if (encryptEnable === 'existing') {
-        // options 未到：等下次重试；到了但未命中：不回填非法 key，保证可用
-        if (draft.encrypt_key_id) {
-          if (!this.encryptKeyOptions.length) return false
-          if (this.encryptKeyOptions.some(o => o.value === draft.encrypt_key_id)) {
-            values[idKey] = draft.encrypt_key_id
-          }
-        }
-      }
-      if (!encryptEnable) {
-        values[algKey] = undefined
-        values[idKey] = undefined
-      }
-      this.form.fc.setFieldsValue(values)
-      if (this.form.fd) {
-        Object.keys(values).forEach((k) => {
-          if (values[k] === undefined) this.$delete(this.form.fd, k)
-          else this.$set(this.form.fd, k, values[k])
-        })
+        if (!draft.encrypt_key_id) return true
+        if (!this.encryptKeyOptions.length) return false
+        if (!this.encryptKeyOptions.some(o => o.value === draft.encrypt_key_id)) return true
+        this.applyFormFieldValues({ [idKey]: draft.encrypt_key_id })
+        return true
       }
       return true
     },
@@ -169,21 +176,14 @@ export default {
         // 关闭加密：清掉子字段，避免阴阳表单
         const algKey = this.fieldName(this.decorators.encrypt_key_alg)
         const idKey = this.fieldName(this.decorators.encrypt_key_id)
-        if (this.form && this.form.fc) {
-          this.form.fc.setFieldsValue({ [algKey]: undefined, [idKey]: undefined })
-        }
+        this.applyFormFieldValues({ [algKey]: undefined, [idKey]: undefined })
         if (this.form && this.form.fd) {
           this.$delete(this.form.fd, algKey)
           this.$delete(this.form.fd, idKey)
         }
       }
-      if (!this._encryptDraftRestoring) {
-        this.$nextTick(() => this.persistFormFieldDraftSnapshot())
-      }
-    },
-    onEncryptFieldChange () {
-      if (this._encryptDraftRestoring) return
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
+      // 跨 tab / 同 tab：用户切到草稿同类型时再回填子选项
+      this.$nextTick(() => this.tryRestoreEncryptSubFields(v))
     },
     async fetchEncryptKeyOptions () {
       const credManager = new this.$Manager('credentials', 'v1')
@@ -195,13 +195,6 @@ export default {
         opts.push({ value: value, text: text })
       }
       this.encryptKeyOptions = opts
-      // options 就绪后补一次草稿回填
-      if (this.canRestoreFormFieldDraft()) {
-        const draft = this.readFormFieldDraft()
-        if (draft && draft.encryptEnable === 'existing') {
-          this.tryApplyEncryptDraft(draft)
-        }
-      }
     },
   },
 }

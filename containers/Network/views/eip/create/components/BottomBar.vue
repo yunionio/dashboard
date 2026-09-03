@@ -49,6 +49,7 @@ export default {
   inject: {
     form: { default: undefined },
     flushCreateFormFieldDrafts: { default: undefined },
+    persistEipDraftAfterValidate: { default: undefined },
     resolvePublicSubmitLocation: { default: undefined },
   },
   props: {
@@ -185,6 +186,13 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        if (typeof this.flushCreateFormFieldDrafts === 'function') {
+          this.flushCreateFormFieldDrafts()
+        }
+        // bgp_type：用校验结果再写一次，避免 flush get 读空导致未落盘
+        if (typeof this.persistEipDraftAfterValidate === 'function') {
+          this.persistEipDraftAfterValidate(values)
+        }
         values.domain = values.domain?.key
         values.tenant = values.project.key
         Reflect.deleteProperty(values, 'project')
@@ -210,9 +218,6 @@ export default {
           }
         }
         await this.doCreate(values)
-        if (typeof this.flushCreateFormFieldDrafts === 'function') {
-          this.flushCreateFormFieldDrafts()
-        }
         this.$emit('create-success')
         this.loading = false
         this.$message.success(this.$t('k8s.text_184'))

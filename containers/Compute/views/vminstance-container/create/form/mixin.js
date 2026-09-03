@@ -8,16 +8,13 @@ import sku from '@Compute/sections/SKU'
 import gpu from '@Compute/sections/GPU/index'
 import pci from '@Compute/sections/PCI'
 import {
-  needOpenAdvanceConfig,
-  isAdvanceConfigOpenFromDraft,
-  resolveAdvanceConfigCollapseActive,
+  hasAdvanceConfigInitFields,
   resolveDraftNetworkType,
   resolveDraftPortMappings,
 } from '@Compute/utils/vminstanceContainerCreateDraft'
 import {
   CONTAINER_CREATE_FORM_DRAFT_FIELD,
   CONTAINER_CREATE_FORM_DRAFT_FIELDS,
-  CONTAINER_CREATE_FORM_DRAFT_FC_BINDINGS,
   getContainerCreateFormDraftScope,
 } from '@Compute/utils/vminstanceContainerCreateFormDraft'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
@@ -140,8 +137,6 @@ export default {
       decorators,
       capabilityParams: {}, // 防止 capability 反复调用，这里对当前的接口参数做记录
       price: null,
-      // 高级配置展开状态：优先用草稿记录的开关，避免用户关掉后又被强制打开
-      collapseActive: resolveAdvanceConfigCollapseActive(seedFormData),
       tagDefaultChecked: {},
       hostNameValidate: {
         validateStatus: '',
@@ -154,11 +149,17 @@ export default {
     return {
       form: this.form,
       getCreateFormDraftScope: () => this.getCreateFormDraftScope(),
-      canUseCreateFormFieldDraft: () => this.canUseCreateFormDraft,
+      canUseCreateFormFieldDraft: () => this.canRestoreCreateFormDraft,
+      canRestoreCreateFormFieldDraft: () => this.canRestoreCreateFormDraft,
+      canBackupCreateFormFieldDraft: () => this.canBackupCreateFormDraft,
+      canBackupCreateFormFieldDraftOnSubmit: () => this.canBackupCreateFormDraftOnSubmit,
       registerCreateFormFieldDraftFlush: (fn) => this.registerCreateFormFieldDraftFlush(fn),
       readCreateFormFieldDraft: (key) => this.readCreateFormFieldDraft(key),
       writeCreateFormFieldDraft: (key, data, options) => this.writeCreateFormFieldDraft(key, data, options),
       bindCreateFormFieldDraft: (spec) => this.bindCreateFormFieldDraft(spec),
+      isCreateFormFieldTouched: (key) => this.isCreateFormFieldTouched(key),
+      markCreateFormFieldTouched: (key) => this.markCreateFormFieldTouched(key),
+      isCreateFormFieldDraftFromLocal: (key) => this.isCreateFormFieldDraftFromLocal(key),
     }
   },
   computed: {
@@ -303,70 +304,39 @@ export default {
       return params
     },
     showSecgroupBind () {
-      // 回填指定安全组时，即使网络类型尚未切到 manual，也要保留 bind 选项
-      if (this.isDraftAdvanceConfigOpen) {
-        if (this.isFormBackfill) {
-          const init = this.effectiveInitFormData
-          if (init?.secgroups?.length) return true
-        }
-        const draft = this.canUseCreateFormDraft
-          ? this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.SECGROUP)
-          : null
-        if (draft?.secgroup_type === 'bind') return true
-        if (Array.isArray(draft?.secgroup) && draft.secgroup.length) return true
+      // 工单回填指定安全组时，即使网络类型尚未切到 manual，也要保留 bind 选项
+      if (this.isFormBackfill) {
+        const init = this.effectiveInitFormData
+        if (init?.secgroups?.length) return true
       }
       return this.form.fd.networkType === 'manual'
     },
-    /** 草稿是否展开高级配置（关闭则不回填其中字段） */
-    isDraftAdvanceConfigOpen () {
-      if (!this.isFormBackfill) {
-        // AdvanceConfigBlock 常展开：不再依赖 collapseActive
-        return true
-      }
-      return isAdvanceConfigOpenFromDraft(this.effectiveInitFormData)
+    /** 仅工单：安全组 init */
+    workflowInitSecgroups () {
+      if (!this.isFormBackfill) return []
+      return this.normalizeDraftSecgroups(this.effectiveInitFormData?.secgroups)
     },
-    /** 高级区内安全组/调度等 init 保护：工单回填或控件草稿展开时开启 */
+    /** 仅工单：调度宿主机 */
+    workflowInitPreferHost () {
+      if (!this.isFormBackfill) return ''
+      return this.effectiveInitFormData?.prefer_host || this.effectiveInitFormData?.extraData?.prefer_host || ''
+    },
+    /** 仅工单：调度标签 */
+    workflowInitSchedtags () {
+      if (!this.isFormBackfill) return []
+      const init = this.effectiveInitFormData || {}
+      if (init.schedtags?.length) return init.schedtags
+      if (init.extraData?.schedtags?.length) return init.extraData.schedtags
+      return []
+    },
+    /** 仅工单：端口映射 */
+    workflowInitPortMappings () {
+      if (!this.isFormBackfill) return []
+      return resolveDraftPortMappings(this.effectiveInitFormData)
+    },
+    /** 高级区内调度等 init 保护：工单回填或控件草稿开启时 */
     preserveAdvanceInitProps () {
-      return this.isFormBackfill || (this.canUseCreateFormDraft && this.isDraftAdvanceConfigOpen)
-    },
-    draftInitSecgroups () {
-      if (!this.isDraftAdvanceConfigOpen) return []
-      if (this.isFormBackfill) {
-        return this.normalizeDraftSecgroups(this.effectiveInitFormData?.secgroups)
-      }
-      if (!this.canUseCreateFormDraft) return []
-      const draft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.SECGROUP)
-      return this.normalizeDraftSecgroups(draft?.secgroup)
-    },
-    draftInitPreferHost () {
-      if (!this.isDraftAdvanceConfigOpen) return ''
-      if (this.isFormBackfill) {
-        return this.effectiveInitFormData?.prefer_host || this.effectiveInitFormData?.extraData?.prefer_host || ''
-      }
-      if (!this.canUseCreateFormDraft) return ''
-      const draft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY)
-      return draft?.prefer_host || ''
-    },
-    draftInitSchedtags () {
-      if (!this.isDraftAdvanceConfigOpen) return []
-      if (this.isFormBackfill) {
-        const init = this.effectiveInitFormData || {}
-        if (init.schedtags?.length) return init.schedtags
-        if (init.extraData?.schedtags?.length) return init.extraData.schedtags
-        return []
-      }
-      if (!this.canUseCreateFormDraft) return []
-      const draft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY)
-      return Array.isArray(draft?.schedtags) ? draft.schedtags : []
-    },
-    draftInitPortMappings () {
-      if (!this.isDraftAdvanceConfigOpen) return []
-      if (this.isFormBackfill) {
-        return resolveDraftPortMappings(this.effectiveInitFormData)
-      }
-      if (!this.canUseCreateFormDraft) return []
-      const draft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.PORT_MAPPING)
-      return Array.isArray(draft) ? draft : []
+      return this.isFormBackfill || this.canUseCreateFormDraft
     },
     isHostImageType () { // 镜像类型为主机镜像
       return this.form.fd.imageType === IMAGES_TYPE_MAP.host.key
@@ -486,16 +456,7 @@ export default {
       this.price = price
     })
     this.$store.dispatch('app/fetchWorkflowEnabledKeys')
-    this.bindCreateFormFieldDraft({
-      key: CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN,
-      get: () => true,
-      set: (open) => {
-        this.collapseActive = open ? ['1'] : []
-      },
-    })
-    this.bindContainerCreateFormFcDrafts()
-    // 内部状态置为展开，保证回填门闩通过
-    this.ensureAdvanceConfigOpenForDraft()
+    this.rememberAllCreateFormFieldDraftLocalOrigins()
   },
   mounted () {
     // 工单走 initForm；普通新建控件草稿走各组件 + restoreAdvance*
@@ -506,19 +467,6 @@ export default {
     })
   },
   watch: {
-    collapseActive (val) {
-      if (!this.canUseCreateFormDraft) return
-      if (this.isFormBackfill) return
-      if (this._advanceDraftRestoring) return
-      this.writeCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN, true)
-      if (!this._advanceDraftRestoreScheduled) {
-        this._advanceDraftRestoreScheduled = true
-        this.$nextTick(() => {
-          this._advanceDraftRestoreScheduled = false
-          this.restoreAdvanceFormFieldDrafts()
-        })
-      }
-    },
     'form.fi.imageMsg': {
       deep: true,
       handler (val, oldVal) {
@@ -527,10 +475,12 @@ export default {
           if (this.isFormBackfill || this.form?.fi?.diskDraftRestoring) return
           // 首屏：有数据盘草稿时，镜像异步到位不要立刻清空（仅跳过一次）
           if (this.canUseCreateFormDraft && !this._diskDraftSkipImageResetOnce) {
-            const diskDraft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
-            if (diskDraft?.__dataDiskKeys?.length) {
-              this._diskDraftSkipImageResetOnce = true
-              return
+            if (!this.isCreateFormFieldDraftFromLocal(CONTAINER_CREATE_FORM_DRAFT_FIELD.DATA_DISK)) {
+              const diskDraft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
+              if (diskDraft?.__dataDiskKeys?.length) {
+                this._diskDraftSkipImageResetOnce = true
+                return
+              }
             }
           }
           this._resetDataDisk()
@@ -569,32 +519,11 @@ export default {
     },
   },
   methods: {
-    /**
-     * 高级配置 UI 已常展开：内部 collapseActive 始终打开，保证草稿回填门闩通过。
-     */
-    ensureAdvanceConfigOpenForDraft () {
-      if (!this.canUseCreateFormDraft) return
-      const alreadyOpen = Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
-      if (!alreadyOpen) {
-        this._advanceDraftRestoring = true
-        this.collapseActive = ['1']
-        this.$nextTick(() => {
-          this._advanceDraftRestoring = false
-        })
-      }
-      const openDraft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN)
-      if (openDraft !== true) {
-        this.writeCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN, true)
-      }
-    },
     hasAdvanceFieldDrafts () {
       if (!this.canUseCreateFormDraft) return false
       const keys = [
         CONTAINER_CREATE_FORM_DRAFT_FIELD.EIP,
-        CONTAINER_CREATE_FORM_DRAFT_FIELD.SECGROUP,
         CONTAINER_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY,
-        CONTAINER_CREATE_FORM_DRAFT_FIELD.INSTANCE_GROUPS,
-        CONTAINER_CREATE_FORM_DRAFT_FIELD.PORT_MAPPING,
       ]
       return keys.some((key) => {
         const draft = this.readCreateFormFieldDraft(key)
@@ -606,58 +535,27 @@ export default {
     restoreAdvanceFormFieldDrafts () {
       if (!this.canUseCreateFormDraft) return
       if (this.isInitForm) return
-      if (this.createFormDraftUserInteracted) return
       if (this._advanceDraftRestoreRunning) return
       this._advanceDraftRestoreRunning = true
-      if (this.form?.fi) this.$set(this.form.fi, 'advanceDraftRestoring', true)
       try {
-        this.ensureAdvanceConfigOpenForDraft()
-        if (!this.isDraftAdvanceConfigOpen) {
-          this.clearAdvanceDraftRestoring()
-          return
-        }
         this.$nextTick(() => {
           this.invokeAdvanceDraftComponentRestores()
-          setTimeout(() => this.clearAdvanceDraftRestoring(), 400)
         })
-        if (!this._advanceDraftRetryTimers) {
-          this._advanceDraftRetryTimers = true
-          ;[800, 2000].forEach((ms) => {
-            setTimeout(() => {
-              if (!this.canRunAdvanceDraftRetry()) return
-              this.invokeAdvanceDraftComponentRestores()
-            }, ms)
-          })
-        }
       } finally {
         this.$nextTick(() => {
           this._advanceDraftRestoreRunning = false
         })
       }
     },
-    canRunAdvanceDraftRetry () {
-      return this.canUseCreateFormDraft &&
-        !this.isInitForm &&
-        !this.createFormDraftUserInteracted &&
-        this.isDraftAdvanceConfigOpen
-    },
     invokeAdvanceDraftComponentRestores () {
       ;[
         this.$refs.eipConfigRef,
-        this.$refs.secgroupConfigRef,
         this.$refs.schedPolicyRef,
-        this.$refs.instanceGroupsRef,
-        this.$refs.labelRef,
       ].forEach((ref) => {
         if (ref && typeof ref.restoreFormFieldDraftFields === 'function') {
           try { ref.restoreFormFieldDraftFields() } catch (e) { /* ignore */ }
         }
       })
-    },
-    clearAdvanceDraftRestoring () {
-      if (this.form?.fi && this.form.fi.advanceDraftRestoring) {
-        this.$set(this.form.fi, 'advanceDraftRestoring', false)
-      }
     },
     /**
      * 数据盘草稿：hypervisor/capability 就绪后回填（DataDisk 自身 restore 为空实现）
@@ -666,7 +564,11 @@ export default {
       if (!this.canUseCreateFormDraft) return
       if (this.isInitForm) return
       if (this._diskDraftRestoreDone || this._diskDraftRestoreRunning) return
-      const dataDraft = this.readCreateFormFieldDraft(CONTAINER_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
+      this.rememberCreateFormFieldDraftLocalOrigin(CONTAINER_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
+      const dataFromLocal = this.isCreateFormFieldDraftFromLocal(CONTAINER_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
+      // 跨 tab（仅 local）：不回填数据盘；同 session 仍全量回填
+      if (dataFromLocal) return
+      let dataDraft = this.readCreateFormFieldDraftForRestore(CONTAINER_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
       if (!dataDraft) return
       if (!this.form?.fd?.hypervisor) return
 
@@ -692,15 +594,21 @@ export default {
 
       try {
         const dataRef = await waitRef(() => this.$refs.dataDiskRef)
-        if (dataRef && typeof dataRef.applyCreateFormFieldDraft === 'function') {
-          dataRef.applyCreateFormFieldDraft(dataDraft)
-          this._diskDraftRestoreDone = true
+        if (dataRef) {
+          // 输入子字段（大小/iops/吞吐/挂载路径 等）不回填，由组件白名单过滤
+          if (typeof dataRef.sanitizeDraftForRestore === 'function') {
+            dataDraft = dataRef.sanitizeDraftForRestore(dataDraft)
+          }
+          if (dataDraft && typeof dataRef.applyCreateFormFieldDraft === 'function') {
+            dataRef.applyCreateFormFieldDraft(dataDraft, { fromLocal: false })
+            this._diskDraftRestoreDone = true
+          }
         }
       } finally {
         this._diskDraftRestoreRunning = false
-        setTimeout(() => {
+        this.$nextTick(() => {
           if (this.form?.fi) this.$set(this.form.fi, 'diskDraftRestoring', false)
-        }, 5000)
+        })
       }
     },
     markCreateFormDraftUserInteracted () {
@@ -708,7 +616,6 @@ export default {
         this.createFormDraftUserInteracted = true
         this._unbindCreateFormDraftUserInteraction()
       }
-      this.clearAdvanceDraftRestoring()
     },
     baywatch (props, watcher) {
       const iterator = function (prop) {
@@ -835,9 +742,8 @@ export default {
             })
           }
         }
-        // 高级配置：仅在展开时回填字段；关闭只恢复折叠状态
-        this.collapseActive = resolveAdvanceConfigCollapseActive(initData)
-        if (isAdvanceConfigOpenFromDraft(initData) && needOpenAdvanceConfig(initData)) {
+        // 高级配置：有字段才回填（UI 已常展开）
+        if (hasAdvanceConfigInitFields(initData)) {
           this.$nextTick(() => {
             if (initData.hostname) {
               this.form.fc.setFieldsValue({ hostName: initData.hostname })
@@ -855,12 +761,12 @@ export default {
               null
             if (schedtags && this.$refs.schedPolicyRef) {
               this.$refs.schedPolicyRef.change({ target: { value: 'schedtag' }, name: 'default' })
-              setTimeout(() => {
+              this.$nextTick(() => {
                 const policySchedtagRef = this.$refs.schedPolicyRef?.$refs?.policySchedtagRef
-                if (policySchedtagRef && policySchedtagRef.initData) {
+                if (policySchedtagRef?.initData) {
                   policySchedtagRef.initData(schedtags)
                 }
-              }, 1000)
+              })
             }
             if (initData.groups?.length) {
               this.form.fc.setFieldsValue({
@@ -908,7 +814,6 @@ export default {
           data.extraData.reason = this.form.fd?.reason
           data.extraData.formType = this.type
           data.extraData.__resource_type__ = 'server_container'
-          data.extraData.advance_config_open = Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
           if (this.isModifyShopCartOrder || this.isOpenWorkflow || this.isModifyWorkflow) {
             await this.checkCreateData(data)
             await this.doForecast(genCreteData, data)
@@ -1057,7 +962,6 @@ export default {
           if (!err) {
             resolve(values)
           } else {
-            this.collapseActive = ['1'] // 仅仅在报错的时候展开高级配置
             reject(err)
           }
         })
@@ -1151,14 +1055,6 @@ export default {
     },
     bindContainerCreateFormFcDrafts () {
       this._containerCreateFormFcDraftMap = Object.create(null)
-      ;(CONTAINER_CREATE_FORM_DRAFT_FC_BINDINGS || []).forEach((item) => {
-        if (!item?.key || !item.formField) return
-        this._containerCreateFormFcDraftMap[item.formField] = item.key
-        this.bindFormFcFieldDraft(item.key, {
-          formField: item.formField,
-          restore: item.restore !== false,
-        })
-      })
     },
     syncContainerCreateFormFcDrafts (newField) {
       if (!this.canUseCreateFormDraft || !newField || typeof newField !== 'object') return
@@ -1172,19 +1068,6 @@ export default {
         if (!draftKey) return
         this.writeCreateFormFieldDraft(draftKey, newField[formField])
       })
-      // 容器配置字段变更时同步 SpecContainer 草稿
-      this.syncContainerSpecDraft(newField)
-    },
-    syncContainerSpecDraft (newField) {
-      if (!this.canUseCreateFormDraft || !newField || typeof newField !== 'object') return
-      if (!this.createFormDraftUserInteracted) return
-      const keys = Object.keys(newField)
-      const touched = keys.some((k) => /container|registryImage|imageCredential|overlayDisk/i.test(k))
-      if (!touched) return
-      const ref = this.$refs.specContainerRef
-      if (ref && typeof ref.persistFormFieldDraftSnapshot === 'function' && !ref._containersDraftRestoring) {
-        this.$nextTick(() => ref.persistFormFieldDraftSnapshot())
-      }
     },
     normalizeDraftSecgroups (secgroups) {
       if (!Array.isArray(secgroups) || !secgroups.length) return []
@@ -1336,7 +1219,6 @@ export default {
             data.extraData.reason = this.form.fd?.reason
             data.extraData.formType = this.type
             data.extraData.__resource_type__ = 'server_container'
-            data.extraData.advance_config_open = Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
             await this.checkCreateData(data)
             await this.doForecast(genCreateData, data)
             const shopCart = this.buildShopCartParameter(data)

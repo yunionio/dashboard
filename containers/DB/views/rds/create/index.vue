@@ -40,7 +40,6 @@
         :isRequired="true"
         :names="['provider', 'cloudregion']"
         :defaultActiveFirstOption="true"
-        :form-draft-key="rdsDraftFields.areaSelects"
         filterBrandResource="rds_engine"
         @fetchsDone="onAreaSelectsFetchsDone" />
       <!-- 套餐信息 -->
@@ -52,7 +51,7 @@
       <item-network ref="NETWORK" @vpcListChange="handleVpcListChange" />
       <!-- 选择安全组 -->
       <a-form-item v-if="showSecgroup(form)" :label="$t('db.text_144')">
-        <secgroup-config :max="getSecgroupMax(form)" :decorators="decorators.secgroup" :form="form" :secgroup-params="secgroupParams" :form-draft-key="rdsDraftFields.secgroup" />
+        <secgroup-config :max="getSecgroupMax(form)" :decorators="decorators.secgroup" :form="form" :secgroup-params="secgroupParams" />
       </a-form-item>
       <!-- 标签 -->
       <a-form-item :label="$t('table.title.tag')" class="mb-3">
@@ -76,7 +75,7 @@ import { getComponentDraft } from '@/utils/createFormDraft'
 import {
   RDS_CREATE_FORM_DRAFT_FIELD,
   RDS_CREATE_FORM_DRAFT_FIELDS,
-  RDS_CREATE_FORM_DRAFT_FC_BINDINGS,
+  RDS_CREATE_FORM_DRAFT_SYNC_FIELDS,
   RDS_CREATE_FORM_DRAFT_SCOPE,
 } from '@DB/views/rds/utils/rdsCreateFormDraft'
 import createFormDraftMixin from '@/mixins/createFormDraft'
@@ -185,21 +184,18 @@ export default {
       scopeParams: this.scopeParams,
       tailFormItemLayout: this.tailFormItemLayout,
       getCreateFormDraftScope: () => this.getCreateFormDraftScope(),
-      canUseCreateFormFieldDraft: () => this.canUseCreateFormDraft,
+      canUseCreateFormFieldDraft: () => this.canRestoreCreateFormDraft,
+      canRestoreCreateFormFieldDraft: () => this.canRestoreCreateFormDraft,
+      canBackupCreateFormFieldDraft: () => this.canBackupCreateFormDraft,
+      canBackupCreateFormFieldDraftOnSubmit: () => this.canBackupCreateFormDraftOnSubmit,
       registerCreateFormFieldDraftFlush: (fn) => this.registerCreateFormFieldDraftFlush(fn),
       readCreateFormFieldDraft: (key) => this.readCreateFormFieldDraft(key),
       writeCreateFormFieldDraft: (key, data, options) => this.writeCreateFormFieldDraft(key, data, options),
       bindCreateFormFieldDraft: (spec) => this.bindCreateFormFieldDraft(spec),
       flushCreateFormFieldDrafts: () => this.flushCreateFormFieldDrafts(),
-      setRdsSkuDraftRestoring: (v) => { this._rdsSkuDraftRestoring = !!v },
-      // 用户点选套餐字段时落盘（程序化回填不走这里）
-      persistRdsSkuDraftField: (formField, val) => {
-        if (val === undefined || val === null || val === '') return
-        this.markCreateFormDraftUserInteracted()
-        const draftKey = this._rdsCreateFormFcDraftMap?.[formField]
-        if (!draftKey) return
-        this.writeCreateFormFieldDraft(draftKey, val)
-      },
+      isCreateFormFieldTouched: (key) => this.isCreateFormFieldTouched(key),
+      markCreateFormFieldTouched: (key) => this.markCreateFormFieldTouched(key),
+      isCreateFormFieldDraftFromLocal: (key) => this.isCreateFormFieldDraftFromLocal(key),
       getCreateFormDraftPreferred: (key) => {
         if (key) return this.readRdsSkuDraftField(key)
         // 聚合草稿供 Filters/SizeFilters/List 级联回填
@@ -219,18 +215,32 @@ export default {
       },
     }
   },
+  watch: {
+    'form.fd.billing_type' (val) {
+      if (val === 'prepaid') {
+        this.$nextTick(() => this.restoreRdsPrepaidBillingDraft())
+      }
+    },
+  },
   created () {
-    this._rdsSkuDraftRestoring = false
+    this._rdsPrepaidBillingDraftApplied = false
     this.bindRdsCreateFormFcDrafts()
     this.bindRdsCreateFormCompositeDrafts()
-    this.bindFormFcFieldDraft(RDS_CREATE_FORM_DRAFT_FIELD.DURATION, { formField: 'duration' })
+    this.bindRdsPrepaidBillingDrafts()
+  },
+  mounted () {
+    this.$nextTick(() => {
+      if (this.form?.fc?.getFieldValue?.('billing_type') === 'prepaid') {
+        this.restoreRdsPrepaidBillingDraft()
+      }
+    })
   },
   methods: {
     /**
-     * 套餐回填优先读 localStorage，避开 session 被「默认第一项」级联污染
+     * 套餐回填：未交互前优先 local，避开 session 被「默认第一项」级联污染
      */
     readRdsSkuDraftField (fieldKey) {
-      if (!fieldKey || !this.canUseCreateFormDraft) return null
+      if (!fieldKey || !this.canRestoreCreateFormDraft) return null
       if (!this.createFormDraftUserInteracted) {
         const scope = this.getCreateFormDraftScope()
         if (scope) {
@@ -278,26 +288,108 @@ export default {
         this.$set(this.form.fd, 'project', project)
       }
     },
+    /** SYNC 字段取值：无值返回 undefined（跳过 flush），禁止 null 误清草稿 */
+    getRdsSyncDraftValue (formField) {
+      if (formField === 'sku') {
+        const sku = this.form?.fc?.getFieldValue?.('sku')
+        if (!sku || typeof sku !== 'object') return undefined
+        if (!sku.id && !sku.name) return undefined
+        return { id: sku.id, name: sku.name }
+      }
+      const val = this.form?.fc?.getFieldValue?.(formField)
+      if (val === undefined || val === null || val === '') return undefined
+      return val
+    },
     bindRdsCreateFormFcDrafts () {
       this._rdsCreateFormFcDraftMap = Object.create(null)
-      ;(RDS_CREATE_FORM_DRAFT_FC_BINDINGS || []).forEach((item) => {
+      // billing_type：set 时同步 fd，并在 prepaid 时回填购买时长/自动续费
+      this._rdsCreateFormFcDraftMap.billing_type = RDS_CREATE_FORM_DRAFT_FIELD.BILLING_TYPE
+      this.bindCreateFormFieldDraft({
+        key: RDS_CREATE_FORM_DRAFT_FIELD.BILLING_TYPE,
+        kind: 'selection',
+        get: () => {
+          const v = this.form?.fc?.getFieldValue?.('billing_type')
+          return (v === undefined || v === null || v === '') ? undefined : v
+        },
+        set: (val) => {
+          if (val == null || val === '' || !this.form?.fc) return
+          this.form.fc.setFieldsValue({ billing_type: val })
+          if (this.form.fd) this.$set(this.form.fd, 'billing_type', val)
+          if (val === 'prepaid') {
+            this.$nextTick(() => this.restoreRdsPrepaidBillingDraft())
+          }
+        },
+      })
+      // 套餐级联：仅 flush 落盘；回填由 Filters/SizeFilters/List 对照 options 自管
+      ;(RDS_CREATE_FORM_DRAFT_SYNC_FIELDS || []).forEach((item) => {
         if (!item?.key || !item.formField) return
         this._rdsCreateFormFcDraftMap[item.formField] = item.key
-        this.bindFormFcFieldDraft(item.key, {
-          formField: item.formField,
-          restore: item.restore !== false,
+        const formField = item.formField
+        this.bindCreateFormFieldDraft({
+          key: item.key,
+          kind: item.kind || 'selection',
+          get: () => this.getRdsSyncDraftValue(formField),
+        })
+      })
+    },
+    /**
+     * 包年包月：ClearingRadios 的 duration / auto_renew（与到期释放 Duration 组件 key 分离）
+     */
+    bindRdsPrepaidBillingDrafts () {
+      this.bindCreateFormFieldDraft({
+        key: RDS_CREATE_FORM_DRAFT_FIELD.PREPAID_DURATION,
+        kind: 'selection',
+        get: () => {
+          if (this.form?.fc?.getFieldValue?.('billing_type') !== 'prepaid') return null
+          const val = this.form.fc.getFieldValue('duration')
+          return (val === undefined || val === null || val === '') ? undefined : val
+        },
+      })
+      this.bindCreateFormFieldDraft({
+        key: RDS_CREATE_FORM_DRAFT_FIELD.AUTO_RENEW,
+        kind: 'selection',
+        get: () => {
+          if (this.form?.fc?.getFieldValue?.('billing_type') !== 'prepaid') return null
+          const val = this.form.fc.getFieldValue('auto_renew')
+          if (val === undefined || val === null) return undefined
+          return !!val
+        },
+      })
+    },
+    restoreRdsPrepaidBillingDraft () {
+      if (this._rdsPrepaidBillingDraftApplied) return
+      if (!this.canRestoreCreateFormDraft || !this.form?.fc) return
+      if (this.form.fc.getFieldValue('billing_type') !== 'prepaid') return
+      const duration = this.readRdsSkuDraftField(RDS_CREATE_FORM_DRAFT_FIELD.PREPAID_DURATION)
+      const autoRenew = this.readRdsSkuDraftField(RDS_CREATE_FORM_DRAFT_FIELD.AUTO_RENEW)
+      const fields = {}
+      if (duration != null && duration !== '') fields.duration = duration
+      if (autoRenew != null) fields.auto_renew = !!autoRenew
+      if (!Object.keys(fields).length) {
+        this._rdsPrepaidBillingDraftApplied = true
+        return
+      }
+      this.$nextTick(() => {
+        this.$nextTick(() => {
+          if (this.form.fc.getFieldValue('billing_type') !== 'prepaid') return
+          this.form.fc.setFieldsValue(fields)
+          Object.keys(fields).forEach((k) => {
+            if (this.form.fd) this.$set(this.form.fd, k, fields[k])
+          })
+          this._rdsPrepaidBillingDraftApplied = true
         })
       })
     },
     bindRdsCreateFormCompositeDrafts () {
       this.bindCreateFormFieldDraft({
         key: RDS_CREATE_FORM_DRAFT_FIELD.NETWORK,
+        kind: 'composite',
         get: () => {
           const fc = this.form?.fc
-          if (!fc) return null
+          if (!fc) return undefined
           const vpc = fc.getFieldValue('vpc')
           const network = fc.getFieldValue('network')
-          if (vpc == null && network == null) return null
+          if (vpc == null && network == null) return undefined
           return { vpc, network }
         },
         set: (val) => {
@@ -308,47 +400,6 @@ export default {
           if (Object.keys(fields).length) this.form.fc.setFieldsValue(fields)
         },
       })
-    },
-    syncCreateFormFcDrafts (newField) {
-      if (!this.canUseCreateFormDraft || !newField || typeof newField !== 'object') return
-      if (!this.createFormDraftUserInteracted) return
-      // 套餐字段仅用户点击 persistRdsSkuDraftField 落盘，程序化回填/级联不同步
-      const skuFcSkip = {
-        engine: true,
-        engine_version: true,
-        category: true,
-        storage_type: true,
-        vcpu_count: true,
-        vmem_size_mb: true,
-        zones: true,
-        sku: true,
-      }
-      const map = this._rdsCreateFormFcDraftMap || {}
-      Object.keys(newField).forEach((formField) => {
-        if (skuFcSkip[formField]) return
-        const draftKey = map[formField]
-        if (!draftKey) return
-        const val = newField[formField]
-        if (val === undefined || val === null || val === '') return
-        this.writeCreateFormFieldDraft(draftKey, val)
-      })
-      if (Object.prototype.hasOwnProperty.call(newField, 'vpc') || Object.prototype.hasOwnProperty.call(newField, 'network')) {
-        const fc = this.form?.fc
-        if (!fc) return
-        const vpc = fc.getFieldValue('vpc')
-        const network = fc.getFieldValue('network')
-        if (vpc != null || network != null) {
-          this.writeCreateFormFieldDraft(RDS_CREATE_FORM_DRAFT_FIELD.NETWORK, { vpc, network })
-        } else {
-          this.clearCreateFormFieldDraft(RDS_CREATE_FORM_DRAFT_FIELD.NETWORK)
-        }
-      }
-      if (Object.prototype.hasOwnProperty.call(newField, 'duration')) {
-        this.writeCreateFormFieldDraft(RDS_CREATE_FORM_DRAFT_FIELD.DURATION, newField.duration)
-      }
-      if (Object.prototype.hasOwnProperty.call(newField, 'billing_type')) {
-        this.writeCreateFormFieldDraft(RDS_CREATE_FORM_DRAFT_FIELD.BILLING_TYPE, newField.billing_type)
-      }
     },
   },
 }

@@ -189,6 +189,7 @@ export default {
         }
       }
       this.options = filterdList
+      this.$emit('optionsReady', filterdList)
     },
     getCapacityLabel (val) {
       const capacity = sizestr(val.capacity, 'M', 1024)

@@ -42,6 +42,7 @@
             :remote-fn="q => ({ search: q })"
             :beforeDefaultSelectCallBack="beforeDefaultSelectCallBack"
             @change="v => networkChange(v, item, i)"
+            @update:resList="list => resolveNetworkFromFetchedList(list, item)"
             :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }"
             :min-width="isDialog ? '200px' : '500px'" />
             <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network">{{$t('compute.perform_create')}}</help-link>
@@ -325,6 +326,9 @@ export default {
           ...item,
           key: uuid(),
           network: { id: networkId },
+          // 列表补拉/clear 后仍能按草稿偏好匹配（可升级覆盖临时第一项）
+          _draftNetworkId: networkId || '',
+          _draftVpcId: vpcId || '',
           vpc: { id: vpcId },
           ipShow: !!item.address,
           ipv6Show: false,
@@ -384,19 +388,26 @@ export default {
         }
         this.networkList.forEach((item) => {
           const value = {}
-          if (item.network && item.network.id) {
-            value[this.decorator.networks(item.key)[0]] = item.network.id
+          // 子网：已 resolve 为可用项则写当前 id；否则仅种草稿 id 供 BaseSelect 补拉，不盲写不可用值
+          const netId = item.network && item.network.id
+          if (netId && this.isNetworkAvailable(item.network)) {
+            value[this.decorator.networks(item.key)[0]] = netId
+          } else if (item._draftNetworkId) {
+            value[this.decorator.networks(item.key)[0]] = item._draftNetworkId
           }
-          if (item.address) {
-            value[this.decorator.ips(item.key, item.network.id)[0]] = item.address
+          const netKeyForDecorators = netId || item._draftNetworkId
+          if (item.address && netKeyForDecorators) {
+            value[this.decorator.ips(item.key, netKeyForDecorators)[0]] = item.address
           }
-          if (item.mac) {
-            value[this.decorator.macs(item.key, item.network.id)[0]] = item.mac
+          if (item.mac && netKeyForDecorators) {
+            value[this.decorator.macs(item.key, netKeyForDecorators)[0]] = item.mac
           }
-          value[this.decorator.ipv6s(item.key, item.network.id)[0]] = item.requireIpv6
-          value[this.decorator.ipv6_mode(item.key, item.network.id)[0]] = item.ipv6Mode
-          if (item.address6) {
-            value[this.decorator.ips6(item.key, item.network.id)[0]] = item.address6.replace(this.getIpv6Prefix(item.address6), '')
+          if (netKeyForDecorators) {
+            value[this.decorator.ipv6s(item.key, netKeyForDecorators)[0]] = item.requireIpv6
+            value[this.decorator.ipv6_mode(item.key, netKeyForDecorators)[0]] = item.ipv6Mode
+          }
+          if (item.address6 && netKeyForDecorators) {
+            value[this.decorator.ips6(item.key, netKeyForDecorators)[0]] = item.address6.replace(this.getIpv6Prefix(item.address6), '')
           }
           if (item.sriov_device && item.sriov_device.model) {
             value[this.decorator.devices(item.key)[0]] = item.sriov_device.model
@@ -578,11 +589,74 @@ export default {
       })
     },
     beforeDefaultSelectCallBack (data = []) {
-      const cur = data[0]
-      if (cur) {
-        return cur.ports > cur.ports_used
+      // BaseSelect 默认只取 list[0]，故仅当首项可用时允许默认选
+      return this.isNetworkAvailable(data[0])
+    },
+    isNetworkAvailable (net) {
+      if (!net || typeof net !== 'object') return false
+      return Number(net.ports) > Number(net.ports_used)
+    },
+    findNetworkInList (list, id) {
+      if (id == null || id === '' || !Array.isArray(list)) return null
+      return list.find(i => i.id === id || i.key === id || String(i.id) === String(id)) || null
+    },
+    /**
+     * 草稿/工单回填（canDefaultSelect=false）：数据驱动，opts/resList 每次变化都重算并写回。
+     * 1) _draftNetworkId 在列表且可用 → 始终优先
+     * 2) 草稿在列表但不可用 / 无草稿 → 可用第一项
+     * 3) 草稿有 id 但不在列表：仅当当前 VPC 仍是草稿 VPC 时等待补拉；否则立刻可用第一项
+     * 4) 都没有可用项 → 不写不可用值
+     */
+    resolveNetworkFromFetchedList (list, item) {
+      if (this.canDefaultSelect) return
+      if (!item || !Array.isArray(list) || !list.length) return
+      // 供 VPC 稳定后再用同一份 opts 重跑回填（params clear 后可能不再 emit）
+      item._lastNetworkResList = list
+
+      const field = this.decorator.networks(item.key)[0]
+      const preferId = item._draftNetworkId || ''
+      const curId = this.form?.fc?.getFieldValue(field) || item.network?.id || item.network?.key
+      const curVpcId = item.vpc?.id || item.vpc?.key || this.networkList[0]?.vpc?.id
+      const sameDraftVpc = !!(item._draftVpcId && curVpcId && String(item._draftVpcId) === String(curVpcId))
+
+      let target = null
+      const preferHit = preferId ? this.findNetworkInList(list, preferId) : null
+      if (preferHit && this.isNetworkAvailable(preferHit)) {
+        target = preferHit
+      } else if (preferHit && !this.isNetworkAvailable(preferHit)) {
+        target = list.find(n => this.isNetworkAvailable(n)) || null
+      } else if (preferId && !preferHit && sameDraftVpc) {
+        // 同 VPC：草稿可能稍后被 BaseSelect 补进列表，先保留偏好 id
+        const curHit = this.findNetworkInList(list, curId)
+        if (curHit && this.isNetworkAvailable(curHit) && String(curId) !== String(preferId)) {
+          target = curHit
+        } else {
+          item.network = { ...(item.network || {}), id: preferId }
+          if (this.form?.fc) this.form.fc.setFieldsValue({ [field]: preferId })
+          return
+        }
+      } else {
+        // 无草稿，或 VPC 已 fallback → 可用第一项
+        target = list.find(n => this.isNetworkAvailable(n)) || null
       }
-      return false
+
+      if (!target) {
+        const curHit = this.findNetworkInList(list, curId)
+        if (curId && (!curHit || !this.isNetworkAvailable(curHit))) {
+          item.network = {}
+          if (this.form?.fc) this.form.fc.setFieldsValue({ [field]: undefined })
+        }
+        return
+      }
+
+      // opts 每次变化都写回，不因 curId===target 而跳过
+      item.network = target
+      this.$nextTick(() => {
+        if (!this.form?.fc) return
+        this.form.fc.setFieldsValue({ [field]: target.id })
+        const idx = this.networkList.indexOf(item)
+        if (idx >= 0) this.networkChange(target.id, item, idx)
+      })
     },
     fetchVpcSuccessHandle (data = [], item) {
       let target = data[0] || {}
@@ -592,15 +666,16 @@ export default {
       item.vpc = target
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({ [`vpcs[${item.key}]`]: target?.key, vpcs: { [item.key]: target?.key } })
+        // VPC 写回后 params 可能 clear 网卡：用最近一次子网 opts 再回填一次
+        if (item._lastNetworkResList && item._lastNetworkResList.length) {
+          this.resolveNetworkFromFetchedList(item._lastNetworkResList, item)
+        }
       })
       this.vpcSelectChange([target], 0, item)
       // this.fetchNetworkOpts(this.networkParamsC, item)
     },
     fetchNetworkSuccessHandle (data, item) {
-      item.network = data[0]
-      this.$nextTick(() => {
-        this.form.fc.setFieldsValue({ [`networks[${item.key}]`]: data?.[0]?.key })
-      })
+      this.resolveNetworkFromFetchedList(data || [], item)
     },
     fetchNetworkOpts (params, item) {
       this.networkLoading = true

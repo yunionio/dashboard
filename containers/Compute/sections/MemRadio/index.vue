@@ -24,6 +24,11 @@ export default {
       type: Array,
       required: true,
     },
+    /** selection：radio/单选 select/switch 类，local + session 双写、可跨 tab 回填 */
+    formDraftKind: {
+      type: String,
+      default: 'selection',
+    },
     options: {
       type: Array,
       required: true,
@@ -47,6 +52,7 @@ export default {
   },
   watch: {
     options: {
+      immediate: true,
       handler (opts) {
         this.$nextTick(() => this.tryRestoreMemDraft(opts))
       },
@@ -58,14 +64,12 @@ export default {
     },
     onChange (e) {
       const val = e && e.target ? e.target.value : undefined
-      // 仅用户点选写草稿
-      this.writeFormFieldDraft(val)
       this.$emit('change', val)
     },
     tryRestoreMemDraft (opts) {
       if (!this.formDraftKey || !Array.isArray(opts)) return
       const fieldName = Array.isArray(this.decorator) ? this.decorator[0] : 'vmem'
-      const fc = this.form?.fc || this.form
+      const fc = this.resolveFormFc()
       if (!fc?.getFieldValue) return
       const draft = this.readFormFieldDraft()
       // 无草稿：不覆盖，走页面原有 initialValue(2048) + cpuChange 默认 2G
@@ -98,7 +102,7 @@ export default {
     },
     serializeFormFieldDraft () {
       const fieldName = Array.isArray(this.decorator) ? this.decorator[0] : 'vmem'
-      const fc = this.form?.fc || this.form
+      const fc = this.resolveFormFc()
       const value = fc?.getFieldValue?.(fieldName)
       // 0 表示不限，需可序列化
       return value != null && value !== '' ? value : undefined
