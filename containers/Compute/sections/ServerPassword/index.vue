@@ -59,6 +59,11 @@ export default {
       type: String,
       default: '',
     },
+    /** selection：radio/单选 select/switch 类，local + session 双写、可跨 tab 回填 */
+    formDraftKind: {
+      type: String,
+      default: 'selection',
+    },
     loginTypes: {
       type: Array,
     },
@@ -123,35 +128,38 @@ export default {
         this.disabled = false
       }
     },
-    loginTypeMap (val, oldv) {
-      if (!R.equals(val, oldv)) {
+    loginTypeMap: {
+      immediate: true,
+      handler (val, oldv) {
+        if (oldv !== undefined && R.equals(val, oldv)) return
         this.setLoginType()
-      }
+        this.$nextTick(() => this.restoreFormFieldDraftFields())
+      },
     },
   },
   created () {
     this._keypairListLoaded = false
-  },
-  mounted () {
-    this.setLoginType()
   },
   methods: {
     getCreateFormFieldDraftSnapshot () {
       const fc = this.form?.fc
       if (!fc) return undefined
       const loginType = fc.getFieldValue('loginType')
+      // 手工输入：不落盘类型与密码，提交时清空该控件草稿
+      if (loginType === LOGIN_TYPES_MAP.password.key) return null
       const keypair = fc.getFieldValue('keypair')
-      // 不落盘明文密码
-      return { loginType, keypair: loginType === 'keypair' ? keypair : undefined }
+      return { loginType, keypair: loginType === LOGIN_TYPES_MAP.keypair.key ? keypair : undefined }
     },
     applyCreateFormFieldDraft (draft) {
       if (!draft || !this.form?.fc) return
+      // 历史草稿若为手工输入：忽略，不回填为 password
+      if (draft.loginType === LOGIN_TYPES_MAP.password.key) return
       const values = {}
       if (draft.loginType && (!this.loginTypes || this.loginTypes.includes(draft.loginType))) {
         values.loginType = draft.loginType
         this.vmLoginType = draft.loginType
       }
-      if (draft.loginType === 'keypair' && draft.keypair) {
+      if (draft.loginType === LOGIN_TYPES_MAP.keypair.key && draft.keypair) {
         // 密钥等列表校验后再写，避免空列表时写入非法值
         this.pendingKeypair = draft.keypair
       } else {
@@ -187,17 +195,18 @@ export default {
     },
 
     loginTypeChange (e) {
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
-
       this.vmLoginType = e.target.value
     },
     setLoginType () {
       if (this.loginTypeMap && !R.isEmpty(this.loginTypeMap)) {
         const keys = Object.keys(this.loginTypeMap)
         let vmLoginType
-        const draft = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
-        if (draft?.loginType && keys.includes(draft.loginType) && !this.isSnapshotImageType) {
-          vmLoginType = draft.loginType
+        const draft = this.canRestoreFormFieldDraft() ? this.readFormFieldDraft() : null
+        const draftLoginType = draft?.loginType === LOGIN_TYPES_MAP.password.key
+          ? undefined
+          : draft?.loginType
+        if (draftLoginType && keys.includes(draftLoginType) && !this.isSnapshotImageType) {
+          vmLoginType = draftLoginType
         } else {
           const loginTypeInitailValue = this.decorator.loginType[1].initialValue
           vmLoginType = loginTypeInitailValue

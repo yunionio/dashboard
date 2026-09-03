@@ -31,10 +31,8 @@ const VERSION_SORT = {
 }
 
 /**
- * 约定：
- * 1. 仅用户点击写入草稿
- * 2. options / 拉取数据变化时，若草稿命中可选值则回填，否则取第一项
- * 3. 程序化 setFieldsValue 不落盘
+ * 约定：options / 拉取数据变化时，草稿命中可选值则回填，否则取第一项；
+ * 程序化 setFieldsValue 不落盘；落盘仅提交校验通过后由页面 flush。
  */
 export default {
   name: 'rdsSkuFilter',
@@ -44,8 +42,6 @@ export default {
     disableds: { default: null },
     scopeParams: { default: null },
     getCreateFormDraftPreferred: { default: undefined },
-    setRdsSkuDraftRestoring: { default: undefined },
-    persistRdsSkuDraftField: { default: undefined },
   },
   props: {
     rdsItem: {
@@ -132,9 +128,6 @@ export default {
     },
     setCascading (v) {
       this._ignoreRadioChange = !!v
-      if (typeof this.setRdsSkuDraftRestoring === 'function') {
-        this.setRdsSkuDraftRestoring(!!v)
-      }
     },
     /** 程序化写表单：不落盘 */
     setFieldQuiet (fields, callback) {
@@ -154,36 +147,26 @@ export default {
         })
       })
     },
-    persistSkuField (formField, val) {
-      if (typeof this.persistRdsSkuDraftField === 'function') {
-        this.persistRdsSkuDraftField(formField, this.normalizeDraftScalar(val))
-      }
-    },
     onEngineChange (e) {
       if (this._ignoreRadioChange) return
       const val = e && e.target ? e.target.value : this.form.getFieldValue('engine')
-      this.persistSkuField('engine', val)
       this.setCascading(true)
       this.refreshVersions(val)
     },
     onVersionChange (e) {
       if (this._ignoreRadioChange) return
       const val = e && e.target ? e.target.value : this.form.getFieldValue('engine_version')
-      this.persistSkuField('engine_version', val)
       this.setCascading(true)
       this.refreshCategories(val)
     },
     onCategoryChange (e) {
       if (this._ignoreRadioChange) return
       const val = e && e.target ? e.target.value : this.form.getFieldValue('category')
-      this.persistSkuField('category', val)
       this.setCascading(true)
       this.refreshStorages(val)
     },
     onStorageChange (e) {
       if (this._ignoreRadioChange) return
-      const val = e && e.target ? e.target.value : this.form.getFieldValue('storage_type')
-      this.persistSkuField('storage_type', val)
       this.$emit('change', this.buildSpecsPayload())
     },
     /** capability 就绪：引擎 options 变化 → 尝试草稿回填 */

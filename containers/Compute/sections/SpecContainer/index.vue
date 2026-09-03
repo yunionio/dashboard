@@ -14,8 +14,7 @@
           :namespace="namespace"
           :form="form"
           :paneKey="pane.key"
-          :initItem="initContainers[i] || null"
-          @draft-change="persistFormFieldDraftSnapshot" />
+          :initItem="initContainers[i] || null" />
       </a-tab-pane>
       <a-tab-pane key="add-tab" class="add-container-tab" :closable="false">
         <template v-slot:tab>
@@ -29,7 +28,6 @@
 <script>
 import * as R from 'ramda'
 import { uuid } from '@/utils/utils'
-import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 import SpecContainerForm from './Form'
 
 export default {
@@ -37,12 +35,7 @@ export default {
   components: {
     SpecContainerForm,
   },
-  mixins: [createFormFieldDraftMixin],
   props: {
-    formDraftKey: {
-      type: String,
-      default: '',
-    },
     decorators: {
       type: Object,
       required: true,
@@ -81,7 +74,6 @@ export default {
     },
   },
   created () {
-    this._containersDraftRestoring = false
     this.syncPanes()
   },
   methods: {
@@ -109,7 +101,6 @@ export default {
       })
       this.active = key
       this.syncPanes()
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     fillContainers (containers = []) {
       this.ensurePaneCount(containers.length)
@@ -138,22 +129,12 @@ export default {
           this.active = this.panes[0].key
         }
         this.syncPanes()
-        this.$nextTick(() => this.persistFormFieldDraftSnapshot())
       }
     },
     handleTabChange (key) {
       if (key === 'add-tab') {
         this.add()
       }
-    },
-    persistFormFieldDraftSnapshot (options = {}) {
-      if (this._containersDraftRestoring) return
-      const data = this.serializeFormFieldDraft()
-      if (data === null || data === undefined) {
-        this.clearFormFieldDraft()
-        return
-      }
-      this.writeFormFieldDraft(data, options)
     },
     getDecorators (k) {
       const ret = {}
@@ -163,111 +144,6 @@ export default {
         }
       }, this.decorators)
       return ret
-    },
-    /**
-     * 序列化为与工单/applyInitData 兼容的 containers 列表
-     */
-    getCreateFormFieldDraftSnapshot () {
-      if (!this.form?.fc || !this.panes?.length) return null
-      const values = this.form.fc.getFieldsValue()
-      const list = this.panes.map((pane) => {
-        const k = pane.key
-        const credentialId = values.imageCredentialIds?.[k]
-        const registryImage = values.registryImages?.[k]
-        const customImage = values.containerimages?.[k]
-        const commandStr = values.containerCommands?.[k]
-        const argStr = values.containerArgs?.[k]
-        const envNames = values.containerEnvNames?.[k]
-        const envValues = values.containerEnvValues?.[k]
-        const mountNames = values.containerVolumeMountNames?.[k]
-        const mountPaths = values.containerVolumeMountPaths?.[k]
-        const envs = []
-        if (envNames && typeof envNames === 'object') {
-          Object.keys(envNames).forEach((j) => {
-            if (envNames[j] == null || envNames[j] === '') return
-            envs.push({ key: envNames[j], value: (envValues && envValues[j]) || '' })
-          })
-        }
-        const volume_mounts = []
-        if (mountNames && typeof mountNames === 'object') {
-          Object.keys(mountNames).forEach((j) => {
-            const idx = mountNames[j]
-            if (idx == null || idx === '') return
-            volume_mounts.push({
-              type: 'disk',
-              disk: { index: Number(idx) },
-              mount_path: (mountPaths && mountPaths[j]) || '',
-            })
-          })
-        }
-        const item = {
-          name: values.containerNames?.[k] || '',
-          image: (credentialId ? registryImage : customImage) || registryImage || customImage || '',
-          command: commandStr ? String(commandStr).split(' ').filter(Boolean) : [],
-          args: argStr ? String(argStr).split(' ').filter(Boolean) : [],
-          privileged: !!values.containerPrivilegeds?.[k],
-          enable_lxcfs: values.containerEnableLxcfs?.[k] !== false,
-          capabilities: {
-            add: values.containerCapAdd?.[k] || [],
-            drop: values.containerCapDrop?.[k] || [],
-          },
-          envs,
-          volume_mounts,
-        }
-        if (credentialId) {
-          item.image_credential_id = credentialId
-        }
-        if (values.containerEnableSysDiskOverlay?.[k]) {
-          const sizes = values.overlayDiskSizes?.[k]
-          const types = values.overlayDiskTypes?.[k]
-          let sizeGb
-          let backend
-          let medium
-          if (sizes && typeof sizes === 'object') {
-            const firstKey = Object.keys(sizes)[0]
-            if (firstKey != null) {
-              sizeGb = sizes[firstKey]
-              const typeObj = types?.[firstKey]
-              const typeKey = (typeObj && typeObj.key) || ''
-              if (typeKey) {
-                const parts = String(typeKey).split('/')
-                backend = parts[0] || typeKey
-                medium = parts[1]
-              }
-            }
-          }
-          item.rootfs = {
-            type: 'disk',
-            disk: {
-              index: 0,
-              sub_directory: 'rootfs',
-              ...(sizeGb != null ? { size: Number(sizeGb) } : {}),
-              ...(backend ? { backend } : {}),
-              ...(medium ? { medium } : {}),
-            },
-            persistent: !!values.containerRootfsPersistent?.[k],
-          }
-        }
-        return item
-      })
-      // 全空默认项不落盘
-      const hasContent = list.some((c) => {
-        return !!(c.name || c.image || (c.command && c.command.length) || (c.args && c.args.length) ||
-          (c.envs && c.envs.length) || (c.volume_mounts && c.volume_mounts.length) ||
-          c.image_credential_id || c.rootfs || c.privileged ||
-          (c.capabilities?.add?.length) || (c.capabilities?.drop?.length))
-      })
-      return hasContent ? list : null
-    },
-    applyCreateFormFieldDraft (draft) {
-      if (!Array.isArray(draft) || !draft.length) return
-      if (this._containersDraftRestoring) return
-      this._containersDraftRestoring = true
-      this.fillContainers(draft)
-      // applyInitData 含 overlay add 延迟，拉长保护窗口
-      setTimeout(() => {
-        this._containersDraftRestoring = false
-      }, 2000)
     },
   },
 }

@@ -182,6 +182,9 @@ export default {
       this.loading = true
       try {
         let values = await this.form.fc.validateFields()
+        if (typeof this.flushCreateFormFieldDrafts === 'function') {
+          this.flushCreateFormFieldDrafts()
+        }
         const { project, domain, cloudregion, zone, manager_id, backend, encryptEnable, encrypt_key_id, encrypt_key_alg, storage, iops, throughput, enableWorldMap, provider: _provider, hypervisor, ...rest } = values
         if (!backend || typeof backend !== 'string') {
           this.$message.error(this.$t('compute.text_411'))
@@ -230,9 +233,6 @@ export default {
         Reflect.deleteProperty(values, 'cloudregion')
         Reflect.deleteProperty(values, 'zone')
         await this.doCreate(values)
-        if (typeof this.flushCreateFormFieldDrafts === 'function') {
-          this.flushCreateFormFieldDrafts()
-        }
         this.$emit('create-success')
         const successBack = () => {
           this.$message.success(this.$t('k8s.text_184'))

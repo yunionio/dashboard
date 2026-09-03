@@ -1,59 +1,46 @@
 /**
- * 平台级创建表单配置记忆（create form draft）— 仅控件级
- *
- * ## 启用范围（仅这些创建页传 form-draft-key + provide）
- * 虚拟机 / 容器主机 / 裸金属 / 硬盘 / EIP / RDS / Redis
- * 弹框、调整配置等复用同一 section 组件时不得传 formDraftKey，行为须与接入前一致。
- *
- * ## 存包结构（单一 localStorage key）
- * key: __oc_create_form_draft__
- * value: {
- *   version: 1,
- *   forms: {
- *     'compute.server.idc': {
- *       savedAt,
- *       components: {
- *         domainProject: { domain, project },
- *         sku: { name },
- *         advanceConfigOpen: true,
- *         ...
- *       },
- *     },
- *   }
- * }
- *
- * ## 约定
- * 1. 唯一 id = formScope + fieldKey
- * 2. 复合控件一个 fieldKey，值可嵌套
- * 3. 有 options：校验草稿仍可用再回填
- * 4. 工单 / 预填：shouldUseCreateDraft === false 时不读写
+ * 创建表单控件级草稿（local + session）
+ * 组件自管回填；页面传 form-draft-key / 管零散 field。
+ * 页面进页后拆分 restore（回填）/ backup（备份）两开关；工单与预填仅关回填、仍可备份。
  */
 import storage from '@/utils/storage'
 import store from '@/store'
 import { isCE } from '@/utils/utils'
 
-/** 所有创建表单草稿共用的唯一 localStorage key */
+/** 所有创建表单草稿共用的 localStorage key（选择类字段） */
 export const DRAFT_STORAGE_KEY = '__oc_create_form_draft__'
 
-/** @deprecated 兼容旧命名，等同 DRAFT_STORAGE_KEY */
-export const DRAFT_KEY_PREFIX = DRAFT_STORAGE_KEY
+/** 会话级草稿 key（全量字段，同 tab 有效） */
+export const SESSION_DRAFT_STORAGE_KEY = '__oc_create_form_session_draft__'
 
-/** 存包结构版本；破坏性变更时递增，整包会被丢弃 */
-export const DRAFT_VERSION = 1
+/** 标记当前 JS 运行时是否拥有本 tab 的 session 草稿（用于识别「复制标签页」） */
+const SESSION_TAB_OWNER_KEY = '__oc_create_form_session_tab_owner__'
 
-/** 单条草稿有效期（毫秒），默认 7 天 */
-export const DRAFT_TTL_MS = 7 * 24 * 60 * 60 * 1000
+/** 草稿字段类型 */
+export const DRAFT_KIND = {
+  /** 选择类：radio-button / 单选 select / switch / 级联，local + session 双写、可回填 */
+  SELECTION: 'selection',
+  /** 输入类：文本 / 数字 / 密码 / textarea，仅 session 写入、回填时跳过 */
+  INPUT: 'input',
+  /** 复合控件：仅 session 写入、可回填（内部输入子字段按白名单跳过） */
+  COMPOSITE: 'composite',
+}
+
+/** 存包结构版本；破坏性变更时递增，旧版整包丢弃、不做迁移 */
+export const DRAFT_VERSION = 2
+
+/** 单条草稿有效期（毫秒），默认 30 天 */
+export const DRAFT_TTL_MS = 30 * 24 * 60 * 60 * 1000
 
 /**
- * 全局开关（唯一配置源；同时管写入与恢复）
- * - saveOnChange：用户修改过程中是否写入（组件级）
- * - saveOnSubmitSuccess：表单提交成功后是否写入（flush）
- * - 二者皆 false：功能关闭（不写不恢复）
+ * 全局开关（唯一配置源；仅由 resolveCreateFormDraftFlags 读取后下发页面）
+ * - saveOnSubmitSuccess：表单校验通过后是否写入（flush，不等待接口成功）
+ * - false：功能关闭（不写不恢复）
  * - 开源版（isCE / isSysCE）：强制关闭，与开关无关
+ * 子组件勿直接 import 本对象，应使用页面 provide 的 backupOnSubmit
  */
 export const CREATE_FORM_DRAFT_SWITCHES = {
-  saveOnChange: false,
-  saveOnSubmitSuccess: false,
+  saveOnSubmitSuccess: true,
 }
 
 /**
@@ -62,24 +49,7 @@ export const CREATE_FORM_DRAFT_SWITCHES = {
  */
 export function isCreateFormDraftEnabled () {
   if (isCE() || store.getters.isSysCE) return false
-  return !!(CREATE_FORM_DRAFT_SWITCHES.saveOnChange || CREATE_FORM_DRAFT_SWITCHES.saveOnSubmitSuccess)
-}
-
-/**
- * 路由上出现这些 query 时视为「预填入口」，禁用 draft 读写
- */
-export const DEFAULT_PREFILL_QUERY_KEYS = [
-  'sence',
-  'imageId',
-  'imageOs',
-  'imageType',
-]
-
-/**
- * @returns {string}
- */
-export function getDraftKey () {
-  return DRAFT_STORAGE_KEY
+  return !!CREATE_FORM_DRAFT_SWITCHES.saveOnSubmitSuccess
 }
 
 /**
@@ -98,9 +68,10 @@ function isDraftEntryExpired (entry) {
 
 /**
  * @param {{ version: number, forms: Object }} store
+ * @param {string} [storageKey]
  * @returns {{ version: number, forms: Object }}
  */
-function purgeExpiredDrafts (store) {
+function purgeExpiredDrafts (store, storageKey = DRAFT_STORAGE_KEY) {
   if (!store?.forms || typeof store.forms !== 'object') {
     return { version: DRAFT_VERSION, forms: {} }
   }
@@ -112,48 +83,65 @@ function purgeExpiredDrafts (store) {
     }
   })
   if (!Object.keys(store.forms).length) {
-    if (changed) clearAllDrafts()
+    if (changed) clearAllDrafts(storageKey)
     return { version: DRAFT_VERSION, forms: {} }
   }
-  if (changed) writeStore(store)
+  if (changed) writeStore(store, storageKey)
   return store
 }
 
 /**
+ * 按存储 key 解析后端：session key 用 sessionStorage，其余用 localStorage
+ * @param {string} storageKey
+ * @returns {object} storage api（含 session）
+ */
+function resolveStorageBackend (storageKey) {
+  return storageKey === SESSION_DRAFT_STORAGE_KEY ? storage.session : storage
+}
+
+/**
+ * @param {string} [storageKey]
  * @returns {{ version: number, forms: Object }}
  */
-function readStore () {
-  const raw = storage.get(DRAFT_STORAGE_KEY)
+function readStore (storageKey = DRAFT_STORAGE_KEY) {
+  const backend = resolveStorageBackend(storageKey)
+  const raw = backend.get(storageKey)
   if (!raw || typeof raw !== 'object') {
     return { version: DRAFT_VERSION, forms: {} }
   }
   if (raw.version !== DRAFT_VERSION || !raw.forms || typeof raw.forms !== 'object') {
-    clearAllDrafts()
+    // 版本不匹配（含 v1）或结构无效：整包删除，不尝试迁移
+    clearAllDrafts(storageKey)
     return { version: DRAFT_VERSION, forms: {} }
   }
-  return purgeExpiredDrafts(raw)
+  return purgeExpiredDrafts(raw, storageKey)
 }
 
 /**
  * @param {{ version: number, forms: Object }} store
+ * @param {string} [storageKey]
  */
-function writeStore (store) {
+function writeStore (store, storageKey = DRAFT_STORAGE_KEY) {
   try {
-    storage.set(DRAFT_STORAGE_KEY, store)
+    resolveStorageBackend(storageKey).set(storageKey, {
+      version: DRAFT_VERSION,
+      forms: (store?.forms && typeof store.forms === 'object') ? store.forms : {},
+    })
   } catch (e) {
-    // localStorage 满或 disabled：静默失败
+    // localStorage/sessionStorage 满或 disabled：静默失败
   }
 }
 
 /**
  * 读取某一 formScope 下的 entry
  * @param {string} formScope
+ * @param {string} [storageKey]
  * @returns {object|null}
  */
-export function getDraftEntry (formScope) {
+export function getDraftEntry (formScope, storageKey) {
   if (!isCreateFormDraftEnabled()) return null
   if (!formScope) return null
-  const store = readStore()
+  const store = readStore(storageKey)
   const entry = store.forms[formScope]
   if (!entry || typeof entry !== 'object') return null
   return entry
@@ -162,32 +150,31 @@ export function getDraftEntry (formScope) {
 /**
  * 读取某一控件草稿
  * @param {string} formScope 如 compute.server.idc
- * @param {string} fieldKey 如 domainProject / advanceConfigOpen
+ * @param {string} fieldKey 如 domainProject / systemDisk
+ * @param {string} [storageKey]
  * @returns {*|null}
  */
-export function getComponentDraft (formScope, fieldKey) {
+export function getComponentDraft (formScope, fieldKey, storageKey) {
   if (!formScope || !fieldKey) return null
-  const entry = getDraftEntry(formScope)
+  const entry = getDraftEntry(formScope, storageKey)
   if (!entry?.components || typeof entry.components !== 'object') return null
   if (!Object.prototype.hasOwnProperty.call(entry.components, fieldKey)) return null
   const val = entry.components[fieldKey]
   return val === undefined ? null : val
 }
 
-/** @see getComponentDraft */
-export const getFieldDraft = getComponentDraft
-
 /**
  * 写入某一控件草稿（合并进 forms[formScope].components）
  * @param {string} formScope
  * @param {string} fieldKey
  * @param {*} data
+ * @param {string} [storageKey]
  */
-export function setComponentDraft (formScope, fieldKey, data) {
+export function setComponentDraft (formScope, fieldKey, data, storageKey) {
   if (!isCreateFormDraftEnabled()) return
   if (!formScope || !fieldKey) return
   if (data === undefined) return
-  const store = readStore()
+  const store = readStore(storageKey)
   const prev = store.forms[formScope] || {}
   const components = {
     ...(prev.components && typeof prev.components === 'object' ? prev.components : {}),
@@ -197,86 +184,214 @@ export function setComponentDraft (formScope, fieldKey, data) {
     savedAt: Date.now(),
     components,
   }
-  writeStore(store)
+  writeStore(store, storageKey)
 }
-
-/** @see setComponentDraft */
-export const setFieldDraft = setComponentDraft
 
 /**
  * 清除某一个控件草稿
  * @param {string} formScope
  * @param {string} fieldKey
+ * @param {string} [storageKey]
  */
-export function clearComponentDraft (formScope, fieldKey) {
+export function clearComponentDraft (formScope, fieldKey, storageKey) {
   if (!formScope || !fieldKey) return
-  const store = readStore()
+  const store = readStore(storageKey)
   const entry = store.forms[formScope]
   if (!entry?.components || !Object.prototype.hasOwnProperty.call(entry.components, fieldKey)) return
   const components = { ...entry.components }
   delete components[fieldKey]
   if (!Object.keys(components).length) {
-    clearDraft(formScope)
+    clearDraft(formScope, storageKey)
     return
   }
   store.forms[formScope] = {
     savedAt: Date.now(),
     components,
   }
-  writeStore(store)
+  writeStore(store, storageKey)
 }
-
-/** @see clearComponentDraft */
-export const clearFieldDraft = clearComponentDraft
 
 /**
  * 清除某一个 formScope 的草稿
  * @param {string} formScope
+ * @param {string} [storageKey]
  */
-export function clearDraft (formScope) {
+export function clearDraft (formScope, storageKey) {
   if (!formScope) return
-  const store = readStore()
+  const store = readStore(storageKey)
   if (!Object.prototype.hasOwnProperty.call(store.forms, formScope)) return
   delete store.forms[formScope]
   if (!Object.keys(store.forms).length) {
-    clearAllDrafts()
+    clearAllDrafts(storageKey)
     return
   }
-  writeStore(store)
+  writeStore(store, storageKey)
 }
 
 /**
- * 一键清空所有创建表单草稿
+ * 一键清空指定后端的创建表单草稿
+ * @param {string} [storageKey]
  */
-export function clearAllDrafts () {
-  storage.remove(DRAFT_STORAGE_KEY)
+export function clearAllDrafts (storageKey = DRAFT_STORAGE_KEY) {
+  resolveStorageBackend(storageKey).remove(storageKey)
 }
 
 /**
- * @returns {string[]}
+ * 复制标签页会克隆 sessionStorage。Chrome/Firefox 常把复制报成 navigation type = back_forward，
+ * 不能靠 type 区分「真后退」与「复制」。
+ *
+ * 做法：session 内放 tab guard；正常离开用 pagehide（非 bfcache）清掉；
+ * 复制不会触发源 tab 的 pagehide，新 tab 仍带着 guard → 清空 session 草稿。
+ * 刷新：pagehide 清 guard 后 reload，无 guard → 保留 session。
+ * 每个 JS 运行时只执行一次。
+ * @returns {boolean} 是否判定为复制/继承 session 并已清空
  */
-export function listDraftScopes () {
-  if (!isCreateFormDraftEnabled()) return []
-  const store = readStore()
-  return Object.keys(store.forms || {})
+export function ensureCreateFormSessionTabIsolation () {
+  if (typeof window === 'undefined') return false
+  if (window.__OC_CREATE_FORM_SESSION_TAB_ISOLATION_DONE__) {
+    return !!window.__OC_CREATE_FORM_SESSION_TAB_INHERITED__
+  }
+  window.__OC_CREATE_FORM_SESSION_TAB_ISOLATION_DONE__ = true
+
+  const claimGuard = () => {
+    const id = `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 11)}`
+    try { window.sessionStorage.setItem(SESSION_TAB_OWNER_KEY, id) } catch (e) { /* ignore */ }
+    return id
+  }
+
+  // 正常离开 / 刷新：清掉 guard。复制标签页不会走源 tab 的 pagehide，克隆里仍保留 guard。
+  // bfcache（persisted）不清，避免真·后退误伤。
+  if (!window.__OC_CREATE_FORM_SESSION_TAB_GUARD_BOUND__) {
+    window.__OC_CREATE_FORM_SESSION_TAB_GUARD_BOUND__ = true
+    window.addEventListener('pagehide', (e) => {
+      if (e && e.persisted) return
+      try { window.sessionStorage.removeItem(SESSION_TAB_OWNER_KEY) } catch (err) { /* ignore */ }
+    })
+  }
+
+  let navType = 'navigate'
+  try {
+    const entry = typeof performance !== 'undefined' &&
+      performance.getEntriesByType &&
+      performance.getEntriesByType('navigation')[0]
+    if (entry && entry.type) {
+      navType = entry.type
+    } else if (typeof performance !== 'undefined' && performance.navigation) {
+      const t = performance.navigation.type
+      navType = t === 1 ? 'reload' : (t === 2 ? 'back_forward' : 'navigate')
+    }
+  } catch (e) { /* ignore */ }
+
+  let guard = null
+  try {
+    guard = window.sessionStorage.getItem(SESSION_TAB_OWNER_KEY)
+  } catch (e) {
+    window.__OC_CREATE_FORM_SESSION_TAB_INHERITED__ = false
+    return false
+  }
+
+  // 刷新：pagehide 已清 guard，保留 session 草稿
+  if (navType === 'reload') {
+    claimGuard()
+    window.__OC_CREATE_FORM_SESSION_TAB_INHERITED__ = false
+    return false
+  }
+
+  // 仍带着 guard → 复制标签页（或未正常卸载的克隆）；清空 session 草稿，走跨 tab / local
+  if (guard) {
+    try {
+      clearAllDrafts(SESSION_DRAFT_STORAGE_KEY)
+      window.sessionStorage.removeItem(SESSION_DRAFT_STORAGE_KEY)
+    } catch (e) { /* ignore */ }
+    claimGuard()
+    window.__OC_CREATE_FORM_SESSION_TAB_INHERITED__ = true
+    return true
+  }
+
+  // 真·后退/前进或首次进入：无 guard，保留已有 session 草稿
+  claimGuard()
+  window.__OC_CREATE_FORM_SESSION_TAB_INHERITED__ = false
+  return false
 }
 
 /**
- * 判断当前路由是否允许使用创建草稿
+ * 是否阻断草稿回填（工单 / 页面 disableWhen）
+ * 全局开关开启时，这些场景仍可备份，只是不回填。
+ * 镜像等预填 query（imageId/imageOs…）不在此整页阻断，由对应组件局部互斥（如 OsSelect）。
+ * 若某页确需按 query 整页关回填，可显式传 options.prefillQueryKeys。
+ * @param {object} route
+ * @param {object} [options]
+ * @returns {boolean}
+ */
+export function isCreateFormDraftRestoreBlocked (route, options = {}) {
+  const q = route?.query || {}
+  if (q.workflow) return true
+  const prefillKeys = Array.isArray(options.prefillQueryKeys) ? options.prefillQueryKeys : []
+  if (prefillKeys.some(k => q[k] != null && q[k] !== '')) return true
+  if (typeof options.disableWhen === 'function' && options.disableWhen(route)) {
+    return true
+  }
+  return false
+}
+
+/**
+ * 页面进入后草稿能力拆分：
+ * - 全局关 → restore/backup/策略都关
+ * - 全局开 + 工单修改/预填等 → 只开 backup
+ * - 全局开 + 普通新建 → restore + backup 都开
+ * @param {object} route
+ * @param {object} [options]
+ * @returns {{ restore: boolean, backup: boolean, backupOnSubmit: boolean }}
+ */
+export function resolveCreateFormDraftFlags (route, options = {}) {
+  const empty = {
+    restore: false,
+    backup: false,
+    backupOnSubmit: false,
+  }
+  if (!isCreateFormDraftEnabled()) return empty
+  const backup = true
+  const backupOnSubmit = backup && !!CREATE_FORM_DRAFT_SWITCHES.saveOnSubmitSuccess
+  if (isCreateFormDraftRestoreBlocked(route, options)) {
+    return { restore: false, backup, backupOnSubmit }
+  }
+  return { restore: true, backup, backupOnSubmit }
+}
+
+/**
+ * 兼容旧 API：原先「可用草稿」含读写一体，现对齐为是否开启回填
  * @param {object} route
  * @param {object} [options]
  * @returns {boolean}
  */
 export function shouldUseCreateDraft (route, options = {}) {
-  if (!isCreateFormDraftEnabled()) return false
-  const q = route?.query || {}
-  if (q.workflow) return false
-  const prefillKeys = options.prefillQueryKeys || DEFAULT_PREFILL_QUERY_KEYS
-  if (prefillKeys.some(k => q[k] != null && q[k] !== '')) return false
-  if (typeof options.disableWhen === 'function' && options.disableWhen(route)) {
-    return false
-  }
-  return true
+  return resolveCreateFormDraftFlags(route, options).restore
+}
+
+/**
+ * 控件草稿回填来源：session（同 tab）/ local（跨 tab）/ null（无草稿）
+ * 各页面与子组件共用，勿各自再读 storage 判断。
+ * @param {string} formScope
+ * @param {string} fieldKey
+ * @returns {'session'|'local'|null}
+ */
+export function resolveCreateFormDraftRestoreSource (formScope, fieldKey) {
+  if (!formScope || !fieldKey) return null
+  const sessionVal = getComponentDraft(formScope, fieldKey, SESSION_DRAFT_STORAGE_KEY)
+  if (sessionVal !== null && sessionVal !== undefined) return 'session'
+  const localVal = getComponentDraft(formScope, fieldKey, DRAFT_STORAGE_KEY)
+  if (localVal !== null && localVal !== undefined) return 'local'
+  return null
+}
+
+/**
+ * 是否为 local（跨 tab）回填
+ * @param {string} formScope
+ * @param {string} fieldKey
+ * @returns {boolean}
+ */
+export function isCreateFormDraftRestoreFromLocal (formScope, fieldKey) {
+  return resolveCreateFormDraftRestoreSource(formScope, fieldKey) === 'local'
 }
 
 /**
@@ -308,12 +423,15 @@ export function pickPreferredInOptions (options, preferred, opts = {}) {
   if (!Array.isArray(options) || !options.length) return null
   const getId = typeof opts.getId === 'function'
     ? opts.getId
-    : (item) => (item && typeof item === 'object' ? (item.id ?? item.key ?? item) : item)
+    : (item) => (item && typeof item === 'object' ? (item.id ?? item.key ?? item.value ?? item) : item)
   const preferredId = (preferred && typeof preferred === 'object')
-    ? (preferred.id ?? preferred.key)
+    ? (preferred.id ?? preferred.key ?? preferred.value)
     : preferred
   if (preferredId == null || preferredId === '') return null
-  const hit = options.find(item => getId(item) === preferredId)
+  const hit = options.find(item => {
+    const id = getId(item)
+    return id === preferredId || String(id) === String(preferredId)
+  })
   return hit != null ? hit : null
 }
 
