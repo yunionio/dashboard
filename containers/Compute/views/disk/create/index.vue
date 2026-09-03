@@ -49,7 +49,6 @@
         :region.sync="regionList"
         filterBrandResource="compute_engine"
         :zone.sync="zoneList"
-        :form-draft-key="diskDraftFields.areaSelects"
         @change="handleAreaChange" />
       <!-- 无私有云订阅时仍用平台单选；公有云/HCSO/HCS 由云订阅决定平台 -->
       <a-form-item
@@ -103,7 +102,8 @@
                 style="min-width: 480px; max-width: 500px;"
                 :decorators="decorators"
                 :form="form"
-                :storageParams="storageParams" />
+                :storageParams="storageParams"
+                @optionsReady="onDiskStorageOptionsReady" />
               <a-button class="mt-1" type="link" @click="toggleDiskShowStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
             </div>
           </a-col>
@@ -245,7 +245,6 @@ export default {
             if (values.hasOwnProperty('size')) {
               this.form.fd.size = values.size
             }
-            this.syncDiskCreateFormFcDrafts(values)
           },
         }),
         fd: {
@@ -768,28 +767,21 @@ export default {
     return {
       form: this.form,
       getCreateFormDraftScope: () => this.getCreateFormDraftScope(),
-      canUseCreateFormFieldDraft: () => this.canUseCreateFormDraft,
+      canUseCreateFormFieldDraft: () => this.canRestoreCreateFormDraft,
+      canRestoreCreateFormFieldDraft: () => this.canRestoreCreateFormDraft,
+      canBackupCreateFormFieldDraft: () => this.canBackupCreateFormDraft,
+      canBackupCreateFormFieldDraftOnSubmit: () => this.canBackupCreateFormDraftOnSubmit,
       registerCreateFormFieldDraftFlush: (fn) => this.registerCreateFormFieldDraftFlush(fn),
       readCreateFormFieldDraft: (key) => this.readCreateFormFieldDraft(key),
       writeCreateFormFieldDraft: (key, data, options) => this.writeCreateFormFieldDraft(key, data, options),
       bindCreateFormFieldDraft: (spec) => this.bindCreateFormFieldDraft(spec),
       flushCreateFormFieldDrafts: () => this.flushCreateFormFieldDrafts(),
+      isCreateFormFieldTouched: (key) => this.isCreateFormFieldTouched(key),
+      markCreateFormFieldTouched: (key) => this.markCreateFormFieldTouched(key),
+      isCreateFormFieldDraftFromLocal: (key) => this.isCreateFormFieldDraftFromLocal(key),
     }
   },
   created () {
-    this.bindCreateFormFieldDraft({
-      key: DISK_CREATE_FORM_DRAFT_FIELD.TAG,
-      get: () => {
-        const meta = this.form.fc.getFieldValue('__meta__')
-        if (!meta || !Object.keys(meta).length) return null
-        return { checked: meta }
-      },
-      set: (draft) => {
-        if (!draft?.checked) return
-        this.tagDefaultChecked = { ...draft.checked }
-        this.form.fc.setFieldsValue({ __meta__: draft.checked })
-      },
-    })
     this.bindDiskCreateFormFcDrafts()
   },
   methods: {
@@ -802,35 +794,30 @@ export default {
         this._diskCreateFormFcDraftMap[item.formField] = item.key
         this.bindFormFcFieldDraft(item.key, {
           formField: item.formField,
-          restore: item.restore !== false,
+          kind: item.kind,
         })
       })
-    },
-    syncDiskCreateFormFcDrafts (newField) {
-      if (!this.canUseCreateFormDraft || !newField || typeof newField !== 'object') return
-      // 类型/容量程序回填期间勿落盘，避免默认 size=10 覆盖真实草稿
-      if (this._diskStorageDraftRestoring) return
-      // 仅用户交互后落盘，避免程序化 setFieldsValue 污染草稿
-      if (!this.createFormDraftUserInteracted) return
-      const map = this._diskCreateFormFcDraftMap || {}
-      Object.keys(newField).forEach((formField) => {
-        const draftKey = map[formField]
-        if (!draftKey) return
-        const val = newField[formField]
-        // capability 刷新会短暂清空字段，勿用空值覆盖已有草稿
-        if (val === undefined || val === null || val === '') return
-        this.writeCreateFormFieldDraft(draftKey, val)
+      // backend / storage：只注册 flush 落盘；回填由 getStorageOpts / optionsReady 自管（无 set，避免进页抢写）
+      this._diskCreateFormFcDraftMap.backend = DISK_CREATE_FORM_DRAFT_FIELD.BACKEND
+      this.bindCreateFormFieldDraft({
+        key: DISK_CREATE_FORM_DRAFT_FIELD.BACKEND,
+        kind: 'selection',
+        get: () => this.form?.fc?.getFieldValue?.('backend'),
       })
-      if (Object.prototype.hasOwnProperty.call(newField, '__meta__')) {
-        const meta = newField.__meta__
-        this.writeCreateFormFieldDraft(
-          DISK_CREATE_FORM_DRAFT_FIELD.TAG,
-          meta && Object.keys(meta).length ? { checked: meta } : null,
-        )
-      }
+      this._diskCreateFormFcDraftMap.storage = DISK_CREATE_FORM_DRAFT_FIELD.STORAGE_ID
+      this.bindCreateFormFieldDraft({
+        key: DISK_CREATE_FORM_DRAFT_FIELD.STORAGE_ID,
+        kind: 'selection',
+        get: () => {
+          if (!this.showStorage) return null
+          const val = this.form?.fc?.getFieldValue?.('storage')
+          return (val === undefined || val === null || val === '') ? null : val
+        },
+      })
     },
     toggleDiskShowStorage () {
       if (this.showStorage) {
+        this._pendingDiskStorageDraft = null
         this.form.fc.setFieldsValue({ storage: undefined })
         if (this.form.fd) this.$delete(this.form.fd, 'storage')
         this.clearCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.STORAGE_ID)
@@ -841,7 +828,6 @@ export default {
       if (this.showIops && !show) {
         this.form.fc.setFieldsValue({ iops: undefined })
         if (this.form.fd) this.$delete(this.form.fd, 'iops')
-        this.clearCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.IOPS)
       }
       this.showIops = show
     },
@@ -849,7 +835,6 @@ export default {
       if (this.showThroughput && !show) {
         this.form.fc.setFieldsValue({ throughput: undefined })
         if (this.form.fd) this.$delete(this.form.fd, 'throughput')
-        this.clearCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.THROUGHPUT)
       }
       this.showThroughput = show
     },
@@ -1133,91 +1118,48 @@ export default {
       }
       this.form.fc.setFieldsValue({ backend: '' })
       if (this.storageOpts.length > 0) {
-        // 先读草稿再改表单，避免 size=10 经 sync 冲掉 localStorage
         const draftBackend = this.canUseCreateFormDraft
           ? this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.BACKEND)
           : null
-        const sizeDraft = this.canUseCreateFormDraft
-          ? this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.SIZE)
-          : null
         const hit = draftBackend && this.storageOpts.find(o => o.value === draftBackend)
         const backendVal = hit ? hit.value : this.storageOpts[0].value
-        const hasSizeDraft = sizeDraft != null && sizeDraft !== ''
         this._diskStorageDraftRestoring = true
         this.form.fc.setFieldsValue({ backend: backendVal })
         this.__newStorageChange(backendVal, {
-          fromDraft: !!hit || hasSizeDraft,
-          preferSize: hasSizeDraft ? sizeDraft : undefined,
+          fromDraft: !!hit,
         })
         this.$nextTick(() => {
-          this.restoreDiskFieldDraftsAfterStorageReady({ sizeDraft })
+          this.restoreDiskFieldDraftsAfterStorageReady()
           this.$nextTick(() => {
             this._diskStorageDraftRestoring = false
           })
         })
       }
     },
-    /**
-     * storageOpts 就绪后回填 size / storage / iops / throughput
-     * @param {{ sizeDraft?: * }} [preset] 调用前已读出的草稿，避免被 sync 冲掉
-     */
-    restoreDiskFieldDraftsAfterStorageReady (preset = {}) {
+    /** storageOpts 就绪后回填 storage（选择类） */
+    restoreDiskFieldDraftsAfterStorageReady () {
       if (!this.canUseCreateFormDraft || !this.form?.fc) return
-      const sizeDraft = preset.sizeDraft !== undefined
-        ? preset.sizeDraft
-        : this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.SIZE)
-      if (sizeDraft != null && sizeDraft !== '') {
-        let size = Number(sizeDraft)
-        if (!Number.isNaN(size)) {
-          if (size > this.maxDiskData) size = this.maxDiskData
-          if (size < this.minDiskData) size = this.minDiskData
-          this.form.fc.setFieldsValue({ size })
-          this.$set(this.form.fd, 'size', size)
-        }
-      }
       const storageDraft = this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.STORAGE_ID)
       if (storageDraft) {
+        this._pendingDiskStorageDraft = storageDraft
         this.showStorage = true
-        this.$nextTick(() => this.restoreDiskStorageDraft(storageDraft))
-      }
-      const iopsDraft = this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.IOPS)
-      if (iopsDraft != null && this.isShowIops) {
-        this.showIops = true
-        this.$nextTick(() => {
-          let iops = Number(iopsDraft)
-          if (Number.isNaN(iops)) return
-          const { min = 0, max } = this.iopsLimit || {}
-          if (max != null && iops > max) iops = max
-          if (iops < min) iops = min
-          this.form.fc.setFieldsValue({ iops })
-        })
-      }
-      const throughputDraft = this.readCreateFormFieldDraft(DISK_CREATE_FORM_DRAFT_FIELD.THROUGHPUT)
-      if (throughputDraft != null && this.isShowThroughput) {
-        this.showThroughput = true
-        this.$nextTick(() => {
-          let tp = Number(throughputDraft)
-          if (Number.isNaN(tp)) return
-          if (tp > 1000) tp = 1000
-          if (tp < 125) tp = 125
-          this.form.fc.setFieldsValue({ throughput: tp })
-        })
+        this.$nextTick(() => this.tryRestoreDiskStorageDraft())
       }
     },
-    /** 指定存储：仅 options 非空且命中时回填；空列表放弃 */
-    restoreDiskStorageDraft (storageDraft, retry = 0) {
+    /** DiskStorageSelect optionsReady：opts 就绪后再尝试命中回填 */
+    onDiskStorageOptionsReady (options) {
+      this.tryRestoreDiskStorageDraft(options)
+    },
+    /** 指定存储：仅 options 命中才回填；列表空则等 optionsReady，不 setTimeout 重试 */
+    tryRestoreDiskStorageDraft (readyOptions) {
+      const storageDraft = this._pendingDiskStorageDraft
       if (!storageDraft || !this.form?.fc) return
       const select = this.$refs.diskStorageSelect
-      const options = (select && Array.isArray(select.options)) ? select.options : []
-      if (!options.length) {
-        if (retry < 8) {
-          setTimeout(() => this.restoreDiskStorageDraft(storageDraft, retry + 1), 300)
-          return
-        }
-        // 列表始终为空：不写非法草稿
-        this.form.fc.setFieldsValue({ storage: undefined })
-        return
-      }
+      const options = Array.isArray(readyOptions)
+        ? readyOptions
+        : ((select && Array.isArray(select.options)) ? select.options : [])
+      if (!options.length) return
+      this._pendingDiskStorageDraft = null
       if (!options.some(o => o.id === storageDraft)) {
         this.form.fc.setFieldsValue({ storage: undefined })
         return

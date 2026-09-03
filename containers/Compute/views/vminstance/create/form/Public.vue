@@ -82,8 +82,7 @@
         :defaultActiveFirstOption="areaDefaultActiveFirstOption"
         filterBrandResource="compute_engine"
         @providerFetchSuccess="providerFetchSuccess"
-        @fetchsDone="onAreaSelectsFetchsDone"
-        :form-draft-key="vmDraftFields.areaSelects" />
+        @fetchsDone="onAreaSelectsFetchsDone" />
       <!-- <a-form-item class="mb-0" :label="$t('compute.text_1159')">
         <resource :decorator="decorators.resourceType" />
       </a-form-item> -->
@@ -192,7 +191,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
-          v-decorator="decorators.tag" :default-checked="tagDefaultChecked" :form-draft-key="vmDraftFields.tag" />
+          v-decorator="decorators.tag" :default-checked="tagDefaultChecked" />
       </a-form-item>
       <advance-config-block>
         <eip-config
@@ -226,8 +225,7 @@
             :hypervisor="hypervisor"
             :showSecgroupBind="showSecgroupBind"
             :ignore-auto-type-reset="preserveAdvanceInitProps"
-            :init-secgroups="draftInitSecgroups"
-            :form-draft-key="vmDraftFields.secgroup" />
+            :init-secgroups="workflowInitSecgroups" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
           <sched-policy
@@ -240,12 +238,12 @@
             :decorators="decorators.schedPolicy"
             :hideCloudaccountSched="hideCloudaccountSched"
             :policy-schedtag-params="policySchedtagParams"
-            :init-prefer-host="draftInitPreferHost"
+            :init-prefer-host="workflowInitPreferHost"
             :preserve-init-prefer-host="preserveAdvanceInitProps"
-            :init-schedtags="draftInitSchedtags"
+            :init-schedtags="workflowInitSchedtags"
             :form-draft-key="vmDraftFields.schedPolicy" />
         </a-form-item>
-        <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" :form-draft-key="vmDraftFields.customData" />
+        <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" />
         <bastion-host ref="bastionHostRef" v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" :form-draft-key="vmDraftFields.bastionHost" />
       </advance-config-block>
       <bottom-bar
@@ -281,7 +279,6 @@ import { HOST_CPU_ARCHS } from '@/constants/compute'
 import AreaSelects from '@/sections/AreaSelects'
 import { cloudregionFilterByCapability } from '@/utils/common/capability'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
-import { VM_CREATE_FORM_DRAFT_FIELD } from '@Compute/utils/vminstanceCreateFormDraft'
 import mixin from './mixin'
 export default {
   name: 'VMPublicCreate',
@@ -627,41 +624,26 @@ export default {
   },
   watch: {
     'form.fd.billType' (val) {
-      const areaRef = this.$refs.areaSelectRef
-      // 有区域控件草稿或正在回填：交给 AreaSelects 软刷新+再回填，页面侧不要清空
-      if (areaRef?.requeueAreaDraftAfterBillChange?.()) return
-      const areaDraftBusy = !!(areaRef?.areaDraftRestoring || areaRef?._pendingAreaDraft || areaRef?._areaDraftApplyRunning)
-      if (val === BILL_TYPES_MAP.package.key && !areaDraftBusy) {
+      // 计费方式为包年包月平台不含 azure、aws，这里统一做清空处理
+      if (val === BILL_TYPES_MAP.package.key) {
         this.form.fc.setFieldsValue({
           provider: [],
           cloudregion: [],
           zone: [],
         })
       }
-      if (areaDraftBusy) {
-        areaRef?.fetchListsOnly?.(areaRef.names || ['provider'], { skipDefaultSelect: true })
-          ?.then?.(() => areaRef.tryApplyPendingAreaDraft?.())
-        return
-      }
+      // AreaSelects 自身也 watch billType 会 fetchs；此处补拉平台列表
       this.$refs.areaSelectRef?.fetchs?.(['provider'])
     },
     'form.fd.duration' (val, oldVal) {
       if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
         if (val === '1W' || oldVal === '1W') {
-          const areaRef = this.$refs.areaSelectRef
-          if (areaRef?.requeueAreaDraftAfterBillChange?.()) return
-          const areaDraftBusy = !!(areaRef?.areaDraftRestoring || areaRef?._pendingAreaDraft || areaRef?._areaDraftApplyRunning)
-          if (!areaDraftBusy) {
-            this.form.fc.setFieldsValue({
-              provider: [],
-              cloudregion: [],
-              zone: [],
-            })
-            this.$refs.areaSelectRef?.fetchs?.(['provider', 'cloudregion', 'zone'])
-          } else {
-            areaRef?.fetchListsOnly?.(['provider', 'cloudregion', 'zone'], { skipDefaultSelect: true })
-              ?.then?.(() => areaRef.tryApplyPendingAreaDraft?.())
-          }
+          this.form.fc.setFieldsValue({
+            provider: [],
+            cloudregion: [],
+            zone: [],
+          })
+          this.$refs.areaSelectRef?.fetchs?.(['provider', 'cloudregion', 'zone'])
         }
       }
     },
@@ -861,7 +843,6 @@ export default {
           zone: [],
         })
         this._setNewFieldToFd(this.form.fc.getFieldsValue(), this.form.fc.getFieldsValue())
-        areaRef.persistFormFieldDraftSnapshot?.()
       }
       this.refreshSkuByAreaSelection()
     },
@@ -890,81 +871,18 @@ export default {
       return this.toAreaValue(initData.prefer_region).filter(Boolean)
     },
     /**
-     * AreaSelects.fetchs 整链结束后再回填，避免与 resetSelect / 空列表 resetFields 竞态
-     * 工单走 initFormData；普通新建走控件草稿 areaSelects
+     * AreaSelects.fetchs 整链结束后再回填工单 initFormData（普通新建不落盘/不回填区域）
      */
     onAreaSelectsFetchsDone () {
       if (this._publicAreaApplying) {
         this._publicAreaRestoreAgain = true
         return
       }
-      if (this.isFormBackfill) {
-        const list = this.$refs.areaSelectRef?.providerList || this.form.fi.providerList || []
-        const providerNames = this.resolveDraftProviderNames(list)
-        if (providerNames.length) {
-          this.applyInitPublicAreaFields(providerNames)
-        }
-        return
-      }
-      // 控件草稿回填（与工单同构：fetchsDone 后再写）
-      this.restorePublicAreaFormFieldDraft()
-    },
-    /**
-     * 从控件草稿回填公有云平台/区域/可用区
-     */
-    async restorePublicAreaFormFieldDraft () {
-      if (!this.canUseCreateFormDraft) return
-      if (this.createFormDraftUserInteracted) return
-      if (this._publicAreaApplying) {
-        this._publicAreaRestoreAgain = true
-        return
-      }
-      const draft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.AREA_SELECTS)
-      if (!draft || typeof draft !== 'object') return
-      const provider = this.toAreaValue(draft.provider).filter(Boolean)
-      const region = this.toAreaValue(draft.cloudregion).filter(Boolean)
-      const zone = this.toAreaValue(draft.zone).filter(Boolean)
-      if (!provider.length && !region.length && !zone.length) return
-
-      const areaRef = this.$refs.areaSelectRef
-      if (!areaRef) return
-
-      this._publicAreaApplying = true
-      if (areaRef.areaDraftRestoring !== undefined) areaRef.areaDraftRestoring = true
-      try {
-        // 让 AreaSelects 自己走顺序回填（含列表拉取）
-        if (typeof areaRef.applyCreateFormFieldDraft === 'function') {
-          areaRef.applyCreateFormFieldDraft({
-            provider: draft.provider,
-            cloudregion: draft.cloudregion,
-            zone: draft.zone,
-          })
-          // apply 内部异步，等待 pending 消化
-          await this.$nextTick()
-          if (typeof areaRef.tryApplyPendingAreaDraft === 'function') {
-            await areaRef.tryApplyPendingAreaDraft()
-          }
-        } else if (typeof areaRef.applyMultipleSelection === 'function') {
-          await areaRef.applyMultipleSelection({
-            provider: draft.provider,
-            cloudregion: draft.cloudregion,
-            zone: draft.zone,
-          })
-        }
-        // 同步 fd
-        const values = {
-          provider: this.form.fc.getFieldValue('provider'),
-          cloudregion: this.form.fc.getFieldValue('cloudregion'),
-          zone: this.form.fc.getFieldValue('zone'),
-        }
-        this._setNewFieldToFd(values, this.form.fc.getFieldsValue())
-      } finally {
-        this._publicAreaApplying = false
-        if (areaRef) areaRef.areaDraftRestoring = false
-        if (this._publicAreaRestoreAgain) {
-          this._publicAreaRestoreAgain = false
-          this.$nextTick(() => this.onAreaSelectsFetchsDone())
-        }
+      if (!this.isFormBackfill) return
+      const list = this.$refs.areaSelectRef?.providerList || this.form.fi.providerList || []
+      const providerNames = this.resolveDraftProviderNames(list)
+      if (providerNames.length) {
+        this.applyInitPublicAreaFields(providerNames)
       }
     },
     async applyInitPublicAreaFields (providerNames) {
@@ -1058,11 +976,6 @@ export default {
           if (!keepHost) {
             this.$set(this.form.fd, 'schedPolicyHost', undefined)
           }
-        }
-        // 平台/区域/可用区变更时落盘（AreaSelects handleChange 也会 persist，这里兜底）
-        const areaKeys = ['provider', 'cloudregion', 'zone']
-        if (areaKeys.some(k => Object.prototype.hasOwnProperty.call(newField, k))) {
-          this.$refs.areaSelectRef?.persistFormFieldDraftSnapshot?.()
         }
       })
     },

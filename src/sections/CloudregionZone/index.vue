@@ -52,6 +52,11 @@ export default {
       type: String,
       default: '',
     },
+    /** selection：radio/单选 select/switch 类，local + session 双写、可跨 tab 回填 */
+    formDraftKind: {
+      type: String,
+      default: 'selection',
+    },
   },
   inject: {
     form: { default: undefined },
@@ -76,7 +81,6 @@ export default {
   created () {
     this.zonesM = new Manager('zones', 'v2')
     this.cloudregionsM = new Manager('cloudregions', 'v2')
-    this._cloudregionZoneDraftRestoring = false
     this.fetchRegions()
   },
   methods: {
@@ -89,9 +93,6 @@ export default {
         itemObj = opts.find(val => val.id === (item.id || item.key))
       }
       this.$emit(`update:${emitStr}`, itemObj)
-      if (emitStr === 'zone' && itemObj?.id && !this._cloudregionZoneDraftRestoring) {
-        this.$nextTick(() => this.persistCloudregionZoneDraft())
-      }
     },
     fetchRegions () {
       const params = {
@@ -111,7 +112,6 @@ export default {
           zone: { key: '', label: '' },
         })
       }
-      this._cloudregionZoneDraftRestoring = true
       this.cloudregionsM.list({ params })
         .then(({ data: { data = [] } }) => {
           // 根据全局capability剔除掉只读云的cloudregion
@@ -126,8 +126,10 @@ export default {
           }
           this.$emit('update:closeregionOpts', this.regionOpts)
           if (this.regionOpts.length && this.form) {
-            const draft = this.readFormFieldDraft()
-            const draftRegion = this.matchFormFieldDraftInOptions(this.regionOpts, draft?.cloudregion)
+            const draft = this.canRestoreFormFieldDraft() ? this.readFormFieldDraft() : null
+            const draftRegion = draft
+              ? this.matchFormFieldDraftInOptions(this.regionOpts, draft.cloudregion)
+              : null
             const initialRegion = (this.decorator.cloudregion[1].initialValue && this.regionOpts.find(item => item.id === this.decorator.cloudregion[1].initialValue?.key))
               ? this.regionOpts.find(item => item.id === this.decorator.cloudregion[1].initialValue?.key)
               : null
@@ -137,12 +139,7 @@ export default {
             this.form.fc.setFieldsValue({
               cloudregion: { key: firstRegion.id, label: firstRegion.name },
             })
-          } else {
-            this._cloudregionZoneDraftRestoring = false
           }
-        })
-        .catch(() => {
-          this._cloudregionZoneDraftRestoring = false
         })
     },
     fetchZones (cloudregionId) {
@@ -157,10 +154,7 @@ export default {
       this.form && this.form.fc.setFieldsValue({
         zone: { key: '', label: '' },
       })
-      if (!params.cloudregion_id) {
-        this._cloudregionZoneDraftRestoring = false
-        return
-      }
+      if (!params.cloudregion_id) return
       if (this.filterBrandResource && !params.hasOwnProperty('read_only')) {
         params.read_only = false
       }
@@ -168,8 +162,10 @@ export default {
         .then(({ data: { data = [] } }) => {
           this.zoneOpts = data
           if (this.zoneOpts.length && this.form) {
-            const draft = this.readFormFieldDraft()
-            const draftZone = this.matchFormFieldDraftInOptions(this.zoneOpts, draft?.zone)
+            const draft = this.canRestoreFormFieldDraft() ? this.readFormFieldDraft() : null
+            const draftZone = draft
+              ? this.matchFormFieldDraftInOptions(this.zoneOpts, draft.zone)
+              : null
             const initialZone = (this.decorator.zone[1].initialValue && this.zoneOpts.find(item => item.id === this.decorator.zone[1].initialValue?.key))
               ? this.zoneOpts.find(item => item.id === this.decorator.zone[1].initialValue?.key)
               : null
@@ -179,9 +175,6 @@ export default {
               zone: { key: firstZone.id, label: firstZone.name },
             })
           }
-        })
-        .finally(() => {
-          this._cloudregionZoneDraftRestoring = false
         })
     },
     handleChange (value) {
@@ -194,7 +187,6 @@ export default {
       const selectedRegionOption = this.regionOpts.filter(item => item.id === cloudregionId)[0]
       this.emit(selectedRegionOption, 'cloudregion')
       this.fetchZones(cloudregionId)
-      this.$nextTick(() => this.persistCloudregionZoneDraft())
     },
     serializeFormFieldDraft () {
       if (!this.form?.fc) return undefined
@@ -205,12 +197,6 @@ export default {
         cloudregion: cloudregion?.key ? { key: cloudregion.key, label: cloudregion.label } : null,
         zone: zone?.key ? { key: zone.key, label: zone.label } : null,
       }
-    },
-    persistCloudregionZoneDraft () {
-      // 列表拉取后的程序化选中不落盘，仅用户点选写草稿
-      if (this._cloudregionZoneDraftRestoring) return
-      const data = this.serializeFormFieldDraft()
-      if (data !== undefined) this.writeFormFieldDraft(data)
     },
   },
 }

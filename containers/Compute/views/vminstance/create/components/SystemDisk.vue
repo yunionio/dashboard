@@ -26,8 +26,10 @@
       :defaultThroughput="defaultThroughput"
       @showStorageChange="showStorageChange"
       @optionalChange="onDiskOptionalChange"
+      @advancedChange="onDiskAdvancedChange"
       @diskTypeChange="setDiskMedium"
-      @storageHostChange="(val) => $emit('storageHostChange', val)" />
+      @storageHostChange="(val) => $emit('storageHostChange', val)"
+      @diskStorageOptionsReady="tryApplySessionDiskDraft" />
   </div>
 </template>
 
@@ -43,6 +45,7 @@ import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervis
 // let isFirstSetDefaultSize = true
 
 import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
+import { DRAFT_KIND } from '@/utils/createFormDraft'
 
 // 磁盘最小值
 export const DISK_MIN_SIZE = 10
@@ -56,6 +59,11 @@ export default {
     formDraftKey: {
       type: String,
       default: '',
+    },
+    // 选择类：类型等可跨 tab；高级项跨 tab 不展开/不回填（见 applyCreateFormFieldDraft）
+    formDraftKind: {
+      type: String,
+      default: DRAFT_KIND.SELECTION,
     },
     form: {
       type: Object,
@@ -388,6 +396,15 @@ export default {
     },
   },
   watch: {
+    typesMap: {
+      immediate: true,
+      handler (map) {
+        if (R.isEmpty(map)) return
+        this.tryApplySessionDiskDraft()
+        this.ensureSysDiskDefaultSize()
+      },
+      deep: true,
+    },
     imageMinDisk (val) {
       if (!val || !this.form?.fc) return
       const sizeKey = this.decorator.size[0]
@@ -406,8 +423,95 @@ export default {
   created () {
     this.setDefaultType = _.debounce(this.setDefaultType, 1000)
     this.sysDiskDraftRestoring = false
+    this._pendingSessionDiskDraft = null
+    this._pendingSessionFromLocal = false
   },
   methods: {
+    finishSessionDiskDraftRestore () {
+      this.sysDiskDraftRestoring = false
+      if (this.form?.fi) this.$set(this.form.fi, 'diskDraftRestoring', false)
+      this.ensureSysDiskDefaultSize()
+    },
+    /** 同 tab：typesMap、Disk 子组件、块存储 options 就绪后再视为完成 */
+    isSessionDiskDraftRestoreComplete (draft) {
+      const disk = this.$refs.disk
+      if (!disk) return false
+      const adv = this.pickSysDiskAdvancedDraft(draft)
+      if (!Object.keys(adv).length) return true
+      if (!disk.showAdvanced) return false
+      const storageKey = this.decorator.storage?.[0]
+      const storageVal = storageKey && (adv[storageKey] !== undefined ? adv[storageKey] : adv.systemDiskStorage)
+      if (storageVal) {
+        if (!disk.showStorage) return false
+      }
+      if ((adv.systemDiskSchedtag || adv.systemDiskPolicy ||
+        adv[this.decorator.schedtag?.[0]] || adv[this.decorator.policy?.[0]]) &&
+        !disk.showSchedtag) return false
+      if ((adv.systemDiskSnapshot || adv[this.decorator.snapshot?.[0]]) && !disk.showSnapshot) return false
+      if ((adv.systemDiskPreallocation || adv[this.decorator.preallocation?.[0]]) && !disk.showPreallocation) {
+        return false
+      }
+      return true
+    },
+    /**
+     * 就绪驱动回填：typesMap / Disk / Storage options 变化时重入，直到完成或草稿清空
+     * @returns {boolean} 是否已完成
+     */
+    tryApplySessionDiskDraft (options = {}) {
+      if (!this.form?.fc) return true
+      const fromLocal = options.fromLocal != null
+        ? !!options.fromLocal
+        : (this._pendingSessionFromLocal || this.isFormFieldDraftFromLocal())
+      let draft = options.draft || this._pendingSessionDiskDraft
+      if (!draft && this.canRestoreFormFieldDraft()) {
+        const raw = this.readFormFieldDraft()
+        if (raw) draft = this.sanitizeDraftForRestore(raw)
+      }
+      if (!draft || !Object.keys(draft).length) {
+        this._pendingSessionDiskDraft = null
+        return true
+      }
+      if (R.isEmpty(this.typesMap)) return false
+
+      this.sysDiskDraftRestoring = true
+      if (this.form.fi) this.$set(this.form.fi, 'diskDraftRestoring', true)
+
+      if (fromLocal) {
+        this._sysDiskLocalFullDraft = { ...draft }
+        this._sysDiskGatedApplied = Object.create(null)
+        this._sysDiskFromLocal = true
+        this._sysDiskLocalAdvanceApplied = false
+        this.applySysDiskDraftToForm(this.pickSysDiskBaseDraft(draft))
+        this.finishSessionDiskDraftRestore()
+        this._pendingSessionDiskDraft = null
+        return true
+      }
+
+      this._sysDiskFromLocal = false
+      this._sysDiskLocalAdvanceApplied = true
+      this.applySysDiskDraftToForm(this.sanitizeDraftForRestore(draft))
+
+      if (!this.hasSysDiskAdvancedDraft(draft)) {
+        this.finishSessionDiskDraftRestore()
+        this._pendingSessionDiskDraft = null
+        return true
+      }
+
+      const disk = this.$refs.disk
+      if (!disk) return false
+
+      disk.showAdvanced = true
+      this.applySysDiskAdvancedDraft(draft)
+
+      if (this.isSessionDiskDraftRestoreComplete(draft)) {
+        this.finishSessionDiskDraftRestore()
+        this._pendingSessionDiskDraft = null
+        return true
+      }
+      this._pendingSessionDiskDraft = draft
+      this._pendingSessionFromLocal = false
+      return false
+    },
     /** 写 fc 并同步 fd（setFieldsValue 不会触发 onValuesChange） */
     setFormDiskFields (values) {
       if (!this.form?.fc || !values || typeof values !== 'object') return
@@ -417,9 +521,166 @@ export default {
         this.$set(this.form.fd, key, values[key])
       })
     },
-    // 磁盘回填由页面 restoreVmDiskFormFieldDrafts 在 capability/sku 就绪后编排
+    // 由 typesMap watch → tryApplySessionDiskDraft 自管；保留方法供页面编排兼容调用
     restoreFormFieldDraftFields () {
-      return false
+      if (!this.canRestoreFormFieldDraft()) return false
+      if (typeof this.isCreateFormFieldTouched === 'function' && this.isCreateFormFieldTouched(this.resolveFormDraftKey())) {
+        return false
+      }
+      if (R.isEmpty(this.typesMap)) return false
+      return !!this.tryApplySessionDiskDraft()
+    },
+    /**
+     * 回填白名单：仅保留选择型子字段（类型/存储/调度标签/策略/快照/自动重置/预分配），
+     * 输入子字段（大小/iops/throughput）不回填，交由组件默认值
+     */
+    sanitizeDraftForRestore (draft) {
+      if (draft == null || typeof draft !== 'object') return draft
+      const pairs = [
+        [this.decorator.type?.[0], 'systemDiskType'],
+        [this.decorator.storage?.[0], 'systemDiskStorage'],
+        [this.decorator.schedtag?.[0], 'systemDiskSchedtag'],
+        [this.decorator.policy?.[0], 'systemDiskPolicy'],
+        [this.decorator.snapshot?.[0], 'systemDiskSnapshot'],
+        [this.decorator.auto_reset?.[0], 'systemDiskAutoReset'],
+        [this.decorator.preallocation?.[0], 'systemDiskPreallocation'],
+      ]
+      const ret = {}
+      pairs.forEach(([key, alias]) => {
+        if (!key) return
+        const val = draft[key] !== undefined ? draft[key] : draft[alias]
+        if (val !== undefined) {
+          ret[key] = val
+          ret[alias] = val
+        }
+      })
+      return ret
+    },
+    /** 系统盘类型（非高级）；跨 tab local 仅回填此项 */
+    pickSysDiskBaseDraft (draft) {
+      if (!draft || typeof draft !== 'object') return {}
+      const typeKey = this.decorator.type?.[0]
+      const ret = {}
+      const typeVal = draft[typeKey] !== undefined ? draft[typeKey] : draft.systemDiskType
+      if (typeVal !== undefined) {
+        if (typeKey) ret[typeKey] = typeVal
+        ret.systemDiskType = typeVal
+      }
+      return ret
+    },
+    /** 系统盘高级项；跨 tab 仅在用户手动打开高级后回填 */
+    pickSysDiskAdvancedDraft (draft) {
+      if (!draft || typeof draft !== 'object') return {}
+      const pairs = [
+        [this.decorator.storage?.[0], 'systemDiskStorage'],
+        [this.decorator.schedtag?.[0], 'systemDiskSchedtag'],
+        [this.decorator.policy?.[0], 'systemDiskPolicy'],
+        [this.decorator.snapshot?.[0], 'systemDiskSnapshot'],
+        [this.decorator.auto_reset?.[0], 'systemDiskAutoReset'],
+        [this.decorator.preallocation?.[0], 'systemDiskPreallocation'],
+      ]
+      const ret = {}
+      pairs.forEach(([key, alias]) => {
+        if (!key) return
+        const val = draft[key] !== undefined ? draft[key] : draft[alias]
+        if (val !== undefined) {
+          ret[key] = val
+          ret[alias] = val
+        }
+      })
+      return ret
+    },
+    hasSysDiskAdvancedDraft (draft) {
+      const adv = this.pickSysDiskAdvancedDraft(draft)
+      return Object.keys(adv).length > 0
+    },
+    applySysDiskAdvancedDraft (draft, options = {}) {
+      if (!draft || !this.form?.fc) return
+      const adv = this.pickSysDiskAdvancedDraft(draft)
+      if (!Object.keys(adv).length) return
+      const openToggles = options.openToggles !== false
+      // 跨 tab：用户刚展开高级时，不自动打开「指定块存储」等开关，仅回填始终可见项（如关机重置）
+      if (!openToggles) {
+        const autoKey = this.decorator.auto_reset?.[0]
+        const autoVal = adv[autoKey] !== undefined ? adv[autoKey] : adv.systemDiskAutoReset
+        if (autoKey && autoVal !== undefined) {
+          this.setFormDiskFields({ [autoKey]: autoVal })
+        }
+        return
+      }
+      this.applySysDiskDraftToForm(adv)
+      const disk = this.$refs.disk
+      if (!disk) return
+      if (adv.systemDiskStorage || adv[this.decorator.storage?.[0]]) disk.showStorage = true
+      if (adv.systemDiskSchedtag || adv.systemDiskPolicy ||
+        adv[this.decorator.schedtag?.[0]] || adv[this.decorator.policy?.[0]]) {
+        disk.showSchedtag = true
+      }
+      if (adv.systemDiskSnapshot || adv[this.decorator.snapshot?.[0]]) disk.showSnapshot = true
+      if (adv.systemDiskPreallocation || adv[this.decorator.preallocation?.[0]]) disk.showPreallocation = true
+    },
+    /** 跨 tab：优先用进页时缓存的完整草稿（避免类型落盘冲掉高级选择） */
+    isSysDiskDraftFromLocal () {
+      return !!(this._sysDiskFromLocal || this.isFormFieldDraftFromLocal())
+    },
+    resolveSysDiskLocalDraft () {
+      const raw = this._sysDiskLocalFullDraft || this.readFormFieldDraft()
+      return this.sanitizeDraftForRestore(raw)
+    },
+    onDiskAdvancedChange (open) {
+      if (!open || this._sysDiskLocalAdvanceApplied) return
+      if (!this.isSysDiskDraftFromLocal()) return
+      const draft = this.resolveSysDiskLocalDraft()
+      if (!this.hasSysDiskAdvancedDraft(draft)) return
+      this._sysDiskLocalAdvanceApplied = true
+      // 跨 tab：展开高级后不自动打开子开关；子开关由 onDiskOptionalChange 再回填
+      this.$nextTick(() => this.applySysDiskAdvancedDraft(draft, { openToggles: false }))
+    },
+    /**
+     * 跨 tab：用户打开「指定块存储 / 调度标签 / 快照 / 预分配」后再回填对应选择值
+     */
+    applySysDiskGatedOptionalFromDraft (flag) {
+      if (!flag || !this.isSysDiskDraftFromLocal()) return
+      if (!this._sysDiskGatedApplied) this._sysDiskGatedApplied = Object.create(null)
+      if (this._sysDiskGatedApplied[flag]) return
+      const draft = this.resolveSysDiskLocalDraft()
+      if (!draft) return
+      const values = {}
+      if (flag === 'showStorage') {
+        const key = this.decorator.storage?.[0]
+        const val = key && (draft[key] !== undefined ? draft[key] : draft.systemDiskStorage)
+        if (key && val !== undefined) values[key] = val
+      } else if (flag === 'showSchedtag') {
+        const sk = this.decorator.schedtag?.[0]
+        const pk = this.decorator.policy?.[0]
+        const sv = sk && (draft[sk] !== undefined ? draft[sk] : draft.systemDiskSchedtag)
+        const pv = pk && (draft[pk] !== undefined ? draft[pk] : draft.systemDiskPolicy)
+        if (sk && sv !== undefined) values[sk] = sv
+        if (pk && pv !== undefined) values[pk] = pv
+      } else if (flag === 'showSnapshot') {
+        const key = this.decorator.snapshot?.[0]
+        const val = key && (draft[key] !== undefined ? draft[key] : draft.systemDiskSnapshot)
+        if (key && val !== undefined) values[key] = val
+      } else if (flag === 'showPreallocation') {
+        const key = this.decorator.preallocation?.[0]
+        const val = key && (draft[key] !== undefined ? draft[key] : draft.systemDiskPreallocation)
+        const opts = this.$refs.disk?.preallocationOptions || []
+        // 预分配选项固定：不在列表则不回填
+        if (opts.length && val !== undefined && !opts.some(o => o.id === val || o.key === val || o.value === val)) {
+          this._sysDiskGatedApplied[flag] = true
+          return
+        }
+        if (key && val !== undefined) values[key] = val
+      }
+      if (!Object.keys(values).length) return
+      this._sysDiskGatedApplied[flag] = true
+      // Storage / BaseSelect 异步挂载后校验：不在 options 的会被组件清空
+      const write = () => this.setFormDiskFields(values)
+      write()
+      this.$nextTick(() => {
+        write()
+        this.$nextTick(write)
+      })
     },
     getCreateFormFieldDraftSnapshot () {
       const f = this.form?.fc
@@ -430,20 +691,17 @@ export default {
       const schedtagKey = this.decorator.schedtag?.[0]
       const policyKey = this.decorator.policy?.[0]
       const snapshotKey = this.decorator.snapshot?.[0]
-      const iopsKey = this.decorator.iops?.[0]
-      const throughputKey = this.decorator.throughput?.[0]
       const preallocationKey = this.decorator.preallocation?.[0]
+      const autoResetKey = this.decorator.auto_reset?.[0]
+      // size / iops / throughput 为输入字段：不写入草稿，避免回填与默认值抢跑
       const keys = [
         this.decorator.type?.[0],
-        this.decorator.size?.[0],
         storageKey,
         schedtagKey,
         policyKey,
         snapshotKey,
-        iopsKey,
-        throughputKey,
+        autoResetKey,
         preallocationKey,
-        this.decorator.auto_reset?.[0],
       ].filter(Boolean)
       // 未展开的可选高级项不写入草稿，保证展示与提交一致
       const skip = new Set()
@@ -453,22 +711,48 @@ export default {
         if (policyKey) skip.add(policyKey)
       }
       if (!disk?.showSnapshot && snapshotKey) skip.add(snapshotKey)
-      if (!disk?.showIops && iopsKey) skip.add(iopsKey)
-      if (!disk?.showThroughput && throughputKey) skip.add(throughputKey)
       if (!disk?.showPreallocation && preallocationKey) skip.add(preallocationKey)
       keys.forEach((k) => {
         if (skip.has(k)) return
         const v = f.getFieldValue(k)
         if (v !== undefined) pick[k] = v
       })
-      // 落盘前 clamp，避免草稿写入展示已抬升但 fc 仍偏小的非法 size
+      // 跨 tab：未展开子项时用进页 stash 保留高级选择，避免类型变更落盘冲掉
+      if (this.isSysDiskDraftFromLocal() && this._sysDiskLocalFullDraft) {
+        const kept = this.pickSysDiskAdvancedDraft(this.sanitizeDraftForRestore(this._sysDiskLocalFullDraft))
+        const skipMerge = new Set()
+        if (disk?.showStorage) {
+          if (storageKey) skipMerge.add(storageKey)
+          skipMerge.add('systemDiskStorage')
+        }
+        if (disk?.showSchedtag) {
+          if (schedtagKey) skipMerge.add(schedtagKey)
+          if (policyKey) skipMerge.add(policyKey)
+          skipMerge.add('systemDiskSchedtag')
+          skipMerge.add('systemDiskPolicy')
+        }
+        if (disk?.showSnapshot) {
+          if (snapshotKey) skipMerge.add(snapshotKey)
+          skipMerge.add('systemDiskSnapshot')
+        }
+        if (disk?.showPreallocation) {
+          if (preallocationKey) skipMerge.add(preallocationKey)
+          skipMerge.add('systemDiskPreallocation')
+        }
+        // 高级已展开：关机重置以表单为准
+        if (disk?.showAdvanced) {
+          if (autoResetKey) skipMerge.add(autoResetKey)
+          skipMerge.add('systemDiskAutoReset')
+        }
+        Object.keys(kept).forEach((k) => {
+          if (skipMerge.has(k)) return
+          if (pick[k] === undefined && kept[k] !== undefined) pick[k] = kept[k]
+        })
+      }
+      // 落盘前对照 typesMap 校正类型
       const typeKey = this.decorator.type?.[0]
-      const sizeKey = this.decorator.size?.[0]
       if (typeKey && pick[typeKey]) {
         pick[typeKey] = this.resolveSysDiskTypeFromDraft(pick[typeKey])
-      }
-      if (sizeKey && pick[sizeKey] != null) {
-        pick[sizeKey] = this.clampSysDiskDraftSize(pick[sizeKey], pick[typeKey]?.key)
       }
       return Object.keys(pick).length ? pick : undefined
     },
@@ -487,11 +771,11 @@ export default {
       const firstKey = Object.keys(this.typesMap)[0]
       return firstKey ? { key: firstKey, label: this.typesMap[firstKey].label } : typeVal
     },
-    /** 草稿大小夹到 [镜像min / sysMin, sysMax]，保证合法 */
+    /** 草稿大小夹到 [镜像min / sysMin, sysMax]，保证合法；NaN/非法值返回 undefined 表示无需回填 */
     clampSysDiskDraftSize (sizeVal, typeKey) {
       if (sizeVal == null || sizeVal === '') return sizeVal
       let size = Number(sizeVal)
-      if (Number.isNaN(size)) return sizeVal
+      if (Number.isNaN(size)) return undefined
       const diskMsg = (typeKey && this.typesMap?.[typeKey]) || {}
       const min = Math.max(this.imageMinDisk || 0, diskMsg.sysMin || this.min || 0, 0)
       const max = diskMsg.sysMax || this.max || Infinity
@@ -499,51 +783,56 @@ export default {
       if (Number.isFinite(max) && size > max) size = max
       return size
     },
-    applyCreateFormFieldDraft (draft) {
+    applyCreateFormFieldDraft (draft, options = {}) {
       if (!draft || !this.form?.fc) return
-      this.sysDiskDraftRestoring = true
-      if (this.form.fi) this.$set(this.form.fi, 'diskDraftRestoring', true)
-      const apply = () => {
-        if (!this.form?.fc || !draft) return
-        this.applySysDiskDraftToForm(draft)
-        const disk = this.$refs.disk
-        if (!disk) return
-        const hasAdv = !!(
-          draft.systemDiskStorage ||
-          draft.systemDiskSchedtag ||
-          draft.systemDiskPolicy ||
-          draft.systemDiskIops ||
-          draft.systemDiskThroughput ||
-          draft.systemDiskAutoReset ||
-          draft.systemDiskPreallocation ||
-          draft.systemDiskSnapshot
-        )
-        if (!hasAdv) return
-        disk.showAdvanced = true
-        if (draft.systemDiskStorage) disk.showStorage = true
-        if (draft.systemDiskSchedtag || draft.systemDiskPolicy) disk.showSchedtag = true
-        if (draft.systemDiskIops) disk.showIops = true
-        if (draft.systemDiskThroughput) disk.showThroughput = true
-        if (draft.systemDiskPreallocation) disk.showPreallocation = true
-        if (draft.systemDiskSnapshot) disk.showSnapshot = true
+      draft = this.sanitizeDraftForRestore(draft)
+      if (!draft || !Object.keys(draft).length) return
+      const fromLocal = options.fromLocal != null
+        ? !!options.fromLocal
+        : this.isFormFieldDraftFromLocal()
+      this._pendingSessionDiskDraft = draft
+      this._pendingSessionFromLocal = fromLocal
+      this.$nextTick(() => this.tryApplySessionDiskDraft({ draft, fromLocal }))
+    },
+    /**
+     * 大小永不回填：不经 setDefaultType debounce，立刻写入镜像/类型默认值
+     */
+    ensureSysDiskDefaultSize () {
+      if (!this.form?.fc) return
+      const sizeKey = this.decorator.size?.[0]
+      if (!sizeKey) return
+      const cur = this.form.fc.getFieldValue(sizeKey) ?? this.form.fd?.[sizeKey]
+      const valid = cur != null && cur !== '' && Number(cur) > 0 && !Number.isNaN(Number(cur))
+      if (valid) return
+      if (R.isNil(this.typesMap) || R.isEmpty(this.typesMap)) {
+        return
       }
-      this.$nextTick(apply)
-      // 盖住 setDefaultType(debounce 1s) 与 typesMap 异步就绪
-      setTimeout(apply, 1200)
-      setTimeout(apply, 2500)
-      setTimeout(() => {
-        apply()
-        this.sysDiskDraftRestoring = false
-        if (this.form?.fi) this.$set(this.form.fi, 'diskDraftRestoring', false)
-      }, 4500)
+      if ([IMAGES_TYPE_MAP.host.key, IMAGES_TYPE_MAP.snapshot.key].includes(this.form.fd?.imageType)) return
+      const typeKey = this.decorator.type?.[0]
+      const typeVal = this.form.fc.getFieldValue(typeKey) || this.form.fd?.[typeKey]
+      const keys = Object.keys(this.typesMap)
+      let firstKey = keys[0]
+      if (typeVal?.key) {
+        if (this.typesMap[typeVal.key]) {
+          firstKey = typeVal.key
+        } else {
+          const backend = String(typeVal.key).split('/')[0]
+          const matched = keys.find(k => k === backend || k.startsWith(`${backend}/`))
+          if (matched) firstKey = matched
+        }
+      }
+      const diskMsg = this.typesMap[firstKey] || {}
+      const initSize = this.defaultSize && this.defaultSize > this.imageMinDisk ? this.defaultSize : this.imageMinDisk
+      const newDiskSize = initSize || +diskMsg.sysMin || this.min || DISK_MIN_SIZE
+      this.setFormDiskFields({ [sizeKey]: newDiskSize })
     },
 
     setDefaultType () {
-      // 控件草稿回填窗口：勿用默认第一项盖草稿（但仍按当前约束夹取）
+      // 草稿回填窗口：先落草稿类型，再继续走默认 size（大小永不回填）
       if (this.sysDiskDraftRestoring) {
-        const draft = this.readFormFieldDraft()
-        if (draft) this.applySysDiskDraftToForm(draft)
-        return
+        let draft = this.sanitizeDraftForRestore(this.readFormFieldDraft())
+        if (this.isFormFieldDraftFromLocal()) draft = this.pickSysDiskBaseDraft(draft)
+        if (draft && Object.keys(draft).length) this.applySysDiskDraftToForm(draft)
       }
       const typeKey = this.decorator.type[0]
       const sizeKey = this.decorator.size[0]
@@ -586,18 +875,23 @@ export default {
       }
       const diskMsg = this.typesMap[firstKey]
       const typeVal = { key: diskMsg.key, label: diskMsg.label }
-      this.setFormDiskFields(this.defaultType || { [typeKey]: typeVal })
+      // 草稿回填中：保留草稿类型，勿被 defaultType 盖掉
+      if (this.sysDiskDraftRestoring && systemDiskType?.key) {
+        this.setFormDiskFields({ [typeKey]: this.typesMap[systemDiskType.key] ? { key: systemDiskType.key, label: this.typesMap[systemDiskType.key].label || systemDiskType.label } : typeVal })
+      } else {
+        this.setFormDiskFields(this.defaultType || { [typeKey]: typeVal })
+      }
       this.setDiskMedium(diskMsg)
       this.$nextTick(() => { // 解决磁盘大小 inputNumber 第一次点击变为0 的bug
         const initSize = this.defaultSize && this.defaultSize > this.imageMinDisk ? this.defaultSize : this.imageMinDisk
 
         let newDiskSize = initSize || +diskMsg.sysMin
-        // 已有回填大小：尽量保留，但必须落在当前合法区间（含镜像 min_disk）
-        if (systemDiskSize != null && sizeKey === 'systemDiskSize') {
+        // 已有合法大小则保留并夹取；否则用镜像/类型默认（大小永不从草稿回填）
+        if (systemDiskSize != null && systemDiskSize !== '' && sizeKey === 'systemDiskSize' && !Number.isNaN(Number(systemDiskSize)) && Number(systemDiskSize) > 0) {
           newDiskSize = this.clampSysDiskDraftSize(systemDiskSize, firstKey)
         }
         this.setFormDiskFields({
-          [typeKey]: typeVal,
+          [typeKey]: this.form.fc.getFieldValue(typeKey) || typeVal,
           [sizeKey]: newDiskSize,
         })
       })
@@ -607,12 +901,16 @@ export default {
       const typeKey = this.decorator.type[0]
       const sizeKey = this.decorator.size[0]
       let typeVal = draft[typeKey] || draft.systemDiskType
-      let sizeVal = draft[sizeKey] != null ? draft[sizeKey] : draft.systemDiskSize
       typeVal = this.resolveSysDiskTypeFromDraft(typeVal)
-      sizeVal = this.clampSysDiskDraftSize(sizeVal, typeVal?.key)
       const values = { ...draft }
+      // 大小 / iops / throughput 永不回填
+      delete values[sizeKey]
+      delete values.systemDiskSize
+      if (this.decorator.iops?.[0]) delete values[this.decorator.iops[0]]
+      delete values.systemDiskIops
+      if (this.decorator.throughput?.[0]) delete values[this.decorator.throughput[0]]
+      delete values.systemDiskThroughput
       if (typeVal) values[typeKey] = typeVal
-      if (sizeVal != null) values[sizeKey] = sizeVal
       this.setFormDiskFields(values)
     },
 
@@ -676,21 +974,48 @@ export default {
         if (this.form.fd && Object.prototype.hasOwnProperty.call(this.form.fd, decoratorKey)) {
           this.$delete(this.form.fd, decoratorKey)
         }
-        if (!this.sysDiskDraftRestoring && !this.form?.fi?.diskDraftRestoring) {
-          this.$nextTick(() => this.persistFormFieldDraftSnapshot())
+        // 用户关闭后不再用 stash 保留该项
+        if (this._sysDiskLocalFullDraft) {
+          delete this._sysDiskLocalFullDraft[decoratorKey]
+          delete this._sysDiskLocalFullDraft.systemDiskStorage
         }
+        if (this._sysDiskGatedApplied) delete this._sysDiskGatedApplied.showStorage
+      } else if (this.isSysDiskDraftFromLocal()) {
+        this.$nextTick(() => this.applySysDiskGatedOptionalFromDraft('showStorage'))
       }
     },
-    onDiskOptionalChange ({ show }) {
+    onDiskOptionalChange ({ flag, show }) {
+      if (show && this._pendingSessionDiskDraft && !this.isSysDiskDraftFromLocal()) {
+        this.$nextTick(() => this.tryApplySessionDiskDraft())
+      }
+      if (show && this.isSysDiskDraftFromLocal()) {
+        this.$nextTick(() => this.applySysDiskGatedOptionalFromDraft(flag))
+      }
       if (show || this.sysDiskDraftRestoring || this.form?.fi?.diskDraftRestoring) return
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
+      // 关闭子项：同步清掉 stash
+      if (!show && flag && this._sysDiskLocalFullDraft) {
+        if (flag === 'showSchedtag') {
+          const sk = this.decorator.schedtag?.[0]
+          const pk = this.decorator.policy?.[0]
+          if (sk) delete this._sysDiskLocalFullDraft[sk]
+          if (pk) delete this._sysDiskLocalFullDraft[pk]
+          delete this._sysDiskLocalFullDraft.systemDiskSchedtag
+          delete this._sysDiskLocalFullDraft.systemDiskPolicy
+        } else if (flag === 'showSnapshot') {
+          const key = this.decorator.snapshot?.[0]
+          if (key) delete this._sysDiskLocalFullDraft[key]
+          delete this._sysDiskLocalFullDraft.systemDiskSnapshot
+        } else if (flag === 'showPreallocation') {
+          const key = this.decorator.preallocation?.[0]
+          if (key) delete this._sysDiskLocalFullDraft[key]
+          delete this._sysDiskLocalFullDraft.systemDiskPreallocation
+        }
+        if (this._sysDiskGatedApplied) delete this._sysDiskGatedApplied[flag]
+      }
     },
     setDiskMedium (v) {
       if (this.form.fi) {
         this.$set(this.form.fi, 'systemDiskMedium', _.get(this.typesMap, `[${v.key}].medium`))
-      }
-      if (!this.sysDiskDraftRestoring && !this.form?.fi?.diskDraftRestoring) {
-        this.$nextTick(() => this.persistFormFieldDraftSnapshot())
       }
     },
   },

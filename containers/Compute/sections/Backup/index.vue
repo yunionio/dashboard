@@ -7,10 +7,8 @@
       <base-select
         v-decorator="decorator.backup"
         :options="hostList"
-        :extra-opts="backupExtraOpts"
         :select-props="{ placeholder: $t('compute.text_117') }"
-        :disabled-items="disabledItems"
-        @change="onBackupHostChange" />
+        :disabled-items="disabledItems" />
     </a-form-item>
   </div>
 </template>
@@ -20,6 +18,7 @@ import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 
 import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
+
 export default {
   name: 'Backup',
   mixins: [createFormFieldDraftMixin],
@@ -28,6 +27,11 @@ export default {
     formDraftKey: {
       type: String,
       default: '',
+    },
+    /** selection：switch / 单选，local + session 双写、可跨 tab 回填 */
+    formDraftKind: {
+      type: String,
+      default: 'selection',
     },
     decorator: {
       type: Object,
@@ -51,9 +55,6 @@ export default {
     return {
       hostList: [],
       backupEnable: this.decorator.backupEnable[1].initialValue,
-      backupDraftRestoring: false,
-      pendingBackup: '',
-      pendingBackupName: '',
     }
   },
   computed: {
@@ -63,11 +64,6 @@ export default {
       if (this.availableHostCount < 2) return true
       return false
     },
-    backupExtraOpts () {
-      const id = this.pendingBackup || this.readDraftBackupId()
-      if (!id) return []
-      return [{ id, name: this.pendingBackupName || id }]
-    },
   },
   watch: {
     backupEnable: {
@@ -76,6 +72,19 @@ export default {
       },
       immediate: true,
     },
+    hostList: {
+      immediate: true,
+      handler () {
+        // 列表就绪只补宿主机，勿整包 restore（否则草稿 backupEnable:false 会盖掉用户刚开的开关）
+        this.$nextTick(() => {
+          if (!this.canRestoreFormFieldDraft()) return
+          if (!this.backupEnable) return
+          const draft = this.sanitizeDraftForRestore(this.readFormFieldDraft())
+          if (!draft?.backup) return
+          this.writeBackupIfInHostList(draft.backup)
+        })
+      },
+    },
     hostParams: {
       deep: true,
       handler () {
@@ -83,50 +92,11 @@ export default {
       },
     },
   },
-  created () {
-    this._backupUserTouched = false
-    this._backupDraftApplied = false
-  },
   methods: {
     normalizeBackupId (val) {
       if (!val) return ''
       if (typeof val === 'object') return val.key || val.id || val.value || ''
       return val
-    },
-    readDraftBackupId () {
-      if (!this.canReadWriteFormFieldDraft()) return ''
-      return this.normalizeBackupId(this.readFormFieldDraft()?.backup)
-    },
-    /**
-     * 拉取备份机名称，避免 extraOpts 展示 UUID
-     * @param {string} hostId
-     */
-    async ensurePendingBackupName (hostId) {
-      if (!hostId) {
-        this.pendingBackupName = ''
-        this._backupNameFor = ''
-        return
-      }
-      if (this._backupNameFor === hostId && this.pendingBackupName && this.pendingBackupName !== hostId) {
-        return
-      }
-      this._backupNameFor = hostId
-      try {
-        const { data } = await new this.$Manager('hosts', 'v2').get({
-          id: hostId,
-          params: { scope: this.$store.getters.scope },
-        })
-        if (this._backupNameFor !== hostId) return
-        this.pendingBackupName = data?.name || hostId
-      } catch (e) {
-        if (this._backupNameFor === hostId) this.pendingBackupName = hostId
-      }
-    },
-    setPendingBackup (hostId) {
-      const id = this.normalizeBackupId(hostId)
-      this.pendingBackup = id
-      if (id) this.ensurePendingBackupName(id)
-      else this.pendingBackupName = ''
     },
     getCreateFormFieldDraftSnapshot () {
       const f = this.form?.fc
@@ -135,121 +105,61 @@ export default {
       if (!backupEnable) {
         return { backupEnable: false, backup: '' }
       }
-      let backup = this.normalizeBackupId(
-        f.getFieldValue(this.decorator.backup[0]) || this.pendingBackup,
-      )
-      // 仅程序化空窗保留 prev；用户清空写空，保证展示与提交一致
-      if (!backup && !this._backupUserTouched) {
-        const prev = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
-        backup = this.normalizeBackupId(prev && prev.backup)
-      }
       return {
         backupEnable: true,
-        backup: backup || '',
+        backup: this.normalizeBackupId(f.getFieldValue(this.decorator.backup[0])) || '',
       }
     },
-    applyCreateFormFieldDraft () {
-      this.tryRestoreBackupDraft()
-    },
-    tryRestoreBackupDraft () {
-      if (!this.canReadWriteFormFieldDraft()) return
-      if (this._backupUserTouched) return
-      const draft = this.readFormFieldDraft()
-      if (!draft) return
-      const f = this.form?.fc
-      if (!f) return
-      this.backupDraftRestoring = true
-      try {
-        if (draft.backupEnable) {
-          this.backupEnable = true
-          const backupId = this.normalizeBackupId(draft.backup)
-          if (backupId) this.setPendingBackup(backupId)
-          // 开关可先写；具体宿主机等 hostList 校验后再写
-          this.applyFormFieldValues({ [this.decorator.backupEnable[0]]: true })
-          this._backupDraftApplied = true
-          this.$nextTick(() => this.writePendingBackup())
-        } else if (draft.backupEnable === false) {
-          this.backupEnable = false
-          this.setPendingBackup('')
-          this.applyFormFieldValues({ [this.decorator.backupEnable[0]]: false })
-          this._backupDraftApplied = true
-        }
-      } finally {
-        this.$nextTick(() => {
-          this.backupDraftRestoring = false
-        })
+    applyCreateFormFieldDraft (draft) {
+      if (!draft || !this.form?.fc) return
+      // 跨 tab：不自动开开关；开关已开时（用户打开后拉列表）再回填宿主机
+      if (this.isFormFieldDraftFromLocal()) {
+        if (!this.backupEnable) return
+        this.writeBackupIfInHostList(draft.backup)
+        return
       }
-    },
-
-    change (val) {
-      if (!this.backupDraftRestoring) this._backupUserTouched = true
-      this.backupEnable = val
-      if (!val) {
-        this.setPendingBackup('')
+      if (draft.backupEnable) {
+        this.backupEnable = true
+        this.applyFormFieldValues({ [this.decorator.backupEnable[0]]: true })
+        this.writeBackupIfInHostList(draft.backup)
+      } else if (draft.backupEnable === false) {
+        this.backupEnable = false
+        this.applyFormFieldValues({ [this.decorator.backupEnable[0]]: false })
         const backupField = this.decorator.backup[0]
         this.applyFormFieldValues({ [backupField]: undefined })
         if (this.form?.fd) this.$delete(this.form.fd, backupField)
       }
-      this.$nextTick(() => {
-        if (!this.backupDraftRestoring) this.persistFormFieldDraftSnapshot()
-      })
     },
-    onBackupHostChange (val) {
-      const id = this.normalizeBackupId(val)
-      if (!id) {
-        // options 刷新清空时保留 pending，不算用户触摸
-        if (this.pendingBackup || this.backupDraftRestoring) {
-          this.$nextTick(() => this.writePendingBackup())
-          return
-        }
-        this._backupUserTouched = true
-        this.setPendingBackup('')
-      } else {
-        if (!this.backupDraftRestoring) this._backupUserTouched = true
-        this.setPendingBackup(id)
-      }
-      this.$nextTick(() => {
-        if (!this.backupDraftRestoring) this.persistFormFieldDraftSnapshot()
-      })
-    },
-    writePendingBackup () {
-      if (!this.pendingBackup || !this.form?.fc || !this.backupEnable) return
-      if (this._backupUserTouched && !this.backupDraftRestoring) return
+    /** hostList 命中才写备份机 */
+    writeBackupIfInHostList (backupId) {
+      const id = this.normalizeBackupId(backupId)
+      if (!id || !this.form?.fc || !this.backupEnable) return
       const hostList = Array.isArray(this.hostList) ? this.hostList : []
-      // 空列表不回填；非空未命中则丢弃
-      if (!hostList.length) return
-      const hit = hostList.some(item => item.id === this.pendingBackup)
-      if (!hit) {
-        this.setPendingBackup('')
-        return
-      }
+      if (!hostList.length || !hostList.some(item => item.id === id)) return
       const field = this.decorator.backup[0]
+      const current = this.normalizeBackupId(this.form.fc.getFieldValue(field))
+      if (current === id) return
       this.form.fc.getFieldDecorator(field, {
         ...(this.decorator.backup[1] || {}),
-        initialValue: this.pendingBackup,
+        initialValue: id,
       })
-      this.form.fc.setFieldsValue({ [field]: this.pendingBackup })
-      if (this.form.fd) this.$set(this.form.fd, field, this.pendingBackup)
+      this.applyFormFieldValues({ [field]: id })
+    },
+    change (val) {
+      this.backupEnable = val
+      if (!val) {
+        const backupField = this.decorator.backup[0]
+        this.applyFormFieldValues({ [backupField]: undefined })
+        if (this.form?.fd) this.$delete(this.form.fd, backupField)
+      }
     },
     async fetchBackupHosts () {
       if (!R.is(Object, this.hostParams) || this.isProjectMode) return
       try {
         const { data: { data = [] } } = await new this.$Manager('hosts', 'v2').list({ params: this.hostParams })
         this.hostList = data
-        // 列表里已有真名时同步到 pending map，避免标签仍显示 id
-        if (this.pendingBackup) {
-          const hit = data.find(item => item.id === this.pendingBackup)
-          if (hit?.name) this.pendingBackupName = hit.name
-        }
       } catch (error) {
         throw error
-      } finally {
-        this.$nextTick(() => {
-          if (!this._backupDraftApplied && !this._backupUserTouched) {
-            this.tryRestoreBackupDraft()
-          }
-          this.writePendingBackup()
-        })
       }
     },
   },

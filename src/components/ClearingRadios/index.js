@@ -77,8 +77,8 @@ export default {
           </a-radio-group>,
         )}
         {getFieldDecorator('auto_renew', {
-          valuePropName: 'checked',
           initialValue: this.auto_renew,
+          valuePropName: 'checked',
         })(
           <a-checkbox class="ml-4">{this.$t('common_728')}</a-checkbox>,
         )}

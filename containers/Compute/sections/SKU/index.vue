@@ -142,6 +142,11 @@ export default {
       type: String,
       default: '',
     },
+    /** selection：radio/单选 select/switch 类，local + session 双写、可跨 tab 回填 */
+    formDraftKind: {
+      type: String,
+      default: 'selection',
+    },
     billType: {
       type: String,
     },
@@ -432,11 +437,13 @@ export default {
         this.skuParamsSnapshot = snapshot
         this.resetPageInfo()
         this.resetColumnFilters()
+        this.applySkuTypeFromDraft()
         this.fetchData()
       },
       deep: true,
     },
     skuResults: {
+      immediate: true,
       handler (val, oldV) {
         if (this.skuLoading) return
         if (!val || !val.length) {
@@ -447,7 +454,7 @@ export default {
         }
         const prevFirstId = oldV && oldV.length ? oldV[0].id : null
         const nextFirstId = val[0].id
-        if (prevFirstId !== nextFirstId || !(oldV && oldV.length)) {
+        if (oldV === undefined || prevFirstId !== nextFirstId || !(oldV && oldV.length)) {
           this.setSku(val[0], false)
         }
       },
@@ -470,12 +477,26 @@ export default {
   },
   created () {
     this.skusM = new Manager('serverskus')
+    this.applySkuTypeFromDraft()
     if (this.skuParams && !R.isEmpty(this.skuParams)) {
       this.skuParamsSnapshot = this.getSkuParamsSnapshot(this.skuParams)
       this.fetchData()
     }
   },
   methods: {
+    /**
+     * 草稿回填套餐类型（radio），需在 fetch 前调用以便按 @local_category 拉列表
+     */
+    applySkuTypeFromDraft () {
+      if (!this.canRestoreFormFieldDraft()) return
+      if (this.initSkuData?.name || this.instanceType) return
+      const draft = this.readFormFieldDraft()
+      if (!draft || typeof draft !== 'object') return
+      const type = draft.skuType
+      if (type && type !== this.skuType) {
+        this.skuType = type
+      }
+    },
     getSortHeaderClass (field = '') {
       const { order_by, order } = this.skuSort
       if (!order_by || !order) return ''
@@ -658,10 +679,14 @@ export default {
           chooseSku = sku
         }
       }
-      // 组件草稿：options 变化后若上次 SKU name 仍在列表中则回填
+      // 组件草稿：options 变化后若上次 SKU name 仍在列表中则回填；类型 radio 一并回填
       if (!isSkuChange && !this.initSkuData?.name && !this.instanceType) {
         const draft = this.readFormFieldDraft()
         const preferredName = (draft && typeof draft === 'object') ? draft.name : draft
+        const preferredType = (draft && typeof draft === 'object') ? draft.skuType : undefined
+        if (preferredType && preferredType !== this.skuType) {
+          this.skuType = preferredType
+        }
         const draftSku = this.matchFormFieldDraftInOptions(this.skuList, preferredName, {
           getId: item => item.name,
         })
@@ -699,15 +724,19 @@ export default {
           }
         }
         this.$emit('change', hasSelected ? chooseSku : {})
-        if (isSkuChange && hasSelected) {
-          this.writeFormFieldDraft({ name: chooseSku.name })
-        }
         this.restoreTableSort()
       })
     },
+    /**
+     * 提交时获取表单草稿（name + 套餐类型 radio）
+     */
     serializeFormFieldDraft () {
       const name = this.selectedSkuData?.name
-      return name ? { name } : undefined
+      if (!name) return undefined
+      return {
+        name,
+        skuType: this.skuType || ALL_SKU_CATEGORY_OPT.key,
+      }
     },
     getSortColumnField (orderBy = '') {
       const fieldMap = {
