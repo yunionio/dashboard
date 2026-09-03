@@ -1566,6 +1566,7 @@ export const PERMISSION = {
   llm_instant_models_update: ['llm', 'llm_instant_models', 'update'],
   llm_instant_models_delete: ['llm', 'llm_instant_models', 'delete'],
   llm_instant_models_perform_syncstatus: ['llm', 'llm_instant_models', 'perform', 'syncstatus'],
+  llm_instant_models_perform_resume_import: ['llm', 'llm_instant_models', 'perform', 'resume-import'],
   llm_instant_models_perform_change_owner: ['llm', 'llm_instant_models', 'perform', 'change-owner'],
   llm_instant_models_perform_public: ['llm', 'llm_instant_models', 'perform', 'public'],
 
