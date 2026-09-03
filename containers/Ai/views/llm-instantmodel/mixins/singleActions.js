@@ -86,6 +86,28 @@ export default {
                 })
               },
             },
+            // 继续导入（失败后断点续传）
+            {
+              label: this.$t('aice.perform_resume_import'),
+              permission: 'llm_instant_models_perform_resume_import',
+              action: (obj) => {
+                this.onManager('performAction', {
+                  steadyStatus: ['queued', 'packaging', 'saving', 'active'],
+                  id: obj.id,
+                  managerArgs: {
+                    action: 'resume-import',
+                  },
+                })
+              },
+              meta: (obj) => {
+                const ret = { validate: true, tooltip: null }
+                if (obj.status !== 'killed') {
+                  ret.validate = false
+                  ret.tooltip = this.$t('aice.perform_resume_import.tooltip')
+                }
+                return ret
+              },
+            },
             // 更改项目
             {
               label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
