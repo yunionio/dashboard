@@ -374,6 +374,8 @@
   "aice.detail": "Details",
   "aice.event": "Operation Log",
   "aice.perform_sync_status": "Sync Status",
+  "aice.perform_resume_import": "Resume Import",
+  "aice.perform_resume_import.tooltip": "Only failed (killed) models can resume import",
   "aice.add": "Add {0}",
   "aice.screenshot": "Screenshot",
   "aice.desktop_status": "App Status",
