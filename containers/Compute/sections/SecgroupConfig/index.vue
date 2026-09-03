@@ -20,8 +20,7 @@
         :extra-opts="secgroupExtraOpts"
         :showSync="true"
         :select-props="{ allowClear: true, placeholder: $t('compute.text_190'), mode: 'multiple' }"
-        @update:initLoaded="onSecgroupInitLoaded"
-        @change="onSecgroupChange" />
+        @update:initLoaded="onSecgroupInitLoaded" />
     </a-form-item>
     <a-form-item
       class="mb-0"
@@ -50,15 +49,9 @@ import { SECGROUP_OPTIONS_MAP } from '@Compute/constants'
 import { HYPERVISORS_MAP, isUcloudLikeHypervisor } from '@/constants'
 import { validate } from '@/utils/validate'
 
-import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 export default {
   name: 'SecgroupConfig',
-  mixins: [createFormFieldDraftMixin],
   props: {
-    formDraftKey: {
-      type: String,
-      default: '',
-    },
     decorators: {
       type: Object,
       required: true,
@@ -87,14 +80,14 @@ export default {
       default: true,
     },
     /**
-     * 工单/草稿回填期间：不要因 showSecgroupBind 短暂变化把已选「指定安全组」冲回默认
+     * 工单回填期间：不要因 showSecgroupBind 短暂变化把已选「指定安全组」冲回默认
      */
     ignoreAutoTypeReset: {
       type: Boolean,
       default: false,
     },
     /**
-     * 工单/草稿：指定安全组 id 列表。BaseSelect 会在 params 变化时清空，需在 initLoaded 后反复写入
+     * 工单：指定安全组 id 列表。BaseSelect 会在 params 变化时清空，需在 initLoaded 后反复写入
      */
     initSecgroups: {
       type: Array,
@@ -226,7 +219,6 @@ export default {
     },
     types (val) {
       if (this.ignoreAutoTypeReset) return
-      if (this.canReadWriteFormFieldDraft() && this.readFormFieldDraft()?.secgroup_type) return
       if (!val.bind && this.form.fd && this.form.fd[this.decorators.type[0]] === 'bind' && this.form && this.form.fc) {
         this.form.fc.setFieldsValue({
           [this.decorators.type[0]]: 'default',
@@ -284,64 +276,6 @@ export default {
     this.unbindNetworkTagInputKeydown()
   },
   methods: {
-    getCreateFormFieldDraftSnapshot () {
-      const f = this.form?.fc
-      if (!f) return undefined
-      const typeField = this.decorators.type[0]
-      const secgroupField = this.decorators.secgroup[0]
-      const networkTagField = this.decorators.network_tags?.[0]
-      return {
-        secgroup_type: f.getFieldValue(typeField),
-        secgroup: f.getFieldValue(secgroupField),
-        network_tag: networkTagField ? f.getFieldValue(networkTagField) : undefined,
-        network_tags: networkTagField ? f.getFieldValue(networkTagField) : undefined,
-      }
-    },
-    applyCreateFormFieldDraft (draft) {
-      if (!draft || !this.form?.fc) return
-      const typeField = this.decorators.type[0]
-      const secgroupField = this.decorators.secgroup[0]
-      const networkTagField = this.decorators.network_tags?.[0]
-      let secgroupType = draft.secgroup_type
-      // 类型必须在当前可选 types 中
-      if (secgroupType && this.types && !this.types[secgroupType]) {
-        secgroupType = null
-      }
-      if (secgroupType) {
-        this.isBind = secgroupType === SECGROUP_OPTIONS_MAP.bind.key
-        this.isNetworkTag = secgroupType === SECGROUP_OPTIONS_MAP.networkTag.key
-        this.form.fc.setFieldsValue({ [typeField]: secgroupType })
-      }
-      const tagVal = draft.network_tags != null ? draft.network_tags : draft.network_tag
-      if (networkTagField && tagVal != null && (secgroupType === SECGROUP_OPTIONS_MAP.networkTag.key || this.isNetworkTag)) {
-        this.$nextTick(() => {
-          this.form.fc.setFieldsValue({ [networkTagField]: tagVal })
-        })
-      }
-      if (draft.secgroup && (secgroupType === SECGROUP_OPTIONS_MAP.bind.key || !secgroupType)) {
-        const ids = this.normalizeSecgroupIds(Array.isArray(draft.secgroup) ? draft.secgroup : [draft.secgroup])
-        if (ids.length) {
-          this.setPendingInitSecgroups(ids)
-          this.isBind = true
-          this.form.fc.setFieldsValue({ [typeField]: SECGROUP_OPTIONS_MAP.bind.key })
-          // BaseSelect 在 isBind 后才挂载，需延迟/initLoaded 再写具体安全组
-          const write = () => {
-            if (!this.pendingInitSecgroups.length || !this.form?.fc) return
-            this.isBind = true
-            this.form.fc.setFieldsValue({
-              [typeField]: SECGROUP_OPTIONS_MAP.bind.key,
-              [secgroupField]: [...this.pendingInitSecgroups],
-            })
-          }
-          this.$nextTick(() => {
-            write()
-            setTimeout(write, 800)
-            setTimeout(write, 2000)
-          })
-        }
-      }
-    },
-
     normalizeSecgroupIds (secgroups) {
       if (!Array.isArray(secgroups) || !secgroups.length) return []
       return secgroups.map((item) => {
@@ -412,7 +346,7 @@ export default {
       }
     },
     /**
-     * 工单/草稿回填入口
+     * 工单回填入口
      * @param {Array} secgroups
      */
     initData (secgroups) {
@@ -424,11 +358,8 @@ export default {
     },
     writePendingSecgroups () {
       if (!this.pendingInitSecgroups.length || !this.form?.fc) return
-      // 工单：ignoreAutoTypeReset；控件草稿：保留 pending 以便 BaseSelect 清空后再写
-      const draft = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
-      const allowRewrite = this.ignoreAutoTypeReset ||
-        !!(draft && (draft.secgroup || draft.secgroup_type === SECGROUP_OPTIONS_MAP.bind.key))
-      if (!allowRewrite) {
+      // 回填结束后不再强写，避免覆盖用户手动清空
+      if (!this.ignoreAutoTypeReset) {
         this.setPendingInitSecgroups([])
         return
       }
@@ -504,10 +435,6 @@ export default {
       } else {
         this.unbindNetworkTagInputKeydown()
       }
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
-    },
-    onSecgroupChange () {
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     bindNetworkTagInputKeydown () {
       if (!this.isNetworkTag) return

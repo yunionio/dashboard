@@ -25,7 +25,7 @@
       :sys-disk-size="sysDiskSize"
       :form="form"
       :edit="edit"
-      :ignore-storage="ignoreStorage"
+      :ignore-storage="effectiveIgnoreStorage"
       :prefer-draft="osSelectDraftPrefer"
       :hypervisor="hypervisor" />
   </div>
@@ -36,7 +36,6 @@ import * as R from 'ramda'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import storage from '@/utils/storage'
-import { getComponentDraft } from '@/utils/createFormDraft'
 import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 import ImageSelect from './ImageSelect'
 
@@ -50,6 +49,11 @@ export default {
     formDraftKey: {
       type: String,
       default: '',
+    },
+    /** selection：radio/单选 select/switch 类，local + session 双写、可跨 tab 回填 */
+    formDraftKind: {
+      type: String,
+      default: 'selection',
     },
     types: {
       type: Array,
@@ -141,12 +145,43 @@ export default {
     isBaremetal () {
       return this.type === 'baremetal'
     },
-    /** 传给 ImageSelect：列表就绪后再按草稿选 os/image */
-    osSelectDraftPrefer () {
-      if (!this.canReadWriteFormFieldDraft()) return null
+    /**
+     * 回填优先级（互斥）：
+     * 1) query / 工单修改 → 只跟 query、工单
+     * 2) 否则有草稿 → 只跟草稿
+     * 3) 否则 → 只跟 storage
+     */
+    hasOsQueryPrefer () {
+      const q = this.$route?.query || {}
+      return !!(q.imageType || q.imageOs || q.imageId)
+    },
+    hasOsWorkflowPrefer () {
+      if (this.ignoreStorage || this.edit) return true
+      const osInit = this.decorator?.os?.[1]?.initialValue
+      const imageInit = this.decorator?.image?.[1]?.initialValue
+      return !!(osInit && imageInit)
+    },
+    hasOsDraftPrefer () {
+      if (this.hasOsQueryPrefer || this.hasOsWorkflowPrefer) return false
+      if (!this.canRestoreFormFieldDraft()) return false
       const draft = this.readFormFieldDraft()
-      if (!draft || typeof draft !== 'object') return null
-      return draft
+      if (!draft || typeof draft !== 'object') return false
+      return !!(draft.imageType || draft.os || draft.image)
+    },
+    shouldRestoreOsFromStorage () {
+      if (this.ignoreStorage) return false
+      if (this.hasOsQueryPrefer || this.hasOsWorkflowPrefer || this.hasOsDraftPrefer) return false
+      return true
+    },
+    /** query / 工单 / 草稿控制时不读 storage，避免双源抢填 */
+    effectiveIgnoreStorage () {
+      return this.ignoreStorage || this.hasOsQueryPrefer || this.hasOsWorkflowPrefer || this.hasOsDraftPrefer
+    },
+    /** 传给 ImageSelect：仅草稿独占时回填 os/image */
+    osSelectDraftPrefer () {
+      if (!this.hasOsDraftPrefer) return null
+      const draft = this.readFormFieldDraft()
+      return draft && typeof draft === 'object' ? draft : null
     },
     mirrorTypeOptions () {
       let ret = [IMAGES_TYPE_MAP.standard, IMAGES_TYPE_MAP.customize]
@@ -193,29 +228,31 @@ export default {
     },
   },
   watch: {
+    mirrorTypeOptions: {
+      immediate: true,
+      handler () {
+        // query / 工单独占时不回填草稿
+        if (this.hasOsQueryPrefer || this.hasOsWorkflowPrefer) return
+        this.$nextTick(() => this.restoreFormFieldDraftFields())
+      },
+    },
     hypervisor () {
       this.lockDraftImageTypeFromStorage()
-      const draft = this.canReadWriteFormFieldDraft() ? this.readFormFieldDraft() : null
-      // 草稿关闭时优先读 oc_selected_image 里的 imageType，避免被 fd 初始值（standard）覆盖
-      const lastSelectedImageInfo = this.ignoreStorage ? {} : (storage.get('oc_selected_image') || {})
-      const prefer = this._lockedDraftImageType || draft?.imageType || lastSelectedImageInfo.imageType || this.form.fd?.imageType || this.decorator.imageType[1].initialValue
+      const prefer = this.resolveImageTypePrefer()
       const availableKeys = this.mirrorTypeOptions.map(item => item.key)
       // 草稿 imageType 尚未出现在 opts（如 kvm 未就绪）时，不要回落 standard 污染展示/后续逻辑
-      if (this._lockedDraftImageType && !availableKeys.includes(this._lockedDraftImageType)) return
+      if (this.hasOsDraftPrefer && this._lockedDraftImageType && !availableKeys.includes(this._lockedDraftImageType)) return
       // CAS/UIS/SangFor 等仅支持 private_iso，不能继续沿用私有云默认的 private
       const imageType = availableKeys.includes(prefer) ? prefer : (availableKeys[0] || prefer)
       this.applyImageTypeValue(imageType)
     },
     'form.fd.image.key': {
       handler () {
-        const lastSelectedImageInfo = this.ignoreStorage ? {} : (storage.get('oc_selected_image') || {})
-        const { imageType = lastSelectedImageInfo.imageType } = this.$route.query
-        if (this.isFirstLoad && imageType) {
-          // 有控件草稿时不要被 query/storage 盖掉
-          this.lockDraftImageTypeFromStorage()
-          if (this._lockedDraftImageType) return
+        // query 独占：首屏按 query.imageType 回填，不看草稿 / storage
+        const queryImageType = this.$route?.query?.imageType
+        if (this.isFirstLoad && queryImageType) {
           setTimeout(() => {
-            this.applyImageTypeValue(imageType)
+            this.applyImageTypeValue(queryImageType)
           }, 0)
         }
       },
@@ -227,17 +264,32 @@ export default {
   },
   methods: {
     /**
+     * 解析 imageType 偏好（与 os/image 同源互斥）
+     */
+    resolveImageTypePrefer () {
+      const q = this.$route?.query || {}
+      if (q.imageType) return q.imageType
+      if (this.hasOsWorkflowPrefer) {
+        return this.form.fd?.imageType || this.decorator.imageType[1].initialValue
+      }
+      if (this.hasOsDraftPrefer) {
+        const draft = this.readFormFieldDraft()
+        return this._lockedDraftImageType || draft?.imageType || this.decorator.imageType[1].initialValue
+      }
+      if (this.shouldRestoreOsFromStorage) {
+        const last = storage.get('oc_selected_image') || {}
+        return last.imageType || this.form.fd?.imageType || this.decorator.imageType[1].initialValue
+      }
+      return this.form.fd?.imageType || this.decorator.imageType[1].initialValue
+    },
+    /**
      * 首屏 ImageSelect 默认 standard 拉镜像后会 persist；
-     * 挂载时锁定草稿里的 imageType，避免被写成 standard。
-     * 仅草稿启用时生效；草稿关闭（开关/未挂 key）时不锁定，
-     * 让 oc_selected_image 里的 imageType 正常恢复。
+     * 仅草稿独占时锁定草稿 imageType，避免被写成 standard。
      */
     lockDraftImageTypeFromStorage () {
       if (!this.formDraftKey || this._lockedDraftImageType) return
-      if (!this.canReadWriteFormFieldDraft()) return
-      const scope = this.resolveFormDraftScope?.()
-      if (!scope) return
-      const draft = getComponentDraft(scope, this.formDraftKey)
+      if (!this.hasOsDraftPrefer) return
+      const draft = this.readFormFieldDraft()
       if (draft?.imageType) {
         this._lockedDraftImageType = draft.imageType
       }
@@ -267,7 +319,7 @@ export default {
       if (!f) return undefined
       let imageType = f.getFieldValue(this.decorator.imageType[0])
       // 用户未改镜像类型前：禁止用当前 UI（常为 standard）覆盖草稿
-      if (this.isFirstLoad && this._lockedDraftImageType) {
+      if (this.isFirstLoad && this.hasOsDraftPrefer && this._lockedDraftImageType) {
         imageType = this._lockedDraftImageType
       }
       const os = f.getFieldValue(this.decorator.os[0])
@@ -279,6 +331,8 @@ export default {
       }
     },
     applyCreateFormFieldDraft (draft) {
+      // query / 工单独占时不应用草稿
+      if (this.hasOsQueryPrefer || this.hasOsWorkflowPrefer) return
       if (!draft || !this.form?.fc) return
       if (draft.imageType && !this._lockedDraftImageType) {
         this._lockedDraftImageType = draft.imageType
@@ -303,7 +357,6 @@ export default {
       this.$emit('update:imageType', imageType)
       // 切类型即写 imageType；自动选中的镜像由 updateImageMsg 补写 os/id
       this.persistSelectedImage({ imageType })
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     updateImageMsg (...ret) {
       const { imageMsg: image, isAuto } = ret[0] || {}
@@ -323,11 +376,6 @@ export default {
         }
       }
       this.$emit('updateImageMsg', ...ret)
-      // 镜像类型尚未对齐草稿前不写，避免 standard 污染（snapshot 也会保护 imageType）
-      if (this.isFirstLoad && this._lockedDraftImageType && this.imageType !== this._lockedDraftImageType) {
-        return
-      }
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
   },
 }

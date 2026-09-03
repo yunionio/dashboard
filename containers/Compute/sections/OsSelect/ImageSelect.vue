@@ -179,8 +179,8 @@ export default {
       return this.images.cacheimagesList.map(item => item.id)
     },
     storageSelectImage () { // public__select_image: {os: OS_TYPE_OPTION_MAP.Windows.value, image: {id: xxx, name: xxx}}
-      // 接入 createFormDraft 的页面传 ignoreStorage，避免与统一草稿双源抢填
-      if (this.ignoreStorage) return null
+      // 工单 ignoreStorage / 草稿 preferDraft / query 场景：不读 storage，避免双源抢填
+      if (this.ignoreStorage || this.preferDraft) return null
       return storage.get(`${this.cloudType}${SELECT_IMAGE_KEY_SUFFIX}`)
     },
     showCloudaccount () {
@@ -761,24 +761,42 @@ export default {
       return images || []
     },
     fillImageOpts () {
-      // ignoreStorage 时不读旧镜像记忆；仍可用 decorator / route.query（工单、从镜像创建）
-      let lastSelectedImageInfo = this.ignoreStorage ? {} : (storage.get('oc_selected_image') || {})
-      // 默认值（decorator / 工单回填优先于 storage）
-      if (this.decorator.os[1].initialValue && this.decorator.image[1].initialValue) {
-        lastSelectedImageInfo = { ...lastSelectedImageInfo, imageOs: this.decorator.os[1].initialValue, imageId: this.decorator.image[1].initialValue.key }
-      }
-      // 控件级草稿优先于本地 oc_selected_image（query 预填仍最高）
-      if (this.preferDraft && (this.preferDraft.os || this.preferDraft.image)) {
-        const draftImageId = this.preferDraft.image && typeof this.preferDraft.image === 'object'
-          ? this.preferDraft.image.key
-          : this.preferDraft.image
-        lastSelectedImageInfo = {
-          ...lastSelectedImageInfo,
-          imageOs: this.preferDraft.os || lastSelectedImageInfo.imageOs,
-          imageId: draftImageId || lastSelectedImageInfo.imageId,
+      // 回填互斥：query → 草稿 → 工单(decorator) → storage，不同时混用
+      const query = this.$route?.query || {}
+      const hasQueryPrefer = !!(query.imageType || query.imageOs || query.imageId)
+      let preferInfo = {}
+
+      if (hasQueryPrefer) {
+        preferInfo = {
+          imageOs: query.imageOs,
+          imageId: query.imageId,
         }
+      } else if (this.preferDraft) {
+        // 父级仅在草稿独占时传入；即使只有 imageType 也不回落 storage
+        if (this.preferDraft.os || this.preferDraft.image) {
+          const draftImageId = this.preferDraft.image && typeof this.preferDraft.image === 'object'
+            ? this.preferDraft.image.key
+            : this.preferDraft.image
+          preferInfo = {
+            imageOs: this.preferDraft.os,
+            imageId: draftImageId,
+          }
+        }
+      } else if (this.ignoreStorage || this.edit) {
+        const osInit = this.decorator.os[1].initialValue
+        const imageInit = this.decorator.image[1].initialValue
+        if (osInit && imageInit) {
+          preferInfo = {
+            imageOs: osInit,
+            imageId: imageInit.key,
+          }
+        }
+      } else {
+        preferInfo = storage.get('oc_selected_image') || {}
       }
-      const { imageOs = lastSelectedImageInfo.imageOs, imageId = lastSelectedImageInfo.imageId } = this.$route.query
+
+      const imageOs = preferInfo.imageOs
+      const imageId = preferInfo.imageId
 
       if (imageOs) {
         let os = imageOs.replace(imageOs[0], imageOs[0].toUpperCase())

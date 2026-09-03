@@ -135,9 +135,6 @@ export default {
           }
         }
       })
-      if (typeof this.syncCreateFormFcDrafts === 'function') {
-        this.syncCreateFormFcDrafts(changedFields)
-      }
     },
   },
 }

@@ -166,24 +166,17 @@ export default {
     selectedVpc (val) {
       if (this._ipSubnetDraftRestoring || this._pendingIpSubnetDraft) {
         this.$nextTick(() => this.tryApplyPendingIpSubnetDraft())
-        return
       }
-      this.persistFormFieldDraftSnapshot()
     },
     'form.fd.network' () {
       if (this._ipSubnetDraftRestoring || this._pendingIpSubnetDraft) {
         this.$nextTick(() => this.tryApplyPendingIpSubnetDraft())
-        return
       }
-      this.persistFormFieldDraftSnapshot()
-    },
-    'form.fd.ip_addr' () {
-      if (this._ipSubnetDraftRestoring || this._pendingIpSubnetDraft) return
-      this.persistFormFieldDraftSnapshot()
     },
     vpcParmasConcat: {
       deep: true,
       handler () {
+        this.$nextTick(() => this.restoreFormFieldDraftFields())
         if (this._pendingIpSubnetDraft) {
           this.$nextTick(() => this.tryApplyPendingIpSubnetDraft())
         }
@@ -193,14 +186,9 @@ export default {
   created () {
     this._pendingIpSubnetDraft = null
     this._ipSubnetDraftRestoring = false
-    this._ipSubnetDraftRetryTimer = null
-    this._ipSubnetDraftRetryCount = 0
   },
-  beforeDestroy () {
-    if (this._ipSubnetDraftRetryTimer) {
-      clearTimeout(this._ipSubnetDraftRetryTimer)
-      this._ipSubnetDraftRetryTimer = null
-    }
+  mounted () {
+    this.$nextTick(() => this.restoreFormFieldDraftFields())
   },
   methods: {
     getCreateFormFieldDraftSnapshot () {
@@ -208,52 +196,22 @@ export default {
       if (!fc) return null
       const vpc = fc.getFieldValue(this.vpcField)
       const network = fc.getFieldValue(this.networkField)
-      const ipAddr = this.ipShow ? fc.getFieldValue(this.ipAddrField) : undefined
-      if (!vpc && !network && !ipAddr && !this.ipShow) return null
+      // 指定 IP（输入）不落盘；无 vpc/network 则不写草稿
+      if (!vpc && !network) return null
       return {
         vpc,
         network,
-        ip_addr: ipAddr,
-        ipShow: this.ipShow,
       }
     },
     applyCreateFormFieldDraft (draft) {
       if (!draft || typeof draft !== 'object') return
-      const hasAny = draft.vpc || draft.network || draft.ip_addr || draft.ipShow
+      const hasAny = draft.vpc || draft.network
       if (!hasAny) return
       this._pendingIpSubnetDraft = {
         vpc: draft.vpc,
         network: draft.network,
-        ip_addr: draft.ip_addr,
-        ipShow: !!(draft.ipShow || draft.ip_addr),
-      }
-      this._ipSubnetDraftRetryCount = 0
-      if (this._pendingIpSubnetDraft.ipShow) {
-        this.ipShow = true
       }
       this.$nextTick(() => this.tryApplyPendingIpSubnetDraft())
-    },
-    persistFormFieldDraftSnapshot (options = {}) {
-      // 回填期间勿落盘，避免默认首项冲掉指定 IP / 网段草稿
-      if (this._ipSubnetDraftRestoring || this._pendingIpSubnetDraft) return
-      const data = this.serializeFormFieldDraft()
-      if (data === null || data === undefined) {
-        this.clearFormFieldDraft()
-        return
-      }
-      this.writeFormFieldDraft(data, options)
-    },
-    scheduleIpSubnetDraftRetry () {
-      if (!this._pendingIpSubnetDraft) return
-      if (this._ipSubnetDraftRetryCount >= 8) {
-        this._pendingIpSubnetDraft = null
-        return
-      }
-      if (this._ipSubnetDraftRetryTimer) clearTimeout(this._ipSubnetDraftRetryTimer)
-      this._ipSubnetDraftRetryTimer = setTimeout(() => {
-        this._ipSubnetDraftRetryCount += 1
-        this.tryApplyPendingIpSubnetDraft()
-      }, 300)
     },
     async tryApplyPendingIpSubnetDraft () {
       const draft = this._pendingIpSubnetDraft
@@ -261,18 +219,14 @@ export default {
 
       this._ipSubnetDraftRestoring = true
       try {
-        if (draft.ipShow) this.ipShow = true
-
         if (draft.vpc) {
           const vpcList = this.$refs.vpcSelect?.sourceList || []
-          // 列表空：不写回；仍在重试窗口内则等待
+          // 列表空：不写回；等 onVpcInitLoaded 再试
           if (!vpcList.length) {
-            this.scheduleIpSubnetDraftRetry()
             return
           }
           if (!vpcList.some(item => item.id === draft.vpc)) {
             this._pendingIpSubnetDraft = null
-            this._ipSubnetDraftRetryCount = 0
             return
           }
           this.form.fc.setFieldsValue({ [this.vpcField]: draft.vpc })
@@ -286,38 +240,26 @@ export default {
           await this.$nextTick()
           const networkList = this.$refs.networkSelect?.sourceList || []
           if (!networkList.length) {
-            this.scheduleIpSubnetDraftRetry()
             return
           }
           if (!networkList.some(item => item.id === draft.network)) {
             draft.network = undefined
-            draft.ip_addr = undefined
-            this.form.fc.setFieldsValue({ [this.networkField]: undefined, [this.ipAddrField]: undefined })
+            this.form.fc.setFieldsValue({ [this.networkField]: undefined })
           } else {
             this.form.fc.setFieldsValue({ [this.networkField]: draft.network })
           }
         }
 
-        if (draft.ip_addr && this.ipShow && draft.network) {
-          await this.$nextTick()
-          this.form.fc.setFieldsValue({ [this.ipAddrField]: draft.ip_addr })
-        }
-
         const vpcOk = !draft.vpc || this.form.fc.getFieldValue(this.vpcField) === draft.vpc
         const networkOk = !draft.network || this.form.fc.getFieldValue(this.networkField) === draft.network
-        const ipOk = !draft.ip_addr || !this.ipShow || !draft.network ||
-          this.form.fc.getFieldValue(this.ipAddrField) === draft.ip_addr
-        if (vpcOk && networkOk && ipOk) {
+        if (vpcOk && networkOk) {
           this._pendingIpSubnetDraft = null
-          this._ipSubnetDraftRetryCount = 0
         } else {
-          this.scheduleIpSubnetDraftRetry()
+          await this.$nextTick()
+          this.tryApplyPendingIpSubnetDraft()
         }
       } finally {
         this._ipSubnetDraftRestoring = false
-        if (!this._pendingIpSubnetDraft) {
-          this.$nextTick(() => this.persistFormFieldDraftSnapshot())
-        }
       }
     },
     onVpcInitLoaded () {
@@ -336,7 +278,6 @@ export default {
         if (this.form && this.form.fd) this.$delete(this.form.fd, this.ipAddrField)
       }
       this.ipShow = next
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     vpcLabelFormat (item) {
       if (!item.cidr_block) return item.name

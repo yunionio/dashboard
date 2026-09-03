@@ -114,7 +114,7 @@
             <a-icon type="question-circle-o" />
           </a-tooltip>
         </span>
-        <kickstart :decorator="decorators.kickstart" :form="form" :form-draft-key="vmDraftFields.kickstart" />
+        <kickstart :decorator="decorators.kickstart" :form="form" />
       </a-form-item>
       <a-form-item v-if="isShowAgent" :label="$t('compute.agent.label')" :extra="$t('compute.agent.extra')">
         <a-checkbox v-decorator="decorators.deploy_telegraf">{{ $t('compute.agent.install.plugin') }}</a-checkbox>
@@ -197,7 +197,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
-          v-decorator="decorators.tag" :default-checked="tagDefaultChecked" :form-draft-key="vmDraftFields.tag" />
+          v-decorator="decorators.tag" :default-checked="tagDefaultChecked" />
       </a-form-item>
       <advance-config-block>
         <eip-config
@@ -234,8 +234,7 @@
             :hypervisor="form.fd.hypervisor"
             :showSecgroupBind="showSecgroupBind"
             :ignore-auto-type-reset="preserveAdvanceInitProps"
-            :init-secgroups="draftInitSecgroups"
-            :form-draft-key="vmDraftFields.secgroup" />
+            :init-secgroups="workflowInitSecgroups" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_311')" class="mb-0">
           <sched-policy
@@ -248,22 +247,46 @@
             :policy-schedtag-params="policySchedtagParams"
             :showSchedCloudprovider="showSchedCloudprovider"
             :cloudproviderParamsExtra="cloudproviderParamsExtra"
-            :init-prefer-host="draftInitPreferHost"
+            :init-prefer-host="workflowInitPreferHost"
             :preserve-init-prefer-host="preserveAdvanceInitProps"
-            :init-schedtags="draftInitSchedtags"
+            :init-schedtags="workflowInitSchedtags"
             :form-draft-key="vmDraftFields.schedPolicy" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_1155')" class="mb-0" v-if="isKvm">
-          <bios :decorator="decorators.bios" :uefi="uefi" :isArm="isArm" :showDefault="true" />
+          <bios
+            ref="biosRef"
+            :decorator="decorators.bios"
+            :form="form"
+            :uefi="uefi"
+            :isArm="isArm"
+            :showDefault="true"
+            :form-draft-key="vmDraftFields.bios" />
         </a-form-item>
         <a-form-item :label="$t('compute.vdi_protocol')" class="mb-0" v-if="isKvm">
-          <vdi :decorator="decorators.vdi" :showDefault="true" />
+          <vdi
+            ref="vdiRef"
+            :decorator="decorators.vdi"
+            :form="form"
+            :showDefault="true"
+            :form-draft-key="vmDraftFields.vdi" />
         </a-form-item>
         <a-form-item :label="$t('compute.vga')" class="mb-0" v-if="isKvm">
-          <vga :decorator="decorators.vga" :vdi="vdi" :form="form" :showDefault="true" />
+          <vga
+            ref="vgaRef"
+            :decorator="decorators.vga"
+            :vdi="vdi"
+            :form="form"
+            :showDefault="true"
+            :form-draft-key="vmDraftFields.vga" />
         </a-form-item>
         <a-form-item :label="$t('compute.machine')" class="mb-0" v-if="isKvm">
-          <machine :decorator="getMachineDecorator()" :isArm="isArm" :showDefault="true" />
+          <machine
+            ref="machineRef"
+            :decorator="getMachineDecorator()"
+            :form="form"
+            :isArm="isArm"
+            :showDefault="true"
+            :form-draft-key="vmDraftFields.machine" />
         </a-form-item>
         <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" :label="$t('compute.text_1156')" :extra="$t('compute.text_1157')">
           <backup
@@ -286,8 +309,7 @@
           <instance-groups
             ref="instanceGroupsRef"
             :decorators="instanceGroupDecorators"
-            :params="instanceGroupsParams"
-            :form-draft-key="vmDraftFields.instanceGroups" />
+            :params="instanceGroupsParams" />
         </a-form-item>
         <a-form-item v-show="!isServertemplate" v-if="isKvm && enableEncryption" :label="$t('compute.server.encryption')" :extra="$t('compute.server.encryption.extra')">
           <encrypt-keys
@@ -296,7 +318,7 @@
             :decorators="decorators.encrypt_keys"
             :form-draft-key="vmDraftFields.encryptKeys" />
         </a-form-item>
-        <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" :form-draft-key="vmDraftFields.customData" />
+        <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" />
         <!-- <a-form-item v-if="!isOpenSourceVersion" :label="$t('compute.bastionHost.bastion_host')">
           <bastion-host :decorator="decorators.bastion_host" :form="form" :form-draft-key="vmDraftFields.bastionHost" />
         </a-form-item> -->
@@ -762,10 +784,13 @@ export default {
           // 回填期间镜像异步到位：不要清 imageType / 不要按镜像重置盘
           if (this.isFormBackfill || this.form?.fi?.diskDraftRestoring) return
           if (this.canUseCreateFormDraft && !this._diskDraftSkipImageResetOnce) {
-            const diskDraft = this.readCreateFormFieldDraft(this.vmDraftFields.dataDisk)
-            if (diskDraft?.__dataDiskKeys?.length) {
-              this._diskDraftSkipImageResetOnce = true
-              return
+            // 仅同 session 数据盘草稿才跳过清空；跨 tab local 不回填数据盘，无需保护
+            if (!this.isCreateFormFieldDraftFromLocal(this.vmDraftFields.dataDisk)) {
+              const diskDraft = this.readCreateFormFieldDraft(this.vmDraftFields.dataDisk)
+              if (diskDraft?.__dataDiskKeys?.length) {
+                this._diskDraftSkipImageResetOnce = true
+                return
+              }
             }
           }
           // this.form.fi.dataDiskDisabled = false
