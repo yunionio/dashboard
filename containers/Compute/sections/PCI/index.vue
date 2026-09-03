@@ -92,6 +92,7 @@ import {
 } from '@Compute/constants'
 import DiskSizeInput from '@/sections/DiskSizeInput'
 import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
+import { pickFields } from '@/utils/createFormDraft'
 
 let id = 0
 export default {
@@ -189,16 +190,25 @@ export default {
         })
       }
     },
-    realPciDevTypeOptions () {
-      if (this.pciDraftRestoring) return
-      if (this.canReadWriteFormFieldDraft()) {
-        const draft = this.readFormFieldDraft()
-        if (draft?.pciEnable) {
-          this.tryApplyPciDraft(draft)
-          return
+    realPciDevTypeOptions: {
+      immediate: true,
+      handler () {
+        if (this.pciDraftRestoring) return
+        if (this.canRestoreFormFieldDraft()) {
+          const draft = this.readFormFieldDraft()
+          if (draft?.pciEnable) {
+            this.tryApplyPciDraft(draft)
+            return
+          }
         }
-      }
-      this.changeSelectedValue()
+        this.changeSelectedValue()
+      },
+    },
+    pciOptions: {
+      immediate: true,
+      handler () {
+        this.$nextTick(() => this.restoreFormFieldDraftFields())
+      },
     },
     isPciEmpty (val) {
       if (val) this.pciEnable = false
@@ -210,31 +220,102 @@ export default {
     this.pciForm.fc.getFieldDecorator('keys', { initialValue: [id], preserve: true })
   },
   methods: {
+    /** 选型在父 form.fc/fd；pciForm 仅 keys */
+    readPciRowField (field, key) {
+      const bracketKey = `${field}[${key}]`
+      const fc = this.form?.fc
+      const fromFc = fc?.getFieldValue?.(bracketKey)
+      if (fromFc !== undefined && fromFc !== null && fromFc !== '') return fromFc
+      const fd = this.form?.fd || {}
+      if (fd[bracketKey] !== undefined) return fd[bracketKey]
+      if (fd[field] && typeof fd[field] === 'object') return fd[field][key]
+      return undefined
+    },
     getCreateFormFieldDraftSnapshot () {
       const enable = this.pciEnable
       if (!enable) return { pciEnable: false }
-      const values = this.pciForm?.fc?.getFieldsValue?.() || {}
-      return { pciEnable: true, ...values }
+      const keys = this.pciForm?.fc?.getFieldValue?.('keys') || []
+      const ret = { pciEnable: true, keys: Array.isArray(keys) ? [...keys] : [] }
+      ret.keys.forEach((key) => {
+        ;['pciDevType', 'pciGpuType', 'pciModel', 'pciCount'].forEach((field) => {
+          const val = this.readPciRowField(field, key)
+          if (val !== undefined && val !== null && val !== '') {
+            ret[`${field}[${key}]`] = val
+          }
+        })
+      })
+      return ret
     },
     applyCreateFormFieldDraft (draft) {
       this.tryApplyPciDraft(draft || this.readFormFieldDraft())
     },
+    /**
+     * 回填白名单：只保留开关 + 结构 + 选择型子字段（设备类型/GPU 模式/型号/数量），
+     * 输入子字段 memory_request 不回填
+     */
+    sanitizeDraftForRestore (draft) {
+      if (draft == null || typeof draft !== 'object') return draft
+      if (Array.isArray(this.formDraftRestoreFields) && this.formDraftRestoreFields.length) {
+        return pickFields(draft, this.formDraftRestoreFields)
+      }
+      const ret = {}
+      if (draft.pciEnable !== undefined) ret.pciEnable = draft.pciEnable
+      if (Array.isArray(draft.keys)) ret.keys = draft.keys
+      const keys = Array.isArray(draft.keys) ? draft.keys : []
+      ;['pciDevType', 'pciGpuType', 'pciModel', 'pciCount'].forEach((field) => {
+        keys.forEach((key) => {
+          const bracketKey = `${field}[${key}]`
+          if (draft[bracketKey] !== undefined) ret[bracketKey] = draft[bracketKey]
+        })
+      })
+      return ret
+    },
     tryApplyPciDraft (draft) {
       if (!draft?.pciEnable) return
+      if (this.pciDraftRestoring) return
       this.pciDraftRestoring = true
       this.pciEnable = true
+      const keys = Array.isArray(draft.keys) && draft.keys.length ? draft.keys : [0]
+      // 避免后续 add 与回填 key 冲突
+      keys.forEach((k) => {
+        const n = Number(k)
+        if (!Number.isNaN(n) && n > id) id = n
+      })
       this.$nextTick(() => {
         try {
           if (this.form?.fc) this.form.fc.setFieldsValue({ pciEnable: true })
-          if (this.pciForm?.fc && draft.keys) {
-            try { this.pciForm.fc.setFieldsValue(draft) } catch (e) { /* ignore */ }
+          if (this.pciForm?.fc) {
+            try { this.pciForm.fc.setFieldsValue({ keys }) } catch (e) { /* ignore */ }
           }
-        } finally {
+          // 等行挂载后再写父表单选型
           this.$nextTick(() => {
-            this.pciDraftRestoring = false
-            // 对照当前可选设备/型号，非法值回退
-            this.$nextTick(() => this.changeSelectedValue())
+            try {
+              const fields = {}
+              keys.forEach((key) => {
+                ;['pciDevType', 'pciGpuType', 'pciModel', 'pciCount'].forEach((field) => {
+                  const bracketKey = `${field}[${key}]`
+                  if (draft[bracketKey] !== undefined) fields[bracketKey] = draft[bracketKey]
+                })
+              })
+              if (Object.keys(fields).length && this.form?.fc) {
+                this.form.fc.setFieldsValue(fields)
+                if (this.form.fd) {
+                  Object.keys(fields).forEach((k) => this.$set(this.form.fd, k, fields[k]))
+                }
+              }
+              const first = keys[0]
+              if (draft[`pciDevType[${first}]`]) this.curPciDevType = draft[`pciDevType[${first}]`]
+              if (draft[`pciGpuType[${first}]`]) this.curGpuType = draft[`pciGpuType[${first}]`]
+            } finally {
+              this.$nextTick(() => {
+                this.pciDraftRestoring = false
+                // 对照当前可选设备/型号，非法值回退
+                this.$nextTick(() => this.changeSelectedValue())
+              })
+            }
           })
+        } catch (e) {
+          this.pciDraftRestoring = false
         }
       })
     },
@@ -347,7 +428,6 @@ export default {
     },
     change (val) {
       this.pciEnable = val
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
       this.$emit('change', val)
     },
     onChangeDevType (val, key) {
@@ -367,14 +447,12 @@ export default {
         this.$delete(this.form.fd, `memory_request[${key}]`)
       }
       this.reset()
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     onChangeGpuType (val, key) {
       this.curGpuType = val
       this.form.fc.setFieldsValue({
         [`pciGpuType[${key}]`]: val,
       })
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     onChangeModel (val, key) {
       this.form.fc.setFieldsValue({
@@ -388,19 +466,16 @@ export default {
           [`memory_request[${key}]`]: max,
         })
       }
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     onChangeCount (e, key) {
       this.form.fc.setFieldsValue({
         [`pciCount[${key}]`]: e.target.value,
       })
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     onChangeMemoryRequest (val, key) {
       this.form.fc.setFieldsValue({
         [`memory_request[${key}]`]: val,
       })
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     add () {
       const { pciForm } = this
@@ -409,7 +484,6 @@ export default {
       const nextKeys = keys.concat(nextKey)
       pciForm.fc.setFieldsValue({ keys: nextKeys })
       this.initialValue(nextKey)
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     remove (k) {
       const { pciForm } = this
@@ -422,7 +496,6 @@ export default {
         keys: keys.filter(key => key !== k),
       })
       this.removeValue(k)
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
     },
     reset () {
       const { pciForm } = this

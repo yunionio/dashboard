@@ -156,7 +156,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
-          v-decorator="decorators.tag" :default-checked="tagDefaultChecked" :form-draft-key="vmDraftFields.tag" />
+          v-decorator="decorators.tag" :default-checked="tagDefaultChecked" />
       </a-form-item>
       <advance-config-block>
         <a-form-item v-if="!isServertemplate">
@@ -176,8 +176,7 @@
             :hypervisor="form.fd.hypervisor"
             :showSecgroupBind="showSecgroupBind"
             :ignore-auto-type-reset="preserveAdvanceInitProps"
-            :init-secgroups="draftInitSecgroups"
-            :form-draft-key="vmDraftFields.secgroup" />
+            :init-secgroups="workflowInitSecgroups" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
           <sched-policy
@@ -188,12 +187,12 @@
             :policy-host-params="policyHostParams"
             :decorators="decorators.schedPolicy"
             :policy-schedtag-params="policySchedtagParams"
-            :init-prefer-host="draftInitPreferHost"
+            :init-prefer-host="workflowInitPreferHost"
             :preserve-init-prefer-host="preserveAdvanceInitProps"
-            :init-schedtags="draftInitSchedtags"
+            :init-schedtags="workflowInitSchedtags"
             :form-draft-key="vmDraftFields.schedPolicy" />
         </a-form-item>
-        <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" :form-draft-key="vmDraftFields.customData" />
+        <custom-data v-if="showCustomData" ref="customData" :decorators="decorators" :form="form" />
         <bastion-host ref="bastionHostRef" v-if="!isOpenSourceVersion && hasBastionService" :decorator="decorators.bastion_host" :form="form" :form-draft-key="vmDraftFields.bastionHost" />
       </advance-config-block>
       <bottom-bar
@@ -485,16 +484,25 @@ export default {
             hypervisors,
           }
           this.form.fc.getFieldDecorator('hypervisor', { preserve: true })
-          // 草稿/工单回填：优先用 init hypervisor；否则保留当前选中；最后才默认第一项
+          // 草稿/工单回填：优先 init / 草稿 hypervisor；否则保留当前；最后默认第一项
+          const draftHyper = !this.isFormBackfill && this.canUseCreateFormDraft
+            ? this.readCreateFormFieldDraftForRestore(this.vmDraftFields.hypervisor)
+            : null
           const preferHyper = this.isFormBackfill
             ? (this.effectiveInitFormData?.hypervisor || this.decorators.hypervisor?.[1]?.initialValue)
-            : (this.form.fd.hypervisor || this.decorators.hypervisor?.[1]?.initialValue)
+            : (draftHyper || this.form.fd.hypervisor || this.decorators.hypervisor?.[1]?.initialValue)
           const hypervisor = (preferHyper && hypervisors.includes(preferHyper))
             ? preferHyper
             : hypervisors[0]
           this.form.fc.setFieldsValue({ hypervisor })
           this.$set(this.form.fd, 'hypervisor', hypervisor)
-          this.$nextTick(this.fetchInstanceSpecs)
+          this.$nextTick(() => {
+            this.fetchInstanceSpecs()
+            if (!this._privateCapabilityDraftRestoreOnce) {
+              this._privateCapabilityDraftRestoreOnce = true
+              this.restoreDeferredFormFieldDrafts()
+            }
+          })
         })
     },
     fetchInstanceSpecs () {

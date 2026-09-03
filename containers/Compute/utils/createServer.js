@@ -18,7 +18,7 @@ import {
 } from '@Compute/constants'
 import { IMAGES_TYPE_MAP, HOST_CPU_ARCHS } from '@/constants/compute'
 
-import { HYPERVISORS_MAP, resolveHypervisorKey } from '@/constants'
+import { HYPERVISORS_MAP } from '@/constants'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import store from '@/store'
 import i18n from '@/locales'
@@ -188,11 +188,8 @@ export const createVmDecorators = (type, initData = {}) => {
     if (initData.nets[0] && initData.nets[0].hasOwnProperty('exit') && !initData.nets[0].exit) {
       initNetworkType = NETWORK_OPTIONS_MAP.default.key
     }
-    // 工单/草稿：nets 有 network；extraData.nets 有 network（GenCreateData）或 network_id（读盘补齐）
-    if (initData.nets[0] && initData.nets[0].hasOwnProperty('network') && initData.extraData?.nets && initData.extraData?.nets[0] && (initData.extraData.nets[0].network_id || initData.extraData.nets[0].hasOwnProperty('network'))) {
+    if (initData.nets[0] && initData.nets[0].hasOwnProperty('network') && initData.extraData?.nets && initData.extraData?.nets[0] && initData.extraData?.nets[0].hasOwnProperty('network_id')) {
       initNetworkType = NETWORK_OPTIONS_MAP.manual.key
-    } else if (initData.nets[0] && initData.nets[0].schedtags) {
-      initNetworkType = NETWORK_OPTIONS_MAP.schedtag.key
     }
   }
   let initEipType = EIP_TYPES_MAP.none.key
@@ -222,14 +219,13 @@ export const createVmDecorators = (type, initData = {}) => {
     initEncryptEnable = 'existing'
   }
   let initLoginType = 'random'
-  // 草稿：extraData.loginType（不落密码原文）；工单：keypair / reset_password / password
-  if (initData.extraData?.loginType) {
-    initLoginType = initData.extraData.loginType
-  } else if (initData.keypair) {
+  if (initData.keypair) {
     initLoginType = 'keypair'
-  } else if (initData.hasOwnProperty('reset_password') && !initData.reset_password) {
+  }
+  if (initData.hasOwnProperty('reset_password') && !initData.reset_password) {
     initLoginType = 'image'
-  } else if (initData.hasOwnProperty('password') && initData.password) {
+  }
+  if (initData.hasOwnProperty('password') && initData.password) {
     initLoginType = 'password'
   }
   return {
@@ -379,8 +375,7 @@ export const createVmDecorators = (type, initData = {}) => {
       password: [
         'loginPassword',
         {
-          // 草稿 enrich 会清 loginPassword；工单修改仍可用 password
-          initialValue: initData.extraData?.loginPassword || initData.password || '',
+          initialValue: initData.password || '',
           validateFirst: true,
           rules: [
             { required: true, message: i18n.t('compute.text_204') },
@@ -961,7 +956,8 @@ export const createVmDecorators = (type, initData = {}) => {
       duration: [
         'duration',
         {
-          initialValue: initData.duration === '1w' ? '7d' : initData.duration || '1m',
+          // 包年包月时长 key 为大写（1M/1Y）；勿与按量 Duration 的小写 duration 混用初始值
+          initialValue: initData.duration || '1M',
         },
       ],
       autoRenew: [
@@ -1100,7 +1096,7 @@ export const createVmDecorators = (type, initData = {}) => {
     custom_data_type: [
       'custom_data_type',
       {
-        initialValue: initData.custom_data_type || (initData.user_data ? 'input' : ''),
+        initialValue: initData.user_data ? 'input' : '',
       },
     ],
     deploy_telegraf: [
@@ -1667,16 +1663,8 @@ export class GenCreateData {
   getHypervisor () {
     let ret = this.fd.hypervisor
     if (this.isPublic && !this.isPrepaid) {
-      const provider = this.fd.sku?.provider
-      if (provider) {
-        ret = provider.toLowerCase()
-      } else {
-        // 草稿序列化时可能尚无 sku，兜底表单已选平台
-        const formProvider = Array.isArray(this.fd.provider) ? this.fd.provider[0] : this.fd.provider
-        if (formProvider) {
-          ret = resolveHypervisorKey(formProvider) || String(formProvider).toLowerCase()
-        }
-      }
+      const provider = this.fd.sku.provider
+      if (provider) ret = provider.toLowerCase()
     }
     return ret
   }
@@ -1700,14 +1688,9 @@ export class GenCreateData {
    */
   getPreferRegion () {
     if (this.isPublic && !this.isPrepaid) {
-      if (this.fd.sku?.cloudregion_id) return this.fd.sku.cloudregion_id
-      // 草稿：无 sku 时从表单 cloudregion（多选为 id 数组）取值
-      const cr = this.fd.cloudregion
-      if (Array.isArray(cr)) return cr[0]
-      if (cr && typeof cr === 'object') return cr.key
-      return cr
+      return this.fd.sku.cloudregion_id
     }
-    return this.fd.cloudregion?.key
+    return this.fd.cloudregion.key
   }
 
   /**

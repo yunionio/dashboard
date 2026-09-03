@@ -119,8 +119,7 @@
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
           v-decorator="decorators.tag"
-          :default-checked="tagDefaultChecked"
-          :form-draft-key="containerDraftFields.tag" />
+          :default-checked="tagDefaultChecked" />
       </a-form-item>
       <advance-config-block>
           <eip-config
@@ -156,8 +155,7 @@
               :hypervisor="form.fd.hypervisor"
               :showSecgroupBind="showSecgroupBind"
               :ignore-auto-type-reset="preserveAdvanceInitProps"
-              :init-secgroups="draftInitSecgroups"
-              :form-draft-key="containerDraftFields.secgroup" />
+              :init-secgroups="workflowInitSecgroups" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" class="mb-0">
             <sched-policy
@@ -170,8 +168,8 @@
               :policy-schedtag-params="policySchedtagParams"
               :showSchedCloudprovider="showSchedCloudprovider"
               :cloudproviderParamsExtra="cloudproviderParamsExtra"
-              :init-schedtags="draftInitSchedtags"
-              :init-prefer-host="draftInitPreferHost"
+              :init-schedtags="workflowInitSchedtags"
+              :init-prefer-host="workflowInitPreferHost"
               :preserve-init-prefer-host="preserveAdvanceInitProps"
               :form-draft-key="containerDraftFields.schedPolicy" />
           </a-form-item>
@@ -179,8 +177,7 @@
             <instance-groups
               ref="instanceGroupsRef"
               :decorators="instanceGroupDecorators"
-              :params="instanceGroupsParams"
-              :form-draft-key="containerDraftFields.instanceGroups" />
+              :params="instanceGroupsParams" />
           </a-form-item>
           <a-form-item :label="$t('compute.repo.port_mapping')">
             <labels
@@ -188,8 +185,7 @@
               :create-form="form"
               :decorators="decorators.portMapping"
               :disableConf="portMappingDisableConf"
-              :init-pairs="draftInitPortMappings"
-              :form-draft-key="containerDraftFields.portMapping"
+              :init-pairs="workflowInitPortMappings"
               :title="$t('compute.repo.port_mapping')"
               :keyLabel="$t('compute.repo.container_port')"
               :valueLabel="$t('compute.repo.host_port')"
@@ -204,8 +200,7 @@
           :panes.sync="form.fi.containerPanes"
           :errPanes="form.fi.errPanes"
           :decorators="decorators.containers"
-          :initContainers="containerInitList"
-          :form-draft-key="containerDraftFields.containers" />
+          :initContainers="containerInitList" />
       </advance-config-block>
       <bottom-bar
         :loading="submiting"

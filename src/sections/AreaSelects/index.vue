@@ -118,6 +118,11 @@ export default {
       type: String,
       default: '',
     },
+    /** selection：radio/单选 select/switch 类，local + session 双写、可跨 tab 回填 */
+    formDraftKind: {
+      type: String,
+      default: 'selection',
+    },
     isRequired: {
       type: Boolean,
       default: false,
@@ -126,7 +131,6 @@ export default {
       type: Object,
       default: () => {
         return {
-          // city: i18n.t('rules.city'),
           provider: i18n.t('rules.provider'),
           cloudregion: i18n.t('rules.region'),
           zone: i18n.t('rules.zone'),
@@ -140,7 +144,6 @@ export default {
     names: {
       type: Array,
       default: () => {
-        // return ['city', 'provider', 'cloudregion', 'zone']
         return ['provider', 'cloudregion', 'zone']
       },
     },
@@ -163,11 +166,6 @@ export default {
         }
       },
     },
-    /*
-    cityParams: {
-      type: [Object, Function],
-    },
-    */
     providerParams: {
       type: [Object, Function],
     },
@@ -208,8 +206,6 @@ export default {
   },
   data () {
     return {
-      // cityLoading: false,
-      // cityList: [],
       providerLoading: false,
       providerList: [],
       cloudregionLoading: false,
@@ -217,7 +213,6 @@ export default {
       zoneLoading: false,
       zoneList: [],
       changeSeq: 0,
-      areaDraftRestoring: false,
       // 多选 prune 用：缓存已加载的 region/zone，避免列表刷新后误删合法选中项
       itemCache: {
         cloudregion: {},
@@ -244,33 +239,39 @@ export default {
     },
   },
   watch: {
-    /*
-    cityParams (val, oldVal) {
-      if (R.equals(val, oldVal)) return
-      this.fetchs()
-    },
-    */
     providerParams (val, oldVal) {
       if (R.equals(val, oldVal)) return
-      if (this.shouldSkipFetchForAreaDraft()) return
       this.fetchs()
     },
     cloudregionParams (val, oldVal) {
       if (R.equals(val, oldVal)) return
-      if (this.shouldSkipFetchForAreaDraft()) return
       this.fetchs(['cloudregion', 'zone'])
     },
     'form.fd.billType' (val, oldVal) {
       if (R.equals(val, oldVal)) return
-      // 计费变化会过滤平台列表：有区域草稿则软刷新后再回填，绝不 resetSelect
-      if (this.requeueAreaDraftAfterBillChange()) return
-      if (this.shouldSkipFetchForAreaDraft()) {
-        this.fetchListsOnly(this.names, { skipDefaultSelect: true }).then(() => {
-          this.tryApplyPendingAreaDraft()
-        })
-        return
-      }
       this.fetchs()
+    },
+    // opts 变化 → 读草稿回填
+    providerList: {
+      immediate: true,
+      handler (val, oldVal) {
+        if (oldVal !== undefined && R.equals(val, oldVal)) return
+        this.tryMatchAreaDraftField('provider')
+      },
+    },
+    cloudregionList: {
+      immediate: true,
+      handler (val, oldVal) {
+        if (oldVal !== undefined && R.equals(val, oldVal)) return
+        this.tryMatchAreaDraftField('cloudregion')
+      },
+    },
+    zoneList: {
+      immediate: true,
+      handler (val, oldVal) {
+        if (oldVal !== undefined && R.equals(val, oldVal)) return
+        this.tryMatchAreaDraftField('zone')
+      },
     },
     providerMultiple () {
       this.syncMultipleMode('provider')
@@ -283,13 +284,12 @@ export default {
     },
   },
   created () {
-    this._pendingAreaDraft = null
-    this._lockedAreaDraft = null
-    this._areaDraftApplyRunning = false
-    this._areaDraftApplied = false
     this.fetchs()
   },
   methods: {
+    /**
+     * 提交时获取表单草稿
+     */
     getCreateFormFieldDraftSnapshot () {
       const f = this.form?.fc
       if (!f) return undefined
@@ -300,121 +300,48 @@ export default {
       }
     },
     /**
-     * 控件草稿回填：先挂 pending，等 fetchsDone / 列表就绪后再写，避免与 resetSelect 竞态
+     * 单字段回填：多选跳过；草稿命中当前 opts 则写入并拉下游
      */
-    applyCreateFormFieldDraft (draft) {
-      if (!draft || typeof draft !== 'object') return Promise.resolve()
-      const hasAny = ['provider', 'cloudregion', 'zone'].some((k) => {
-        const v = draft[k]
-        return Array.isArray(v) ? v.length > 0 : !!v
-      })
-      if (!hasAny) return Promise.resolve()
-      this._pendingAreaDraft = {
-        provider: draft.provider,
-        cloudregion: draft.cloudregion,
-        zone: draft.zone,
+    async tryMatchAreaDraftField (name) {
+      if (!this.names.includes(name)) return false
+      if (!this.canRestoreFormFieldDraft()) return false
+      if (typeof this.isCreateFormFieldTouched === 'function' &&
+        this.isCreateFormFieldTouched(this.resolveFormDraftKey())) {
+        return false
       }
-      // 锁定：后续 fetchs 只软刷新并重放，避免 billType/params 变更冲掉
-      this._lockedAreaDraft = { ...this._pendingAreaDraft }
-      this._areaDraftApplied = false
-      return this.tryApplyPendingAreaDraft()
-    },
-    shouldSkipFetchForAreaDraft () {
-      return !!(this.areaDraftRestoring || this._pendingAreaDraft || this._areaDraftApplyRunning)
-    },
-    /**
-     * 计费方式变更后：若有控件草稿，重新挂 pending 并软刷新列表
-     * @returns {boolean} 是否已接管（调用方勿再 fetchs/reset）
-     */
-    requeueAreaDraftAfterBillChange () {
-      if (!this.canReadWriteFormFieldDraft()) return false
-      const draft = this.readFormFieldDraft() || this._lockedAreaDraft
+      if (this.isMultiple(name)) return false
+
+      const draft = this.readFormFieldDraft()
       if (!draft || typeof draft !== 'object') return false
-      const hasAny = ['provider', 'cloudregion', 'zone'].some((k) => {
-        const v = draft[k]
-        return Array.isArray(v) ? v.length > 0 : !!v
-      })
-      if (!hasAny) return false
-      this._pendingAreaDraft = {
-        provider: draft.provider,
-        cloudregion: draft.cloudregion,
-        zone: draft.zone,
+      const prefer = draft[name]
+      if (prefer === undefined || this.isEmptyFieldValue(name, prefer)) return false
+
+      const opts = this[`${name}List`] || []
+      if (!opts.length) return false
+
+      const wantIds = this.toArray(prefer).filter(Boolean)
+      const matchedIds = wantIds.filter(id => !!this.findListItem(name, id))
+      if (!matchedIds.length) return false
+
+      const next = this.normalizeFieldValue(name, matchedIds)
+      if (this.isFieldValueChanged(name, next)) {
+        this.FC.setFieldsValue({ [name]: next })
+        this.emitFieldChange(name, next)
+        this.syncAreaDraftToFormFd(name)
       }
-      this._lockedAreaDraft = { ...this._pendingAreaDraft }
-      this._areaDraftApplied = false
-      this.fetchListsOnly(this.names, { skipDefaultSelect: true }).then(() => {
-        this.tryApplyPendingAreaDraft()
-      })
+      // 上游命中后拉下游，由下游 *List watch 继续回填
+      if (name === 'provider') {
+        const down = this.names.filter(n => n === 'cloudregion' || n === 'zone')
+        if (down.length) await this.fetchListsOnly(down, { skipDefaultSelect: true })
+      } else if (name === 'cloudregion' && this.names.includes('zone')) {
+        await this.fetchListsOnly(['zone'], { skipDefaultSelect: true })
+      }
       return true
     },
-    async tryApplyPendingAreaDraft () {
-      const draft = this._pendingAreaDraft
-      if (!draft || this._areaDraftApplyRunning) return
-      // 平台列表未就绪时等下一轮 fetchsDone
-      if (this.names.includes('provider') && !this.providerList?.length) return
-
-      this._areaDraftApplyRunning = true
-      this.areaDraftRestoring = true
-      try {
-        if (this.providerMultiple || this.cloudregionMultiple || this.zoneMultiple) {
-          await this.applyMultipleSelection({
-            provider: draft.provider,
-            cloudregion: draft.cloudregion,
-            zone: draft.zone,
-          })
-        } else {
-          await this.applySingleSelection(draft)
-        }
-        this.syncAreaDraftToFormFd(draft)
-        const appliedProvider = this.FC.getFieldValue('provider')
-        const appliedRegion = this.FC.getFieldValue('cloudregion')
-        const appliedZone = this.FC.getFieldValue('zone')
-        // 勿用空值覆盖锁定草稿（setFieldsValue 偶发未生效时会把后续 fetchs 锁成空）
-        this._lockedAreaDraft = {
-          provider: (Array.isArray(appliedProvider) ? appliedProvider.length : appliedProvider)
-            ? appliedProvider
-            : draft.provider,
-          cloudregion: (Array.isArray(appliedRegion) ? appliedRegion.length : appliedRegion)
-            ? appliedRegion
-            : draft.cloudregion,
-          zone: (Array.isArray(appliedZone) ? appliedZone.length : appliedZone)
-            ? appliedZone
-            : draft.zone,
-        }
-        this._pendingAreaDraft = null
-        this._areaDraftApplied = true
-      } finally {
-        this._areaDraftApplyRunning = false
-        this.$nextTick(() => {
-          this.areaDraftRestoring = false
-        })
-      }
-    },
-    /** 程序化 setFieldsValue 不一定走 onValuesChange，补写 fd 供下游 sku/网络使用 */
-    syncAreaDraftToFormFd (draft = {}) {
-      if (!this.form?.fd) return
-      ;['provider', 'cloudregion', 'zone'].forEach((name) => {
-        if (draft[name] === undefined && this.FC.getFieldValue(name) === undefined) return
-        const val = this.FC.getFieldValue(name)
-        this.$set(this.form.fd, name, val)
-      })
-    },
-    clearLockedAreaDraft () {
-      this._lockedAreaDraft = null
-      this._areaDraftApplied = false
-    },
-    persistFormFieldDraftSnapshot (options = {}) {
-      if (this.areaDraftRestoring || this._pendingAreaDraft || this._areaDraftApplyRunning) return
-      const data = this.serializeFormFieldDraft()
-      if (data === undefined) return
-      const hasAny = ['provider', 'cloudregion', 'zone'].some((k) => {
-        const v = data[k]
-        return Array.isArray(v) ? v.length > 0 : !!v
-      })
-      // 全空时不要落盘，避免把已有草稿冲成空（billType/fetchs 清空过程会触发）
-      if (!hasAny) return
-      this.writeFormFieldDraft(data, options)
-      this._lockedAreaDraft = { ...data }
+    /** 程序化 setFieldsValue 不一定走 onValuesChange，补写 fd */
+    syncAreaDraftToFormFd (name) {
+      if (!this.form?.fd || !name) return
+      this.$set(this.form.fd, name, this.FC.getFieldValue(name))
     },
 
     isMultiple (name) {
@@ -866,16 +793,6 @@ export default {
       const key = Object.keys(selectItem)[0]
       const { id, fetchNames = [] } = { ...selectItem[key] }
       const isMultipleMode = this.isMultiple(key)
-      const persistDraft = () => {
-        this.$nextTick(() => this.persistFormFieldDraftSnapshot())
-      }
-
-      // 用户手动改选：释放回填锁，避免后续 fetchs 把旧草稿/首项再盖回来
-      if (!this.areaDraftRestoring && !this._areaDraftApplyRunning) {
-        this._lockedAreaDraft = null
-        this._pendingAreaDraft = null
-        this._areaDraftApplied = false
-      }
 
       if (this.isEmptyFieldValue(key, id)) {
         this.FC.setFieldsValue({ [key]: this.emptyFieldValue(key) })
@@ -884,7 +801,6 @@ export default {
         if (!isMultipleMode) {
           if (fetchNames.length) this.clearFields(fetchNames)
           this.emitFieldChange(key, id)
-          persistDraft()
           return false
         }
 
@@ -896,11 +812,9 @@ export default {
             if (key === 'cloudregion' && fetchNames.includes('zone')) {
               this.emitFieldChange('zone', this.FC.getFieldValue('zone'))
             }
-            persistDraft()
           })
         } else {
           this.emitFieldChange(key, id)
-          persistDraft()
         }
         return false
       }
@@ -911,7 +825,6 @@ export default {
         const selectedValue = this.getSelectedValue(key, id)
         this.emitFieldChange(key, id)
         callback && callback(selectedValue)
-        persistDraft()
         return
       }
 
@@ -921,7 +834,6 @@ export default {
         this.$nextTick(() => {
           this.fetchs(fetchNames).then(() => {
             this.emitFieldChange(key, id)
-            persistDraft()
           })
         })
         const selectedValue = this.getSelectedValue(key, id)
@@ -939,7 +851,6 @@ export default {
         })
         const selectedValue = this.getSelectedValue(key, id)
         callback && callback(selectedValue)
-        persistDraft()
       })
     },
     async fetchChange (name, list = [], options = {}) {
@@ -1041,52 +952,6 @@ export default {
       }
     },
     // 多选专用：外部（如 RegionMap）批量设置选中并触发级联
-    async applySingleSelection (draft = {}) {
-      const pickValid = (name, raw) => {
-        if (raw === undefined || this.isEmptyFieldValue(name, raw)) return undefined
-        const normalized = this.normalizeFieldValue(name, raw)
-        // 单选：必须在当前列表中
-        if (!this.isMultiple(name)) {
-          const id = Array.isArray(normalized) ? normalized[0] : normalized
-          if (!id) return undefined
-          // 列表尚未就绪时先写入，等 fetch 后再由 prune/重放校正；已有列表则必须命中
-          const list = this[`${name}List`] || []
-          if (list.length && !this.findListItem(name, id)) return undefined
-          return normalized
-        }
-        // 多选：过滤到列表中存在的项
-        const ids = this.toArray(normalized).filter(Boolean)
-        if (!ids.length) return undefined
-        const list = this[`${name}List`] || []
-        if (!list.length) return normalized
-        const valid = ids.filter(id => !!this.findListItem(name, id))
-        return valid.length ? this.normalizeFieldValue(name, valid) : undefined
-      }
-      const provider = pickValid('provider', draft.provider)
-      if (provider !== undefined) {
-        this.FC.setFieldsValue({ provider })
-        await this.fetchListsOnly(['cloudregion'], { skipDefaultSelect: true })
-      }
-      const cloudregion = pickValid('cloudregion', draft.cloudregion)
-      if (cloudregion !== undefined) {
-        this.FC.setFieldsValue({ cloudregion })
-        await this.fetchListsOnly(['zone'], { skipDefaultSelect: true })
-      }
-      const zone = pickValid('zone', draft.zone)
-      if (zone !== undefined) {
-        this.FC.setFieldsValue({ zone })
-      }
-      ;['provider', 'cloudregion', 'zone'].forEach(name => {
-        if (draft[name] !== undefined && this.names.includes(name)) {
-          this.emitFieldChange(name, this.FC.getFieldValue(name))
-        }
-      })
-      this.syncAreaDraftToFormFd({
-        provider: this.FC.getFieldValue('provider'),
-        cloudregion: this.FC.getFieldValue('cloudregion'),
-        zone: this.FC.getFieldValue('zone'),
-      })
-    },
     async applyMultipleSelection (fields = {}) {
       if (!this.providerMultiple && !this.cloudregionMultiple && !this.zoneMultiple) return
 
@@ -1131,23 +996,6 @@ export default {
       })
     },
     async fetchs (fetchNames = this.names) {
-      // 仅草稿回填进行中才锁定回放；回填结束后不再用 _lockedAreaDraft 覆盖用户选择
-      const restoring = !!(this._pendingAreaDraft || this.areaDraftRestoring)
-      const locked = restoring ? (this._lockedAreaDraft || this._pendingAreaDraft) : null
-      if (locked && !this._areaDraftApplyRunning) {
-        try {
-          await this.fetchListsOnly(fetchNames, { skipDefaultSelect: true })
-          this._pendingAreaDraft = {
-            provider: locked.provider,
-            cloudregion: locked.cloudregion,
-            zone: locked.zone,
-          }
-          await this.tryApplyPendingAreaDraft()
-        } finally {
-          this.$emit('fetchsDone', fetchNames)
-        }
-        return
-      }
       try {
         await this.resetSelect(fetchNames)
         if (fetchNames && fetchNames.length > 0) {
@@ -1180,34 +1028,10 @@ export default {
       } finally {
         // 供外层（如公有云草稿/工单）在整链结束后再回填，避免与 resetSelect 竞态
         this.$emit('fetchsDone', fetchNames)
-        this.$nextTick(() => this.tryApplyPendingAreaDraft())
       }
     },
-    /*
-    async fetchCity (queryParams = {}) {
-      const params = {
-        ...DEFAULT_PARAMS,
-        ...queryParams,
-        public_cloud: true,
-      }
-      this.cityLoading = true
-      try {
-        const manager = new this.$Manager('cloudregions', 'v2')
-        const { data = [] } = await manager.rpc({
-          methodname: 'getRegionCities',
-          params,
-        })
-        return data
-      } finally {
-        this.cityLoading = false
-      }
-    },
-    */
     async fetchProvider (queryParams = {}) {
-      // const { getFieldsValue } = this.FC
-      // const { city } = getFieldsValue(this.names)
       const params = {
-        // city,
         ...DEFAULT_PARAMS,
         ...queryParams,
       }

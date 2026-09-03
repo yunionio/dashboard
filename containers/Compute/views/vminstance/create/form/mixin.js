@@ -13,9 +13,7 @@ import {
   resolveDraftNetworkType,
   resolveDraftLoginType,
   normalizeDraftUserData,
-  isAdvanceConfigOpenFromDraft,
-  needOpenAdvanceConfig,
-  resolveAdvanceConfigCollapseActive,
+  hasAdvanceConfigInitFields,
 } from '@Compute/utils/vminstanceCreateDraft'
 import {
   VM_CREATE_FORM_DRAFT_FIELD,
@@ -163,7 +161,6 @@ export default {
       decorators,
       capabilityParams: {}, // 防止 capability 反复调用，这里对当前的接口参数做记录
       price: null,
-      collapseActive: resolveAdvanceConfigCollapseActive(seedFormData),
       hostNameValidate: {
         validateStatus: '',
         errorMsg: '',
@@ -174,15 +171,21 @@ export default {
     }
   },
   provide () {
-    // 组件 provide 会覆盖 mixin，需带上草稿 inject
+    // 组件 provide 会覆盖 mixin，需带上草稿 inject（回填 / 备份拆分）
     return {
       form: this.form,
       getCreateFormDraftScope: () => this.getCreateFormDraftScope(),
-      canUseCreateFormFieldDraft: () => this.canUseCreateFormDraft,
+      canUseCreateFormFieldDraft: () => this.canRestoreCreateFormDraft,
+      canRestoreCreateFormFieldDraft: () => this.canRestoreCreateFormDraft,
+      canBackupCreateFormFieldDraft: () => this.canBackupCreateFormDraft,
+      canBackupCreateFormFieldDraftOnSubmit: () => this.canBackupCreateFormDraftOnSubmit,
       registerCreateFormFieldDraftFlush: (fn) => this.registerCreateFormFieldDraftFlush(fn),
       readCreateFormFieldDraft: (key) => this.readCreateFormFieldDraft(key),
       writeCreateFormFieldDraft: (key, data, options) => this.writeCreateFormFieldDraft(key, data, options),
       bindCreateFormFieldDraft: (spec) => this.bindCreateFormFieldDraft(spec),
+      isCreateFormFieldTouched: (key) => this.isCreateFormFieldTouched(key),
+      markCreateFormFieldTouched: (key) => this.markCreateFormFieldTouched(key),
+      isCreateFormFieldDraftFromLocal: (key) => this.isCreateFormFieldDraftFromLocal(key),
     }
   },
   computed: {
@@ -195,7 +198,7 @@ export default {
           type: this.type,
           isServertemplate: this.isServertemplate,
         }),
-        // 工单回填 / 工单表单（含修改）：禁用控件级草稿，避免与工单数据打架
+        // 工单回填 / 工单表单（含修改）：只关回填，仍可备份
         disableWhen: () => this.shouldDisableCreateFormDraft,
       }
     },
@@ -204,7 +207,7 @@ export default {
       return VM_CREATE_FORM_DRAFT_FIELDS
     },
     /**
-     * 工单回填、带 workflow 的表单（新建/修改工单、改购物车订单）期间禁用草稿
+     * 工单回填、带 workflow 的表单（修改工单、改购物车订单）期间禁用草稿回填
      */
     shouldDisableCreateFormDraft () {
       if (this.isInitForm) return true
@@ -344,63 +347,21 @@ export default {
       return params
     },
     showSecgroupBind () {
-      // 回填指定安全组时，即使网络类型尚未切到 manual，也要保留 bind 选项
-      if (this.isDraftAdvanceConfigOpen) {
-        if (this.isFormBackfill) {
-          const init = this.effectiveInitFormData || this.initFormData
-          if (init?.secgroups?.length) return true
-        }
-        const draft = this.canUseCreateFormDraft
-          ? this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.SECGROUP)
-          : null
-        if (draft?.secgroup_type === 'bind') return true
-        if (Array.isArray(draft?.secgroup) && draft.secgroup.length) return true
+      // 工单回填指定安全组时，即使网络类型尚未切到 manual，也要保留 bind 选项
+      if (this.isFormBackfill) {
+        const init = this.effectiveInitFormData || this.initFormData
+        if (init?.secgroups?.length) return true
       }
       return this.form.fd.networkType === 'manual'
     },
-    /** 草稿是否展开高级配置（关闭则不回填其中字段） */
-    isDraftAdvanceConfigOpen () {
-      if (!this.isFormBackfill) {
-        // AdvanceConfigBlock 常展开：不再依赖 collapseActive，避免旧「折叠关闭」草稿挡住回填
-        return true
-      }
-      return isAdvanceConfigOpenFromDraft(this.effectiveInitFormData)
-    },
-    /** 高级区内安全组/调度等 init 保护：工单回填或控件草稿展开时开启 */
+    /** 高级区内调度等 init 保护：工单回填或控件草稿开启时 */
     preserveAdvanceInitProps () {
-      return this.isFormBackfill || (this.canUseCreateFormDraft && this.isDraftAdvanceConfigOpen)
+      return this.isFormBackfill || this.canUseCreateFormDraft
     },
-    draftInitSchedtags () {
-      if (!this.isDraftAdvanceConfigOpen) return []
-      if (this.isFormBackfill) {
-        const init = this.effectiveInitFormData || {}
-        if (init.schedtags?.length) return init.schedtags
-        if (init.extraData?.schedtags?.length) return init.extraData.schedtags
-        return []
-      }
-      if (!this.canUseCreateFormDraft) return []
-      const draft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY)
-      return Array.isArray(draft?.schedtags) ? draft.schedtags : []
-    },
-    /** 有网络控件草稿时禁止 capability 刷新拆掉 NetworkConfig */
-    ignoreAutoNetworkTypeForDraft () {
-      if (this.isFormBackfill) return true
-      if (!this.canUseCreateFormDraft) return false
-      const draft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.SERVER_NETWORK)
-      if (!draft) return false
-      if (Array.isArray(draft.nets) && draft.nets.length) return true
-      return draft.networkType === NETWORK_OPTIONS_MAP.manual.key ||
-        draft.networkType === NETWORK_OPTIONS_MAP.schedtag.key
-    },
-    draftInitSecgroups () {
-      if (!this.isDraftAdvanceConfigOpen) return []
-      let secgroups = []
-      if (this.isFormBackfill) {
-        secgroups = this.effectiveInitFormData?.secgroups || []
-      } else if (this.canUseCreateFormDraft) {
-        const draft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.SECGROUP)
-        secgroups = draft?.secgroup || []
-      }
+    /** 仅工单：安全组 init */
+    workflowInitSecgroups () {
+      if (!this.isFormBackfill) return []
+      const secgroups = this.effectiveInitFormData?.secgroups || []
       if (!Array.isArray(secgroups)) return []
       return secgroups.map((item) => {
         if (item == null) return null
@@ -408,15 +369,29 @@ export default {
         return item.id || item.key || item.value || null
       }).filter(Boolean)
     },
-    draftInitPreferHost () {
-      if (!this.isDraftAdvanceConfigOpen) return ''
-      if (this.isFormBackfill) {
-        const init = this.effectiveInitFormData || {}
-        return init.prefer_host || init.extraData?.prefer_host || ''
-      }
-      if (!this.canUseCreateFormDraft) return ''
-      const draft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY)
-      return draft?.prefer_host || ''
+    /** 仅工单：调度宿主机 */
+    workflowInitPreferHost () {
+      if (!this.isFormBackfill) return ''
+      const init = this.effectiveInitFormData || {}
+      return init.prefer_host || init.extraData?.prefer_host || ''
+    },
+    /** 仅工单：调度标签 */
+    workflowInitSchedtags () {
+      if (!this.isFormBackfill) return []
+      const init = this.effectiveInitFormData || {}
+      if (init.schedtags?.length) return init.schedtags
+      if (init.extraData?.schedtags?.length) return init.extraData.schedtags
+      return []
+    },
+    /** 有网络控件草稿时禁止 capability 刷新拆掉 NetworkConfig */
+    ignoreAutoNetworkTypeForDraft () {
+      if (this.isFormBackfill) return true
+      if (!this.canUseCreateFormDraft) return false
+      const draft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.SERVER_NETWORK)
+      if (!draft) return false
+      if (draft.networkType) return true
+      if (Array.isArray(draft.nets) && draft.nets.length) return true
+      return false
     },
     isOpenWorkflow () {
       if (this.isServertemplate) return false
@@ -607,18 +582,10 @@ export default {
       this.price = price
     })
     this.$store.dispatch('app/fetchWorkflowEnabledKeys')
-    // 页面级：高级配置开关（UI 已常展开，草稿固定为 true，兼容旧字段）
-    this.bindCreateFormFieldDraft({
-      key: VM_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN,
-      get: () => true,
-      set: (open) => {
-        this.collapseActive = open ? ['1'] : []
-      },
-    })
-    // 简单 form.fc 字段（数量 / 开关 / bios 等）批量绑定
+    // 扫描 scope 内已有草稿，固化跨 tab 来源（不必枚举组件）
+    this.rememberAllCreateFormFieldDraftLocalOrigins()
+    // 页面零散 form.fc 选择类字段
     this.bindVmCreateFormFcDrafts()
-    // 内部状态仍置为展开，保证 initPreferHost / 延迟重试等门闩通过
-    this.ensureAdvanceConfigOpenForDraft()
   },
   mounted () {
     // 工单走 initForm；普通新建控件草稿走各组件 + restoreAdvance*
@@ -628,20 +595,6 @@ export default {
     })
   },
   watch: {
-    collapseActive (val) {
-      if (!this.canUseCreateFormDraft) return
-      if (this.isFormBackfill) return
-      if (this._advanceDraftRestoring) return
-      // UI 常展开：始终记为打开，避免旧 false 残留导致不回填
-      this.writeCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN, true)
-      if (!this._advanceDraftRestoreScheduled) {
-        this._advanceDraftRestoreScheduled = true
-        this.$nextTick(() => {
-          this._advanceDraftRestoreScheduled = false
-          this.restoreAdvanceFormFieldDrafts()
-        })
-      }
-    },
     'form.fi.imageMsg': {
       deep: true,
       handler (val, oldVal) {
@@ -649,35 +602,49 @@ export default {
         this.$nextTick(() => {
           // 回填期间镜像变化不要清空数据盘，否则工单/草稿里的盘会被冲掉
           if (this.isFormBackfill || this.form?.fi?.diskDraftRestoring) return
+          // 首屏：有磁盘/网络草稿时，镜像异步到位优先重试回填，勿清空
+          if (this.canUseCreateFormDraft && !this.createFormDraftUserInteracted) {
+            const hasDiskDraft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.SYSTEM_DISK) ||
+              this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
+            const hasNetworkDraft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.SERVER_NETWORK)
+            if (hasDiskDraft || hasNetworkDraft) {
+              if (!this._imageDraftRestoreOnce) {
+                this._imageDraftRestoreOnce = true
+                this.restoreDeferredFormFieldDrafts({ force: true })
+              }
+              return
+            }
+          }
           // 首屏：有数据盘草稿时，镜像异步到位不要立刻清空（仅跳过一次）
           if (this.canUseCreateFormDraft && !this._diskDraftSkipImageResetOnce) {
-            const diskDraft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
-            if (diskDraft?.__dataDiskKeys?.length) {
-              this._diskDraftSkipImageResetOnce = true
-              return
+            // 仅同 session 数据盘草稿才跳过清空；跨 tab local 不回填数据盘，无需保护
+            if (!this.isCreateFormFieldDraftFromLocal(VM_CREATE_FORM_DRAFT_FIELD.DATA_DISK)) {
+              const diskDraft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
+              if (diskDraft?.__dataDiskKeys?.length) {
+                this._diskDraftSkipImageResetOnce = true
+                return
+              }
             }
           }
           this._resetDataDisk() // 重置数据盘数据
         })
       },
     },
-    'form.fi.capability': {
-      deep: true,
-      handler (val) {
-        if (!val || R.isEmpty(val)) return
-        if (!this.canUseCreateFormDraft) return
-        if (this.createFormDraftUserInteracted) return
-        this.$nextTick(() => this.restoreVmDiskFormFieldDrafts())
-      },
+    'form.fi.capability.hypervisors' (val, oldVal) {
+      if (!Array.isArray(val) || !val.length) return
+      if (R.equals(val, oldVal)) return
+      if (!this.canUseCreateFormDraft) return
+      this.restoreDeferredFormFieldDrafts()
     },
     'form.fd.hypervisor' (val, oldVal) {
       if (!this.canUseCreateFormDraft) return
-      if (this.createFormDraftUserInteracted) return
-      if (val === oldVal) return
-      this.$nextTick(() => {
-        this.restoreVmDiskFormFieldDrafts()
-        this.restoreAdvanceFormFieldDrafts()
-      })
+      if (val === oldVal || val == null || val === '') return
+      this.restoreDeferredFormFieldDrafts()
+    },
+    'form.fd.zone.key' (val, oldVal) {
+      if (!this.canUseCreateFormDraft || this.isInitForm) return
+      if (val === oldVal || !val) return
+      this.restoreDeferredFormFieldDrafts()
     },
     isWindows (val) {
       const hostName = this.form.fd.hostName
@@ -719,34 +686,17 @@ export default {
   },
   methods: {
     /**
-     * 高级配置 UI 已常展开：内部 collapseActive 始终打开，保证草稿回填门闩通过。
-     * 不再尊重旧草稿 advanceConfigOpen === false（否则会出现「区块可见但不回填」）。
+     * 高级配置区：页面零散 FC（is_daemon 等 v-if=isKvm 晚挂载）再补一次。
+     * 组件日常回填已改为自管 watch；此处仅补晚挂载时序。UI 已常展开。
      */
-    ensureAdvanceConfigOpenForDraft () {
-      if (!this.canUseCreateFormDraft) return
-      const alreadyOpen = Array.isArray(this.collapseActive) && this.collapseActive.includes('1')
-      if (!alreadyOpen) {
-        this._advanceDraftRestoring = true
-        this.collapseActive = ['1']
-        this.$nextTick(() => {
-          this._advanceDraftRestoring = false
-        })
-      }
-      const openDraft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN)
-      if (openDraft !== true) {
-        this.writeCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.ADVANCE_CONFIG_OPEN, true)
-      }
-    },
+
     hasAdvanceFieldDrafts () {
       if (!this.canUseCreateFormDraft) return false
       const keys = [
         VM_CREATE_FORM_DRAFT_FIELD.EIP,
-        VM_CREATE_FORM_DRAFT_FIELD.SECGROUP,
         VM_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY,
         VM_CREATE_FORM_DRAFT_FIELD.BACKUP,
-        VM_CREATE_FORM_DRAFT_FIELD.CUSTOM_DATA,
         VM_CREATE_FORM_DRAFT_FIELD.BASTION_HOST,
-        VM_CREATE_FORM_DRAFT_FIELD.INSTANCE_GROUPS,
         VM_CREATE_FORM_DRAFT_FIELD.ENCRYPT_KEYS,
         VM_CREATE_FORM_DRAFT_FIELD.BIOS,
         VM_CREATE_FORM_DRAFT_FIELD.VDI,
@@ -762,28 +712,17 @@ export default {
       })
     },
     /**
-     * 高级配置区：FC 字段 + 折叠内子组件二次回填（hypervisor / collapse 晚就绪）
-     * 用户已操作后不再延迟回填，且尽快放下 advanceDraftRestoring，避免挡清空/改值
+     * 高级配置区：页面零散 FC（is_daemon 等 v-if=isKvm 晚挂载）再补一次。
+     * 组件日常回填已改为自管 watch；此处仅补晚挂载时序。
      */
     restoreAdvanceFormFieldDrafts () {
       if (!this.canUseCreateFormDraft) return
       if (this.isInitForm) return
-      if (this.createFormDraftUserInteracted) return
       if (this._advanceDraftRestoreRunning) return
       this._advanceDraftRestoreRunning = true
       if (this.form?.fi) this.$set(this.form.fi, 'advanceDraftRestoring', true)
       try {
-        this.ensureAdvanceConfigOpenForDraft()
-        if (!this.isDraftAdvanceConfigOpen) {
-          this.clearAdvanceDraftRestoring()
-          return
-        }
-        // bios/vdi/vga/machine 等：v-if=isKvm 晚挂载，需重试 FC restore
         ;[
-          VM_CREATE_FORM_DRAFT_FIELD.BIOS,
-          VM_CREATE_FORM_DRAFT_FIELD.VDI,
-          VM_CREATE_FORM_DRAFT_FIELD.VGA,
-          VM_CREATE_FORM_DRAFT_FIELD.MACHINE,
           VM_CREATE_FORM_DRAFT_FIELD.IS_DAEMON,
           VM_CREATE_FORM_DRAFT_FIELD.DEPLOY_TELEGRAF,
         ].forEach((key) => {
@@ -791,40 +730,25 @@ export default {
         })
         this.$nextTick(() => {
           this.invokeAdvanceDraftComponentRestores()
-          // 保护窗口尽量短：仅挡住回填同帧/紧随其后的清空
           setTimeout(() => this.clearAdvanceDraftRestoring(), 400)
         })
-        if (!this._advanceDraftRetryTimers) {
-          this._advanceDraftRetryTimers = true
-          // 晚挂载组件（showEip / isLocalDisk）再补一次；用户已点过页面则停
-          ;[800, 2000].forEach((ms) => {
-            setTimeout(() => {
-              if (!this.canRunAdvanceDraftRetry()) return
-              this.invokeAdvanceDraftComponentRestores()
-            }, ms)
-          })
-        }
       } finally {
         this.$nextTick(() => {
           this._advanceDraftRestoreRunning = false
         })
       }
     },
-    canRunAdvanceDraftRetry () {
-      return this.canUseCreateFormDraft &&
-        !this.isInitForm &&
-        !this.createFormDraftUserInteracted &&
-        this.isDraftAdvanceConfigOpen
-    },
+
     invokeAdvanceDraftComponentRestores () {
       ;[
+        this.$refs.biosRef,
+        this.$refs.vdiRef,
+        this.$refs.vgaRef,
+        this.$refs.machineRef,
         this.$refs.eipConfigRef,
-        this.$refs.secgroupConfigRef,
         this.$refs.schedPolicyRef,
         this.$refs.backupRef,
-        this.$refs.customData,
         this.$refs.bastionHostRef,
-        this.$refs.instanceGroupsRef,
         this.$refs.encryptKeysRef,
       ].forEach((ref) => {
         if (ref && typeof ref.restoreFormFieldDraftFields === 'function') {
@@ -837,25 +761,69 @@ export default {
         this.$set(this.form.fi, 'advanceDraftRestoring', false)
       }
     },
-    markCreateFormDraftUserInteracted () {
-      const was = this.createFormDraftUserInteracted
-      // 调用宿主 mixin 原逻辑
-      if (!was) {
-        this.createFormDraftUserInteracted = true
-        this._unbindCreateFormDraftUserInteraction()
+    restoreNetworkFormFieldDraft () {
+      const ref = this.$refs.networkRef
+      if (ref && typeof ref.restoreFormFieldDraftFields === 'function') {
+        try { ref.restoreFormFieldDraftFields() } catch (e) { /* ignore */ }
       }
-      this.clearAdvanceDraftRestoring()
     },
-    /**
-     * 控件草稿：capability/sku 就绪后回填系统盘/数据盘（对齐工单 backfillDisksFromInitData）
-     */
-    async restoreVmDiskFormFieldDrafts () {
+    restoreDeferredFormFieldDrafts (options = {}) {
       if (!this.canUseCreateFormDraft) return
       if (this.isInitForm) return
-      if (this._diskDraftRestoreDone || this._diskDraftRestoreRunning) return
+      if (this.createFormDraftUserInteracted && !options.force) return
+      if (this._deferredDraftRestoreScheduled) return
+      this._deferredDraftRestoreScheduled = true
+      this.$nextTick(() => {
+        this._deferredDraftRestoreScheduled = false
+        this._runDeferredFormFieldDraftRestore(options)
+      })
+    },
+    _runDeferredFormFieldDraftRestore (options = {}) {
+      if (this._deferredDraftRestoreRunning) return
+      this._deferredDraftRestoreRunning = true
+      try {
+        if (options.force) this._diskDraftRestoreDone = false
+        this.restoreVmDiskFormFieldDrafts(options)
+        this.restoreNetworkFormFieldDraft()
+        this.restoreAdvanceFormFieldDrafts()
+      } finally {
+        this.$nextTick(() => {
+          this._deferredDraftRestoreRunning = false
+        })
+      }
+    },
+    isVmDiskDraftRestoreComplete (sysDraft, sysRef, fromLocal) {
+      if (!sysDraft) return true
+      if (!sysRef?.typesMap || !Object.keys(sysRef.typesMap).length) return false
+      if (fromLocal || typeof sysRef.hasSysDiskAdvancedDraft !== 'function') return true
+      if (!sysRef.hasSysDiskAdvancedDraft(sysDraft)) return true
+      const disk = sysRef.$refs?.disk
+      if (!disk?.showAdvanced) return false
+      const adv = sysRef.pickSysDiskAdvancedDraft?.(sysDraft) || {}
+      if ((adv.systemDiskStorage || adv[sysRef.decorator?.storage?.[0]]) && !disk.showStorage) return false
+      if ((adv.systemDiskSchedtag || adv.systemDiskPolicy ||
+        adv[sysRef.decorator?.schedtag?.[0]] || adv[sysRef.decorator?.policy?.[0]]) &&
+        !disk.showSchedtag) return false
+      if ((adv.systemDiskSnapshot || adv[sysRef.decorator?.snapshot?.[0]]) && !disk.showSnapshot) return false
+      if ((adv.systemDiskPreallocation || adv[sysRef.decorator?.preallocation?.[0]]) && !disk.showPreallocation) {
+        return false
+      }
+      return true
+    },
+    async restoreVmDiskFormFieldDrafts (options = {}) {
+      if (!this.canUseCreateFormDraft) return
+      if (this.isInitForm) return
+      if (this._diskDraftRestoreRunning) return
+      if (this._diskDraftRestoreDone && !options.force) return
+      if (options.force) this._diskDraftRestoreDone = false
       if (this._diskBackfilling) return
-      const sysDraft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.SYSTEM_DISK)
-      const dataDraft = this.readCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
+      // 再次确保来源已固化（created 已记过则直接命中缓存）
+      this.rememberCreateFormFieldDraftLocalOrigin(VM_CREATE_FORM_DRAFT_FIELD.SYSTEM_DISK)
+      this.rememberCreateFormFieldDraftLocalOrigin(VM_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
+      const sysFromLocal = this.isCreateFormFieldDraftFromLocal(VM_CREATE_FORM_DRAFT_FIELD.SYSTEM_DISK)
+      const dataFromLocal = this.isCreateFormFieldDraftFromLocal(VM_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
+      const sysDraft = this.readCreateFormFieldDraftForRestore(VM_CREATE_FORM_DRAFT_FIELD.SYSTEM_DISK)
+      const dataDraft = this.readCreateFormFieldDraftForRestore(VM_CREATE_FORM_DRAFT_FIELD.DATA_DISK)
       if (!sysDraft && !dataDraft) return
       // 公有云需 sku 后盘组件才挂载
       if (this.type === 'public' && !this.form?.fd?.sku) return
@@ -900,71 +868,76 @@ export default {
 
       try {
         if (sysDraft) {
-          await this.restoreSystemDiskFromFieldDraft(sysDraft, { waitRef, waitTypesMap })
+          await this.restoreSystemDiskFromFieldDraft(sysDraft, { waitRef, waitTypesMap, fromLocal: sysFromLocal })
         }
-        if (dataDraft) {
+        // 跨 tab（仅 local）：不回填数据盘；同 session 仍全量回填
+        if (dataDraft && !dataFromLocal) {
           await this.restoreDataDiskFromFieldDraft(dataDraft, { waitRef, waitTypesMap })
         }
-        this._diskDraftRestoreDone = true
+        const sysRef = this.$refs.systemDiskRef
+        if (this.isVmDiskDraftRestoreComplete(sysDraft, sysRef, sysFromLocal)) {
+          this._diskDraftRestoreDone = true
+        }
         this.$nextTick(() => this.reconcileDiskFormStateBeforeSubmit())
-        setTimeout(() => this.reconcileDiskFormStateBeforeSubmit(), 4600)
       } finally {
         this._diskDraftRestoreRunning = false
-        setTimeout(() => {
-          this._diskBackfillPending = false
-          if (this.form?.fi) this.$set(this.form.fi, 'diskDraftRestoring', false)
-        }, 5000)
+        this._diskBackfillPending = false
+        const diskRef = this.$refs.systemDiskRef
+        if (this.form?.fi && !diskRef?.sysDiskDraftRestoring) {
+          this.$set(this.form.fi, 'diskDraftRestoring', false)
+        }
       }
     },
-    async restoreSystemDiskFromFieldDraft (draft, { waitRef, waitTypesMap }) {
+    async restoreSystemDiskFromFieldDraft (draft, { waitRef, waitTypesMap, fromLocal } = {}) {
       if (!draft || !this.form?.fc) return
       const sysRef = await waitRef(() => this.$refs.systemDiskRef)
       if (sysRef) await waitTypesMap(() => sysRef.typesMap)
+      // 输入子字段（大小/iops/throughput 等）不回填，由组件白名单过滤
+      if (sysRef && typeof sysRef.sanitizeDraftForRestore === 'function') {
+        draft = sysRef.sanitizeDraftForRestore(draft)
+      }
+      if (!draft || typeof draft !== 'object' || !Object.keys(draft).length) return
+      const isLocal = fromLocal != null
+        ? !!fromLocal
+        : this.isCreateFormFieldDraftFromLocal(VM_CREATE_FORM_DRAFT_FIELD.SYSTEM_DISK)
       const typeVal = draft.systemDiskType || draft[sysRef?.decorator?.type?.[0]]
-      const sizeVal = draft.systemDiskSize ?? draft[sysRef?.decorator?.size?.[0]]
-      if (!typeVal?.key && sizeVal == null) {
-        if (sysRef?.applyCreateFormFieldDraft) sysRef.applyCreateFormFieldDraft(draft)
+      if (!typeVal?.key) {
+        if (sysRef?.tryApplySessionDiskDraft) {
+          sysRef.tryApplySessionDiskDraft({ draft, fromLocal: isLocal })
+        } else if (sysRef?.applyCreateFormFieldDraft) {
+          sysRef.applyCreateFormFieldDraft(draft, { fromLocal: isLocal })
+        }
+        if (typeof sysRef?.ensureSysDiskDefaultSize === 'function') sysRef.ensureSysDiskDefaultSize()
         return
       }
-      const hyper = (this.form.fd.hypervisor || '').toLowerCase()
       if (typeVal?.key) {
         const medium = String(typeVal.key).split('/')[1] || 'ssd'
         if (medium) this.$set(this.form.fi, 'systemDiskMedium', medium)
       }
-      if (sysRef?.applyCreateFormFieldDraft) {
-        sysRef.applyCreateFormFieldDraft(draft)
+      if (sysRef?.tryApplySessionDiskDraft) {
+        sysRef.tryApplySessionDiskDraft({ draft, fromLocal: isLocal })
+      } else if (sysRef?.applyCreateFormFieldDraft) {
+        sysRef.applyCreateFormFieldDraft(draft, { fromLocal: isLocal })
       } else if (sysRef?.applySysDiskDraftToForm) {
-        sysRef.applySysDiskDraftToForm(draft)
+        const toApply = isLocal && sysRef.pickSysDiskBaseDraft
+          ? sysRef.pickSysDiskBaseDraft(draft)
+          : draft
+        sysRef.applySysDiskDraftToForm(toApply)
       }
-      const diskComp = sysRef?.$refs?.disk
-      if (diskComp?.initData && typeVal?.key) {
-        const parts = String(typeVal.key).split('/')
-        const clampedSize = sysRef.clampSysDiskDraftSize(sizeVal, typeVal.key)
-        const initPayload = {
-          backend: parts[0],
-          medium: parts[1] || 'ssd',
-          size: (clampedSize || 0) * 1024,
-        }
-        if (draft.systemDiskStorage) initPayload.storage_id = draft.systemDiskStorage
-        if (draft.systemDiskAutoReset) initPayload.auto_reset = draft.systemDiskAutoReset
-        if (draft.systemDiskIops) initPayload.iops = draft.systemDiskIops
-        if (draft.systemDiskThroughput) initPayload.throughput = draft.systemDiskThroughput
-        if (draft.systemDiskPreallocation) initPayload.preallocation = draft.systemDiskPreallocation
-        if (draft.systemDiskSchedtag) {
-          initPayload.schedtags = [{
-            id: draft.systemDiskSchedtag,
-            strategy: draft.systemDiskPolicy || '',
-          }]
-        }
-        diskComp.initData(initPayload, hyper)
-      }
+      // 大小永不回填：立刻补默认值（不走 initData，避免草稿 size/长时间窗口）
+      if (typeof sysRef?.ensureSysDiskDefaultSize === 'function') sysRef.ensureSysDiskDefaultSize()
     },
     async restoreDataDiskFromFieldDraft (draft, { waitRef, waitTypesMap }) {
       if (!draft || !this.form?.fc) return
+      const dataRef0 = await waitRef(() => this.$refs.dataDiskRef)
+      // 输入子字段（大小/iops/throughput/挂载路径 等）不回填，由组件白名单过滤
+      if (dataRef0 && typeof dataRef0.sanitizeDraftForRestore === 'function') {
+        draft = dataRef0.sanitizeDraftForRestore(draft)
+      }
+      if (!draft || typeof draft !== 'object' || !Object.keys(draft).length) return
       // 显式空 keys：用户已删光数据盘，不再回填（也不走其它字段 fallback）
       if (Array.isArray(draft.__dataDiskKeys) && draft.__dataDiskKeys.length === 0) {
-        const dataRef = await waitRef(() => this.$refs.dataDiskRef)
-        if (dataRef) dataRef.dataDisks = []
+        if (dataRef0) dataRef0.dataDisks = []
         return
       }
       const keys = Array.isArray(draft.__dataDiskKeys) ? draft.__dataDiskKeys.filter(Boolean) : []
@@ -977,14 +950,13 @@ export default {
             return m && m[1]
           }).filter(Boolean))
       if (!resolvedKeys.length) {
-        const dataRef = await waitRef(() => this.$refs.dataDiskRef)
-        if (dataRef && dataRef.applyCreateFormFieldDraft) dataRef.applyCreateFormFieldDraft(draft)
+        if (dataRef0 && dataRef0.applyCreateFormFieldDraft) dataRef0.applyCreateFormFieldDraft(draft)
         return
       }
-      const dataDiskRef = await waitRef(() => this.$refs.dataDiskRef)
+      const dataDiskRef = dataRef0
       if (!dataDiskRef || !dataDiskRef.add) return
       await waitTypesMap(() => dataDiskRef.typesMap)
-      await new Promise(resolve => setTimeout(resolve, 200))
+      await this.$nextTick()
       const ref = this.$refs.dataDiskRef
       if (!ref || !ref.add) return
       ;[...(ref.dataDisks || [])].forEach((d) => {
@@ -1029,7 +1001,6 @@ export default {
           autoReset: v.autoReset,
         })
         await this.$nextTick()
-        await new Promise(resolve => setTimeout(resolve, 80))
       }
       const reapplyDataDisks = () => {
         const cur = this.$refs.dataDiskRef
@@ -1041,6 +1012,10 @@ export default {
           if (!src || !disk || !disk.key) return
           if (src.size != null) {
             values[`dataDiskSizes[${disk.key}]`] = cur.clampDataDiskDraftSize(src.size, cur.min(idx), cur.max(idx))
+          } else {
+            // 输入类 size 不回填：补默认 min，避免空值
+            const minSize = cur.min(idx)
+            values[`dataDiskSizes[${disk.key}]`] = cur.clampDataDiskDraftSize(minSize, minSize, cur.max(idx))
           }
           if (src.backend) {
             let typeObj = typesMap[src.backend] || typesMap[`${src.backend}/${src.medium}`]
@@ -1067,9 +1042,20 @@ export default {
         })
         if (Object.keys(values).length) this.setFormFieldsAndSyncFd(values)
       }
-      setTimeout(reapplyDataDisks, 500)
-      setTimeout(reapplyDataDisks, 1500)
-      setTimeout(reapplyDataDisks, 3000)
+      await this.$nextTick()
+      reapplyDataDisks()
+      await this.$nextTick()
+      reapplyDataDisks()
+    },
+
+    markCreateFormDraftUserInteracted () {
+      const was = this.createFormDraftUserInteracted
+      // 调用宿主 mixin 原逻辑
+      if (!was) {
+        this.createFormDraftUserInteracted = true
+        this._unbindCreateFormDraftUserInteraction()
+      }
+      this.clearAdvanceDraftRestoring()
     },
     async capability (v, data) { // 可用区查询
       const params = {
@@ -1246,14 +1232,11 @@ export default {
     },
     /**
      * 回填高级配置：公网 IP、自定义数据、主机名、安全组、调度策略、堡垒机等
-     * 仅当草稿记录「高级配置开启」时展开并回填；未开启则略过
+     * 无高级字段则跳过（UI 已常展开，与折叠开关无关）
      */
     async backfillAdvanceConfigFromInitData (initData, { waitRef } = {}) {
       if (!initData || !this.form?.fc) return
-      // 按草稿开关决定是否展开/回填；关闭则保持折叠并跳过字段
-      this.collapseActive = resolveAdvanceConfigCollapseActive(initData)
-      if (!isAdvanceConfigOpenFromDraft(initData)) return
-      if (!needOpenAdvanceConfig(initData)) return
+      if (!hasAdvanceConfigInitFields(initData)) return
 
       const doWaitRef = waitRef || ((getter, timeout = 10000) => new Promise(resolve => {
         const startAt = Date.now()
@@ -1273,8 +1256,7 @@ export default {
       }))
 
       await this.$nextTick()
-      // 等 collapse / v-if(enableEip|showCustomData) 挂载
-      await new Promise(resolve => setTimeout(resolve, 400))
+      await this.$nextTick()
 
       this.form.fc.setFieldsValue({ hostName: initData.hostname })
 
@@ -1583,7 +1565,6 @@ export default {
     },
     onWorldMapModeChange (checked) {
       if (this.type !== 'public') return
-      this.writeCreateFormFieldDraft(VM_CREATE_FORM_DRAFT_FIELD.ENABLE_WORLD_MAP, !!checked)
       this.$nextTick(() => {
         if (!checked && this.fetchInstanceSpecs) {
           this.fetchInstanceSpecs()
@@ -1629,9 +1610,10 @@ export default {
     },
     submit (e) {
       e.preventDefault()
-      this.reconcileDiskFormStateBeforeSubmit()
+      // 提交只收集数据，不写回盘字段（避免触发 typesMap/defaultType 清盘）
       this.validateForm()
         .then(async formData => {
+          this.flushCreateFormFieldDrafts()
           this.submiting = true
           const genCreteData = new GenCreateData(formData, this.form.fi)
           const data = genCreteData.all()
@@ -1657,17 +1639,14 @@ export default {
             await this.doForecast(genCreteData, data)
             await this.doCreateWorkflow(data)
             // 成功后记住配置（fromSubmit：受 saveOnSubmitSuccess 开关控制；修改工单 canUse=false 会 no-op）
-            this.flushCreateFormFieldDrafts()
           } else if (this.isOpenOrderSetWorkflow) { // 购物车工单
             await this.checkCreateData(data)
             await this.doForecast(genCreteData, data)
             await this.doCreateOrderSetWorkflow(data)
-            this.flushCreateFormFieldDrafts()
           } else { // 创建主机
             await this.checkCreateData(data)
             await this.doForecast(genCreteData, data)
             await this.createServer(data)
-            this.flushCreateFormFieldDrafts()
           }
         })
         .catch(error => {
@@ -1691,7 +1670,6 @@ export default {
       this.servertemplateM.create({ data: templateData })
         .then(() => {
           this.$message.success(i18n.t('compute.text_423'))
-          this.flushCreateFormFieldDrafts()
           this.$router.push('/servertemplate')
         })
         .catch((error) => {
@@ -1818,7 +1796,6 @@ export default {
           if (!err) {
             resolve(values)
           } else {
-            this.collapseActive = ['1'] // 仅仅在报错的时候展开高级配置
             reject(err)
           }
         })
@@ -1898,8 +1875,6 @@ export default {
       if (changeKeys.some(val => val.includes('dataDiskSizes'))) { // 动态赋值默认值的表单需要单独处理
         this.$set(this.form.fd, 'dataDiskSizes', formValue.dataDiskSizes)
       }
-      this.syncVmCreateFormFcDrafts(newField)
-      this.syncVmDiskFormFieldDrafts(newField)
     },
     /** setFieldsValue 后同步 fd（程序化赋值不走 onValuesChange） */
     setFormFieldsAndSyncFd (values) {
@@ -1909,7 +1884,8 @@ export default {
       this._setNewFieldToFd(values, formValue)
     },
     /**
-     * 提交/草稿回填完成后：系统盘与数据盘 fc/fd 对齐，值经 clamp 保证合法
+     * 草稿回填完成后：系统盘与数据盘 fc/fd 对齐并 clamp。
+     * 勿在 submit/addShopCart 调用——写回会触发盘组件 watch 清盘。
      */
     reconcileDiskFormStateBeforeSubmit () {
       if (!this.form?.fc) return
@@ -1962,21 +1938,7 @@ export default {
     /**
      * 系统盘/数据盘字段变更时落盘（setFieldsValue 不会走此路径）
      */
-    syncVmDiskFormFieldDrafts (newField) {
-      if (!this.canUseCreateFormDraft || !newField || typeof newField !== 'object') return
-      if (this.isFormBackfill || this.form?.fi?.diskDraftRestoring) return
-      // 仅用户交互后落盘
-      if (!this.createFormDraftUserInteracted) return
-      const keys = Object.keys(newField)
-      const touchedSys = keys.some(k => /systemdisk/i.test(k))
-      const touchedData = keys.some(k => /datadisk/i.test(k))
-      if (touchedSys && this.$refs.systemDiskRef && typeof this.$refs.systemDiskRef.persistFormFieldDraftSnapshot === 'function') {
-        this.$nextTick(() => this.$refs.systemDiskRef.persistFormFieldDraftSnapshot())
-      }
-      if (touchedData && this.$refs.dataDiskRef && typeof this.$refs.dataDiskRef.persistFormFieldDraftSnapshot === 'function') {
-        this.$nextTick(() => this.$refs.dataDiskRef.persistFormFieldDraftSnapshot())
-      }
-    },
+
     /**
      * 批量绑定 VM_CREATE_FORM_DRAFT_FC_BINDINGS（进页回填 + flush）
      */
@@ -1986,24 +1948,14 @@ export default {
         if (!item?.key || !item.formField) return
         if (item.types && !item.types.includes(this.type)) return
         this._vmCreateFormFcDraftMap[item.formField] = item.key
-        this.bindFormFcFieldDraft(item.key, { formField: item.formField })
+        this.bindFormFcFieldDraft(item.key, { formField: item.formField, kind: item.kind })
       })
     },
     /**
      * form.fc 字段变更时同步对应控件草稿
      * @param {object} newField
      */
-    syncVmCreateFormFcDrafts (newField) {
-      if (!this.canUseCreateFormDraft || !newField || typeof newField !== 'object') return
-      // 仅用户交互后落盘，避免程序化 setFieldsValue 污染草稿
-      if (!this.createFormDraftUserInteracted) return
-      const map = this._vmCreateFormFcDraftMap || {}
-      Object.keys(newField).forEach((formField) => {
-        const draftKey = map[formField]
-        if (!draftKey) return
-        this.writeCreateFormFieldDraft(draftKey, newField[formField])
-      })
-    },
+
     networkResourceMapper (list) {
       return list
         .map(val => {
@@ -2147,9 +2099,10 @@ export default {
       }
     },
     addShopCart () {
-      this.reconcileDiskFormStateBeforeSubmit()
+      // 加购只收集数据，不写回盘字段；校验通过后立刻 flush，避免 API 过程中 UI 被清盘后落空草稿
       this.validateForm()
         .then(async formData => {
+          this.flushCreateFormFieldDrafts()
           this.submiting = true
           try {
             const genCreateData = new GenCreateData(formData, this.form.fi)
@@ -2173,7 +2126,6 @@ export default {
             const shopCart = this.buildShopCartParameter(data)
             this.$message.success(this.$t('common.success'))
             this.$store.commit('shopcart/ADD_SHOP_CART', shopCart)
-            this.flushCreateFormFieldDrafts()
           } catch (error) {
             throw error
           } finally {

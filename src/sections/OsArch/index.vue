@@ -23,6 +23,11 @@ export default {
       type: String,
       default: '',
     },
+    /** selection：radio/单选 select/switch 类，local + session 双写、可跨 tab 回填 */
+    formDraftKind: {
+      type: String,
+      default: 'selection',
+    },
     options: {
       type: Array,
       default: () => Object.values(HOST_CPU_ARCHS),
@@ -56,35 +61,34 @@ export default {
     },
   },
   watch: {
-    optionsC (val, oldV) {
-      if (val.length) {
-        if (!_.isEqual(val, oldV)) {
-          this.applyOsArchDefault(val)
+    optionsC: {
+      immediate: true,
+      handler (val, oldV) {
+        if (val.length) {
+          if (oldV === undefined || !_.isEqual(val, oldV)) {
+            this.applyOsArchDefault(val)
+          }
+        } else if (oldV !== undefined) {
+          this.emit(undefined)
         }
-      } else {
-        this.emit(undefined)
-      }
+      },
     },
-  },
-  mounted () {
-    if (!this.form.fc.getFieldValue(this.decoratorField) && this.optionsC.length) {
-      this.applyOsArchDefault(this.optionsC)
-    }
   },
   methods: {
     emit (v) {
       this.$emit('change', v)
     },
     onChange (e) {
-      const v = e.target.value
-      this.writeFormFieldDraft(v)
-      this.emit(v)
+      this.emit(e.target.value)
     },
     applyOsArchDefault (opts) {
       const hit = this.matchFormFieldDraftInOptions(opts)
       const next = hit?.key || opts[0]?.key
       this.emit(next)
     },
+    /**
+     * 提交时获取表单草稿
+     */
     serializeFormFieldDraft () {
       return this.form?.fc?.getFieldValue?.(this.decoratorField) || undefined
     },

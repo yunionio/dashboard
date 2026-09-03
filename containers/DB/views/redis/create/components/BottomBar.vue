@@ -161,13 +161,13 @@ export default {
     },
     async doCreate () {
       if (!this.validateForm()) return false
+      if (typeof this.flushCreateFormFieldDrafts === 'function') {
+        this.flushCreateFormFieldDrafts()
+      }
       const manager = new Manager('elasticcaches', 'v2')
       this.loading = true
       try {
         await manager.create({ data: this.formatParams() })
-        if (typeof this.flushCreateFormFieldDrafts === 'function') {
-          this.flushCreateFormFieldDrafts()
-        }
         this.$emit('create-success')
         this.$router.push('/redis')
       } catch (err) {

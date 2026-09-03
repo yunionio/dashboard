@@ -548,22 +548,15 @@ export default {
       return this.isInitForm ? this.initFormData : {}
     },
     schedPolicyInitSchedtags () {
-      if (this.isInitForm) {
-        const data = this.initFormData
-        if (!data) return []
-        return data.schedtags || data.extraData?.schedtags || []
-      }
-      if (!this.canUseCreateFormDraft) return []
-      const draft = this.readCreateFormFieldDraft(BAREMETAL_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY)
-      return Array.isArray(draft?.schedtags) ? draft.schedtags : []
+      // 仅工单；普通草稿由 SchedPolicy 自管
+      if (!this.isInitForm) return []
+      const data = this.initFormData
+      if (!data) return []
+      return data.schedtags || data.extraData?.schedtags || []
     },
-    draftInitPreferHost () {
-      if (this.isInitForm) {
-        return this.initFormData?.prefer_host || this.initFormData?.extraData?.prefer_host || ''
-      }
-      if (!this.canUseCreateFormDraft) return ''
-      const draft = this.readCreateFormFieldDraft(BAREMETAL_CREATE_FORM_DRAFT_FIELD.SCHED_POLICY)
-      return draft?.prefer_host || ''
+    workflowInitPreferHost () {
+      if (!this.isInitForm) return ''
+      return this.initFormData?.prefer_host || this.initFormData?.extraData?.prefer_host || ''
     },
     preserveAdvanceInitProps () {
       return this.isFormBackfill || this.canUseCreateFormDraft
@@ -693,11 +686,17 @@ export default {
       form: this.form,
       fi: this.form.fi,
       getCreateFormDraftScope: () => this.getCreateFormDraftScope(),
-      canUseCreateFormFieldDraft: () => this.canUseCreateFormDraft,
+      canUseCreateFormFieldDraft: () => this.canRestoreCreateFormDraft,
+      canRestoreCreateFormFieldDraft: () => this.canRestoreCreateFormDraft,
+      canBackupCreateFormFieldDraft: () => this.canBackupCreateFormDraft,
+      canBackupCreateFormFieldDraftOnSubmit: () => this.canBackupCreateFormDraftOnSubmit,
       registerCreateFormFieldDraftFlush: (fn) => this.registerCreateFormFieldDraftFlush(fn),
       readCreateFormFieldDraft: (key) => this.readCreateFormFieldDraft(key),
       writeCreateFormFieldDraft: (key, data, options) => this.writeCreateFormFieldDraft(key, data, options),
       bindCreateFormFieldDraft: (spec) => this.bindCreateFormFieldDraft(spec),
+      isCreateFormFieldTouched: (key) => this.isCreateFormFieldTouched(key),
+      markCreateFormFieldTouched: (key) => this.markCreateFormFieldTouched(key),
+      isCreateFormFieldDraftFromLocal: (key) => this.isCreateFormFieldDraftFromLocal(key),
     }
   },
   watch: {
@@ -740,6 +739,8 @@ export default {
     this.serverM = new this.$Manager('servers')
     this.schedulerM = new this.$Manager('schedulers', 'v1')
     this.fetchSpec = _.debounce(this._fetchSpec, 500)
+    this._baremetalDiskDraftApplied = false
+    this._baremetalDiskDraftRestoring = false
     if (this.$route.query.id) {
       this.fetchSpec()
       this.hostDetail()
@@ -753,11 +754,35 @@ export default {
     }
     this.bindCreateFormFieldDraft({
       key: BAREMETAL_CREATE_FORM_DRAFT_FIELD.IS_BONDING,
+      kind: 'selection',
       get: () => this.isBonding,
       set: (val) => {
         this.isBonding = !!val
       },
     })
+    // 规格：selection 双写；回填在 _loadSpecificationOptions 对照 options
+    this.bindCreateFormFieldDraft({
+      key: BAREMETAL_CREATE_FORM_DRAFT_FIELD.SPECIFICATIONS,
+      kind: 'selection',
+      get: () => {
+        const v = this.form?.fc?.getFieldValue?.('specifications')
+        return (v === undefined || v === null || v === '') ? undefined : v
+      },
+    })
+    // 磁盘：composite 仅 session → 同 tab 落盘/回填；跨 tab 无 local，保持不回填
+    this.bindCreateFormFieldDraft({
+      key: BAREMETAL_CREATE_FORM_DRAFT_FIELD.DISK,
+      kind: 'composite',
+      get: () => {
+        if (!Array.isArray(this.diskOptionsDate) || !this.diskOptionsDate.length) return null
+        try {
+          return JSON.parse(JSON.stringify(this.diskOptionsDate))
+        } catch (e) {
+          return undefined
+        }
+      },
+    })
+    this.rememberAllCreateFormFieldDraftLocalOrigins()
     this.bindBaremetalCreateFormFcDrafts()
   },
   mounted () {
@@ -964,8 +989,8 @@ export default {
       this.hostResourceMapper(this.hostData)
       // 获取此规格的包含的wire
       this.getSpecWire(value)
-      // 规格变动清空历史硬盘配置（回填期间保留草稿/工单磁盘）
-      if (!this.isFormBackfill) {
+      // 规格变动清空历史硬盘配置（工单/草稿磁盘回填期间保留）
+      if (!this.isFormBackfill && !this._baremetalDiskDraftRestoring) {
         this.diskOptionsDate = []
       }
     },
@@ -1079,10 +1104,15 @@ export default {
       this.form.fi.capability.specs.hosts = specs
       this.specOptions = this.__ignoreModel(options)
       if (this.specOptions && this.specOptions.length) {
-        // 工单/草稿回填：优先用已选规格，避免被默认第一项覆盖
-        const preferSpec = this.isFormBackfill
-          ? (this.effectiveInitFormData?.extraData?.specifications || this.form.fc.getFieldValue('specifications'))
-          : ''
+        // 工单/同 tab 草稿：优先已选规格，避免被默认第一项覆盖
+        let preferSpec = ''
+        if (this.isFormBackfill) {
+          preferSpec = this.effectiveInitFormData?.extraData?.specifications ||
+            this.form.fc.getFieldValue('specifications') || ''
+        } else if (this.canRestoreCreateFormDraft) {
+          const draftSpec = this.readCreateFormFieldDraft(BAREMETAL_CREATE_FORM_DRAFT_FIELD.SPECIFICATIONS)
+          preferSpec = draftSpec || this.form.fc.getFieldValue('specifications') || ''
+        }
         const matched = preferSpec
           ? this.specOptions.find(o => o.value === preferSpec)
           : null
@@ -1109,7 +1139,30 @@ export default {
         if (R.has('isolated_devices')(currentSpec)) {
           this.selectedSpecItem.isolated_devices = currentSpec.isolated_devices
         }
+        this.$nextTick(() => this.restoreBaremetalDiskDraft())
       }
+    },
+    /**
+     * 同 tab（session）回填磁盘配置；跨 tab（仅 local）跳过，保持不回填
+     */
+    restoreBaremetalDiskDraft () {
+      if (this._baremetalDiskDraftApplied) return
+      if (!this.canRestoreCreateFormDraft || this.isInitForm) return
+      const diskKey = BAREMETAL_CREATE_FORM_DRAFT_FIELD.DISK
+      // 跨 tab：不回填磁盘（与虚机数据盘策略一致）
+      if (this.isCreateFormFieldDraftFromLocal(diskKey)) return
+      const draft = this.readCreateFormFieldDraft(diskKey)
+      if (!Array.isArray(draft) || !draft.length) return
+      this._baremetalDiskDraftApplied = true
+      this._baremetalDiskDraftRestoring = true
+      try {
+        this.diskOptionsDate = JSON.parse(JSON.stringify(draft))
+      } catch (e) {
+        this.diskOptionsDate = draft
+      }
+      this.$nextTick(() => {
+        this._baremetalDiskDraftRestoring = false
+      })
     },
     __getSpecification (spec) {
       const cpu = spec.cpu

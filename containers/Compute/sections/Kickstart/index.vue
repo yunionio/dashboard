@@ -12,15 +12,9 @@
 <script>
 import 'codemirror/theme/material.css'
 import 'codemirror/addon/edit/matchbrackets'
-import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 export default {
   name: 'Kickstart',
-  mixins: [createFormFieldDraftMixin],
   props: {
-    formDraftKey: {
-      type: String,
-      default: '',
-    },
     decorator: {
       type: Object,
       required: true,
@@ -52,7 +46,7 @@ export default {
   },
   watch: {
     enableDisabled: {
-      handler (val, oldVal) {
+      handler (val) {
         if (val) {
           this.form.fc.setFieldsValue({
             [this.decorator.kickstart_enabled[0]]: false,
@@ -69,38 +63,6 @@ export default {
         }
         if (this.form && this.form.fd) this.$delete(this.form.fd, this.decorator.kickstart_config[0])
       }
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
-    },
-    'form.fd.kickstart_config' () {
-      this.$nextTick(() => this.persistFormFieldDraftSnapshot())
-    },
-  },
-  methods: {
-    getCreateFormFieldDraftSnapshot () {
-      const fc = this.form?.fc
-      if (!fc) return undefined
-      const enabled = !!fc.getFieldValue(this.decorator.kickstart_enabled[0])
-      if (!enabled) {
-        return { kickstart_enabled: false, kickstart_config: '' }
-      }
-      return {
-        kickstart_enabled: true,
-        kickstart_config: fc.getFieldValue(this.decorator.kickstart_config[0]) || '',
-      }
-    },
-    applyCreateFormFieldDraft (draft) {
-      if (!draft || !this.form?.fc || this.enableDisabled) return
-      const enableKey = this.decorator.kickstart_enabled[0]
-      const configKey = this.decorator.kickstart_config[0]
-      const values = {}
-      if (draft.kickstart_enabled === false) {
-        values[enableKey] = false
-        values[configKey] = undefined
-      } else if (draft.kickstart_enabled) {
-        values[enableKey] = true
-        if (draft.kickstart_config) values[configKey] = draft.kickstart_config
-      }
-      if (Object.keys(values).length) this.form.fc.setFieldsValue(values)
     },
   },
 }
