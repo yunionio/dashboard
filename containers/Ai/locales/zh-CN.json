@@ -381,6 +381,8 @@
   "aice.detail": "详情",
   "aice.event": "操作日志",
   "aice.perform_sync_status": "同步状态",
+  "aice.perform_resume_import": "继续导入",
+  "aice.perform_resume_import.tooltip": "仅导入失败（killed）的模型可继续导入",
   "aice.add": "增加{0}",
   "aice.screenshot": "截屏",
   "aice.desktop_status": "应用状态",
