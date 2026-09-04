@@ -687,7 +687,7 @@ export default {
   methods: {
     /**
      * 高级配置区：页面零散 FC（is_daemon 等 v-if=isKvm 晚挂载）再补一次。
-     * 组件日常回填已改为自管 watch；此处仅补晚挂载时序。UI 已常展开。
+     * 组件日常回填已改为自管 watch；此处仅补晚挂载时序。折叠用 v-show，字段仍挂载。
      */
 
     hasAdvanceFieldDrafts () {
@@ -722,6 +722,13 @@ export default {
       this._advanceDraftRestoreRunning = true
       if (this.form?.fi) this.$set(this.form.fi, 'advanceDraftRestoring', true)
       try {
+        // 有高级区草稿需回填：进页只自动展开一次，之后跟用户
+        if (this.hasAdvanceFieldDrafts()) {
+          const advanceRef = this.$refs.advanceConfigBlock
+          if (advanceRef && typeof advanceRef.tryAutoOpenOnce === 'function') {
+            advanceRef.tryAutoOpenOnce()
+          }
+        }
         ;[
           VM_CREATE_FORM_DRAFT_FIELD.IS_DAEMON,
           VM_CREATE_FORM_DRAFT_FIELD.DEPLOY_TELEGRAF,
@@ -1232,11 +1239,15 @@ export default {
     },
     /**
      * 回填高级配置：公网 IP、自定义数据、主机名、安全组、调度策略、堡垒机等
-     * 无高级字段则跳过（UI 已常展开，与折叠开关无关）
+     * 有高级字段时：进页自动展开一次（之后跟用户）；内容始终挂载
      */
     async backfillAdvanceConfigFromInitData (initData, { waitRef } = {}) {
       if (!initData || !this.form?.fc) return
       if (!hasAdvanceConfigInitFields(initData)) return
+      const advanceRef = this.$refs.advanceConfigBlock
+      if (advanceRef && typeof advanceRef.tryAutoOpenOnce === 'function') {
+        advanceRef.tryAutoOpenOnce()
+      }
 
       const doWaitRef = waitRef || ((getter, timeout = 10000) => new Promise(resolve => {
         const startAt = Date.now()

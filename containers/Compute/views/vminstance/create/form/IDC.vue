@@ -199,7 +199,7 @@
         <tag
           v-decorator="decorators.tag" :default-checked="tagDefaultChecked" />
       </a-form-item>
-      <advance-config-block>
+      <advance-config-block ref="advanceConfigBlock" collapsible>
         <eip-config
           ref="eipConfigRef"
           v-if="showEip"

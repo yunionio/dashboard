@@ -97,7 +97,7 @@
         <tag
           v-decorator="decorators.__meta__" :allowNoValue="false" :default-checked="tagDefaultChecked" />
       </a-form-item>
-      <advance-config-block>
+      <advance-config-block ref="advanceConfigBlock" collapsible>
       <a-form-item :label="$t('compute.text_104')" v-bind="formItemLayout" class="mb-0">
         <server-network
           ref="networkRef"
