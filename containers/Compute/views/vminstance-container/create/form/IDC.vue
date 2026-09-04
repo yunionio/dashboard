@@ -121,7 +121,16 @@
           v-decorator="decorators.tag"
           :default-checked="tagDefaultChecked" />
       </a-form-item>
-      <advance-config-block>
+      <advance-config-block :title="$t('compute.eci.container_config')">
+        <spec-container
+          ref="specContainerRef"
+          :form="form"
+          :panes.sync="form.fi.containerPanes"
+          :errPanes="form.fi.errPanes"
+          :decorators="decorators.containers"
+          :initContainers="containerInitList" />
+      </advance-config-block>
+      <advance-config-block ref="advanceConfigBlock" collapsible>
           <eip-config
             v-if="showEip"
             ref="eipConfigRef"
@@ -192,15 +201,6 @@
               :keyPlaceholder="$t('compute.repo.example', ['443'])"
               :valuePlaceholder="$t('compute.repo.example', ['443'])" />
           </a-form-item>
-      </advance-config-block>
-      <advance-config-block :title="$t('compute.eci.container_config')">
-        <spec-container
-          ref="specContainerRef"
-          :form="form"
-          :panes.sync="form.fi.containerPanes"
-          :errPanes="form.fi.errPanes"
-          :decorators="decorators.containers"
-          :initContainers="containerInitList" />
       </advance-config-block>
       <bottom-bar
         :loading="submiting"

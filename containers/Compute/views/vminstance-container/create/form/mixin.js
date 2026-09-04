@@ -538,6 +538,12 @@ export default {
       if (this._advanceDraftRestoreRunning) return
       this._advanceDraftRestoreRunning = true
       try {
+        if (this.hasAdvanceFieldDrafts()) {
+          const advanceRef = this.$refs.advanceConfigBlock
+          if (advanceRef && typeof advanceRef.tryAutoOpenOnce === 'function') {
+            advanceRef.tryAutoOpenOnce()
+          }
+        }
         this.$nextTick(() => {
           this.invokeAdvanceDraftComponentRestores()
         })
@@ -742,9 +748,13 @@ export default {
             })
           }
         }
-        // 高级配置：有字段才回填（UI 已常展开）
+        // 高级配置：有字段才回填；进页自动展开一次，之后跟用户
         if (hasAdvanceConfigInitFields(initData)) {
           this.$nextTick(() => {
+            const advanceRef = this.$refs.advanceConfigBlock
+            if (advanceRef && typeof advanceRef.tryAutoOpenOnce === 'function') {
+              advanceRef.tryAutoOpenOnce()
+            }
             if (initData.hostname) {
               this.form.fc.setFieldsValue({ hostName: initData.hostname })
             }
