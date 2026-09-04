@@ -953,7 +953,7 @@ export default {
             this.form?.fi?.advanceDraftRestoring ||
             Object.prototype.hasOwnProperty.call(changedFields, 'schedPolicyHost') ||
             this.$refs.schedPolicyRef?.pendingPreferHost ||
-            this.$refs.schedPolicyRef?._schedPolicyDraftApplying
+            this.$refs.schedPolicyRef?._draftApplying
           if (!keepHost) {
             this.$set(this.form.fd, 'schedPolicyHost', undefined)
           }
