@@ -325,8 +325,8 @@ export default {
         const obj = {
           ...item,
           key: uuid(),
-          network: { id: networkId },
-          // 列表补拉/clear 后仍能按草稿偏好匹配（可升级覆盖临时第一项）
+          // 不预填 network id，避免 BaseSelect / 表单回填无效 id；偏好仅存 _draft*
+          network: {},
           _draftNetworkId: networkId || '',
           _draftVpcId: vpcId || '',
           vpc: { id: vpcId },
@@ -388,14 +388,12 @@ export default {
         }
         this.networkList.forEach((item) => {
           const value = {}
-          // 子网：已 resolve 为可用项则写当前 id；否则仅种草稿 id 供 BaseSelect 补拉，不盲写不可用值
+          // 子网：仅写已在列表中 resolve 且可用的 id，禁止盲种草稿无效 id
           const netId = item.network && item.network.id
           if (netId && this.isNetworkAvailable(item.network)) {
             value[this.decorator.networks(item.key)[0]] = netId
-          } else if (item._draftNetworkId) {
-            value[this.decorator.networks(item.key)[0]] = item._draftNetworkId
           }
-          const netKeyForDecorators = netId || item._draftNetworkId
+          const netKeyForDecorators = (netId && this.isNetworkAvailable(item.network)) ? netId : null
           if (item.address && netKeyForDecorators) {
             value[this.decorator.ips(item.key, netKeyForDecorators)[0]] = item.address
           }
@@ -603,9 +601,8 @@ export default {
     /**
      * 草稿/工单回填（canDefaultSelect=false）：数据驱动，opts/resList 每次变化都重算并写回。
      * 1) _draftNetworkId 在列表且可用 → 始终优先
-     * 2) 草稿在列表但不可用 / 无草稿 → 可用第一项
-     * 3) 草稿有 id 但不在列表：仅当当前 VPC 仍是草稿 VPC 时等待补拉；否则立刻可用第一项
-     * 4) 都没有可用项 → 不写不可用值
+     * 2) 草稿在列表但不可用 / 不在列表 / 无草稿 → 可用第一项
+     * 3) 都没有可用项 → 清空无效 id，不写不存在的网络
      */
     resolveNetworkFromFetchedList (list, item) {
       if (this.canDefaultSelect) return
@@ -616,27 +613,13 @@ export default {
       const field = this.decorator.networks(item.key)[0]
       const preferId = item._draftNetworkId || ''
       const curId = this.form?.fc?.getFieldValue(field) || item.network?.id || item.network?.key
-      const curVpcId = item.vpc?.id || item.vpc?.key || this.networkList[0]?.vpc?.id
-      const sameDraftVpc = !!(item._draftVpcId && curVpcId && String(item._draftVpcId) === String(curVpcId))
 
       let target = null
       const preferHit = preferId ? this.findNetworkInList(list, preferId) : null
       if (preferHit && this.isNetworkAvailable(preferHit)) {
         target = preferHit
-      } else if (preferHit && !this.isNetworkAvailable(preferHit)) {
-        target = list.find(n => this.isNetworkAvailable(n)) || null
-      } else if (preferId && !preferHit && sameDraftVpc) {
-        // 同 VPC：草稿可能稍后被 BaseSelect 补进列表，先保留偏好 id
-        const curHit = this.findNetworkInList(list, curId)
-        if (curHit && this.isNetworkAvailable(curHit) && String(curId) !== String(preferId)) {
-          target = curHit
-        } else {
-          item.network = { ...(item.network || {}), id: preferId }
-          if (this.form?.fc) this.form.fc.setFieldsValue({ [field]: preferId })
-          return
-        }
       } else {
-        // 无草稿，或 VPC 已 fallback → 可用第一项
+        // 未命中 / 不可用 / 无草稿：绝不回填无效 id，改选列表内可用第一项
         target = list.find(n => this.isNetworkAvailable(n)) || null
       }
 
