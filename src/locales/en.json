@@ -5404,6 +5404,7 @@
   },
   "common.yunion_cloud": "Buiilt-in Virtualization",
   "common.not_limited": "no limit",
+  "common.not_set": "Not set",
   "common.change_bandwidth": "Adjust Bandwidth",
   "common.change_config": "Adjust configuration",
   "common.share": "The shared {0} does not support this operation",
