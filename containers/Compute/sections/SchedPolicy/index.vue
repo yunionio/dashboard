@@ -407,7 +407,8 @@ export default {
     tryApplyPendingDraft () {
       const draft = this._pendingDraft
       if (!draft || !this.form?.fc) return true
-      if (this.isFormFieldDraftFromLocal()) return true
+      // 跨 tab 仅 local：跳过 session 式 pending；工单 initPreferHost 必须照写，勿被 fromLocal 挡住
+      if (this.isFormFieldDraftFromLocal() && !this.preserveInitPreferHost) return true
 
       this._draftApplying = true
       try {
@@ -487,13 +488,16 @@ export default {
       if (!this.isPreferHostParamsReady()) return 'wait'
       const hostList = this.resolvePreferHostList()
       if (hostList === undefined) return 'wait'
+      // 工单回填：空列表/暂未命中先 wait，保留 pending 等 resList 再试；勿提前 drop
       if (!hostList.length) {
+        if (this.preserveInitPreferHost || this.pendingPreferHost) return 'wait'
         this.setPendingPreferHost('')
         this.clearPreferHostFormValue()
         return 'drop'
       }
-      const hit = hostList.find(h => (h.id || h.key) === id)
+      const hit = hostList.find(h => (h.id || h.key) === id || String(h.id) === String(id) || String(h.key) === String(id))
       if (!hit) {
+        if (this.preserveInitPreferHost || this.pendingPreferHost) return 'wait'
         this.setPendingPreferHost('')
         this.clearPreferHostFormValue()
         return 'drop'
