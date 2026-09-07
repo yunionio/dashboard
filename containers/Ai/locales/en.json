@@ -314,6 +314,8 @@
   "aice.bandwidth": "Bandwidth",
   "aice.cpu.unit": "Core(s)",
   "aice.memory": "Memory",
+  "aice.enable_cgroup": "Enable limit",
+  "aice.enable_cgroup_extra": "CPU/memory values are still used for scheduling; turning off skips container cgroup hard limits",
   "aice.container": "Container Host",
   "aice.container.disk": "Container Disk",
   "aice.action.reset": "Reset to Factory",
