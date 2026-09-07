@@ -57,6 +57,7 @@ import { PROVIDER_MAP, BRAND_MAP } from '@/constants'
 import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import { getHostIsolatedDeviceAvailableTypes } from '../constants/actions'
 import { cloudEnabled, cloudUnabledTip, commonEnabled, validateRescueMode } from '../utils'
 
 export default {
@@ -945,16 +946,20 @@ export default {
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_config'),
                   },
-                  // 设置透传宿主机设备（批量仅 PCI，USB 仅单机支持）
+                  // 设置透传设备（单条按能力含 USB；多条操作仅 PCI）
                   {
                     label: this.$t('compute.set_host_isolated_device'),
                     permission: 'attach-isolated-device,server_perform_detach_isolated_device,server_perform_set_isolated_device',
                     action: () => {
+                      const selected = this.list.selectedItems
+                      const availableTypes = selected.length === 1
+                        ? getHostIsolatedDeviceAvailableTypes(this, selected[0])
+                        : ['pci']
                       this.createDialog('VmAttachGpuDialog', {
-                        data: this.list.selectedItems,
+                        data: selected,
                         columns: this.columns,
                         onManager: this.onManager,
-                        availableTypes: ['pci'],
+                        availableTypes,
                       })
                     },
                     meta: () => {
