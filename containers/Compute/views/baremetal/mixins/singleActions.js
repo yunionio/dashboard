@@ -444,7 +444,7 @@ export default {
               submenus: [
                 {
                   label: i18n.t('compute.text_366'),
-                  permission: 'server_perform_insertiso',
+                  permission: 'server_perform_set_iso',
                   action: () => {
                     this.createDialog('VmMountIsoDialog', {
                       data: [obj],
@@ -455,24 +455,7 @@ export default {
                   },
                   meta: () => {
                     return {
-                      validate: obj.cdrom_support && !obj.cdrom,
-                    }
-                  },
-                },
-                {
-                  label: i18n.t('compute.text_367'),
-                  permission: 'server_perform_ejectiso',
-                  action: () => {
-                    this.createDialog('VmUnmountIsoDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                      refresh: this.refresh,
-                    })
-                  },
-                  meta: () => {
-                    return {
-                      validate: obj.cdrom_support && obj.cdrom,
+                      validate: !!obj.cdrom_support,
                     }
                   },
                 },

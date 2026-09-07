@@ -1435,10 +1435,10 @@ const getSingleActions = function (ctx) {
                 },
                 hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_save_image'),
               },
-              // 挂载ISO
+              // 挂载ISO（含卸载 / 换挂，统一 set-iso）
               {
                 label: i18n.t('compute.text_366'),
-                permission: 'server_perform_insertiso',
+                permission: 'server_perform_set_iso',
                 action: () => {
                   this.createDialog('VmMountIsoDialog', {
                     data: [obj],
@@ -1468,58 +1468,12 @@ const getSingleActions = function (ctx) {
                     return ret
                   }
                   if (commonUnabled(obj)) return ret
-                  if (obj.cdrom) {
-                    ret.tooltip = i18n.t('compute.text_1288')
-                    return ret
-                  }
-                  ret.validate = cloudEnabled('insertiso', obj)
-                  ret.tooltip = cloudUnabledTip('insertiso', obj)
+                  const action = obj.cdrom ? 'ejectiso' : 'insertiso'
+                  ret.validate = cloudEnabled(action, obj)
+                  ret.tooltip = cloudUnabledTip(action, obj)
                   return ret
                 },
                 hidden: () => !(hasSetupKey(['vmware', 'onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_mount_iso'),
-              },
-              // 卸载ISO
-              {
-                label: i18n.t('compute.text_367'),
-                permission: 'server_perform_ejectiso',
-                action: () => {
-                  this.createDialog('VmUnmountIsoDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    refresh: this.refresh,
-                  })
-                },
-                meta: () => {
-                  const provider = obj.provider
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
-                  const rescueModeValid = validateRescueMode(obj)
-                  if (!rescueModeValid.validate) return rescueModeValid
-                  if (obj.hypervisor === typeClouds.hypervisorMap.esxi.key) {
-                    ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
-                    return ret
-                  }
-                  if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
-                    ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
-                    return ret
-                  }
-                  if (obj.hypervisor === typeClouds.hypervisorMap.sangfor.key) {
-                    ret.tooltip = i18n.t('compute.text_473', [typeClouds.hypervisorMap.sangfor.label])
-                    return ret
-                  }
-                  if (commonUnabled(obj)) return ret
-                  if (!obj.cdrom) {
-                    ret.tooltip = i18n.t('compute.text_1289')
-                    return ret
-                  }
-                  ret.validate = cloudEnabled('ejectiso', obj)
-                  ret.tooltip = cloudUnabledTip('ejectiso', obj)
-                  return ret
-                },
-                hidden: () => !(hasSetupKey(['vmware', 'onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_unmount_iso'),
               },
               // 创建快照
               {
