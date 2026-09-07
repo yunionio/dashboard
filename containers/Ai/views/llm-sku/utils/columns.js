@@ -106,25 +106,59 @@ export const getBandwidthTableColumn = () => {
   }
 }
 
-export const getCpuTableColumn = () => {
+const formatCgroupLimit = (value) => {
+  const status = value ? i18n.t('status.enabled.true') : i18n.t('status.enabled.false')
+  return `${i18n.t('aice.enable_cgroup')}: ${status}`
+}
+
+export const getCpuTableColumn = (opts = {}) => {
+  const { showCgroupLimit = false } = opts
   return {
     field: 'cpu',
     title: 'CPU',
-    width: 120,
+    width: showCgroupLimit ? 220 : 120,
     sortable: true,
+    slots: showCgroupLimit
+      ? {
+        default: ({ row }) => {
+          return [
+            <span>{row.cpu}</span>,
+            <span class="ml-3">{formatCgroupLimit(row.enable_cgroup_cpu)}</span>,
+          ]
+        },
+      }
+      : undefined,
     formatter: ({ row }) => {
+      if (showCgroupLimit) {
+        return `${row.cpu} ${formatCgroupLimit(row.enable_cgroup_cpu)}`
+      }
       return row.cpu
     },
   }
 }
 
-export const getMemoryTableColumn = () => {
+export const getMemoryTableColumn = (opts = {}) => {
+  const { showCgroupLimit = false } = opts
   return {
     field: 'memory',
     title: i18n.t('aice.memory'),
-    width: 120,
+    width: showCgroupLimit ? 220 : 120,
+    slots: showCgroupLimit
+      ? {
+        default: ({ row }) => {
+          return [
+            <span>{sizestr(row.memory, 'M', 1024)}</span>,
+            <span class="ml-3">{formatCgroupLimit(row.enable_cgroup_memory)}</span>,
+          ]
+        },
+      }
+      : undefined,
     formatter: ({ row }) => {
-      return sizestr(row.memory, 'M', 1024)
+      const size = sizestr(row.memory, 'M', 1024)
+      if (showCgroupLimit) {
+        return `${size} ${formatCgroupLimit(row.enable_cgroup_memory)}`
+      }
+      return size
     },
   }
 }
