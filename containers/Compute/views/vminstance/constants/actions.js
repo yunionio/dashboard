@@ -11,8 +11,8 @@ import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip, validateRescueMode } from '../utils'
 
-// 策略仅保留 server_perform_set_gpu（展示名：设置透传宿主机设备）；PCI/USB 均由此控制
-const getHostIsolatedDeviceAvailableTypes = (vm, obj) => {
+// 策略仅保留 server_perform_set_gpu（展示名：设置透传设备）；PCI/USB 均由此控制
+export const getHostIsolatedDeviceAvailableTypes = (vm, obj) => {
   if (vm.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_gpu')) {
     return []
   }
@@ -2127,4 +2127,5 @@ const getSingleActions = function (ctx) {
 export default {
   name: POLICY_RES_NAME_KEY_MAP.vminstance.key,
   getSingleActions,
+  getHostIsolatedDeviceAvailableTypes,
 }
