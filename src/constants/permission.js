@@ -391,6 +391,7 @@ export const PERMISSION = {
   server_perform_save_image: ['compute', 'servers', 'perform', 'save-image'],
   server_perform_insertiso: ['compute', 'servers', 'perform', 'insertiso'],
   server_perform_ejectiso: ['compute', 'servers', 'perform', 'ejectiso'],
+  server_perform_set_iso: ['compute', 'servers', 'perform', 'set-iso'],
   server_perform_add_secgroup: ['compute', 'servers', 'perform', 'add-secgroup'],
   server_perform_revoke_secgroup: ['compute', 'servers', 'perform', 'revoke-secgroup'],
   server_perform_set_secgroup: ['compute', 'servers', 'perform', 'set-secgroup'],
