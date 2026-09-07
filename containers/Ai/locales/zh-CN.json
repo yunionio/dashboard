@@ -24,6 +24,8 @@
   "aice.llm_type.desktop": "Desktop",
   "aice.llm_type.no_params_hint": "该类型暂无额外参数配置",
   "aice.cpu": "CPU",
+  "aice.enable_cgroup": "启用限制",
+  "aice.enable_cgroup_extra": "CPU/内存数值仍用于调度；关闭后不写入容器 cgroup 硬限制",
   "aice.llm_image.name": "镜像名称",
   "aice.llm_image.url": "镜像地址",
   "aice.llm_image.label": "镜像标签",

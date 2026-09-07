@@ -313,6 +313,8 @@
   "aice.bandwidth": "帯域幅",
   "aice.cpu.unit": "コア",
   "aice.memory": "メモリ",
+  "aice.enable_cgroup": "制限を有効化",
+  "aice.enable_cgroup_extra": "CPU/メモリ値はスケジューリングに使用されます。オフにするとコンテナの cgroup ハード制限は書き込まれません",
   "aice.container": "コンテナホスト",
   "aice.container.disk": "コンテナディスク",
   "aice.action.reset": "工場出荷状態にリセット",

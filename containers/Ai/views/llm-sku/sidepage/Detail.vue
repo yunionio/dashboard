@@ -112,8 +112,8 @@ export default {
             },
           },
         },
-        getCpuTableColumn(),
-        getMemoryTableColumn(),
+        getCpuTableColumn({ showCgroupLimit: true }),
+        getMemoryTableColumn({ showCgroupLimit: true }),
         getDiskTableColumn(),
         getEnvsTableColumn(),
         {
