@@ -623,7 +623,9 @@ export default {
     },
   },
   watch: {
-    'form.fd.billType' (val) {
+    'form.fd.billType' (val, oldVal) {
+      // form.fd 兄弟字段 $set 会误触发本 watch，同值直接跳过
+      if (R.equals(val, oldVal)) return
       // 计费方式为包年包月平台不含 azure、aws，这里统一做清空处理
       if (val === BILL_TYPES_MAP.package.key) {
         this.form.fc.setFieldsValue({
@@ -636,6 +638,7 @@ export default {
       this.$refs.areaSelectRef?.fetchs?.(['provider'])
     },
     'form.fd.duration' (val, oldVal) {
+      if (R.equals(val, oldVal)) return
       if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
         if (val === '1W' || oldVal === '1W') {
           this.form.fc.setFieldsValue({
@@ -649,12 +652,17 @@ export default {
     },
   },
   created () {
-    this.baywatch(['form.fd.provider', 'form.fd.cloudregion', 'form.fd.zone'], this.fetchInstanceSpecs)
+    // form.fd 任意兄弟 $set 会连带触发本 watch，需 equals 去重
+    this.baywatch(['form.fd.provider', 'form.fd.cloudregion', 'form.fd.zone'], (val, oldVal) => {
+      if (R.equals(val, oldVal)) return
+      this.fetchInstanceSpecs()
+    })
     this.baywatch(['form.fd.sku', 'form.fd.zone'], this.withFetchCapbilites)
     this.baywatch(['form.fd.sku'], this.onResolvedSkuChange)
   },
   methods: {
-    onResolvedSkuChange (val) {
+    onResolvedSkuChange (val, oldVal) {
+      if (R.equals(val, oldVal)) return
       if (this.hasMultipleAreaSelection && R.is(Object, val)) {
         this.fetchInstanceSpecs()
       }

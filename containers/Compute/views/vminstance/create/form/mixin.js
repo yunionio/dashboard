@@ -658,7 +658,9 @@ export default {
     isKvm () {
       return this.form.fd.hypervisor === 'kvm'
     },
-    'form.fd.sku' (val) {
+    'form.fd.sku' (val, oldVal) {
+      // form.fd 兄弟字段 $set 会误触发，同值跳过
+      if (R.equals(val, oldVal)) return
       // 公有云盘组件 v-if="sku"：sku 就绪后再回填磁盘类型/大小，并随后回填网络
       if (this.type === 'public' && this.canUseCreateFormDraft) {
         this.$nextTick(() => this.restoreVmDiskFormFieldDrafts())
