@@ -1394,6 +1394,7 @@
       "delete_fail": "删除失败",
       "delete_failed": "删除失败",
       "syncing": "同步副本中",
+      "restarting": "重启中",
       "aiproxy_pending": "网关待同步",
       "aiproxy_syncing": "网关同步中",
       "aiproxy_partial": "网关部分同步",

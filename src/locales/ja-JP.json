@@ -1387,6 +1387,7 @@
       "delete_fail": "削除に失敗しました",
       "delete_failed": "削除に失敗しました",
       "syncing": "レプリカ同期中",
+      "restarting": "再起動中",
       "aiproxy_pending": "ゲートウェイ同期待ち",
       "aiproxy_syncing": "ゲートウェイ同期中",
       "aiproxy_partial": "ゲートウェイ一部同期",

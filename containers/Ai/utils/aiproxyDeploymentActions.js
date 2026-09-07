@@ -110,10 +110,23 @@ export function getUnregisterAiproxyMeta (row, vm) {
   return { validate: true }
 }
 
-const RESTARTABLE_STATUSES = ['ready', 'partial', 'running', 'start_fail']
+const RESTART_FORBIDDEN_STATUSES = [
+  'creating',
+  'importing_model',
+  'creating_sku',
+  'deleting',
+  'start_delete',
+  'deleted',
+  'delete_fail',
+  'delete_failed',
+  'syncing',
+  'restarting',
+  'import_model_failed',
+  'create_sku_failed',
+]
 
 export function getRestartMeta (row, vm) {
-  if (CREATING_STATUSES.includes(row?.status)) {
+  if (RESTART_FORBIDDEN_STATUSES.includes(row?.status)) {
     return {
       validate: false,
       tooltip: vm.$t('aice.llm_deployment.restart_disabled_invalid_status', [
@@ -121,17 +134,12 @@ export function getRestartMeta (row, vm) {
       ]),
     }
   }
-  if (isAiproxySyncInProgress(row)) {
+  // pending means waiting for running replicas (typical for start_fail), not an
+  // active gateway sync. Only block restart while aiproxy is actually syncing.
+  if (resolveAiproxySyncStatus(row) === 'syncing') {
     return {
       validate: false,
       tooltip: vm.$t('aice.llm_deployment.aiproxy_sync_in_progress'),
-    }
-  }
-  if (!RESTARTABLE_STATUSES.includes(row?.status)) {
-    const statusLabel = formatDeploymentStatus(row?.status, vm)
-    return {
-      validate: false,
-      tooltip: vm.$t('aice.llm_deployment.restart_disabled_invalid_status', [statusLabel]),
     }
   }
   return { validate: true }
