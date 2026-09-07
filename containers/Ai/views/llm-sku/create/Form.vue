@@ -103,18 +103,39 @@
           :select-props="{ placeholder: $t('common.tips.select', [$t('aice.llm_image')]) }" />
       </a-form-item>
       <a-form-item :label="$t('aice.cpu')">
-        <a-input-number
-          v-decorator="decorators.cpu"
-          :min="2"
-          :step="2"
-          :precision="0" /> {{ $t('aice.cpu.unit') }}
+        <span class="sku-resource-with-limit">
+          <a-input-number
+            v-decorator="decorators.cpu"
+            :min="2"
+            :step="2"
+            :precision="0" />
+          <span>{{ $t('aice.cpu.unit') }}</span>
+          <span class="sku-resource-limit">
+            {{ $t('aice.enable_cgroup') }}
+            <a-switch
+              v-decorator="decorators.enable_cgroup_cpu"
+              :checkedChildren="$t('compute.text_115')"
+              :unCheckedChildren="$t('compute.text_116')" />
+          </span>
+        </span>
       </a-form-item>
       <a-form-item :label="$t('aice.memory')">
-        <a-input-number
-          v-decorator="decorators.memory"
-          :min="2"
-          :step="2"
-          :precision="0" /> GB
+        <span class="sku-resource-with-limit">
+          <a-input-number
+            v-decorator="decorators.memory"
+            :min="2"
+            :step="2"
+            :precision="0" />
+          <span>GB</span>
+          <span class="sku-resource-limit">
+            {{ $t('aice.enable_cgroup') }}
+            <a-switch
+              v-decorator="decorators.enable_cgroup_memory"
+              :checkedChildren="$t('compute.text_115')"
+              :unCheckedChildren="$t('compute.text_116')" />
+          </span>
+        </span>
+        <template v-slot:extra>{{ $t('aice.enable_cgroup_extra') }}</template>
       </a-form-item>
       <a-form-item :label="$t('aice.disk')">
         <a-input-number
@@ -599,6 +620,9 @@ export default {
     } = data
     const defaultLlmTypeForInit = catalogLlmTypeInit || (llmTypeOptions[0] && llmTypeOptions[0].id) || (isDesktopType ? 'desktop' : (isApplyType ? 'openclaw' : 'ollama'))
     const initialLlmTypeForSpec = catalogLlmTypeInit || rowLlmType || defaultLlmTypeForInit
+    const isInferenceInit = ['vllm', 'sglang', 'ollama'].includes(initialLlmTypeForSpec)
+    const enableCgroupCpuInit = data.enable_cgroup_cpu == null ? !isInferenceInit : !!data.enable_cgroup_cpu
+    const enableCgroupMemoryInit = data.enable_cgroup_memory == null ? !isInferenceInit : !!data.enable_cgroup_memory
     const catalogNameInit = this.catalogSpec
       ? defaultNameFromSpec(this.catalogSpec, this.catalogSet, catalogLlmTypeInit)
       : null
@@ -916,6 +940,20 @@ export default {
             rules: [
               { required: true, message: this.$t('common.tips.input', [this.$t('aice.memory')]) },
             ],
+          },
+        ],
+        enable_cgroup_cpu: [
+          'enable_cgroup_cpu',
+          {
+            valuePropName: 'checked',
+            initialValue: enableCgroupCpuInit,
+          },
+        ],
+        enable_cgroup_memory: [
+          'enable_cgroup_memory',
+          {
+            valuePropName: 'checked',
+            initialValue: enableCgroupMemoryInit,
           },
         ],
         volume_size: [
@@ -1425,6 +1463,8 @@ export default {
         memory,
         volume_size,
         bandwidth,
+        enable_cgroup_cpu,
+        enable_cgroup_memory,
         protocol,
         container_port,
         customized_arg_key,
@@ -1487,6 +1527,8 @@ export default {
         cpu,
         memory: (memory ?? 2) * 1024,
         bandwidth: bandwidth ?? 100,
+        enable_cgroup_cpu: !!enable_cgroup_cpu,
+        enable_cgroup_memory: !!enable_cgroup_memory,
         volumes,
         disk_size: sizeMb,
       }
@@ -1715,6 +1757,13 @@ export default {
       if (val) {
         this.$set(this.form.fd, 'llm_type', val)
       }
+      if (!this.isEditMode && this.form.fc && val) {
+        const enable = !['vllm', 'sglang', 'ollama'].includes(val)
+        this.form.fc.setFieldsValue({
+          enable_cgroup_cpu: enable,
+          enable_cgroup_memory: enable,
+        })
+      }
     },
     onLocalPathInputChange (e) {
       const path = String(e?.target?.value ?? e ?? '').trim()
@@ -1891,6 +1940,17 @@ export default {
 </script>
 
 <style scoped>
+.sku-resource-with-limit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.sku-resource-limit {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 16px;
+  gap: 8px;
+}
 .llm-sku-create-form {
   max-width: 100%;
   overflow-x: hidden;
