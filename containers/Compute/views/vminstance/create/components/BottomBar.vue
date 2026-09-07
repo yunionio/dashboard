@@ -334,6 +334,7 @@ export default {
       'fd.gpu',
       'fd.gpuCount',
     ], (val, oldval) => {
+      if (R.equals(val, oldval)) return
       if (val) {
         this.getPriceList()
       }
