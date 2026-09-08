@@ -177,6 +177,17 @@ export default {
         }
       }
     },
+    // measurements 异步加载完成后，回填已选指标（含 unit），供图表形式配置判断
+    metricOpts (opts) {
+      const metricValue = this.form.fc.getFieldValue(this.decorators.metric_value[0])
+      if (!metricValue || !opts || !opts.length) return
+      const vItem = opts.find(opt => opt.key === metricValue)
+      if (!vItem) return
+      const current = this.metricValueItem || {}
+      const hasDesc = current.description && Object.keys(current.description).length
+      if (current.key === vItem.key && hasDesc) return
+      this.metricValueChange(metricValue)
+    },
   },
   mounted: function () {
     this.$nextTick(function () {

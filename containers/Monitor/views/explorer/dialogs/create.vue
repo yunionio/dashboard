@@ -120,7 +120,11 @@ export default {
           ...this.params.timeRangeParams,
         }
         if (!data.metric_query || !data.metric_query.length || !data.from || !data.dashboard_id) return
-        await new this.$Manager('alertpanels', 'v1').create({ data })
+        const manager = new this.$Manager('alertpanels', 'v1')
+        const { data: panel } = await manager.create({ data })
+        if (this.params.message && panel && panel.id) {
+          await manager.update({ id: panel.id, data: { message: this.params.message } })
+        }
         this.loading = false
         this.$message.success(this.$t('cloudenv.text_381'))
         this.cancelDialog()

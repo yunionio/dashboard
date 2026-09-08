@@ -8,13 +8,15 @@
             :panel="panel"
             :queryOnly="false"
             :multiQuery="false"
+            :enableChartTypes="true"
             :timeRangeParams="timeRangeParams"
             :extraParams="extraParams"
             @nameChange="nameChange"
             @refresh="refresh"
             @remove="remove"
             @resetChart="resetChart"
-            @mertricItemChange="mertricItemChange" />
+            @mertricItemChange="mertricItemChange"
+            @chartTypesChange="chartTypesChange" />
         </a-col>
         <a-col class="line mb-5"
                :md="{ span: 24 }"
@@ -42,6 +44,8 @@
               :series="item"
               :reducedResult="resultList[i]"
               :reducedResultOrder="resultOrderList[i]"
+              :chartTypes="chartTypesList[i] || ['line']"
+              :enableHeatmap="true"
               showTableExport
               @pageChange="pageChange"
               @chartInstance="setChartInstance"
@@ -74,10 +78,10 @@ import get from 'lodash/get'
 import echarts from 'echarts'
 import MonitorForms from '@Monitor/sections/ExplorerForm'
 import MonitorLine from '@Monitor/sections/MonitorLine'
-// import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
-import MonitorHeader from '@/sections/Monitor/Header'
-import { getRequestT, uuid } from '@/utils/utils'
+import { buildChartTypesMessage, DEFAULT_CHART_TYPES } from '@Monitor/utils/chartTypes'
 import { getSignature } from '@/utils/crypto'
+import { getRequestT, uuid } from '@/utils/utils'
+import MonitorHeader from '@/sections/Monitor/Header'
 import MonitorTimeMixin from '@/mixins/monitorTime'
 
 export default {
@@ -115,6 +119,7 @@ export default {
       chartInstanceList: [], // e-chart 实例
       loadingList: [],
       seriesDescription: [],
+      chartTypesList: [],
       extraParams: extraParams,
       get,
       tablePageSize: 10,
@@ -195,6 +200,7 @@ export default {
       this.resultList.splice(i, 1)
       this.resultOrderList.splice(i, 1)
       this.loadingList.splice(i, 1)
+      this.chartTypesList.splice(i, 1)
     },
     setChartInstance (val, i) {
       this.chartInstanceList.push(val)
@@ -207,7 +213,11 @@ export default {
         this.$set(this.resultOrderList, i, [])
         this.$set(this.metricList, i, [])
         this.$set(this.seriesDescription[i], 'title', '')
+        this.$set(this.chartTypesList, i, [...DEFAULT_CHART_TYPES])
       }
+    },
+    chartTypesChange (val, i) {
+      this.$set(this.chartTypesList, i, val || [...DEFAULT_CHART_TYPES])
     },
     mertricItemChange (item, i) {
       const t = +this.time.replace(/\D+/, '')
@@ -293,6 +303,7 @@ export default {
       await this._refresh(i, this.tablePageSize, 0)
     },
     async pageChange (pager) {
+      this.tablePageSize = pager.limit
       await this._refresh(pager.seriesIndex, pager.limit, (pager.page - 1) * pager.limit)
       this.saveMonitorConfig({ tablePageSize: pager.limit })
     },
@@ -350,12 +361,18 @@ export default {
           scope: this.$store.getters.scope,
           ...this.timeRangeParams,
         }
+        const chartTypes = this.chartTypesList[0] || [...DEFAULT_CHART_TYPES]
+        const chartMessage = buildChartTypesMessage(chartTypes)
         if (!data.metric_query || !data.metric_query.length || !data.from || !data.dashboard_id) return
+        const manager = new this.$Manager('alertpanels', 'v1')
         if (this.panelId) {
-          // update
-          await new this.$Manager('alertpanels', 'v1').update({ id: this.panelId, data })
+          data.message = chartMessage
+          await manager.update({ id: this.panelId, data })
         } else {
-          await new this.$Manager('alertpanels', 'v1').create({ data })
+          const { data: panel } = await manager.create({ data })
+          if (panel && panel.id) {
+            await manager.update({ id: panel.id, data: { message: chartMessage } })
+          }
         }
         this.loading = false
         this.goback()
