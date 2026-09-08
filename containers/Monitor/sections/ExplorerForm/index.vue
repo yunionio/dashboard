@@ -11,6 +11,7 @@
       <monitor-form
         :panel="panel"
         :query-only="queryOnly"
+        :enable-chart-types="enableChartTypes"
         :defaultPanelShow="item.show"
         :showDelete="formList.length > 1"
         :formItemLayout="formItemLayout"
@@ -18,6 +19,7 @@
         :extraParams="extraParams"
         @nameChange="val => nameChange(val, i)"
         @mertricItemChange="val => mertricItemChange(val, i)"
+        @chartTypesChange="val => chartTypesChange(val, i)"
         @resetChart="() => resetChart(i)"
         @paramsChange="(val, resVal) => paramsChange(val, resVal, i)"
         @remove="() => remove(i)" />
@@ -54,6 +56,11 @@ export default {
     queryOnly: {
       type: Boolean,
       default: true,
+    },
+    // 仅监控查询 / 监控面板开启图表形式（折线/热力图）配置
+    enableChartTypes: {
+      type: Boolean,
+      default: false,
     },
     multiQuery: {
       type: Boolean,
@@ -118,6 +125,9 @@ export default {
     },
     mertricItemChange (val, i) {
       this.$emit('mertricItemChange', val, i)
+    },
+    chartTypesChange (val, i) {
+      this.$emit('chartTypesChange', val, i)
     },
     nameChange (name, i) {
       this.$emit('nameChange', name, i)

@@ -217,6 +217,7 @@ export default {
       this.editChart({ id, time: this.time, timeGroup: this.timeGroup, customTime: this.customTime, groupFunc: this.groupFunc })
     },
     pageChange (panel, pager) {
+      this.tablePageSize = pager.limit
       this.saveMonitorConfig({ tablePageSize: pager.limit })
     },
     initTablePageSize (size) {
@@ -264,11 +265,13 @@ export default {
         if (this.id) {
           const { data } = await this.dashboardMan.get({ id: this.id, params })
           this.dashboard = data
+          await this.mergePanelMessages()
           const first = this.dashboard.alert_panel_details ? this.dashboard.alert_panel_details : []
           this.$emit('chose_first_panel', first && first.length > 0 ? first[0].panel_id : '')
         } else {
           const { data: { data } } = await this.dashboardMan.list({ params })
           this.dashboard = this.getFirstDashborad(data)
+          await this.mergePanelMessages()
           const first = this.dashboard.alert_panel_details
           this.$emit('chose_first_panel', { panel: first[0], dashboardId: this.dashboard })
           this.$emit('chose_panels', { id: first[0].panel_id, name: first[0].panel_name, dashboardId: this.dashboard.id })
@@ -279,6 +282,30 @@ export default {
         throw error
       } finally {
         this.loading = false
+      }
+    },
+    // alert_panel_details 不含 message，额外拉取 panel 列表合并图表形式配置
+    async mergePanelMessages () {
+      if (!this.dashboard || !this.dashboard.id || !this.dashboard.alert_panel_details) return
+      try {
+        const { data: { data = [] } } = await this.panelMan.list({
+          params: {
+            scope: this.scope,
+            dashboard_id: this.dashboard.id,
+            details: true,
+            limit: 0,
+          },
+        })
+        const messageMap = {}
+        data.forEach(p => {
+          if (p.id && p.message) messageMap[p.id] = p.message
+        })
+        this.dashboard.alert_panel_details = this.dashboard.alert_panel_details.map(panel => {
+          const message = messageMap[panel.panel_id]
+          return message ? { ...panel, message } : panel
+        })
+      } catch (e) {
+        // 合并失败不影响主流程
       }
     },
     cursorMove (index, point) {

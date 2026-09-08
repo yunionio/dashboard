@@ -54,6 +54,12 @@
       <a-form-item v-if="form.fd.result_function === 'percentile'" :label="$t('monitor.monitor_percentile')">
         <a-input-number :min="1" :max="99" v-decorator="decorators.percentile" placeholder="1~99" />
       </a-form-item>
+      <a-form-item v-if="showChartTypes" :label="$t('monitor.chart_form')">
+        <a-checkbox-group
+          :value="chartTypes"
+          :options="chartTypeOptions"
+          @change="chartTypesChange" />
+      </a-form-item>
       <a-form-item :label="$t('common.name')" v-if="!queryOnly">
         <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" />
       </a-form-item>
@@ -67,6 +73,15 @@ import * as R from 'ramda'
 import Metric from '@Monitor/sections/Metric'
 import Filters from '@Monitor/sections/Filters'
 import { metric_zh } from '@Monitor/constants'
+import {
+  CHART_TYPE_HEATMAP,
+  CHART_TYPE_LINE,
+  DEFAULT_CHART_TYPES,
+  DEFAULT_PERCENT_CHART_TYPES,
+  getMetricUnit,
+  isPercentUnit,
+  parseChartTypesFromPanel,
+} from '@Monitor/utils/chartTypes'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { uuid, getRequestT } from '@/utils/utils'
 
@@ -84,6 +99,11 @@ export default {
     queryOnly: {
       type: Boolean,
       default: true,
+    },
+    // 仅监控查询 / 监控面板开启图表形式配置
+    enableChartTypes: {
+      type: Boolean,
+      default: false,
     },
     formItemLayout: {
       type: Object,
@@ -355,6 +375,14 @@ export default {
       res_type_measurements: {},
       res_types: [],
       allowClearGroupFunction: true,
+      chartTypes: parseChartTypesFromPanel(this.panel, {
+        isPercent: true,
+        queryOnly: this.queryOnly,
+      }),
+      chartTypeOptions: [
+        { label: this.$t('monitor.chart_line'), value: CHART_TYPE_LINE },
+        { label: this.$t('monitor.chart_heatmap'), value: CHART_TYPE_HEATMAP },
+      ],
     }
   },
   computed: {
@@ -364,6 +392,16 @@ export default {
       }
       return this.$t('monitor.monitor_fill_filters')
     },
+    metricUnit () {
+      // 优先用当前选中指标；编辑回填时 mertricItem 可能尚未就绪，回退 panel 中的单位
+      return getMetricUnit(this.mertricItem) ||
+        _.get(this.panel, 'common_alert_metric_details[0].field_description.unit') ||
+        _.get(this.panel, 'common_alert_metric_details[0].unit') ||
+        ''
+    },
+    showChartTypes () {
+      return this.enableChartTypes && isPercentUnit(this.metricUnit)
+    },
   },
   watch: {
     defaultPanelShow (val) {
@@ -372,11 +410,34 @@ export default {
     timeRangeParams () {
       this.getMeasurement()
     },
+    showChartTypes (val) {
+      if (val) {
+        if (!this.chartTypes || !this.chartTypes.length) {
+          // 监控查询 / 新建：百分比默认双图；已落库旧面板：仅折线
+          const isPersistedPanel = !!(this.panel && (this.panel.id || this.panel.panel_id))
+          this.chartTypes = this.queryOnly || !isPersistedPanel
+            ? [...DEFAULT_PERCENT_CHART_TYPES]
+            : [...DEFAULT_CHART_TYPES]
+        } else if (this.queryOnly) {
+          // 监控查询切到 % 指标时，恢复默认折线+热力图
+          this.chartTypes = [...DEFAULT_PERCENT_CHART_TYPES]
+        }
+        this.$emit('chartTypesChange', this.chartTypes)
+      } else {
+        this.$emit('chartTypesChange', [CHART_TYPE_LINE])
+      }
+    },
   },
   created () {
     this.getMeasurement()
+    this.$emit('chartTypesChange', this.showChartTypes ? this.chartTypes : [CHART_TYPE_LINE])
   },
   methods: {
+    chartTypesChange (val) {
+      // 至少保留一种图表形式
+      this.chartTypes = (val && val.length) ? val : [CHART_TYPE_LINE]
+      this.$emit('chartTypesChange', this.chartTypes)
+    },
     getTitle () {
       let padding = ' '
       if (this.$store.getters.setting.language === 'zh-CN') {

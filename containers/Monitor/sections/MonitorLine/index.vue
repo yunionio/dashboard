@@ -21,7 +21,7 @@
     </div>
     <loader v-if="loading" :loading="true" />
     <template v-else>
-      <div class="d-flex">
+      <div class="d-flex" v-if="showLineChart">
         <uchart :data="uChartData" :options="uChartOptions" :otherCursorMovePoint="otherCursorMovePoint" />
         <div v-if="alertHandlerShow && lineChartOptionsC.dataset.length" class="alert-handler-wrapper position-relative">
           <div class="position-absolute clearfix d-flex align-items-center" :style="{ top: `${topStyleRange[1]}px` }">
@@ -30,6 +30,14 @@
           </div>
         </div>
       </div>
+      <div v-if="showLineChart && showHeatmap" class="monitor-chart-divider" />
+      <monitor-heatmap
+        v-if="showHeatmap"
+        :class="{ 'mt-3': !showLineChart }"
+        :series="fixedSeries"
+        :groupBy="groupBy"
+        :timeFormatStr="timeFormatStr"
+        :yAxisTitle="heatmapYAxisTitle" />
       <vxe-grid
         v-if="tableData && tableData.length && showTable && showTableLegend"
         max-height="500"
@@ -46,7 +54,10 @@
         :sort-config="sortConfig"
         @cell-click="cellClick"
         @sort-change="sortChange" />
-      <div class="vxe-grid--pager-wrapper" v-if="showTableLegend">
+      <div
+        class="vxe-grid--pager-wrapper"
+        :class="{ 'mt-3': showHeatmap && !(tableData && tableData.length && showTable && showTableLegend) }"
+        v-if="showTableLegend || showHeatmap">
         <div class="vxe-pager size--mini">
           <div class="vxe-pager--wrapper">
             <span class="vxe-pager--total" v-if="!pager || (pager && pager.total < 11)">{{ total }}</span>
@@ -71,13 +82,16 @@ import _ from 'lodash'
 import XLSX from 'xlsx'
 import { metric_zh, tableColumnMaps } from '@Monitor/constants'
 import { getChartTooltipLabel } from '@Monitor/utils'
+import { CHART_TYPE_HEATMAP, CHART_TYPE_LINE, DEFAULT_CHART_TYPES } from '@Monitor/utils/chartTypes'
 import { ColorHash } from '@/utils/colorHash'
 import { transformUnit } from '@/utils/utils'
+import MonitorHeatmap from './Heatmap'
 const MAX_COLUMNS = 10
 
 export default {
   name: 'ExplorerMonitorLine',
   components: {
+    MonitorHeatmap,
   },
   props: {
     isTemplate: {
@@ -87,6 +101,15 @@ export default {
     unit: {
       type: Object,
       default: () => ({}),
+    },
+    chartTypes: {
+      type: Array,
+      default: () => [...DEFAULT_CHART_TYPES],
+    },
+    // 仅监控查询 / 监控面板显式开启；其它复用场景默认关闭热力图
+    enableHeatmap: {
+      type: Boolean,
+      default: false,
     },
     series: {
       type: Array,
@@ -171,6 +194,36 @@ export default {
     }
   },
   computed: {
+    showLineChart () {
+      const types = this.chartTypes || []
+      // 未配置时默认展示折线，兼容旧面板
+      return !types.length || types.includes(CHART_TYPE_LINE)
+    },
+    showHeatmap () {
+      return this.enableHeatmap &&
+        (this.chartTypes || []).includes(CHART_TYPE_HEATMAP) &&
+        this.fixedSeries.length > 0
+    },
+    heatmapYAxisTitle () {
+      const groupByFields = (this.groupBy || []).map(item => _.get(item, 'params[0]')).filter(Boolean)
+      if (groupByFields.length) {
+        return groupByFields.map(field => {
+          return this.$te(`dictionary.${field}`) ? this.$t(`dictionary.${field}`) : field
+        }).join(' / ')
+      }
+      // 无聚合维度时，按常见资源标签推断
+      const tags = _.get(this.fixedSeries, '[0].tags') || {}
+      if (tags.vm_name || tags.name) {
+        return this.$te('dictionary.name') ? this.$t('dictionary.name') : this.$t('common.name')
+      }
+      if (tags.ip || tags.vm_ip) {
+        return 'IP'
+      }
+      if (tags.host || tags.hostname) {
+        return this.$te('dictionary.host') ? this.$t('dictionary.host') : 'host'
+      }
+      return this.$t('common.name')
+    },
     fixedSeries () {
       if (this.series.length) {
         const cols = this.series[0].columns.filter(col => col !== 'time')
@@ -1064,6 +1117,11 @@ export default {
 .explorer-monitor-line {
   ::v-deep .ant-card-body {
     width: 100%;
+  }
+  .monitor-chart-divider {
+    height: 1px;
+    margin: 16px 0;
+    background-color: #f0f0f0;
   }
   .alert-handler-wrapper {
     width: 50px;
