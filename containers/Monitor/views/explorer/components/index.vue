@@ -7,8 +7,10 @@
         @resetChart="resetChart"
         :timeRangeParams="timeRangeParams"
         @mertricItemChange="mertricItemChange"
+        @chartTypesChange="chartTypesChange"
         :extraParams="extraParams"
         :multiQuery="!isTemplate"
+        :enableChartTypes="true"
         :panel="templateParams?.panel" />
     </a-col>
     <a-col :span="isTemplate ? 24 : undefined" class="line mb-5" :md="isTemplate ? 24 : 24" :lg="isTemplate ? 24 : 22" :xl="isTemplate ? 24 : 16" :xxl="isTemplate ? { span: 24 } : { span: 13, offset: 1 }">
@@ -31,6 +33,8 @@
           :metricInfo="metricList[i][0]"
           class="mb-3"
           :isTemplate="isTemplate"
+          :chartTypes="chartTypesList[i] || ['line']"
+          :enableHeatmap="true"
           @chartInstance="setChartInstance"
           :series="item"
           :reducedResult="resultList[i]"
@@ -42,7 +46,7 @@
           @exportTable="(total) => exportTable(i, total)"
           @reducedResultOrderChange="(order) => reducedResultOrderChange(i, order)">
           <template #extra>
-            <a-button class="mr-3" type="link" @click="handleSave(metricList[i], seriesDescription[i])">{{ $t('common.save') }}</a-button>
+            <a-button class="mr-3" type="link" @click="handleSave(metricList[i], seriesDescription[i], i)">{{ $t('common.save') }}</a-button>
           </template>
         </monitor-line>
       </div>
@@ -59,6 +63,7 @@ import echarts from 'echarts'
 import MonitorForms from '@Monitor/sections/ExplorerForm'
 import MonitorLine from '@Monitor/sections/MonitorLine'
 import { addMissingSeries } from '@Monitor/utils'
+import { buildChartTypesMessage, DEFAULT_CHART_TYPES, parseChartTypesFromPanel } from '@Monitor/utils/chartTypes'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import MonitorHeader from '@/sections/Monitor/Header'
@@ -103,6 +108,7 @@ export default {
       chartInstanceList: [], // e-chart 实例
       loadingList: [],
       seriesDescription: [],
+      chartTypesList: [],
       get,
       tablePageSize: 10,
     }
@@ -165,6 +171,7 @@ export default {
       this.resultList.splice(i, 1)
       this.resultOrderList.splice(i, 1)
       this.loadingList.splice(i, 1)
+      this.chartTypesList.splice(i, 1)
     },
     setChartInstance (val, i) {
       this.chartInstanceList.push(val)
@@ -177,7 +184,11 @@ export default {
         this.$set(this.resultOrderList, i, '')
         this.$set(this.metricList, i, [])
         this.$set(this.seriesDescription[i], 'title', '')
+        this.$set(this.chartTypesList, i, [...DEFAULT_CHART_TYPES])
       }
+    },
+    chartTypesChange (val, i) {
+      this.$set(this.chartTypesList, i, val || [...DEFAULT_CHART_TYPES])
     },
     mertricItemChange (item, i) {
       const t = +this.time.replace(/\D+/, '')
@@ -260,6 +271,7 @@ export default {
       this._refresh(i, this.seriesListPager[i].limit, 0, true)
     },
     async pageChange (pager) {
+      this.tablePageSize = pager.limit
       await this._refresh(pager.seriesIndex, pager.limit, (pager.page - 1) * pager.limit)
       this.saveMonitorConfig({ tablePageSize: pager.limit })
     },
@@ -281,12 +293,15 @@ export default {
         throw error
       }
     },
-    handleSave (mq, desc) {
+    handleSave (mq, desc, i) {
+      const chartTypes = this.chartTypesList[i] || parseChartTypesFromPanel(null, { isPercent: false })
       this.createDialog('CreateMonitorDashboardChart', {
         name: desc.title,
         metric_query: mq,
         timeGroup: this.timeGroup,
         timeRangeParams: this.timeRangeParams,
+        chartTypes,
+        message: buildChartTypesMessage(chartTypes),
       })
     },
     async exportTable (index, total) {
