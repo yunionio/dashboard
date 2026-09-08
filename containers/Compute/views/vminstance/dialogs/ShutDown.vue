@@ -2,12 +2,10 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning">
+      <a-alert v-if="isSupportForce" class="mb-2" type="warning">
         <template v-slot:message>
-          <div v-if="isShowForceTip">
-            {{$t('compute.text_1234_2')}}
-          </div>
-          <div v-else>{{$t('compute.text_1234_1')}}</div>
+          <div>{{$t('compute.text_1234_1')}}</div>
+          <div v-if="hasKvm">{{$t('compute.text_1234_2')}}</div>
         </template>
       </a-alert>
       <dialog-selected-tips :name="params.name || $t('dictionary.server')" :count="dataList.length" :action="action" />
@@ -26,7 +24,7 @@
           <help-tooltip name="shutdownStopCharging" />
         </a-form-item>
         <a-form-item v-if="isSupportForce" :label="$t('compute.force_shutdown')" v-bind="formItemLayout">
-          <a-switch v-model="form.fd.is_force" @change="isForceChange" />
+          <a-switch v-model="form.fd.is_force" :disabled="forceLocked" @change="isForceChange" />
         </a-form-item>
       </a-form>
     </div>
@@ -50,15 +48,16 @@ export default {
   name: 'VmShutDownDialog',
   mixins: [DialogMixin, WindowsMixin, WorkflowMixin],
   data () {
-    const { type, formData = {} } = this.params
+    const { type, formData = {}, forceLocked = false } = this.params
     return {
       loading: false,
+      forceLocked,
       action: type === 'modifyWorkflow' ? this.$t('common.modify_workflow') + `(${this.$t('compute.text_273')})` : this.$t('compute.text_273'),
       form: {
         fc: this.$form.createForm(this),
         fd: {
           stopPaying: formData.stop_charging || false,
-          is_force: formData.is_force || false,
+          is_force: formData.is_force || forceLocked || false,
         },
       },
       type,
@@ -79,7 +78,7 @@ export default {
         is_force: [
           'is_force',
           {
-            initialValue: formData.is_force || false,
+            initialValue: formData.is_force || forceLocked || false,
             valuePropName: 'checked',
           },
         ],
@@ -114,10 +113,16 @@ export default {
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_STOP)
     },
+    hasKvm () {
+      return this.dataList.length && this.dataList.some(item => {
+        return [HYPERVISORS_MAP.kvm.hypervisor].includes(item.hypervisor)
+      })
+    },
     isSupportForce () {
       return this.dataList.length && this.dataList.every(item => {
         return [
           HYPERVISORS_MAP.kvm.hypervisor,
+          HYPERVISORS_MAP.baremetal.hypervisor,
           HYPERVISORS_MAP.pod.hypervisor,
           HYPERVISORS_MAP.esxi.hypervisor,
           HYPERVISORS_MAP.huawei.hypervisor,
@@ -134,11 +139,6 @@ export default {
           HYPERVISORS_MAP.cas?.hypervisor,
           HYPERVISORS_MAP.ksyun?.hypervisor,
         ].includes(item.hypervisor)
-      })
-    },
-    isShowForceTip () {
-      return this.dataList.length && this.dataList.some(item => {
-        return [HYPERVISORS_MAP.kvm.hypervisor].includes(item.hypervisor)
       })
     },
   },
