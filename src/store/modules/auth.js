@@ -24,7 +24,7 @@ import {
 } from '@/utils/auth'
 import { SCOPES_MAP } from '@/constants'
 import router from '@/router'
-import { removeKeyIgnoreCase, getKeyIgnoreCase, redirectAfterAuth } from '@/utils/utils'
+import { removeKeyIgnoreCase, getKeyIgnoreCase, redirectAfterAuth, genReferRouteQuery } from '@/utils/utils'
 import { clear as clearDashboardCache } from '@Dashboard/utils/cache'
 import { safeAuthRedirectUrl } from '@/utils/safeRedirect'
 import storage from '@/utils/storage'
@@ -355,6 +355,7 @@ export default {
           await dispatch('logout')
           router.push({
             path: '/auth/login',
+            query: genReferRouteQuery(router.currentRoute),
           })
           return {}
         }
@@ -534,10 +535,6 @@ export default {
           // 不安全的 rf 忽略，继续默认流程
         }
         if (!pathAuthPage && pathAuth && path) {
-          router.replace({
-            path,
-            query: pathQuery && JSON.parse(pathQuery),
-          })
           if (!redirectAfterAuth(router, { path, pathQuery }, state.regions?.cors_hosts)) {
             router.replace('/')
           }

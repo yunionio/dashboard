@@ -165,6 +165,7 @@ import NotifyPopover from '@/sections/Navbar/components/NotifyPopover'
 import MorePopover from '@/sections/Navbar/components/MorePopover'
 import WindowsMixin from '@/mixins/windows'
 import { hasSetupKey } from '@/utils/auth'
+import { genReferRouteQuery } from '@/utils/utils'
 
 export default {
   name: 'Navbar',
@@ -309,7 +310,10 @@ export default {
       if (item.key === 'logout') {
         try {
           await this.$store.dispatch('auth/logout')
-          this.$router.push('/auth/login')
+          this.$router.push({
+            path: '/auth/login',
+            query: genReferRouteQuery(this.$route),
+          })
         } catch (error) {
           throw error
         }
