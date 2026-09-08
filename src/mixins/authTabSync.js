@@ -9,6 +9,7 @@ import {
   getTenantFromCookie,
   SESSION_LOGIN_USER_KEY,
 } from '@/utils/auth'
+import { genReferRouteQuery } from '@/utils/utils'
 
 export default {
   data () {
@@ -75,7 +76,10 @@ export default {
       if (!cookieLoggedIn && storeLoggedIn) {
         await this.$store.dispatch('auth/logout')
         if (!this.$route.path.startsWith('/auth')) {
-          this.$router.push({ path: '/auth/login' })
+          this.$router.push({
+            path: '/auth/login',
+            query: genReferRouteQuery(this.$route),
+          })
         }
         return
       }
