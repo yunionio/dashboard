@@ -113,6 +113,14 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
             })}>{this.$t('common.cancel')}</a>
+          const forceShutdown = <a class="ml-1"
+            onClick={() => this.createDialog('VmShutDownDialog', {
+              data: [row],
+              columns: this.columns,
+              onManager: this.onManager,
+              formData: { is_force: true },
+              forceLocked: true,
+            })}>{this.$t('compute.force_shutdown')}</a>
           const shutdown = <span class="text-color-help">({this.$t('compute.server.shutdown_mode.stop_charging')})</span>
           const rescue_mode = <span class="text-color-help">({this.$t('compute.rescue')})</span>
           const health = <span style="background:rgb(241, 229, 172);padding:2px 5px;font-size:12px;">{this.$t('compute.health_status.initializing')}</span>
@@ -125,6 +133,7 @@ export default {
               {row.metadata && getToolTip(row)}
               {row.status?.includes('fail') ? log : null}
               {row.status === 'live_migrating' ? cancel : null}
+              {[HYPERVISORS_MAP.kvm.hypervisor].includes(row.hypervisor) && ['stopping', 'stop_fail'].includes(row.status) ? forceShutdown : null}
               {row.status === 'ready' && row.shutdown_mode === 'stop_charging' ? shutdown : null}
               {row.rescue_mode === true ? rescue_mode : null}
             </div>,
