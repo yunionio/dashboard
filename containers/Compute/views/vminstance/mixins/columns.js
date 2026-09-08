@@ -133,7 +133,7 @@ export default {
               {row.metadata && getToolTip(row)}
               {row.status?.includes('fail') ? log : null}
               {row.status === 'live_migrating' ? cancel : null}
-              {[HYPERVISORS_MAP.kvm.hypervisor].includes(row.hypervisor) && ['stopping', 'stop_fail'].includes(row.status) ? forceShutdown : null}
+              {[HYPERVISORS_MAP.kvm.hypervisor].includes(row.hypervisor) && ['stopping', 'stop_fail'].includes(row.status) && !this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_stop') ? forceShutdown : null}
               {row.status === 'ready' && row.shutdown_mode === 'stop_charging' ? shutdown : null}
               {row.rescue_mode === true ? rescue_mode : null}
             </div>,
