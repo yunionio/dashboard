@@ -9,6 +9,7 @@ import {
   isCE,
   isSAAS,
   isExternalAuthPath,
+  genReferRouteQuery,
 } from '@/utils/utils'
 import { getAuthRedirectCorsHosts, safeAuthRedirectUrl } from '@/utils/safeRedirect'
 import router from './router'
@@ -186,8 +187,11 @@ router.afterEach((to, from) => {
   const isSessionUser = checkSessionUser()
   if (!isSessionUser) {
     store.dispatch('auth/logout')
-    router.push({
-      path: '/auth/login',
-    })
+    if (!to.meta.authPage) {
+      router.push({
+        path: '/auth/login',
+        query: genReferRouteQuery(to),
+      })
+    }
   }
 })

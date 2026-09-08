@@ -19,7 +19,7 @@
     <div class="actions flex-grow-0 flex-shrink-0 d-flex">
       <template v-if="!showDelete">
         <div class="flex-shrink-1 flex-grow-1 text-left pr-2">
-          <a-button type="link" icon="user" class="pr-0 week-link-button" size="small" @click="$router.replace({ path: '/auth/login', query: { rf: $route.query.rf, domain: $route.query.domain } })">{{ $t('auth.outher.history.user.btn') }}</a-button>
+          <a-button type="link" icon="user" class="pr-0 week-link-button" size="small" @click="$router.replace({ path: '/auth/login', query: $route.query })">{{ $t('auth.outher.history.user.btn') }}</a-button>
         </div>
         <div class="flex-shrink-1 flex-grow-1 text-right pl-2">
           <a-button type="link" icon="user-delete" class="pl-0 week-link-button" @click="showDelete = true" size="small">{{ $t('auth.remove.history.user.btn') }}</a-button>
@@ -59,9 +59,7 @@ export default {
       if (data.length === 0) {
         this.$router.replace({
           path: '/auth/login',
-          query: {
-            rf: this.$route.query.rf,
-          },
+          query: this.$route.query,
         })
         return data
       }
@@ -76,9 +74,7 @@ export default {
       if (data.length === 0) {
         this.$router.replace({
           path: '/auth/login',
-          query: {
-            rf: this.$route.query.rf,
-          },
+          query: this.$route.query,
         })
       }
     },
