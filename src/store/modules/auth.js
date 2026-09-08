@@ -25,7 +25,7 @@ import {
 } from '@/utils/auth'
 import { SCOPES_MAP } from '@/constants'
 import router from '@/router'
-import { removeKeyIgnoreCase, getKeyIgnoreCase, redirectAfterAuth } from '@/utils/utils'
+import { removeKeyIgnoreCase, getKeyIgnoreCase, redirectAfterAuth, genReferRouteQuery } from '@/utils/utils'
 import { safeAuthRedirectUrl } from '@/utils/safeRedirect'
 import storage from '@/utils/storage'
 import { aesEncryptWithCustomKey } from '@/utils/crypto'
@@ -354,6 +354,7 @@ export default {
           await dispatch('logout')
           router.push({
             path: '/auth/login',
+            query: genReferRouteQuery(router.currentRoute),
           })
           return {}
         }
