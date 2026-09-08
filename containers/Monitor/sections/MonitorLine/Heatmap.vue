@@ -30,6 +30,7 @@ import 'echarts/lib/component/grid'
 import 'echarts/lib/component/title'
 import { getChartTooltipLabel } from '@Monitor/utils'
 import EChart from '@/components/EChart'
+import i18n from '@/locales'
 import { uuid } from '@/utils/utils'
 
 // 无数据占位：隔行不同灰白交错
@@ -63,31 +64,31 @@ function pickBandShade (colors, ratio) {
 
 const LEGEND_BANDS = [
   {
-    label: '空闲',
+    label: i18n.t('monitor.heatmap.band.idle'),
     color: BAND_COLORS[0][2],
     match: (v) => v > 0 && v <= 20,
     getColor: (v) => pickBandShade(BAND_COLORS[0], (v - 0) / 20),
   },
   {
-    label: '轻度',
+    label: i18n.t('monitor.heatmap.band.light'),
     color: BAND_COLORS[1][2],
     match: (v) => v > 20 && v <= 40,
     getColor: (v) => pickBandShade(BAND_COLORS[1], (v - 20) / 20),
   },
   {
-    label: '中等',
+    label: i18n.t('monitor.heatmap.band.medium'),
     color: BAND_COLORS[2][2],
     match: (v) => v > 40 && v <= 60,
     getColor: (v) => pickBandShade(BAND_COLORS[2], (v - 40) / 20),
   },
   {
-    label: '繁忙',
+    label: i18n.t('monitor.heatmap.band.busy'),
     color: BAND_COLORS[3][2],
     match: (v) => v > 60 && v <= 80,
     getColor: (v) => pickBandShade(BAND_COLORS[3], (v - 60) / 20),
   },
   {
-    label: '非常繁忙',
+    label: i18n.t('monitor.heatmap.band.very_busy'),
     color: BAND_COLORS[4][2],
     match: (v) => v > 80,
     // >80 按 80~100 映射到 4 级，超过 100 仍用最深色
