@@ -1,5 +1,5 @@
 <template>
-  <div ref="heatmapRoot" class="monitor-heatmap">
+  <div class="monitor-heatmap">
     <div v-if="hasData" class="heatmap-legend">
       <span
         v-for="(band, index) in legendBands"
@@ -28,7 +28,6 @@ import 'echarts/lib/chart/heatmap'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/grid'
 import 'echarts/lib/component/title'
-import { addListener, removeListener } from 'resize-detector'
 import { getChartTooltipLabel } from '@Monitor/utils'
 import EChart from '@/components/EChart'
 import { uuid } from '@/utils/utils'
@@ -40,40 +39,59 @@ const EMPTY_GRAY = '#f4f6fa' // 244,246,250
 const EMPTY_DARK_GRAY = '#f0f1f8' // 240,241,248
 
 /**
- * 图例 5 档；每档渲染时再拆成浅绿/主色两档。
- * 图例点击一档可同时显隐该档两个色（每档独立 series）。
- * 紫色档：>100%
+ * 图例 5 档（每 20%）；每档再拆 4 级色（约每 5%）。
+ * 全谱 20 色连续递进：绿 → 黄 → 橙 → 红 → 紫。
+ * 图例一点控制整档（含该档 4 级色）。
  */
+const BAND_COLORS = [
+  // 空闲 0~20%
+  ['#9FDEB0', '#7DD494', '#5FCB7A', '#4EBE6C'],
+  // 轻度 20~40%
+  ['#B8D45C', '#D0CE48', '#E4C93A', '#ECC234'],
+  // 中等 40~60%
+  ['#EBB040', '#E99A38', '#E88835', '#E87A3A'],
+  // 繁忙 60~80%
+  ['#E87048', '#E86B58', '#E86B68', '#E06070'],
+  // 非常繁忙 >80%
+  ['#D06898', '#C070B8', '#B078D0', '#A070D8'],
+]
+
+function pickBandShade (colors, ratio) {
+  const idx = Math.min(colors.length - 1, Math.max(0, Math.floor(ratio * colors.length)))
+  return colors[idx]
+}
+
 const LEGEND_BANDS = [
   {
-    label: '0~25%',
-    color: '#22c55e',
-    match: (v) => v > 0 && v <= 25,
-    getColor: (v) => (v < 12.5 ? '#86efac' : '#22c55e'),
+    label: '空闲',
+    color: BAND_COLORS[0][2],
+    match: (v) => v > 0 && v <= 20,
+    getColor: (v) => pickBandShade(BAND_COLORS[0], (v - 0) / 20),
   },
   {
-    label: '25~50%',
-    color: '#eab308',
-    match: (v) => v > 25 && v <= 50,
-    getColor: (v) => (v < 37.5 ? '#fde047' : '#eab308'),
+    label: '轻度',
+    color: BAND_COLORS[1][2],
+    match: (v) => v > 20 && v <= 40,
+    getColor: (v) => pickBandShade(BAND_COLORS[1], (v - 20) / 20),
   },
   {
-    label: '50~75%',
-    color: '#f97316',
-    match: (v) => v > 50 && v <= 75,
-    getColor: (v) => (v < 62.5 ? '#fdba74' : '#f97316'),
+    label: '中等',
+    color: BAND_COLORS[2][2],
+    match: (v) => v > 40 && v <= 60,
+    getColor: (v) => pickBandShade(BAND_COLORS[2], (v - 40) / 20),
   },
   {
-    label: '75~100%',
-    color: '#ef4444',
-    match: (v) => v > 75 && v <= 100,
-    getColor: (v) => (v < 87.5 ? '#fca5a5' : '#ef4444'),
+    label: '繁忙',
+    color: BAND_COLORS[3][2],
+    match: (v) => v > 60 && v <= 80,
+    getColor: (v) => pickBandShade(BAND_COLORS[3], (v - 60) / 20),
   },
   {
-    label: '>100%',
-    color: '#a855f7',
-    match: (v) => v > 100,
-    getColor: (v) => (v <= 125 ? '#d8b4fe' : '#a855f7'),
+    label: '非常繁忙',
+    color: BAND_COLORS[4][2],
+    match: (v) => v > 80,
+    // >80 按 80~100 映射到 4 级，超过 100 仍用最深色
+    getColor: (v) => pickBandShade(BAND_COLORS[4], Math.min(1, (v - 80) / 20)),
   },
 ]
 
@@ -111,8 +129,7 @@ function truncateAxisLabel (text, maxWidth = 90) {
   return ellipsis
 }
 
-// 格子宽度小于该值时不展示数值
-const CELL_LABEL_MIN_WIDTH = 30
+// 格子最小高度
 const CELL_MIN_HEIGHT = 20
 const GRID_LEFT = 108
 const GRID_RIGHT = 24
@@ -147,8 +164,6 @@ export default {
   data () {
     return {
       domId: `monitor-heatmap-${uuid(8)}`,
-      // 格子够宽时才展示数值；用 data 避免 resize 时反复重建 options
-      showCellLabel: false,
       legendBands: LEGEND_BANDS,
       bandSelected: LEGEND_BANDS.map(() => true),
     }
@@ -320,26 +335,9 @@ export default {
     hasData () {
       return this.timeList.length > 0 && this.yLabels.length > 0
     },
-    valueLabelOption () {
-      return {
-        show: this.showCellLabel,
-        formatter: (params) => {
-          const raw = params?.data
-          const arr = Array.isArray(raw) ? raw : (raw?.value || [])
-          const val = arr[2]
-          if (R.isNil(val) || val === EMPTY_CELL) return ''
-          const num = Number(val)
-          if (Number.isNaN(num) || num < 0) return ''
-          return num >= 10 ? num.toFixed(0) : num.toFixed(1)
-        },
-        color: '#999',
-        fontSize: 10,
-      }
-    },
     chartOptions () {
       const showXLabelMap = this.showXLabelMap
       const { emptyData, bandData } = this.heatData
-      const valueLabel = this.valueLabelOption
       return {
         title: {
           text: this.yAxisTitle || this.$t('common.name'),
@@ -424,7 +422,7 @@ export default {
               borderColor: '#fff',
               borderWidth: 0.5,
             },
-            label: valueLabel,
+            label: { show: false },
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -436,38 +434,9 @@ export default {
       }
     },
   },
-  watch: {
-    timeList () {
-      this.$nextTick(() => this.updateShowCellLabel())
-    },
-  },
-  mounted () {
-    this.updateShowCellLabel()
-    if (this.$refs.heatmapRoot) {
-      this.__resizeHandler = () => {
-        this.updateShowCellLabel()
-      }
-      addListener(this.$refs.heatmapRoot, this.__resizeHandler)
-    }
-  },
-  beforeDestroy () {
-    if (this.$refs.heatmapRoot && this.__resizeHandler) {
-      removeListener(this.$refs.heatmapRoot, this.__resizeHandler)
-    }
-  },
   methods: {
     toggleBand (index) {
       this.$set(this.bandSelected, index, !this.bandSelected[index])
-    },
-    /** 格子宽度 ≥ 30px 时才在格子内展示数值 */
-    updateShowCellLabel () {
-      const el = this.$refs.heatmapRoot
-      const width = el ? (el.clientWidth || 0) : 0
-      const cols = this.timeList.length
-      const next = !!(cols && width && ((width - GRID_LEFT - GRID_RIGHT) / cols) >= CELL_LABEL_MIN_WIDTH)
-      if (next !== this.showCellLabel) {
-        this.showCellLabel = next
-      }
     },
   },
 }
