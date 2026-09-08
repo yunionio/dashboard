@@ -18,7 +18,9 @@
                   style="min-width: 150px;"
                   resource="alertdashboards"
                   v-model="dashboardId"
-                  :options="dashboards" />
+                  :options="dashboards"
+                  option-label-prop="label"
+                  :labelFormat="dashboardSelectLabelFormat" />
             </a-col>
           </a-row>
         </a-col>
@@ -134,6 +136,19 @@ export default {
     this.dashboardId ? this.fetchDashboards() : this.switchDashboard(false)
   },
   methods: {
+    /** 选中态展示完整「名称 + 归属」，下拉仍用 OptionLabel 双列 vnode */
+    dashboardSelectLabelFormat (item) {
+      if (!item) return ''
+      let desc = ''
+      if (item.scope === 'system') {
+        desc = this.$t('monitor.dashboard.select.option', [this.$t('shareScope.system')])
+      } else if (item.scope === 'domain') {
+        desc = this.$t('monitor.dashboard.select.option', [item.project_domain, this.$t('cloudenv.text_393')])
+      } else if (item.scope === 'project') {
+        desc = this.$t('monitor.dashboard.select.option', [item.project, this.$t('cloudenv.text_254')])
+      }
+      return desc ? `${item.name}  ${desc}` : (item.name || '')
+    },
     getMonitorConfig () {
       return storage.get('__oc_monitor_query_config__', {})
     },
