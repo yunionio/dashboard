@@ -360,5 +360,10 @@
   "monitor.convert_to_ticket.alert_ticket_disabled_tip": "已升级过告警工单",
   "monitor.converted_ticket": "已升级为工单",
   "monitor.commonalerts.disable_notify_recovery": "禁用通知恢复",
-  "monitor.commonalert.from_period_label": "时间范围：过去"
+  "monitor.commonalert.from_period_label": "时间范围：过去",
+  "monitor.heatmap.band.idle": "空闲",
+  "monitor.heatmap.band.light": "轻度",
+  "monitor.heatmap.band.medium": "中等",
+  "monitor.heatmap.band.busy": "繁忙",
+  "monitor.heatmap.band.very_busy": "非常繁忙"
 }
