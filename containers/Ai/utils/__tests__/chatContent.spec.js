@@ -1,4 +1,4 @@
-import { normalizeMarkdownTables, splitThinkingContent } from '../chatContent'
+import { extractUpstreamErrorMessage, normalizeMarkdownTables, splitThinkingContent } from '../chatContent'
 
 describe('normalizeMarkdownTables', () => {
   it('splits compacted pipe rows', () => {
@@ -33,5 +33,29 @@ describe('splitThinkingContent', () => {
       reasoning: 'r',
       content: 'hello',
     })
+  })
+})
+
+describe('extractUpstreamErrorMessage', () => {
+  it('reads OpenAI error.message', () => {
+    expect(extractUpstreamErrorMessage(JSON.stringify({
+      error: { message: 'context length exceeded', type: 'BadRequestError' },
+    }), 400)).toBe('context length exceeded')
+  })
+
+  it('reads Anthropic error.message', () => {
+    expect(extractUpstreamErrorMessage(JSON.stringify({
+      type: 'error',
+      error: { type: 'invalid_request_error', message: 'max_tokens too large' },
+    }), 400)).toBe('max_tokens too large')
+  })
+
+  it('falls back to HTTP status when body is empty', () => {
+    expect(extractUpstreamErrorMessage('', 400)).toBe('HTTP 400')
+    expect(extractUpstreamErrorMessage('   ', 502)).toBe('HTTP 502')
+  })
+
+  it('returns truncated raw text when body is not JSON', () => {
+    expect(extractUpstreamErrorMessage('upstream exploded', 500)).toBe('upstream exploded')
   })
 })
