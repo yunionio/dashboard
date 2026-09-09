@@ -540,7 +540,7 @@ export default {
                   usageMap[res].field[part][this.scope].map(key => {
                     keys.push(key)
                   })
-                } else {
+                } else if (R.is(String, usageMap[res].field[part][this.scope])) {
                   keys.push(usageMap[res].field[part][this.scope])
                 }
               }
