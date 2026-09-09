@@ -70,6 +70,8 @@ export default {
           percent: cpu.used.value / (cpu.total.value || 1),
           msg: {
             current: cpu.used.formatValue,
+            running: cpu.running.formatValue,
+            runningLabel: this.$t('compute.running_used'),
             total: cpu.total.formatValue,
           },
         },
@@ -78,6 +80,8 @@ export default {
           percent: memory.used.value / (memory.total.value || 1),
           msg: {
             current: memory.used.formatValue,
+            running: memory.running.formatValue,
+            runningLabel: this.$t('compute.running_used'),
             total: memory.total.formatValue,
           },
         },
@@ -129,6 +133,7 @@ export default {
           value: f(gpuMsg.total.value - gpuMsg.used.value),
         }],
         title: this.$t('common.text00057'),
+        totalLabel: this.$t('common_234'),
         total: f(gpuMsg.total.value),
       }
       const host = {

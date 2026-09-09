@@ -1,10 +1,24 @@
 <template>
   <div>
     <a-divider orientation="left">{{$t('compute.text_572')}}</a-divider>
-      <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
-        <a-col class="mb-3" :lg="12" :xl="6" v-for="(item, index) in progressList" :key="item.label">
-          <progress-card :progress="item" v-if="index !== 3" :card-style="{height: '312px'}" />
-          <ring-card v-else :options="item" height="230px" />
+      <a-row
+        type="flex"
+        class="mb-2 host-dash-card-row"
+        :gutter="{ lg: 24, xl: 12, xxl: 24 }"
+        :style="{ '--host-card-cols': capacityList.length || 1 }">
+        <a-col class="mb-3 host-dash-card-col" v-for="item in capacityList" :key="item.label || item.title">
+          <ring-card v-if="item.pieData" :options="item" height="230px" />
+          <progress-card v-else :progress="item" :card-style="{height: '312px'}" />
+        </a-col>
+      </a-row>
+    <a-divider class="mt-3" orientation="left">{{$t('compute.monitor_statistics')}}</a-divider>
+      <a-row
+        type="flex"
+        class="mb-2 host-dash-card-row"
+        :gutter="{ lg: 24, xl: 12, xxl: 24 }"
+        :style="{ '--host-card-cols': capacityList.length || monitorList.length || 1 }">
+        <a-col class="mb-3 host-dash-card-col" v-for="item in monitorList" :key="item.title">
+          <progress-card :progress="item" :card-style="{height: '312px'}" />
         </a-col>
       </a-row>
     <!-- <a-divider class="mt-3" orientation="left">{{$t('compute.text_573')}}</a-divider>
@@ -20,7 +34,7 @@
         </a-col>
       </a-row>
     </a-spin> -->
-    <a-divider class="mt-3" orientation="left">TOP5</a-divider>
+    <a-divider class="mt-3" orientation="left">{{ top5Title }}</a-divider>
     <a-spin :spinning="top5Loading">
       <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
         <a-col class="mb-3" :lg="12" :xl="8" v-for="item in topList" :key="item.name">
@@ -34,11 +48,12 @@
 <script>
 import _ from 'lodash'
 import numerify from 'numerify'
+import { CONTAINER_MONITOR } from '@Compute/views/pod-container/constants'
 import ProgressCard from '@/sections/ProgressCard'
 import RingCard from '@/sections/RingCard'
-import { sizestrWithUnit, getRequestT } from '@/utils/utils'
 import Top5 from '@/sections/Top5'
 import { getSignature } from '@/utils/crypto'
+import { sizestrWithUnit, getRequestT } from '@/utils/utils'
 import { GAUGEMSG, HOST_TOP5, HOST_INFO_OPTS } from '../constants'
 import { getHostSpecInfo } from '../utils/index'
 
@@ -66,6 +81,7 @@ export default {
       top5Loading: false,
       topList: [],
       progressListPercent: [0, 0, 0],
+      usageData: {},
     }
   },
   computed: {
@@ -73,54 +89,46 @@ export default {
       if (this.data.host_type === 'hypervisor') return 'isKvm'
       return 'noKvm'
     },
+    isContainerHost () {
+      return this.data.host_type === 'container'
+    },
+    top5Title () {
+      return this.isContainerHost
+        ? this.$t('compute.host_top5_container')
+        : this.$t('compute.host_top5_vm')
+    },
+    top5Constants () {
+      return this.isContainerHost ? CONTAINER_MONITOR : HOST_TOP5[this.topType]
+    },
+    top5GroupByTag () {
+      return this.isContainerHost ? 'container_name' : 'vm_name'
+    },
     progressList () {
       const data = this.data
       const obj = getHostSpecInfo(data)
-      const tempList = new Array(3)
-      tempList[0] = (() => {
-        return {
-          title: this.$t('compute.text_563_1'),
-          percent: obj.cpu_commit / obj.cpu_count_virtual,
-          msg: {
-            current: obj.cpu_commit,
-            totalLabel: this.$t('compute.virtual_total'),
-            total: obj.cpu_count_virtual,
-          },
-        }
-      })()
-      tempList[1] = (() => {
-        return {
-          title: this.$t('compute.text_564_1'),
-          percent: obj.mem_commit / obj.mem_size_virtual,
-          msg: {
-            current: sizestrWithUnit(obj.mem_commit, 'M', 1024),
-            totalLabel: this.$t('compute.virtual_total'),
-            total: `${sizestrWithUnit(obj.mem_size_virtual, 'M', 1024)}`,
-          },
-        }
-      })()
-      tempList[2] = (() => {
-        return {
-          title: this.$t('compute.text_565_1'),
-          percent: obj.storage_commit / obj.storage_size_virtual,
-          msg: {
-            current: sizestrWithUnit(obj.storage_commit, 'M', 1024),
-            totalLabel: this.$t('compute.virtual_total'),
-            total: `${sizestrWithUnit(obj.storage_size_virtual, 'M', 1024)}`,
-          },
-        }
-      })()
-      tempList[3] = (() => {
-        const current = obj.running_guests || 0
-        const ready = obj.ready_guests || 0
-        const pend = obj.pending_deleted_guests || 0
-        const other = obj.other_guests || 0
-        const total = current + ready + pend + other
-        return {
+      const usage = this.usageData || {}
+      const f = v => v || 0
+      const cpuAllocated = f(usage['all.servers.cpu']) + f(usage['all.containers.cpu'])
+      const cpuRunning = f(usage['all.running_servers.cpu']) + f(usage['all.running_containers.cpu'])
+      const cpuVirtual = f(usage['hosts.cpu.virtual'])
+      const memAllocated = f(usage['all.servers.memory']) + f(usage['all.containers.memory'])
+      const memRunning = f(usage['all.running_servers.memory']) + f(usage['all.running_containers.memory'])
+      const memVirtual = f(usage['hosts.memory.virtual'])
+      const diskUsed = f(usage['all.disks'])
+      const diskVirtual = f(usage['storages.virtual'])
+      const running = f(usage['all.running_servers'])
+      const ready = f(usage['all.ready_servers'])
+      const pend = f(usage['all.pending_delete_servers'])
+      const serversTotal = f(usage['all.servers'])
+      const other = Math.max(serversTotal - running - ready - pend, 0)
+      const gpuTotal = f(usage['isolated_devices.gpu'])
+      const gpuUsed = f(usage['isolated_devices.gpu.used'])
+      return [
+        {
           pieData: [
             {
-              name: `${this.$t('common.text00051')}: ${current}`,
-              value: current,
+              name: `${this.$t('common.text00051')}: ${running}`,
+              value: running,
             },
             {
               name: `${this.$t('status.server.ready')}: ${ready}`,
@@ -136,23 +144,59 @@ export default {
             },
           ],
           title: this.$t('common.text00054'),
-          total: total,
-        }
-      })()
-      tempList[4] = (() => {
-        return {
+          total: serversTotal,
+        },
+        {
+          title: this.$t('compute.text_563_1'),
+          percent: cpuAllocated / (cpuVirtual || 1),
+          msg: {
+            current: cpuAllocated,
+            running: cpuRunning,
+            runningLabel: this.$t('compute.running_used'),
+            totalLabel: this.$t('compute.virtual_total'),
+            total: cpuVirtual,
+          },
+        },
+        {
+          title: this.$t('compute.text_564_1'),
+          percent: memAllocated / (memVirtual || 1),
+          msg: {
+            current: sizestrWithUnit(memAllocated, 'M', 1024),
+            running: sizestrWithUnit(memRunning, 'M', 1024),
+            runningLabel: this.$t('compute.running_used'),
+            totalLabel: this.$t('compute.virtual_total'),
+            total: `${sizestrWithUnit(memVirtual, 'M', 1024)}`,
+          },
+        },
+        {
+          title: this.$t('compute.text_565_1'),
+          percent: diskUsed / (diskVirtual || 1),
+          msg: {
+            current: sizestrWithUnit(diskUsed, 'M', 1024),
+            totalLabel: this.$t('compute.virtual_total'),
+            total: `${sizestrWithUnit(diskVirtual, 'M', 1024)}`,
+          },
+        },
+        {
+          pieData: [
+            {
+              name: `${this.$t('common.text00055')}: ${gpuUsed}`,
+              value: gpuUsed,
+            },
+            {
+              name: `${this.$t('common.text00056')}: ${Math.max(gpuTotal - gpuUsed, 0)}`,
+              value: Math.max(gpuTotal - gpuUsed, 0),
+            },
+          ],
+          title: this.$t('common.text00057'),
+          totalLabel: this.$t('common_234'),
+          total: gpuTotal,
+        },
+        {
           title: this.$t('compute.text_563'),
           percent: this.progressListPercent[0],
-          msg: {
-            current: parseInt(obj.cpu_count * this.progressListPercent[0]) < obj.cpu_count * this.progressListPercent[0] ? Math.floor(parseInt(obj.cpu_count * this.progressListPercent[0]) + 1, obj.cpu_count) : obj.cpu_count * this.progressListPercent[0], // 向上取整
-            totalLabel: this.$t('compute.actual_total'),
-            currentLabel: this.$t('compute.actual_used'),
-            total: `${obj.cpu_count} (${this.$t('compute.text_563')}: ${obj.cpu_count - obj.cpu_reserved}, ${this.$t('compute.reserved')}: ${obj.cpu_reserved})`,
-          },
-        }
-      })()
-      tempList[5] = (() => {
-        return {
+        },
+        {
           title: this.$t('compute.text_564'),
           percent: this.progressListPercent[1],
           msg: {
@@ -161,10 +205,8 @@ export default {
             currentLabel: this.$t('compute.actual_used'),
             total: `${sizestrWithUnit(obj.mem_size, 'M', 1024)} (${this.$t('compute.text_564')}: ${sizestrWithUnit(obj.mem_size - obj.mem_reserved, 'M', 1024)}, ${this.$t('compute.reserved')}: ${sizestrWithUnit(obj.mem_reserved, 'M', '1024')})`,
           },
-        }
-      })()
-      tempList[6] = (() => {
-        return {
+        },
+        {
           title: this.$t('compute.text_565'),
           percent: this.progressListPercent[2],
           msg: {
@@ -173,17 +215,35 @@ export default {
             currentLabel: this.$t('compute.actual_used'),
             total: `${sizestrWithUnit(obj.storage_size, 'M', 1024)} (${this.$t('compute.text_565')}: ${sizestrWithUnit(obj.storage_size, 'M', '1024')})`,
           },
-        }
-      })()
-      return tempList
+        },
+      ]
+    },
+    capacityList () {
+      return this.progressList.slice(0, 5)
+    },
+    monitorList () {
+      return this.progressList.slice(5)
     },
   },
   created () {
     // this.fetchGaugeData()
+    this.fetchUsageData()
     this.fetchUsedPercent()
     this.fetchTop5Data()
   },
   methods: {
+    async fetchUsageData () {
+      try {
+        const { data } = await new this.$Manager('usages').getSpecific({
+          id: 'hosts',
+          spec: this.resId,
+          params: { scope: this.$store.getters.scope },
+        })
+        this.usageData = data || {}
+      } catch (err) {
+        console.error(err)
+      }
+    },
     async fetchUsedPercent () {
       try {
         const reqList = HOST_INFO_OPTS.map(opt => {
@@ -191,7 +251,7 @@ export default {
             .performAction({
               id: 'query',
               action: '',
-              data: this.genQueryData(opt),
+              data: this.genQueryData(opt, 'host_id'),
               params: { $t: getRequestT() },
             })
         })
@@ -213,12 +273,12 @@ export default {
         console.error(err)
       }
     },
-    _getSeriesMax (arr) {
+    _getSeriesMax (arr, nameTag = 'vm_name') {
       if (!arr) return []
       const data = arr.map(item => {
-        this.vmName = item.tags.vm_name
+        const name = (item.tags && item.tags[nameTag]) || ''
         return {
-          name: this.vmName,
+          name,
           link: '/a/v',
           value: Math.max.apply(null, item.points.map(i => i[0])),
         }
@@ -226,7 +286,7 @@ export default {
       return data
     },
     async fetchTop5Data () {
-      const top5ResourceData = HOST_TOP5[this.topType]
+      const top5ResourceData = this.top5Constants
       this.top5Loading = true
       this.topList = []
       for (let i = 0; i < top5ResourceData.length; i++) {
@@ -236,10 +296,10 @@ export default {
             .performAction({
               id: 'query',
               action: '',
-              data: this.genQueryData(val),
+              data: this.genQueryData(val, this.top5GroupByTag),
               params: { $t: getRequestT() },
             })
-          const series = this._getSeriesMax(data.series)
+          const series = this._getSeriesMax(data.series, this.top5GroupByTag)
           this.topList.push({
             // metric: TOP5REQDATA[i].metrics[0].name[0], // 需要 link 跳转页面的时候可以加上
             title: val.label,
@@ -352,7 +412,8 @@ export default {
       data.signature = getSignature(data)
       return data
     },
-    genQueryData (val) {
+    // groupByTag: 使用率查宿主机用 host_id；TOP5 查虚拟机用 vm_name
+    genQueryData (val, groupByTag = 'vm_name') {
       const select = [
         {
           type: 'field',
@@ -385,7 +446,7 @@ export default {
             model: {
               measurement: val.fromItem,
               select: [select],
-              group_by: [{ type: 'tag', params: ['vm_name'] }],
+              group_by: [{ type: 'tag', params: [groupByTag] }],
               tags,
             },
           },
@@ -401,3 +462,16 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.host-dash-card-col {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+@media (min-width: 1200px) {
+  .host-dash-card-col {
+    flex: 0 0 calc(100% / var(--host-card-cols, 4));
+    max-width: calc(100% / var(--host-card-cols, 4));
+  }
+}
+</style>
