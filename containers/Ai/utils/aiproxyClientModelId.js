@@ -59,8 +59,20 @@ function catalogContextWindow (catalog) {
   return Number.isFinite(n) && n > 0 ? n : 0
 }
 
+function uniqueClientFacingParts (routing, entries, catalogModelsById) {
+  const parts = new Set()
+  for (const entry of entries) {
+    const catalog = catalogModelsById[entry.ai_model_id] || {}
+    const part = clientFacingModelId(routing, entry, catalog)
+    if (part) parts.add(part)
+  }
+  return parts
+}
+
 /**
  * Build selectable client model options for access panel.
+ * Hierarchical ids are only emitted when the routing binds more than one unique catalog.
+ * Replica rows that share the same catalog part still count as a single model.
  * @returns {{ id: string, kind: 'flat'|'hierarchical', catalogKey: string, contextWindow: number, priority: number }[]}
  */
 export function buildRoutingClientModelOptions ({
@@ -87,7 +99,9 @@ export function buildRoutingClientModelOptions ({
     options.push(opt)
   }
 
-  if (routeKey && entries.length > 1) {
+  const multiCatalog = uniqueClientFacingParts(routing, entries, catalogModelsById).size > 1
+
+  if (routeKey && multiCatalog) {
     push({ id: routeKey, kind: 'flat', catalogKey: '', contextWindow: 0, priority: -1 })
   }
 
@@ -95,7 +109,7 @@ export function buildRoutingClientModelOptions ({
     const catalog = catalogModelsById[entry.ai_model_id] || {}
     const catalogKey = trim(catalog.model_key)
     const contextWindow = catalogContextWindow(catalog)
-    if (routeKey) {
+    if (routeKey && multiCatalog) {
       const hierarchical = hierarchicalClientModelId(routing, entry, catalog)
       if (hierarchical) {
         push({
@@ -106,6 +120,16 @@ export function buildRoutingClientModelOptions ({
           priority: entry.priority || 0,
         })
       }
+      continue
+    }
+    if (routeKey) {
+      push({
+        id: routeKey,
+        kind: 'flat',
+        catalogKey,
+        contextWindow,
+        priority: entry.priority || 0,
+      })
       continue
     }
     const flat = clientFacingModelId(routing, entry, catalog)
