@@ -91,7 +91,16 @@ export default {
       // tempOption.title.text = opData.title
       tempOption.legend.data = opData.pieData.map(v => v.name)
       tempOption.series[0].data = opData.pieData
-      tempOption.series[0].label.formatter = `${opData.total}`
+      tempOption.series[0].label.formatter = opData.totalLabel
+        ? `${opData.totalLabel}\n${opData.total}`
+        : `${opData.total}`
+      if (opData.totalLabel) {
+        tempOption.series[0].label.textStyle = {
+          ...tempOption.series[0].label.textStyle,
+          fontSize: 14,
+          lineHeight: 20,
+        }
+      }
       this.ringOption = tempOption
     },
   },
