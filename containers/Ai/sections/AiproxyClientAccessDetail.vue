@@ -246,6 +246,7 @@ export default {
           endpoint: this.anthropicMessagesUrl,
           model: this.displayModel,
           virtualKey: this.virtualKey,
+          clientModelOptions: this.clientModelOptions,
         })
       }
       return buildAiproxyCurlExample({

@@ -1,3 +1,27 @@
+const RAW_ERROR_BODY_LIMIT = 2000
+
+/**
+ * Pull a human-readable message from an OpenAI / Anthropic error JSON body.
+ * Falls back to truncated raw text, then `HTTP {status}`.
+ */
+export function extractUpstreamErrorMessage (text, status) {
+  const raw = String(text || '').trim()
+  const code = Number(status)
+  const httpFallback = Number.isFinite(code) && code > 0 ? `HTTP ${code}` : ''
+
+  if (raw) {
+    try {
+      const data = JSON.parse(raw)
+      const msg = String(data?.error?.message || data?.message || '').trim()
+      if (msg) return msg
+    } catch (e) {
+      // not JSON
+    }
+    return raw.length > RAW_ERROR_BODY_LIMIT ? raw.slice(0, RAW_ERROR_BODY_LIMIT) : raw
+  }
+  return httpFallback || 'HTTP error'
+}
+
 export function splitThinkingContent (raw) {
   const text = String(raw || '')
   const closedMatch = text.match(/<(?:redacted_)?think(?:ing)?>([\s\S]*?)<\/(?:redacted_)?think(?:ing)?>\s*([\s\S]*)$/i)
