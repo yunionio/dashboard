@@ -7,6 +7,10 @@
           <span class="label">{{ progress.msg.currentLabel || $t('common_233') }}：</span>
           <span class="text">{{ progress.msg.current }}</span>
         </div>
+        <div v-if="progress.msg.running != null">
+          <span class="label">{{ progress.msg.runningLabel }}：</span>
+          <span class="text">{{ progress.msg.running }}</span>
+        </div>
         <div>
           <span class="label">{{ progress.msg.totalLabel || $t('common_234') }}：</span>
           <span class="value">{{ progress.msg.total }}</span>

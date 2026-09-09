@@ -7,9 +7,14 @@ export const usageMap = {
   cpu: {
     field: {
       used: {
-        system: ['all.servers.cpu', 'all.running_servers.cpu'],
-        domain: ['domain.servers.cpu', 'domain.running_servers.cpu'],
-        project: ['servers.cpu', 'running_servers.cpu'],
+        system: obj => (obj['all.servers.cpu'] || 0) + (obj['all.containers.cpu'] || 0),
+        domain: obj => (obj['domain.servers.cpu'] || 0) + (obj['domain.containers.cpu'] || 0),
+        project: obj => (obj['servers.cpu'] || 0) + (obj['containers.cpu'] || 0),
+      },
+      running: {
+        system: obj => (obj['all.running_servers.cpu'] || 0) + (obj['all.running_containers.cpu'] || 0),
+        domain: obj => (obj['domain.running_servers.cpu'] || 0) + (obj['domain.running_containers.cpu'] || 0),
+        project: obj => (obj['running_servers.cpu'] || 0) + (obj['running_containers.cpu'] || 0),
       },
       total: {
         system: ['hosts.cpu', 'hosts.cpu.virtual'],
@@ -21,9 +26,14 @@ export const usageMap = {
   memory: {
     field: {
       used: {
-        system: ['all.servers.memory', 'all.running_servers.memory'],
-        domain: ['domain.servers.memory', 'domain.running_servers.memory'],
-        project: ['servers.memory', 'running_servers.memory'],
+        system: obj => (obj['all.servers.memory'] || 0) + (obj['all.containers.memory'] || 0),
+        domain: obj => (obj['domain.servers.memory'] || 0) + (obj['domain.containers.memory'] || 0),
+        project: obj => (obj['servers.memory'] || 0) + (obj['containers.memory'] || 0),
+      },
+      running: {
+        system: obj => (obj['all.running_servers.memory'] || 0) + (obj['all.running_containers.memory'] || 0),
+        domain: obj => (obj['domain.running_servers.memory'] || 0) + (obj['domain.running_containers.memory'] || 0),
+        project: obj => (obj['running_servers.memory'] || 0) + (obj['running_containers.memory'] || 0),
       },
       total: {
         system: ['hosts.memory', 'hosts.memory.virtual'],
@@ -457,8 +467,13 @@ export const getUsageData = (F, resData, dataMap, scope = 'project', scale = 102
     const field = value[scope]
     data[scopeKey] = {}
     if (R.is(Function, field)) {
-      data[scopeKey].value = field(resData)
-      data[scopeKey].formatValue = field(resData)
+      const val = field(resData)
+      data[scopeKey].value = val
+      if (UNITS.includes(fieldObj.unit)) {
+        data[scopeKey].formatValue = sizestr(val, fieldObj.unit, scale)
+      } else {
+        data[scopeKey].formatValue = val
+      }
     } else if (R.is(Array, field)) {
       field.map(usageKey => {
         data[scopeKey].value = resData[usageKey]
