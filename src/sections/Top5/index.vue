@@ -39,7 +39,7 @@ export default {
       const topMsgData = this.topMsg.data.slice(0) // 深拷贝
       const sortList = topMsgData.sort((a, b) => b.value - a.value).slice(0, this.topNum) // 取 top5
       if (!sortList.length) return []
-      if (this.topMsg.unit === 'bps') {
+      if (this.topMsg.unit === 'bps' || this.topMsg.unit === 'B') {
         const maxData = sortList[0].value || 1 // 百分比都相对于最大数比较
         list = sortList.map(val => {
           return {
