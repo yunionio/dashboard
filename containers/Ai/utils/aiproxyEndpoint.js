@@ -156,20 +156,48 @@ export function parseShellScriptLines (script) {
   }))
 }
 
-export const DEFAULT_ANTHROPIC_MAX_TOKENS = 4096
+// Anthropic Messages requires max_tokens (output budget). Do not default to
+// 4096: many vLLM deployments use --max-model-len=4096, and max_tokens=4096
+// leaves 0 room for the prompt.
+export const DEFAULT_ANTHROPIC_MAX_TOKENS = 1024
+const ANTHROPIC_CONTEXT_RESERVE = 512
+
+/**
+ * Pick a max_tokens that fits in context_window (output + reserve < context).
+ * Unknown context falls back to DEFAULT_ANTHROPIC_MAX_TOKENS.
+ */
+export function resolveAnthropicMaxTokens ({ contextWindow, requested } = {}) {
+  const req = Number(requested)
+  let want = Number.isFinite(req) && req > 0 ? Math.floor(req) : DEFAULT_ANTHROPIC_MAX_TOKENS
+  const ctx = Number(contextWindow)
+  if (Number.isFinite(ctx) && ctx > 1) {
+    const reserve = Math.min(ANTHROPIC_CONTEXT_RESERVE, Math.max(1, Math.floor(ctx / 4)))
+    const room = ctx - reserve
+    if (room > 0 && want > room) {
+      want = room
+    }
+  }
+  return Math.max(1, want)
+}
 
 export function buildAnthropicCurlExample ({
   endpoint,
   model,
   virtualKey = '<API Key>',
-  maxTokens = DEFAULT_ANTHROPIC_MAX_TOKENS,
+  maxTokens,
+  contextWindow,
+  clientModelOptions = [],
 } = {}) {
   const url = endpoint || '<endpoint>/ai/anthropic/v1/messages'
   const m = model || 'your-model'
   const key = virtualKey || '<API Key>'
+  const tokens = resolveAnthropicMaxTokens({
+    contextWindow: contextWindow || contextWindowForClientModel(m, clientModelOptions),
+    requested: maxTokens,
+  })
   const body = JSON.stringify({
     model: m,
-    max_tokens: maxTokens,
+    max_tokens: tokens,
     stream: true,
     messages: [{ role: 'user', content: 'hello' }],
   })
@@ -185,7 +213,8 @@ export function buildAnthropicChatTestRequestConfig ({
   endpoint,
   model,
   virtualKey,
-  maxTokens = DEFAULT_ANTHROPIC_MAX_TOKENS,
+  maxTokens,
+  contextWindow,
 } = {}) {
   const url = String(endpoint || '').trim()
   const m = String(model || '').trim()
@@ -200,7 +229,7 @@ export function buildAnthropicChatTestRequestConfig ({
     },
     body: {
       model: m,
-      max_tokens: maxTokens,
+      max_tokens: resolveAnthropicMaxTokens({ contextWindow, requested: maxTokens }),
       messages: [{ role: 'user', content: 'hello' }],
     },
     model: m,
