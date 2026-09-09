@@ -659,12 +659,12 @@ export default {
     info: ['unknown', 'importing_model'],
   },
   llmDeployment: {
-    info: ['unknown', 'partial', 'start_delete', 'deleted', 'deploying', 'syncing', 'restarting', 'creating', 'importing_model', 'creating_sku', 'deleting'],
+    info: ['unknown', 'partial', 'deleted'],
     success: ['ready'],
     danger: ['create_fail', 'create_failed', 'import_model_failed', 'create_sku_failed', 'delete_fail', 'delete_failed', 'start_fail'],
   },
   llmDeploymentAiproxy: {
-    info: ['unknown', 'pending', 'syncing', 'partial'],
+    info: ['unknown'],
     success: ['synced', 'disabled'],
     danger: ['failed'],
   },
