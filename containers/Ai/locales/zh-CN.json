@@ -798,6 +798,8 @@
   "ai.mcp.thinking": "思考中...",
   "ai.mcp.input_placeholder": "输入消息... (Ctrl/Cmd + Enter 发送)",
   "ai.mcp.send": "发送",
+  "ai.mcp.update_routing_required": "请更新配置",
+  "ai.mcp.update_routing_required_hint": "该 Agent 未绑定 AI 网关路由规则，请先修改配置后再使用。",
   "ai.mcp.clear": "清空",
   "ai.mcp.error_occurred": "发生错误，请重试",
   "ai.mcp.send_failed": "发送失败",

@@ -794,6 +794,8 @@
   "ai.mcp.thinking": "考え中...",
   "ai.mcp.input_placeholder": "メッセージを入力してください... (Ctrl/Cmd + Enter 送信)",
   "ai.mcp.send": "送信",
+  "ai.mcp.update_routing_required": "設定を更新してください",
+  "ai.mcp.update_routing_required_hint": "この Agent には AI ゲートウェイのルーティング規則がありません。使用前に設定を更新してください。",
   "ai.mcp.clear": "クリア",
   "ai.mcp.error_occurred": "エラーが発生しました。再度試してください",
   "ai.mcp.send_failed": "送信に失敗しました",
