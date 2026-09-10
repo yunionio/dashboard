@@ -795,6 +795,8 @@
   "ai.mcp.thinking": "Thinking...",
   "ai.mcp.input_placeholder": "Enter message... (Ctrl/Cmd + Enter to send)",
   "ai.mcp.send": "Send",
+  "ai.mcp.update_routing_required": "Update configuration",
+  "ai.mcp.update_routing_required_hint": "This agent has no AI Gateway routing rule. Update the agent configuration before using it.",
   "ai.mcp.clear": "Clear",
   "ai.mcp.error_occurred": "Error occurred, please try again",
   "ai.mcp.send_failed": "Send failed",
