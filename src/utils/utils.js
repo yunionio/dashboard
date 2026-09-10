@@ -676,6 +676,17 @@ export const genReferRouteQuery = (route) => {
 }
 
 /**
+ * 登录页跳转时去掉已选用户相关 query，避免 chooser↔login 时旧用户信息覆盖新选择
+ */
+export const omitLoginUserQuery = (query = {}) => {
+  const next = { ...query }
+  delete next.username
+  delete next.fd_domain
+  delete next.displayname
+  return next
+}
+
+/**
  * [月份/年补全日期/月份]
  * @param {Array} data 原始数据
  * @param {Date} currentMonth 当前时间
