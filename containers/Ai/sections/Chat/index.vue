@@ -78,6 +78,13 @@
       </div>
     </div>
 
+    <a-alert
+      v-if="mcpNeedsRoutingUpdate"
+      type="warning"
+      show-icon
+      class="mb-2"
+      :message="$t('ai.mcp.update_routing_required_hint')" />
+
     <div class="chat-messages" ref="messagesContainer">
       <div
         v-for="(message, index) in messages"
@@ -135,7 +142,7 @@
         :auto-size="{ minRows: 2, maxRows: 6 }"
         @keydown.ctrl.enter="handleSend"
         @keydown.meta.enter="handleSend"
-        :disabled="loading" />
+        :disabled="loading || mcpNeedsRoutingUpdate" />
       <div class="input-actions">
         <a-button
           type="primary"
@@ -252,10 +259,17 @@ export default {
       return !(msg && msg.content)
     },
     canSend () {
+      if (this.mcpNeedsRoutingUpdate) return false
       if (this.isChatTest) return !!this.chatTestConfig
       return true
     },
+    mcpNeedsRoutingUpdate () {
+      return this.isMcpResource && !String(this.data?.aiproxy_routing_id || '').trim()
+    },
     chatTestInputPlaceholder () {
+      if (this.mcpNeedsRoutingUpdate) {
+        return this.$t('ai.mcp.update_routing_required_hint')
+      }
       if (!this.isChatTest || this.canSend) {
         return this.$t('ai.mcp.input_placeholder')
       }
@@ -408,6 +422,10 @@ export default {
     },
     async handleSend () {
       if (!this.inputMessage.trim() || this.loading) return
+      if (this.mcpNeedsRoutingUpdate) {
+        this.$message.warning(this.$t('ai.mcp.update_routing_required_hint'))
+        return
+      }
       if (this.isChatTest && !this.canSend) {
         this.$message.warning(this.chatTestConfigMissingReason || this.$t('ai.mcp.chat_test.api_key_required'))
         return
