@@ -6,7 +6,7 @@
         <a-select-option v-for="(item, key) of typesMap" :key="key" :value="key">{{ item.label }}</a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item class="mx-1" :wrapperCol="{ span: 24 }">
+    <a-form-item v-show="!hideSize" class="mx-1" :wrapperCol="{ span: 24 }">
       <a-tooltip :title="tooltip" placement="top">
         <disk-size-input
           v-decorator="decorator.size"
@@ -39,7 +39,7 @@
           <a-button class="mt-1" type="link" @click="toggleMountpointShow">{{ showMountpoint ? $t('compute.text_135') : $t('compute.text_134') }}</a-button>
       </template>
       <template v-if="has('schedtag') && !showStorage && !isStorageShow && imageType !== 'backup' && imageType !== 'snapshot'">
-        <schedtag-policy v-if="showSchedtag" :form="form" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" :policyReactInSchedtag="false" />
+        <schedtag-policy v-if="showSchedtag" :class="{ 'ml-2': hideSize }" :form="form" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" :policyReactInSchedtag="false" />
         <a-button v-if="!disabled" v-show="!simplify" class="mt-1" type="link" @click="toggleSchedtagShow">{{ showSchedtag ? $t('compute.text_135') : $t('compute.text_1315') }}</a-button>
       </template>
       <template v-if="has('storage') && !showSchedtag && imageType !== 'snapshot'">
@@ -165,6 +165,10 @@ export default {
       default: false,
     },
     sizeDisabled: { // 磁盘大小的限制
+      type: Boolean,
+      default: false,
+    },
+    hideSize: {
       type: Boolean,
       default: false,
     },
