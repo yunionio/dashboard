@@ -980,7 +980,18 @@ export function isSAAS () {
   return !!process.env.VUE_APP_IS_SAAS
 }
 
+export function getConfiguredDocsUrl () {
+  return (process.env.VUE_APP_DOCS_URL || '').trim()
+}
+
+export function isDocsDisabled () {
+  return getConfiguredDocsUrl().toLowerCase() === 'none'
+}
+
 export function getDocsUrl (scope, isSysCE, targetOrigin = window.location.origin) {
+  if (isDocsDisabled()) return ''
+  const configured = getConfiguredDocsUrl()
+  if (configured) return configured
   let prefix = 'docs'
   const useCe = isCE() || isSysCE
   if (useCe) {
@@ -993,6 +1004,9 @@ export function getDocsUrl (scope, isSysCE, targetOrigin = window.location.origi
 }
 
 export function genDocsUrl ({ scope, isSysCE, cePath, eePath, anchor = '' }) {
+  if (isDocsDisabled()) return ''
+  const configured = getConfiguredDocsUrl()
+  if (configured) return configured
   const useCe = isCE() || isSysCE
   return getDocsUrl(scope, isSysCE) + (useCe ? cePath : eePath) + anchor
 }
