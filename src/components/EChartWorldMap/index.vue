@@ -64,6 +64,19 @@
         <span class="echart-world-map__popover-unit">{{ $t('regionMap.unit_km') }}</span>
       </div>
     </div>
+    <div
+      v-show="userLocation && userLocationPinStyle"
+      class="echart-world-map__user-loc-pin"
+      :style="userLocationPinStyle"
+      aria-hidden="true">
+      <span class="echart-world-map__user-loc-pin-bounce" v-html="userLocationIconSvg" />
+    </div>
+    <div
+      v-show="userLocationTipVisible"
+      class="echart-world-map__user-loc-tip"
+      :style="userLocationTipStyle">
+      {{ $t('regionMap.current_location') }}
+    </div>
   </div>
 </template>
 
@@ -94,37 +107,82 @@ const MAP_THEME = {
   tooltipText: '#d4d5d6',
   visualMapColors: ['#FFBC42', '#EE7785', '#EC6A5C'],
   legendDot: '#84B1ED',
-  selectionFill: 'rgba(91, 193, 201, 0.12)',
-  selectionStroke: '#5bc1c9',
+  // 选区圆圈：亮黄绿，避开地图青边框与 region 标点色板
+  selectionFill: 'rgba(212, 255, 0, 0.22)',
+  selectionStroke: '#D4FF00',
 }
 
 const DEFAULT_POINT_COLOR = '#1890ff'
 
-/** 标点/定位图标基准尺寸，随地图缩放按阻尼系数微调 */
+/** 标点/定位图标基准尺寸（放大后的目标尺寸），初始略小，放大后回到该值 */
 const MARKER_BASE = {
   point: 7,
-  userLocation: 32,
-  userLocationOffsetY: -12,
+  userLocation: 26,
+  userLocationOffsetY: -10,
+  selectionCenter: 3,
+  selectionBorder: 1,
+  selectionCenterBorder: 1,
 }
-const MARKER_SCALE_DAMPING = 0.25
-const MARKER_SCALE_MIN = 0.75
-const MARKER_SCALE_MAX = 1.35
+/** 初始缩放系数；放大时向 1 收敛，不再超过当前基准尺寸 */
+const MARKER_SCALE_AT_INIT = 0.78
+const MARKER_SCALE_DAMPING = 0.3
+const MARKER_SCALE_MIN = 0.65
+const MARKER_SCALE_MAX = 1.5
+/** 当前位置跳动：幅度随缩放，放大到上限时接近该像素值；周期越长频率越低 */
+const USER_LOCATION_BOUNCE_MAX_PX = 5
+const USER_LOCATION_BOUNCE_DURATION = '1.6s'
+/** 选区中心点初始更小，放大后上限为基准尺寸（当前大小） */
+const SELECTION_CENTER_SCALE_AT_INIT = 0.55
 const LOCATE_DEFAULT_ZOOM = 3
 const ZOOM_BUTTON_STEP = 0.8
 const WHEEL_ZOOM_FACTORS = [1.12, 1.25, 1.45]
 
+// 深色地图易区分色板：相邻色相拉开，避开地图描边青 #5bc1c9 及相近对
 const SPLIT_POINT_COLORS = [
-  '#FFBC42',
-  '#EE7785',
-  '#EC6A5C',
-  '#84B1ED',
-  '#5bc1c9',
-  '#94a2e1',
-  '#ffc53d',
-  '#ff7875',
-  '#36cfc9',
-  '#b37feb',
+  '#FFB020', // 金黄
+  '#FF5C8A', // 玫红
+  '#3DDC97', // 青绿
+  '#7B61FF', // 紫
+  '#FF8A3D', // 橙
+  '#2EC4FF', // 天蓝
+  '#E8FF4A', // 亮黄绿
+  '#FF4D6D', // 红
+  '#00E5A8', // 薄荷绿
+  '#C77DFF', // 浅紫
 ]
+
+function parseHexColor (hex) {
+  const h = String(hex || '').replace('#', '')
+  if (h.length !== 6) return [0, 0, 0]
+  return [
+    parseInt(h.slice(0, 2), 16),
+    parseInt(h.slice(2, 4), 16),
+    parseInt(h.slice(4, 6), 16),
+  ]
+}
+
+function colorDistance (a, b) {
+  const [r1, g1, b1] = parseHexColor(a)
+  const [r2, g2, b2] = parseHexColor(b)
+  return Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2)
+}
+
+function pickDistinctSplitColor (usedColors) {
+  const used = usedColors || []
+  const unused = SPLIT_POINT_COLORS.filter(c => !used.includes(c))
+  const candidates = unused.length ? unused : SPLIT_POINT_COLORS
+  if (!used.length) return candidates[0]
+  let best = candidates[0]
+  let bestScore = -1
+  candidates.forEach((c) => {
+    const score = Math.min(...used.map(u => colorDistance(c, u)))
+    if (score > bestScore) {
+      bestScore = score
+      best = c
+    }
+  })
+  return best
+}
 
 const DIAMETER_ICON_SVG = [
   '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">',
@@ -148,8 +206,6 @@ const USER_LOCATION_ICON_SVG = [
   '</svg>',
 ].join('')
 
-const USER_LOCATION_SYMBOL = 'image://data:image/svg+xml;charset=utf-8,' + encodeURIComponent(USER_LOCATION_ICON_SVG)
-
 function getItemFieldByKey (item, key) {
   if (!item || !key) return undefined
   if (Object.prototype.hasOwnProperty.call(item, key)) {
@@ -161,8 +217,7 @@ function getItemFieldByKey (item, key) {
 function getSplitColor (value, colorMap) {
   const mapKey = value == null || value === '' ? '__default__' : String(value)
   if (!colorMap.has(mapKey)) {
-    const idx = colorMap.size % SPLIT_POINT_COLORS.length
-    colorMap.set(mapKey, SPLIT_POINT_COLORS[idx])
+    colorMap.set(mapKey, pickDistinctSplitColor([...colorMap.values()]))
   }
   return colorMap.get(mapKey)
 }
@@ -309,12 +364,18 @@ export default {
       diameterPanelStyle: null,
       diameterIconSvg: DIAMETER_ICON_SVG,
       geolocateIconSvg: GEOLOCATE_ICON_SVG,
+      userLocationIconSvg: USER_LOCATION_ICON_SVG,
       zrClickHandler: null,
+      zrMouseMoveHandler: null,
+      zrGlobalOutHandler: null,
       georoamHandler: null,
       domWheelHandler: null,
       useLayoutPosition: true,
       mapName: 'world',
       hasGeoRoam: false,
+      userLocationTipVisible: false,
+      userLocationTipStyle: null,
+      userLocationPinStyle: null,
     }
   },
   computed: {
@@ -400,6 +461,15 @@ export default {
       }
       zr.on('click', this.zrClickHandler)
 
+      this.zrMouseMoveHandler = (e) => {
+        this.updateUserLocationTip(e.offsetX, e.offsetY)
+      }
+      this.zrGlobalOutHandler = () => {
+        this.userLocationTipVisible = false
+      }
+      zr.on('mousemove', this.zrMouseMoveHandler)
+      zr.on('globalout', this.zrGlobalOutHandler)
+
       this.domWheelHandler = (event) => {
         if (!this.interactive || !this.chart) return
         const el = this.$refs.chartEl
@@ -435,6 +505,8 @@ export default {
         this.syncMapGroupFromGeo()
         if (this.geoZoom !== prevZoom) {
           this.updateOverlaySizes()
+        } else {
+          this.syncUserLocationPinPosition()
         }
         if (this.diameterPanelVisible) {
           this.openDiameterPanel()
@@ -444,10 +516,20 @@ export default {
     },
     unbindChartEvents () {
       if (!this.chart) return
+      const zr = this.chart.getZr()
       if (this.zrClickHandler) {
-        this.chart.getZr().off('click', this.zrClickHandler)
+        zr.off('click', this.zrClickHandler)
         this.zrClickHandler = null
       }
+      if (this.zrMouseMoveHandler) {
+        zr.off('mousemove', this.zrMouseMoveHandler)
+        this.zrMouseMoveHandler = null
+      }
+      if (this.zrGlobalOutHandler) {
+        zr.off('globalout', this.zrGlobalOutHandler)
+        this.zrGlobalOutHandler = null
+      }
+      this.userLocationTipVisible = false
       if (this.domWheelHandler && this.$refs.chartEl) {
         this.$refs.chartEl.removeEventListener('wheel', this.domWheelHandler)
         this.domWheelHandler = null
@@ -455,6 +537,39 @@ export default {
       if (this.georoamHandler) {
         this.chart.off('georoam', this.georoamHandler)
         this.georoamHandler = null
+      }
+    },
+    updateUserLocationTip (offsetX, offsetY) {
+      if (!this.chart || !this.userLocation) {
+        this.userLocationTipVisible = false
+        return
+      }
+      const projected = projectLngLat(this.userLocation.lng, this.userLocation.lat)
+      let px
+      try {
+        px = this.chart.convertToPixel({ geoIndex: 0 }, projected)
+      } catch (e) {
+        this.userLocationTipVisible = false
+        return
+      }
+      if (!px || px.length < 2) {
+        this.userLocationTipVisible = false
+        return
+      }
+      const [ox, oy] = this.getUserLocationSymbolOffset()
+      const cx = px[0] + ox
+      const cy = px[1] + oy
+      const half = this.getScaledMarkerSize(MARKER_BASE.userLocation) / 2
+      const hit = offsetX >= cx - half && offsetX <= cx + half &&
+        offsetY >= cy - half && offsetY <= cy + half
+      if (!hit) {
+        this.userLocationTipVisible = false
+        return
+      }
+      this.userLocationTipVisible = true
+      this.userLocationTipStyle = {
+        left: `${offsetX + 12}px`,
+        top: `${offsetY + 12}px`,
       }
     },
     getPointFillColor (item, colorMap) {
@@ -510,37 +625,105 @@ export default {
       const base = this.initialZoom != null ? this.initialZoom : this.zoom
       const current = typeof this.geoZoom === 'number' ? this.geoZoom : base
       const ratio = current / (base || 1)
-      const damped = 1 + (ratio - 1) * MARKER_SCALE_DAMPING
-      return Math.max(MARKER_SCALE_MIN, Math.min(MARKER_SCALE_MAX, damped))
+      // 初始略小，放大后可继续变大（上限 MARKER_SCALE_MAX）
+      const scale = MARKER_SCALE_AT_INIT + (ratio - 1) * MARKER_SCALE_DAMPING
+      return Math.max(MARKER_SCALE_MIN, Math.min(MARKER_SCALE_MAX, scale))
     },
     getScaledMarkerSize (baseSize) {
-      return Math.max(6, Math.round(baseSize * this.getMarkerSymbolScale()))
+      return Math.max(3, Math.round(baseSize * this.getMarkerSymbolScale() * 10) / 10)
+    },
+    getScaledLineWidth (baseWidth) {
+      return Math.max(1, Math.round(baseWidth * this.getMarkerSymbolScale() * 10) / 10)
+    },
+    /** 选区中心点：初始更小，放大后上限为当前基准大小（不再超过 1） */
+    getSelectionCenterScale () {
+      const base = this.initialZoom != null ? this.initialZoom : this.zoom
+      const current = typeof this.geoZoom === 'number' ? this.geoZoom : base
+      const ratio = current / (base || 1)
+      const scale = SELECTION_CENTER_SCALE_AT_INIT + (ratio - 1) * MARKER_SCALE_DAMPING
+      return Math.max(0.4, Math.min(1, scale))
+    },
+    getScaledSelectionCenterSize () {
+      return Math.max(1.5, Math.round(MARKER_BASE.selectionCenter * this.getSelectionCenterScale() * 10) / 10)
     },
     getUserLocationSymbolOffset () {
       const scale = this.getMarkerSymbolScale()
       return [0, Math.round(MARKER_BASE.userLocationOffsetY * scale)]
+    },
+    syncUserLocationPinPosition () {
+      if (!this.chart || !this.userLocation) {
+        this.userLocationPinStyle = null
+        return
+      }
+      const projected = projectLngLat(this.userLocation.lng, this.userLocation.lat)
+      let px
+      try {
+        px = this.chart.convertToPixel({ geoIndex: 0 }, projected)
+      } catch (e) {
+        this.userLocationPinStyle = null
+        return
+      }
+      if (!px || px.length < 2) {
+        this.userLocationPinStyle = null
+        return
+      }
+      const size = this.getScaledMarkerSize(MARKER_BASE.userLocation)
+      const [ox, oy] = this.getUserLocationSymbolOffset()
+      const bouncePx = Math.max(
+        2,
+        Math.round(USER_LOCATION_BOUNCE_MAX_PX * this.getMarkerSymbolScale() / MARKER_SCALE_MAX),
+      )
+      this.userLocationPinStyle = {
+        width: `${size}px`,
+        height: `${size}px`,
+        left: `${px[0] + ox}px`,
+        top: `${px[1] + oy}px`,
+        marginLeft: `${-size / 2}px`,
+        marginTop: `${-size / 2}px`,
+        '--user-loc-bounce': `${bouncePx}px`,
+        '--user-loc-bounce-duration': USER_LOCATION_BOUNCE_DURATION,
+      }
     },
     updateOverlaySizes () {
       if (!this.chart) return
       const opt = this.chart.getOption()
       const seriesList = opt.series || []
       if (!seriesList.length) return
+      const pointSize = this.getScaledMarkerSize(MARKER_BASE.point)
+      const clusterSize = this.getScaledMarkerSize(MARKER_BASE.point + 2)
       const patchSeries = seriesList.map((s) => {
         if (s.name === 'points') {
-          return { symbolSize: this.getScaledMarkerSize(MARKER_BASE.point) }
-        }
-        if (s.name === '__user_location__') {
-          return {
-            symbolSize: this.getScaledMarkerSize(MARKER_BASE.userLocation),
-            symbolOffset: this.getUserLocationSymbolOffset(),
-          }
+          // 混色聚合点在 data 上写了 symbolSize，需一并更新，否则缩放时不跟着变
+          const data = (s.data || []).map((item) => {
+            if (!item || typeof item !== 'object') return item
+            const isCluster = (Array.isArray(item.items) && item.items.length > 1) ||
+              (typeof item.symbol === 'string' && item.symbol.indexOf('image://') === 0) ||
+              item.symbolSize != null
+            if (!isCluster) return item
+            return Object.assign({}, item, { symbolSize: clusterSize })
+          })
+          return { symbolSize: pointSize, data }
         }
         if (s.name === '__selection_area__') {
-          return { symbolSize: this.getSelectionSymbolSizePx() }
+          return {
+            symbolSize: this.getSelectionSymbolSizePx(),
+            itemStyle: {
+              borderWidth: this.getScaledLineWidth(MARKER_BASE.selectionBorder),
+            },
+          }
+        }
+        if (s.name === '__selection_center__') {
+          return {
+            symbolSize: this.getScaledSelectionCenterSize(),
+            itemStyle: {
+              borderWidth: this.getScaledLineWidth(MARKER_BASE.selectionCenterBorder),
+            },
+          }
         }
         return {}
       })
       this.chart.setOption({ series: patchSeries }, false)
+      this.syncUserLocationPinPosition()
     },
     getSelectionSymbolSizePx () {
       if (!this.chart || !this.selectionCenter) return 0
@@ -643,14 +826,14 @@ export default {
           name: '__selection_area__',
           type: 'scatter',
           coordinateSystem: 'geo',
-          zlevel: 4,
+          zlevel: 2,
           silent: true,
           symbol: 'circle',
           symbolSize: this.getSelectionSymbolSizePx(),
           itemStyle: {
             color: MAP_THEME.selectionFill,
             borderColor: MAP_THEME.selectionStroke,
-            borderWidth: 2,
+            borderWidth: this.getScaledLineWidth(MARKER_BASE.selectionBorder),
           },
           data: [{
             value: projectedCenter,
@@ -660,13 +843,13 @@ export default {
           name: '__selection_center__',
           type: 'scatter',
           coordinateSystem: 'geo',
-          zlevel: 5,
+          zlevel: 2,
           silent: true,
-          symbolSize: 6,
+          symbolSize: this.getScaledSelectionCenterSize(),
           itemStyle: {
-            color: '#f5222d',
+            color: MAP_THEME.selectionStroke,
             borderColor: '#fff',
-            borderWidth: 1.5,
+            borderWidth: this.getScaledLineWidth(MARKER_BASE.selectionCenterBorder),
           },
           data: [{
             value: projectedCenter,
@@ -675,24 +858,8 @@ export default {
       ]
     },
     buildUserLocationSeries () {
-      if (!this.userLocation) return []
-      const { lng, lat } = this.userLocation
-      return [{
-        name: '__user_location__',
-        type: 'scatter',
-        coordinateSystem: 'geo',
-        zlevel: 4,
-        silent: true,
-        symbol: USER_LOCATION_SYMBOL,
-        symbolSize: this.getScaledMarkerSize(MARKER_BASE.userLocation),
-        symbolOffset: this.getUserLocationSymbolOffset(),
-        itemStyle: {
-          opacity: 1,
-        },
-        data: [{
-          value: projectLngLat(lng, lat),
-        }],
-      }]
+      // 当前位置改用 DOM 图钉 + CSS 跳动，保持点击穿透
+      return []
     },
     buildGeoOption () {
       const geo = {
@@ -753,11 +920,12 @@ export default {
         },
         geo: this.buildGeoOption(),
         series: [
+          ...this.buildSelectionSeries(),
           {
             name: 'points',
             type: 'scatter',
             coordinateSystem: 'geo',
-            zlevel: 5,
+            zlevel: 3,
             symbolSize: this.getScaledMarkerSize(MARKER_BASE.point),
             label: {
               show: false,
@@ -767,7 +935,6 @@ export default {
             },
             data: scatterData,
           },
-          ...this.buildSelectionSeries(),
           ...this.buildUserLocationSeries(),
         ],
       }
@@ -794,6 +961,9 @@ export default {
       if (shouldFit && this.shouldFitToData()) {
         this.fitMapToData()
       }
+      this.$nextTick(() => {
+        this.syncUserLocationPinPosition()
+      })
     },
     shouldFitToData () {
       return this.fitToData && (this.data || []).some(item => getItemCoords(item))
@@ -1008,6 +1178,7 @@ export default {
     handleResize () {
       if (this.chart) {
         this.chart.resize()
+        this.syncUserLocationPinPosition()
         if (this.diameterPanelVisible) {
           this.openDiameterPanel()
         }
@@ -1023,6 +1194,8 @@ export default {
       }
       this.selectionCenter = null
       this.userLocation = null
+      this.userLocationTipVisible = false
+      this.userLocationPinStyle = null
       this.hasGeoRoam = false
     },
     getMap () {
@@ -1128,6 +1301,41 @@ export default {
     pointer-events: none;
   }
 
+  &__user-loc-pin {
+    position: absolute;
+    z-index: 4;
+    pointer-events: none;
+    overflow: visible;
+
+    ::v-deep svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__user-loc-pin-bounce {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transform-origin: 50% 100%;
+    animation: echart-world-map-user-loc-bounce var(--user-loc-bounce-duration, 1.6s) ease-in-out infinite;
+  }
+
+  &__user-loc-tip {
+    position: absolute;
+    z-index: 6;
+    padding: 4px 8px;
+    font-size: 12px;
+    line-height: 18px;
+    color: #d4d5d6;
+    white-space: nowrap;
+    background: #ff7f50;
+    border-radius: 2px;
+    pointer-events: none;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  }
+
   &__popover-title {
     margin-bottom: 8px;
     color: #94a2e1;
@@ -1150,6 +1358,16 @@ export default {
   &__popover-unit {
     margin-left: 4px;
     color: #94a2e1;
+  }
+}
+
+@keyframes echart-world-map-user-loc-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(calc(-1 * var(--user-loc-bounce, 5px)));
   }
 }
 

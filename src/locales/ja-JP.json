@@ -6634,6 +6634,7 @@
   "regionMap.unit_km": "km",
   "regionMap.selection_diameter": "選択範囲直径 {0} km",
   "regionMap.locate_current": "現在地に移動",
+  "regionMap.current_location": "現在地",
   "regionMap.select_sku_first_tip": "プラットフォーム/リージョン/ゾーンが複数選択されています。ネットワークやイメージなどを設定する前に SKU を選択してください",
   "aice.aiproxy.usage.title": "利用量分析",
   "aice.aiproxy.usage.overview": "概要",
