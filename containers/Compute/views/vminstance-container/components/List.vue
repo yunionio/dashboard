@@ -430,11 +430,10 @@ export default {
         resource: 'servers',
         queryTreeId: 'project-tag-value-tree',
       },
-      hasContainerHost: false,
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode']),
+    ...mapGetters(['isAdminMode', 'capability']),
     isSameHyper () {
       if (this.list.selectedItems.length > 0) {
         const arr = this.list.selectedItems.map(v => v.hypervisor)
@@ -442,6 +441,9 @@ export default {
         return noRepeatArr.length === 1
       }
       return true
+    },
+    hasContainerHost () {
+      return (this.capability?.hypervisors || []).includes('pod')
     },
     isSameArch () {
       return true
@@ -562,7 +564,6 @@ export default {
     },
   },
   created () {
-    this.fetchHost()
     this.initSidePageTab('detail')
     this.list.fetchData().then(() => {
       this.$nextTick(() => {
@@ -579,20 +580,6 @@ export default {
     }, this)
   },
   methods: {
-    fetchHost () {
-      try {
-        new this.$Manager('hosts').list({
-          params: {
-            limit: 1,
-            enabled: true,
-            host_type: 'container',
-          },
-        }).then(res => {
-          const list = res.data?.data || []
-          this.hasContainerHost = list.length > 0
-        })
-      } catch (err) { }
-    },
     getParam () {
       const ret = {
         details: true,
