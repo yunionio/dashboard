@@ -1688,6 +1688,8 @@
   "compute.v2vtransfer.kvm": "KVM プラットフォームへの移行",
   "compute.v2vtransfer.vmware": "別のVMwareホストへの移行",
   "compute.v2vtransfer.same_brand": "同じプラットフォーム上のマシンを選択してください",
+  "compute.v2vtransfer.data_disk_first_tip": "スケジューリングタグとブロックストレージを指定した場合、すべてのデータディスクは最初のデータディスクと一致します。",
+  "compute.v2vtransfer.data_disk_multi_tip": "スケジューリングタグとブロックストレージを指定した場合、すべてのデータディスクは上記と同じスケジューリングポリシーを使用します。",
   "compute.max_bandwidth": "最大帯域幅",
   "compute.monitor_url.prompt": "アドレスを監視する",
   "compute.unlimited": "無制限の",
