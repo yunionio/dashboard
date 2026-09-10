@@ -15,9 +15,10 @@
           :decorator="genDecorator(item.key)"
           :hypervisor="hypervisor"
           :types-map="typesMap"
-          :elements="elements"
+          :elements="getDiskElements(i)"
           :disabled="getDisabled(item)"
           :size-disabled="item.sizeDisabled"
+          :hide-size="hideSize"
           :simplify="simplify"
           :storageParams="storageParams"
           :storageHostParams="storageHostParams"
@@ -164,6 +165,15 @@ export default {
     },
     forceElements: {
       type: Array,
+    },
+    // 仅第一块数据盘展示调度标签/指定存储等高级项
+    advancedOnlyFirst: {
+      type: Boolean,
+      default: false,
+    },
+    hideSize: {
+      type: Boolean,
+      default: false,
     },
     isAddDiskShow: {
       type: Boolean,
@@ -788,6 +798,10 @@ export default {
         return true // 这里目前仅针对 minus 按钮
       }
       return this.disabled
+    },
+    getDiskElements (index) {
+      if (this.advancedOnlyFirst && index > 0) return []
+      return this.elements
     },
     genDecorator (uid) {
       const ret = {}
