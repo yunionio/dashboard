@@ -19,7 +19,7 @@
     <div class="actions flex-grow-0 flex-shrink-0 d-flex">
       <template v-if="!showDelete">
         <div class="flex-shrink-1 flex-grow-1 text-left pr-2">
-          <a-button type="link" icon="user" class="pr-0 week-link-button" size="small" @click="$router.replace({ path: '/auth/login', query: $route.query })">{{ $t('auth.outher.history.user.btn') }}</a-button>
+          <a-button type="link" icon="user" class="pr-0 week-link-button" size="small" @click="handleOtherUser">{{ $t('auth.outher.history.user.btn') }}</a-button>
         </div>
         <div class="flex-shrink-1 flex-grow-1 text-right pl-2">
           <a-button type="link" icon="user-delete" class="pl-0 week-link-button" @click="showDelete = true" size="small">{{ $t('auth.remove.history.user.btn') }}</a-button>
@@ -39,6 +39,7 @@ import * as R from 'ramda'
 import { mapState } from 'vuex'
 import { setSsoIdpIdInCookie } from '@/utils/auth'
 import { sanitizeSsoRedirectSearch } from '@/utils/safeRedirect'
+import { omitLoginUserQuery } from '@/utils/utils'
 export default {
   name: 'LoginChooser',
   props: {
@@ -54,12 +55,15 @@ export default {
     ...mapState('auth', {
       loggedUsers: state => state.loggedUsers,
     }),
+    loginNavQuery () {
+      return omitLoginUserQuery(this.$route.query)
+    },
     dataSource () {
       const data = Object.entries(this.loggedUsers)
       if (data.length === 0) {
         this.$router.replace({
           path: '/auth/login',
-          query: this.$route.query,
+          query: this.loginNavQuery,
         })
         return data
       }
@@ -74,7 +78,7 @@ export default {
       if (data.length === 0) {
         this.$router.replace({
           path: '/auth/login',
-          query: this.$route.query,
+          query: this.loginNavQuery,
         })
       }
     },
@@ -98,11 +102,17 @@ export default {
       this.$router.replace({
         path: '/auth/login',
         query: {
+          ...this.loginNavQuery,
           username,
           fd_domain: item[1].domain.name,
           displayname: item[1].displayname,
-          ...this.$route.query,
         },
+      })
+    },
+    handleOtherUser () {
+      this.$router.replace({
+        path: '/auth/login',
+        query: this.loginNavQuery,
       })
     },
   },

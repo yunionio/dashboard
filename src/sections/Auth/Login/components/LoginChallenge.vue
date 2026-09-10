@@ -15,7 +15,7 @@
     </div>
     <template v-if="!showUsernameInput">
       <div class="selected-user-wrap text-center mb-4">
-        <div class="selected-user-content" @click="$router.replace({ path: '/auth/login/chooser', query: $route.query })">
+        <div class="selected-user-content" @click="goChooser">
           <div class="mr-2 name-icon">{{ firstNameWord }}</div>
           <div class="selected-user-name">{{ displayUserName }}</div>
           <div class="ml-2 d-flex align-items-center">
@@ -94,7 +94,7 @@
         <div class="d-flex justify-content-between login-link">
           <div class="flex-shrink-1 flex-grow-1 text-left">
             <template v-if="hasLoggedUsers">
-              <a class="week-link-button" @click="$router.replace({ path: '/auth/login/chooser', query: $route.query })">{{ $t('auth.chooser') }}</a>
+              <a class="week-link-button" @click="goChooser">{{ $t('auth.chooser') }}</a>
             </template>
           </div>
           <div class="flex-shrink-1 flex-grow-1 text-right">
@@ -147,7 +147,7 @@ import { Base64 } from 'js-base64'
 import { aesEncrypt } from '@/utils/crypto'
 import { setLoginDomain, getLoginDomain } from '@/utils/common/cookie'
 import { sanitizeSsoRedirectSearch } from '@/utils/safeRedirect'
-// import { removeQueryKeys } from '@/utils/utils'
+import { omitLoginUserQuery } from '@/utils/utils'
 import EditForm from '@/components/Edit/Form'
 import { setSsoIdpIdInCookie, removeSsoIdpIdInCookie } from '@/utils/auth'
 import CaptchaMixin from '@/mixins/captcha'
@@ -376,6 +376,12 @@ export default {
     submitLoginDomain (value) {
       this.showSetDomainPopover = false
       this.changeDomain(value.input)
+    },
+    goChooser () {
+      this.$router.replace({
+        path: '/auth/login/chooser',
+        query: omitLoginUserQuery(this.$route.query),
+      })
     },
     changeDomain (domain) {
       var params = { rf: this.$route.query.rf }

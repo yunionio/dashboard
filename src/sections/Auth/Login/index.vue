@@ -37,6 +37,7 @@ import { getLoginDomain } from '@/utils/common/cookie'
 import { getI18nVal, getI18nColorVal } from '@/utils/i18n'
 import { sanitizeHtml } from '@/utils/sanitizeHtml'
 import { getLoginModeInStorage } from '@/utils/auth'
+import { omitLoginUserQuery } from '@/utils/utils'
 
 export default {
   name: 'AccountIndex',
@@ -186,7 +187,7 @@ export default {
         if (!R.isEmpty(data) && !this.isForgetLoginUser) {
           this.$router.replace({
             path: '/auth/login/chooser',
-            query,
+            query: omitLoginUserQuery(query),
           })
         } else {
           this.$router.replace({
