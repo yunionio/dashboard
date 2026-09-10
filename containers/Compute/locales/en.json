@@ -1687,6 +1687,8 @@
   "compute.v2vtransfer.kvm": "Migrate to KVM platform",
   "compute.v2vtransfer.vmware": "Migrate to others VMware host",
   "compute.v2vtransfer.same_brand": "Please select a machine of the same platform",
+  "compute.v2vtransfer.data_disk_first_tip": "If you specify schedtags and block storage, all data disks will follow the first data disk.",
+  "compute.v2vtransfer.data_disk_multi_tip": "If you specify schedtags and block storage, all data disks will use the same scheduling policy above.",
   "compute.max_bandwidth": "Max Bandwidth",
   "compute.monitor_url.prompt": "Monitor URL",
   "compute.unlimited": "ALL",

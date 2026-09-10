@@ -16,6 +16,7 @@
       :storageHostParams="storageHostParams"
       :schedtagParams="getSchedtagParams()"
       :size-disabled="sizeDisabled || disabled"
+      :hide-size="hideSize"
       :storage-status-map="storageStatusMap"
       :isStorageShow="isStorageShow"
       :isIopsShow="isIopsShow"
@@ -107,6 +108,10 @@ export default {
       default: 'default',
     },
     sizeDisabled: {
+      type: Boolean,
+      default: false,
+    },
+    hideSize: {
       type: Boolean,
       default: false,
     },
