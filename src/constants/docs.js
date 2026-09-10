@@ -1,4 +1,4 @@
-import { genDocsUrl, isCE } from '@/utils/utils'
+import { genDocsUrl, isCE, isDocsDisabled } from '@/utils/utils'
 import i18n from '@/locales'
 import store from '@/store'
 import setting from '@/config/setting'
@@ -15,7 +15,7 @@ function getI18n (key, params) {
 }
 
 export const showDocsLink = () => {
-  console.log(store.getters.scopedPolicy)
+  if (isDocsDisabled()) return false
   const ce = isCE() || store.getters.isSysCE
   if (ce) return true
   return !isScopedPolicyMenuHidden('navbar_hidden_items.docs')
