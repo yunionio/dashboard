@@ -6621,6 +6621,7 @@
   "regionMap.unit_km": "km",
   "regionMap.selection_diameter": "Selection diameter {0} km",
   "regionMap.locate_current": "Locate current position",
+  "regionMap.current_location": "Current location",
   "regionMap.select_sku_first_tip": "Multiple platforms/regions/zones are selected. Please select an SKU before configuring network, image, and other options",
   "aice.aiproxy.usage.title": "Usage Analysis",
   "aice.aiproxy.usage.overview": "Overview",
