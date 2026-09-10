@@ -22,9 +22,9 @@
             :disabledRegion="true"
             filterBrandResource="compute_engine" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && isRenderSystemDisk">
+        <a-form-item :label="$t('compute.text_49')" v-show="showSystemDisk">
           <system-disk
-            v-if="isRenderSystemDisk"
+            v-if="showSystemDisk"
             :decorator="decorators.systemDisk"
             :type="type"
             :hypervisor="hypervisor"
@@ -34,24 +34,30 @@
             :capability-data="form.fi.capability"
             :ignoreStorageStatus="true"
             :storageParams="systemDiskStorageParams"
-            :forceElements="['storage']"
+            :domain="form.fd.domain"
+            :forceElements="['storage', 'schedtag']"
+            :hideSize="!isSingle"
             sizeDisabled />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_50')" v-show="selectedItems.length === 1 && isRenderDataDisk">
+        <a-form-item :label="$t('compute.text_50')" v-show="showDataDisk">
           <data-disk
-            v-if="isRenderDataDisk"
+            v-if="showDataDisk"
             ref="dataDiskRef"
             :decorator="decorators.dataDisk"
             :type="type"
             :form="form"
             :hypervisor="hypervisor"
             :capability-data="form.fi.capability"
-            :domain="domain"
+            :domain="form.fd.domain"
             :storageParams="dataDiskStorageParams"
-            :forceElements="['storage']"
+            :forceElements="['storage', 'schedtag']"
+            :advancedOnlyFirst="isSingle"
+            :hideSize="!isSingle"
             :isAddDiskShow="false"
             forceSizeDisabled
             sizeDisabled />
+          <div v-if="showDataDiskSingleTip" class="text-color-help mt-1">{{ $t('compute.v2vtransfer.data_disk_first_tip') }}</div>
+          <div v-if="showDataDiskMultiTip" class="text-color-help mt-1">{{ $t('compute.v2vtransfer.data_disk_multi_tip') }}</div>
         </a-form-item>
         <a-form-item :label="$t('compute.network_mode')">
           <a-radio-group v-decorator="decorators.network_mode" @change="networkModeHandle">
@@ -625,7 +631,7 @@ export default {
       return this.$t('compute.v2v_transfer.host_tooltip')
     },
     columns () {
-      const fields = ['name', 'status', 'host', 'ips', 'region', 'tenant']
+      const fields = ['name', 'status', 'instance_type', 'host', 'ips', 'region', 'tenant']
       const columnsMap = {}
       this.params.columns.forEach(item => {
         const { field } = item
@@ -739,11 +745,26 @@ export default {
     isRenderSystemDisk () {
       return this.hypervisor && this.form.fi.capability.storage_types3 && this.form.fd.defaultType
     },
+    hasSystemDisk () {
+      return this.selectedItems.some(vm => (vm.disks_info || []).some(d => d.disk_type === 'sys'))
+    },
+    hasDataDisk () {
+      return this.selectedItems.some(vm => (vm.disks_info || []).some(d => d.disk_type === 'data' || d.disk_type === 'swap'))
+    },
+    showSystemDisk () {
+      return this.hasSystemDisk && this.isRenderSystemDisk
+    },
+    showDataDisk () {
+      return this.hasDataDisk && this.hypervisor && this.form.fi.capability.storage_types3
+    },
+    showDataDiskSingleTip () {
+      return this.isSingle && this.showDataDisk && (this.form.fd.datadisks || []).length > 1
+    },
+    showDataDiskMultiTip () {
+      return !this.isSingle && this.showDataDisk
+    },
     isRenderDataDisk () {
-      if (!(this.hypervisor && this.form.fi.capability.storage_types3)) return false
-      if (this.selectedItems.length > 1) return false
-      if (!(this.selectedItems[0].disks_info || []).some(item => item.disk_type === 'data')) return false
-      return true
+      return this.showDataDisk
     },
     systemDiskStorageParams () {
       const params = {
@@ -880,14 +901,16 @@ export default {
         this.form.fd.datadisks = conf[2]
         this.form.fd.sysdisks = conf[3]
         this.beforeDataDisks = [...this.form.fd.datadisks]
-        if (this.form.fd.sysdisks && this.form.fd.sysdisks.length === 1) {
+        if (this.form.fd.sysdisks && this.form.fd.sysdisks.length >= 1) {
           this.sysdisk = this.form.fd.sysdisks[0]
-          const storageItem = STORAGE_TYPES[this.selectedItem.hypervisor]
+          const storageItem = STORAGE_TYPES[this.hypervisor] || STORAGE_TYPES[this.selectedItem.hypervisor]
           // 磁盘区分介质
           let diskKey = ''
           let diskLabel = R.is(Object, storageItem) ? (storageItem[diskKey]?.label || diskKey) : diskKey
-          const { medium_type } = this.selectedItem.disks_info[0] || {}
-          const diskTypeObj = this.getDiskTypeObj(this.sysdisk.type, medium_type)
+          const sysInfo = (this.selectedItems.find(vm => (vm.disks_info || []).some(d => d.disk_type === 'sys'))?.disks_info || [])
+            .find(d => d.disk_type === 'sys') || {}
+          const { medium_type } = sysInfo
+          const diskTypeObj = this.getDiskTypeObj(this.sysdisk.type, medium_type || this.sysdisk.medium_type)
           if (diskTypeObj.type && diskTypeObj.medium) {
             diskKey = `${diskTypeObj.type}/${diskTypeObj.medium}`
             diskLabel = `${diskTypeObj.label}(${MEDIUM_MAP[diskTypeObj.medium]})`
@@ -898,16 +921,33 @@ export default {
           }
         }
 
-        const dataDisks = this.selectedItem.disks_info.filter(item => item.disk_type === 'data' || item.disk_type === 'swap')
+        const dataDisks = []
+        this.selectedItems.forEach(vm => {
+          (vm.disks_info || []).forEach(item => {
+            if (item.disk_type === 'data' || item.disk_type === 'swap') {
+              dataDisks.push(item)
+            }
+          })
+        })
         const { type: dataDiskType, medium_type: dataDiskMedium } = dataDisks[0] || {}
         const diskTypeObj = this.getDiskTypeObj(dataDiskType, dataDiskMedium)
         this.$nextTick(() => {
           this.diskLoaded = true
 
+          if (this.dataDiskInterval) {
+            clearInterval(this.dataDiskInterval)
+            this.dataDiskInterval = null
+          }
           this.dataDiskInterval = setInterval(() => {
-            if (this.isRenderDataDisk && this.$refs.dataDiskRef) {
-              this.form.fd.datadisks.forEach((v, i) => {
-                this.$refs.dataDiskRef.add({ size: v.value, min: v.value, diskType: diskTypeObj.type, disabled: false, sizeDisabled: true, medium: diskTypeObj.medium, ...v })
+            if (this.showDataDisk && this.$refs.dataDiskRef) {
+              const dataDiskRef = this.$refs.dataDiskRef
+              // 换可用区会再次 capability，先清空再 add，避免数据盘重复叠加
+              ;[...(dataDiskRef.dataDisks || [])].forEach(disk => {
+                dataDiskRef.decrease(disk.key)
+              })
+              const list = this.isSingle ? this.form.fd.datadisks : (this.form.fd.datadisks || []).slice(0, 1)
+              list.forEach((v) => {
+                dataDiskRef.add({ size: v.value, min: v.value, diskType: diskTypeObj.type, disabled: false, sizeDisabled: true, medium: diskTypeObj.medium, ...v })
               })
               clearInterval(this.dataDiskInterval)
               this.dataDiskInterval = null
@@ -1022,9 +1062,7 @@ export default {
       if (this.isNetworkModeNew) {
         data.networks = await this.genNetworks(values)
       }
-      if (this.selectedItems.length === 1) {
-        data.disks = this.genDiskData(values)
-      }
+      Object.assign(data, this.genDiskPreferParams(values))
       return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
@@ -1081,115 +1119,62 @@ export default {
         this.networkCheckLoading = false
       }
     },
-    genDiskData (values) {
-      const sysDisk = []
-      const dataDisk = []
-      const len = this.form.fd.sysdisks?.length || -1
-      if (len) {
+    // 系统盘/数据盘：类型、存储、调度标签提到顶层字段
+    genDiskPreferParams (values) {
+      const ret = {}
+      if (this.showSystemDisk) {
         const sysDiskType = this.form.fd.systemDiskType?.key
-        const systemDisk = {
-          index: 0,
-          disk_type: 'sys',
-          backend: getOriginDiskKey(sysDiskType),
-          size: this.form.fd.systemDiskSize * 1024,
+        if (sysDiskType) {
+          ret.sys_disk_backend = getOriginDiskKey(sysDiskType)
         }
-        // 磁盘介质
+        // 磁盘介质（与原 genDiskData 一致）
         if (this.form.fi.systemDiskMedium) {
-          systemDisk.medium = this.form.fi.systemDiskMedium
-        }
-        if (this.form.fd.systemDiskSchedtag) {
-          systemDisk.schedtags = [
-            { id: this.form.fd.systemDiskSchedtag },
-          ]
-          if (this.form.fd.systemDiskPolicy && this.form.fd.systemDiskPolicy) {
-            systemDisk.schedtags[0].strategy = this.form.fd.systemDiskPolicy
-          }
+          ret.sys_disk_medium = this.form.fi.systemDiskMedium
         }
         if (this.form.fd.systemDiskStorage) {
-          systemDisk.storage_id = this.form.fd.systemDiskStorage
+          ret.sys_prefer_storage = this.form.fd.systemDiskStorage
         }
-        if (this.form.fd.systemDiskIops) {
-          systemDisk.iops = this.form.fd.systemDiskIops
-        }
-        if (this.form.fd.systemDiskThroughput) {
-          systemDisk.throughput = this.form.fd.systemDiskThroughput
-        }
-        if (this.form.fd.systemDiskPreallocation) {
-          systemDisk.preallocation = this.form.fd.systemDiskPreallocation
-        }
-        if (this.form.fd.systemDiskAutoReset) {
-          systemDisk.auto_reset = this.form.fd.systemDiskAutoReset
-        }
-        sysDisk.push(systemDisk)
-      }
-      if (this.$refs.dataDiskRef) {
-        let index = len >= 1 ? len - 1 : len
-        const dataDisks = this.$refs.dataDiskRef.dataDisks
-        R.forEachObjIndexed((value, key) => {
-          const diskObj = {
-            disk_type: 'data',
-            index: ++index,
+        if (this.form.fd.systemDiskSchedtag) {
+          ret.sys_disk_schedtags = [{ id: this.form.fd.systemDiskSchedtag }]
+          if (this.form.fd.systemDiskPolicy) {
+            ret.sys_disk_schedtags[0].strategy = this.form.fd.systemDiskPolicy
           }
-          if (values.dataDiskSizes && values.dataDiskSizes[key]) {
-            diskObj.size = values.dataDiskSizes[key] * 1024
-          }
-          if (values.dataDiskTypes) {
-            if (values.dataDiskTypes[key]) {
-              // 磁盘区分介质
-              let diskKey = values.dataDiskTypes[key].key
-              if (diskSupportTypeMedium(this.selectedItem.hypervisor)) {
-                diskKey = getOriginDiskKey(diskKey)
-              }
-              diskObj.backend = diskKey
-            } else {
-              if (_.get(dataDisks, '[0].diskType.key')) {
-                // 磁盘区分介质
-                let diskKey = _.get(dataDisks, '[0].diskType.key') // 默认添加的盘和第一块保持一致
-                if (diskSupportTypeMedium(this.selectedItem.hypervisor)) {
-                  diskKey = getOriginDiskKey(diskKey)
-                }
-                diskObj.backend = diskKey
-              }
-            }
-          }
-          if (values.dataDiskFiletypes && values.dataDiskFiletypes[key]) {
-            diskObj.filetype = values.dataDiskFiletypes[key]
-          }
-          if (values.dataDiskMountPaths && values.dataDiskMountPaths[key]) {
-            diskObj.mountpoint = values.dataDiskMountPaths[key]
-          }
-          if (values.dataDiskSnapshots && values.dataDiskSnapshots[key]) {
-            diskObj.snapshot_id = values.dataDiskSnapshots[key]
-          }
-          if (values.dataDiskSchedtags && values.dataDiskSchedtags[key]) {
-            diskObj.schedtags = [
-              { id: values.dataDiskSchedtags[key] },
-            ]
-            if (values.dataDiskPolicys && values.dataDiskPolicys[key]) {
-              diskObj.schedtags[0].strategy = values.dataDiskPolicys[key]
-            }
-          }
-          if (values.dataDiskStorages && values.dataDiskStorages[key]) {
-            diskObj.storage_id = values.dataDiskStorages[key]
-          }
-          if (values.dataDiskPreallocation && values.dataDiskPreallocation[key]) {
-            diskObj.preallocation = values.dataDiskPreallocation[key]
-          }
-          // 磁盘区分介质
-          if (values.dataDiskTypes && values.dataDiskTypes[key]) {
-            const { key: dataDiskKey = '' } = values.dataDiskTypes[key] || {}
-            const medium = dataDiskKey.split('/')[1]
-            if (diskSupportTypeMedium(this.selectedItem.hypervisor) && medium) {
-              diskObj.medium = medium
-            }
-          }
-          dataDisk.push(diskObj)
-        }, values.dataDiskSizes)
-        if (_.get(this.params, 'data[0].disks_info[0].disk_type') === 'data') {
-          dataDisk.shift() // 因为第一块盘的disk_type是data，说明无系统盘，第一块盘是ISO启动的，需要去掉
         }
       }
-      return [...sysDisk, ...dataDisk]
+      if (this.showDataDisk) {
+        const firstDiskKey = _.get(this.$refs.dataDiskRef, 'dataDisks[0].key')
+        const dataDiskTypes = values.dataDiskTypes || this.form.fd.dataDiskTypes || {}
+        let backend
+        if (firstDiskKey && dataDiskTypes[firstDiskKey]) {
+          backend = dataDiskTypes[firstDiskKey].key
+        } else if (_.get(this.$refs.dataDiskRef, 'dataDisks[0].diskType.key')) {
+          backend = this.$refs.dataDiskRef.dataDisks[0].diskType.key
+        }
+        if (backend) {
+          // 磁盘区分介质（与原 genDiskData 一致）
+          const medium = backend.split('/')[1]
+          if (diskSupportTypeMedium(this.hypervisor) && medium) {
+            ret.data_disk_medium = medium
+          }
+          if (diskSupportTypeMedium(this.hypervisor)) {
+            backend = getOriginDiskKey(backend)
+          }
+          ret.data_disk_backend = backend
+        }
+        const storages = values.dataDiskStorages || this.form.fd.dataDiskStorages || {}
+        if (firstDiskKey && storages[firstDiskKey]) {
+          ret.data_prefer_storage = storages[firstDiskKey]
+        }
+        const schedtags = values.dataDiskSchedtags || this.form.fd.dataDiskSchedtags || {}
+        if (firstDiskKey && schedtags[firstDiskKey]) {
+          ret.data_disk_schedtags = [{ id: schedtags[firstDiskKey] }]
+          const policys = values.dataDiskPolicys || this.form.fd.dataDiskPolicys || {}
+          if (policys[firstDiskKey]) {
+            ret.data_disk_schedtags[0].strategy = policys[firstDiskKey]
+          }
+        }
+      }
+      return ret
     },
     maxConfig () {
       let cpu = 0

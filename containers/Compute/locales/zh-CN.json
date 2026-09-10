@@ -1692,6 +1692,8 @@
   "compute.v2vtransfer.kvm": "迁移至KVM平台",
   "compute.v2vtransfer.vmware": "迁移至VMware其他宿主机",
   "compute.v2vtransfer.same_brand": "请选择同平台的机器",
+  "compute.v2vtransfer.data_disk_first_tip": "若指定调度标签和块存储，所有数据盘将和第一块数据盘保持一致。",
+  "compute.v2vtransfer.data_disk_multi_tip": "若指定调度标签和块存储，所有数据盘将使用以上同一调度策略。",
   "compute.max_bandwidth": "最大带宽",
   "compute.monitor_url.prompt": "监控地址",
   "compute.unlimited": "不限",
