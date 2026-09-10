@@ -6648,6 +6648,7 @@
   "regionMap.unit_km": "km",
   "regionMap.selection_diameter": "选区直径 {0} km",
   "regionMap.locate_current": "定位到当前位置",
+  "regionMap.current_location": "当前位置",
   "regionMap.select_sku_first_tip": "平台/区域/可用区存在多项选择，请先选择 SKU 后再配置网络、镜像等选项",
   "aice.aiproxy.usage.title": "用量分析",
   "aice.aiproxy.usage.overview": "概览",
