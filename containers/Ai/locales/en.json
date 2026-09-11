@@ -724,6 +724,7 @@
   "aice.aiproxy.allowed_ai_provider_ids": "Allowed Providers",
   "aice.aiproxy.max_tokens_per_request": "Max Tokens Per Request",
   "aice.aiproxy.requests_per_minute": "Requests Per Minute",
+  "aice.aiproxy.limit_unlimited_hint": "Leave empty or 0 for unlimited",
   "aice.aiproxy.routing_models": "Routing Models",
   "aice.aiproxy.set_models": "Set Models",
   "aice.aiproxy.llm_deployment_id": "LLM Deployment",
