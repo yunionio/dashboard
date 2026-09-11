@@ -6,13 +6,10 @@
         <a-form-model-item v-if="params.type !== 'edit'" :label="$t('common.name')" prop="generate_name">
           <a-input v-model="form.generate_name" />
         </a-form-model-item>
-        <a-form-model-item v-if="params.type === 'edit'" :label="$t('aice.aiproxy.virtual_key_field')" prop="virtual_key">
-          <a-input v-model="form.virtual_key" :placeholder="$t('aice.aiproxy.optional_auto_generate')" />
-        </a-form-model-item>
-        <a-form-model-item :label="$t('aice.aiproxy.max_tokens_per_request')">
+        <a-form-model-item :label="$t('aice.aiproxy.max_tokens_per_request')" :extra="$t('aice.aiproxy.limit_unlimited_hint')">
           <a-input-number v-model="form.max_tokens_per_request" :min="0" />
         </a-form-model-item>
-        <a-form-model-item :label="$t('aice.aiproxy.requests_per_minute')">
+        <a-form-model-item :label="$t('aice.aiproxy.requests_per_minute')" :extra="$t('aice.aiproxy.limit_unlimited_hint')">
           <a-input-number v-model="form.requests_per_minute" :min="0" />
         </a-form-model-item>
       </a-form-model>
@@ -38,7 +35,6 @@ export default {
       loading: false,
       form: {
         generate_name: '',
-        virtual_key: data.virtual_key || '',
         max_tokens_per_request: data.limits?.max_tokens_per_request || undefined,
         requests_per_minute: data.limits?.requests_per_minute || undefined,
       },
@@ -48,13 +44,34 @@ export default {
     }
   },
   methods: {
-    buildPayload () {
+    positiveLimit (val) {
+      const n = Number(val)
+      return Number.isFinite(n) && n > 0 ? n : 0
+    },
+    buildLimitsPayload ({ always = false } = {}) {
+      const maxTokens = this.positiveLimit(this.form.max_tokens_per_request)
+      const rpm = this.positiveLimit(this.form.requests_per_minute)
       const limits = {}
-      if (this.form.max_tokens_per_request) limits.max_tokens_per_request = this.form.max_tokens_per_request
-      if (this.form.requests_per_minute) limits.requests_per_minute = this.form.requests_per_minute
-      const data = { limits: Object.keys(limits).length ? limits : undefined }
-      if (this.params.type === 'edit' && this.form.virtual_key) data.virtual_key = this.form.virtual_key
-      if (this.params.type !== 'edit') data.generate_name = this.form.generate_name
+      if (this.params.type === 'edit') {
+        const prev = (this.params.data[0] && this.params.data[0].limits) || {}
+        if (Array.isArray(prev.allowed_ai_provider_ids) && prev.allowed_ai_provider_ids.length) {
+          limits.allowed_ai_provider_ids = prev.allowed_ai_provider_ids
+        }
+      }
+      if (maxTokens > 0) limits.max_tokens_per_request = maxTokens
+      else if (always) limits.max_tokens_per_request = 0
+      if (rpm > 0) limits.requests_per_minute = rpm
+      else if (always) limits.requests_per_minute = 0
+      if (always) return limits
+      return Object.keys(limits).length ? limits : undefined
+    },
+    buildPayload () {
+      const isEdit = this.params.type === 'edit'
+      const data = {
+        // edit must always send limits so clearing (0 / empty) replaces the stored JSON
+        limits: this.buildLimitsPayload({ always: isEdit }),
+      }
+      if (!isEdit) data.generate_name = this.form.generate_name
       return data
     },
     async handleConfirm () {
