@@ -727,6 +727,7 @@
   "aice.aiproxy.allowed_ai_provider_ids": "允许提供商",
   "aice.aiproxy.max_tokens_per_request": "单次最大 Token",
   "aice.aiproxy.requests_per_minute": "每分钟请求数",
+  "aice.aiproxy.limit_unlimited_hint": "留空或 0 表示不限制",
   "aice.aiproxy.routing_models": "路由模型",
   "aice.aiproxy.set_models": "设置模型",
   "aice.aiproxy.llm_deployment_id": "推理部署",
