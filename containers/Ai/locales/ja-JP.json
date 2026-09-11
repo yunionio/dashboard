@@ -723,6 +723,7 @@
   "aice.aiproxy.allowed_ai_provider_ids": "許可プロバイダー",
   "aice.aiproxy.max_tokens_per_request": "リクエスト最大トークン",
   "aice.aiproxy.requests_per_minute": "分あたりリクエスト数",
+  "aice.aiproxy.limit_unlimited_hint": "空欄または 0 で無制限",
   "aice.aiproxy.routing_models": "ルーティングモデル",
   "aice.aiproxy.set_models": "モデル設定",
   "aice.aiproxy.llm_deployment_id": "推論デプロイ",
