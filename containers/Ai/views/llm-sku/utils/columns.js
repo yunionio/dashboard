@@ -16,7 +16,7 @@ export const getDeviceModelTableColumn = () => {
         const text = formatDevicesDisplay(row.devices, { fallbackMemoryMb: row.vram_claim_mb })
         if (text === '-') return '-'
         return text.split(', ').map(part => (
-          <div class={'mb-1'}><a-tag>{part}</a-tag></div>
+          h('div', { class: 'mb-1' }, [h('a-tag', [part])])
         ))
       },
     },
@@ -47,7 +47,7 @@ export const getEnvsTableColumn = () => {
       default: ({ row }, h) => {
         if (row.envs?.length) {
           return row.envs.map(v => {
-            return <div class={'mb-1'}><a-tag>{v.key}={v.value}</a-tag></div>
+            return h('div', { class: 'mb-1' }, [h('a-tag', [`${v.key}=${v.value}`])])
           })
         }
         return '-'
@@ -82,11 +82,27 @@ export const getImageTableColumn = ({ vm = {} } = {}) => {
       return row.image || '-'
     },
     slots: {
-      default: ({ row }, h) => {
+      default: ({ row }) => {
+        if (!row.image) return '-'
         return [
-          <list-body-cell-wrap copy hideField={true} field='image' row={row} message={row.image}>
-            <side-page-trigger permission='llm_images_get' name='LlmImageSidePage' id={row.llm_image_id} vm={vm}>{row.image}</side-page-trigger>
-          </list-body-cell-wrap>,
+          vm.$createElement('list-body-cell-wrap', {
+            props: {
+              copy: true,
+              hideField: true,
+              field: 'image',
+              row,
+              message: row.image,
+            },
+          }, [
+            vm.$createElement('side-page-trigger', {
+              props: {
+                permission: 'llm_images_get',
+                name: 'LlmImageSidePage',
+                id: row.llm_image_id,
+                vm,
+              },
+            }, [row.image]),
+          ]),
         ]
       },
     },
@@ -120,10 +136,10 @@ export const getCpuTableColumn = (opts = {}) => {
     sortable: true,
     slots: showCgroupLimit
       ? {
-        default: ({ row }) => {
+        default: ({ row }, h) => {
           return [
-            <span>{row.cpu}</span>,
-            <span class="ml-3">{formatCgroupLimit(row.enable_cgroup_cpu)}</span>,
+            h('span', [row.cpu]),
+            h('span', { class: 'ml-3' }, [formatCgroupLimit(row.enable_cgroup_cpu)]),
           ]
         },
       }
@@ -145,10 +161,10 @@ export const getMemoryTableColumn = (opts = {}) => {
     width: showCgroupLimit ? 220 : 120,
     slots: showCgroupLimit
       ? {
-        default: ({ row }) => {
+        default: ({ row }, h) => {
           return [
-            <span>{sizestr(row.memory, 'M', 1024)}</span>,
-            <span class="ml-3">{formatCgroupLimit(row.enable_cgroup_memory)}</span>,
+            h('span', [sizestr(row.memory, 'M', 1024)]),
+            h('span', { class: 'ml-3' }, [formatCgroupLimit(row.enable_cgroup_memory)]),
           ]
         },
       }

@@ -30,13 +30,28 @@ export const getLLMSkuTableColumn = ({ vm } = {}) => {
   }
   if (vm) {
     column.slots = {
-      default: ({ row }, h) => {
+      default: ({ row }) => {
         if (!row.llm_sku_id) return '-'
         const text = row.llm_sku || row.llm_sku_id
         return [
-          <list-body-cell-wrap copy hideField={true} field="llm_sku" row={row} message={text}>
-            <side-page-trigger permission="llm_skus_get" name="LlmSkuSidePage" id={row.llm_sku_id} vm={vm}>{text}</side-page-trigger>
-          </list-body-cell-wrap>,
+          vm.$createElement('list-body-cell-wrap', {
+            props: {
+              copy: true,
+              hideField: true,
+              field: 'llm_sku',
+              row,
+              message: text,
+            },
+          }, [
+            vm.$createElement('side-page-trigger', {
+              props: {
+                permission: 'llm_skus_get',
+                name: 'LlmSkuSidePage',
+                id: row.llm_sku_id,
+                vm,
+              },
+            }, [text]),
+          ]),
         ]
       },
     }

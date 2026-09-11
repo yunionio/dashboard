@@ -312,11 +312,11 @@ export default {
       },
       submenus: [
         {
-          path: '/ai-proxy-usage',
+          path: '/ai-routing',
           meta: {
-            label: i18n.t('aice.aiproxy.usage.aiproxy_usage'),
+            label: i18n.t('aice.aiproxy.routing'),
             hidden: (userInfo, menu) => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.ai_proxy_usage')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ai_routing')) {
                 return true
               }
               return featureMenuHiddenCheck(menu)
@@ -324,7 +324,8 @@ export default {
           },
           component: Layout,
           children: [
-            { name: 'AiProxyUsage', path: '', component: AiProxyUsage },
+            { name: 'AiRoutingList', path: '', component: AiRouting },
+            { name: 'AiRoutingCreate', path: 'create', component: AiRoutingCreate },
           ],
         },
         {
@@ -345,23 +346,6 @@ export default {
           ],
         },
         {
-          path: '/ai-routing',
-          meta: {
-            label: i18n.t('aice.aiproxy.routing'),
-            hidden: (userInfo, menu) => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.ai_routing')) {
-                return true
-              }
-              return featureMenuHiddenCheck(menu)
-            },
-          },
-          component: Layout,
-          children: [
-            { name: 'AiRoutingList', path: '', component: AiRouting },
-            { name: 'AiRoutingCreate', path: 'create', component: AiRoutingCreate },
-          ],
-        },
-        {
           path: '/ai-provider',
           meta: {
             label: i18n.t('aice.aiproxy.provider'),
@@ -376,6 +360,22 @@ export default {
           children: [
             { name: 'AiProviderList', path: '', component: AiProvider },
             { name: 'AiProviderCreate', path: 'create', component: AiProviderCreate },
+          ],
+        },
+        {
+          path: '/ai-proxy-usage',
+          meta: {
+            label: i18n.t('aice.aiproxy.usage.aiproxy_usage'),
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ai_proxy_usage')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            { name: 'AiProxyUsage', path: '', component: AiProxyUsage },
           ],
         },
         {
