@@ -13,9 +13,10 @@
         </a-form-item>
         <template v-if="editMode === 'custom'">
           <a-form-item :label="$t('compute.repo.image.source')">
-            <a-radio-group default-value="custom" @change="handleSourceChange">
+            <a-radio-group :value="source" @change="handleSourceChange">
               <a-radio-button value="custom">{{ $t('compute.repo.image.custom') }}</a-radio-button>
               <a-radio-button value="registry">{{ $t('compute.repo.image.registry') }}</a-radio-button>
+              <a-radio-button value="container_image">{{ $t('compute.repo.image.container_image') }}</a-radio-button>
             </a-radio-group>
           </a-form-item>
           <a-form-item v-if="source === 'custom'" :label="$t('compute.repo.container_image')">
@@ -23,9 +24,35 @@
               v-decorator="decorators.image"
               :placeholder="$t('common.tips.input', [$t('compute.repo.container_image')])" />
           </a-form-item>
-          <a-form-item v-else :label="$t('compute.repo.container_image')">
+          <a-form-item v-else-if="source === 'registry'" :label="$t('compute.repo.container_image')">
             <mirror-registry v-decorator="decorators.registryImage" @credential-change="handleCredentialChange" />
             <a-input v-show="false" v-decorator="decorators.imageCredentialId" />
+          </a-form-item>
+          <a-form-item v-else :label="$t('compute.repo.container_image')">
+            <a-select
+              v-decorator="decorators.containerImageId"
+              showSearch
+              :filterOption="filterOption"
+              :loading="containerImageLoading"
+              :placeholder="$t('common.tips.select', [$t('compute.repo.image.container_image')])"
+              allowClear>
+              <a-select-option
+                v-for="img in containerImages"
+                :key="img.value"
+                :value="img.value"
+                :label="img.label">
+                <div>{{ img.label }}</div>
+                <div style="font-size: 12px; color: #999;">{{ img.ref }}</div>
+              </a-select-option>
+            </a-select>
+            <div v-if="!containerImageLoading && containerImages.length === 0" class="mt-2">
+              <a-alert type="info" show-icon>
+                <template slot="message">
+                  {{ $t('compute.repo.image.container_image.empty_tip') }}
+                  <router-link to="/container_image">{{ $t('compute.repo.image.container_image.manage') }}</router-link>
+                </template>
+              </a-alert>
+            </div>
           </a-form-item>
           <a-form-item :label="$t('compute.repo.command')">
             <a-input v-decorator="decorators.command" :placeholder="$t('compute.repo.command.placeholder')" />
@@ -99,12 +126,20 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const specData = this.params.data[0].spec || {}
+    let initialSource = 'custom'
+    if (specData.container_image_id) {
+      initialSource = 'container_image'
+    } else if (specData.image_credential_id) {
+      initialSource = 'registry'
+    }
 
     return {
       loading: false,
       action: this.$t('common.edit'),
-      source: 'custom', // custom or registry
+      source: initialSource,
       editMode: 'custom',
+      containerImageLoading: false,
+      containerImages: [],
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -136,6 +171,15 @@ export default {
           'imageCredentialId',
           {
             initialValue: specData.image_credential_id,
+          },
+        ],
+        containerImageId: [
+          'containerImageId',
+          {
+            initialValue: specData.container_image_id,
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('compute.repo.image.container_image')]) },
+            ],
           },
         ],
         image: [
@@ -238,7 +282,17 @@ export default {
       return this.params.data
     },
   },
+  watch: {
+    source (val) {
+      if (val === 'container_image' && this.containerImages.length === 0) {
+        this.fetchContainerImages()
+      }
+    },
+  },
   mounted () {
+    if (this.source === 'container_image') {
+      this.fetchContainerImages()
+    }
     setTimeout(() => {
       const envs = this.selectItems[0].spec?.envs || []
 
@@ -255,8 +309,41 @@ export default {
     }, 500)
   },
   methods: {
+    filterOption (input, option) {
+      const label = option.componentOptions?.propsData?.label || ''
+      return label.toLowerCase().indexOf((input || '').toLowerCase()) >= 0
+    },
+    async fetchContainerImages () {
+      try {
+        this.containerImageLoading = true
+        const manager = new this.$Manager('container_images', 'v1')
+        const result = await manager.list({
+          params: {
+            details: true,
+            limit: 100,
+            scope: this.$store.getters.scope,
+          },
+        })
+        const dataArr = result.data.data || []
+        this.containerImages = dataArr.map(item => ({
+          label: item.name || `${item.image_name}:${item.image_label}`,
+          value: item.id,
+          ref: `${item.image_name}:${item.image_label}`,
+        }))
+      } catch (error) {
+        throw error
+      } finally {
+        this.containerImageLoading = false
+      }
+    },
     handleSourceChange (e) {
       this.source = e.target.value
+      this.form.fc.setFieldsValue({
+        image: undefined,
+        registryImage: undefined,
+        imageCredentialId: undefined,
+        containerImageId: undefined,
+      })
     },
     handleCredentialChange (credentialId) {
       this.form.fc.setFieldsValue({
@@ -278,9 +365,14 @@ export default {
         ...spec,
       }
       if (this.editMode === 'custom') {
-        const { image, registryImage, imageCredentialId, command, arg, envNames, envValues, privileged, capAdd, capDrop } = values
-        if (this.source === 'registry' && registryImage) {
+        const { image, registryImage, imageCredentialId, containerImageId, command, arg, envNames, envValues, privileged, capAdd, capDrop } = values
+        if (this.source === 'container_image' && containerImageId) {
+          specData.container_image_id = containerImageId
+          delete specData.image
+          delete specData.image_credential_id
+        } else if (this.source === 'registry' && registryImage) {
           specData.image = registryImage
+          delete specData.container_image_id
           if (imageCredentialId) {
             specData.image_credential_id = imageCredentialId
           } else {
@@ -288,6 +380,7 @@ export default {
           }
         } else if (image) {
           specData.image = image
+          delete specData.container_image_id
           delete specData.image_credential_id
         }
         if (command) {

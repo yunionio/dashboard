@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('k8s.text_158')" />
+    <page-header :title="$t('dictionary.container_registry')" />
     <page-body>
       <repos-list :id="listId" />
     </page-body>

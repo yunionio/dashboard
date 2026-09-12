@@ -1260,6 +1260,9 @@
     "phoneImage": {
       "ready": "available"
     },
+    "containerImage": {
+      "ready": "available"
+    },
     "webappDomains": {
       "available": "available",
       "no_bind": "No bind"
@@ -3161,6 +3164,7 @@
     "daily_report": "Daily report",
     "meter_instance": "Billing Resources",
     "container_registry": "Mirror repository",
+    "container_image": "Container image",
     "block_account": "Seal accounts",
     "price": "Example cost",
     "bill_alert_setting": "Abnormal Cost Rules",

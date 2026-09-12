@@ -1275,6 +1275,9 @@
     "phoneImage": {
       "ready": "利用可能"
     },
+    "containerImage": {
+      "ready": "利用可能"
+    },
     "webappDomains": {
       "available": "保護された",
       "no_bind": "バインドなし"
@@ -3178,6 +3181,7 @@
     "daily_report": "日報",
     "meter_instance": "請求書リソース",
     "container_registry": "ミラーウェアハウス",
+    "container_image": "コンテナイメージ",
     "block_account": "帳簿を封する",
     "price": "インスタンス費用",
     "bill_alert_setting": "異常消費ルール",

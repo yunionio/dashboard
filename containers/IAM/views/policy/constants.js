@@ -796,6 +796,9 @@ export const RESOURCES_MAP = {
   container_registries: {
     i18n: 'dictionary.container_registry',
   },
+  container_images: {
+    i18n: 'dictionary.container_image',
+  },
   organizations: {
     i18n: 'dictionary.organization',
   },

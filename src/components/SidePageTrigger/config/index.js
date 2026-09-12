@@ -26,6 +26,14 @@ export default {
     apiVersion: 'v1',
     steadyStatus: Object.values(expectStatus.image).flat(),
   },
+  ContainerImageSidePage: {
+    resource: 'container_images',
+    apiVersion: 'v1',
+  },
+  K8sReposSidePage: {
+    resource: 'container_registries',
+    apiVersion: 'v1',
+  },
   // 硬盘
   DiskSidePage: {
     resource: 'disks',
