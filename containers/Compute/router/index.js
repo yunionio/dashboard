@@ -17,6 +17,7 @@ const Dynamicschedtag = () => import(/* webpackChunkName: "compute" */ /* webpac
 const TapService = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/tap-service')
 const TapServiceCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/tap-service/create')
 const HostImage = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/host-image')
+const ContainerImage = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/container-image')
 const VMInstanceCreate = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance/create/index')
 const VMInstanceAdjustConfig = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Compute/views/vminstance/adjustConfig')
 const Network = () => import(/* webpackChunkName: "compute" */ /* webpackPrefetch: true */ '@Network/views/network')
@@ -470,6 +471,27 @@ export default {
           ],
         },
         {
+          path: '/container_image',
+          meta: {
+            label: i18n.t('dictionary.container_image'),
+            permission: 'container_images_list',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.container_image')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ContainerImage',
+              path: '',
+              component: ContainerImage,
+            },
+          ],
+        },
+        {
           path: '/app-package',
           meta: {
             label: i18n.t('dictionary.app_package'),
@@ -494,15 +516,13 @@ export default {
         {
           path: '/image-repos',
           meta: {
-            label: i18n.t('k8s.text_158'),
-            permission: 'k8s_container_registries_list',
+            label: i18n.t('dictionary.container_registry'),
+            permission: 'container_registries_list',
             hidden: (userInfo, menu) => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_service')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.image_repos')) {
                 return true
               }
-              if (!store.getters.isAdminMode) return true
               return featureMenuHiddenCheck(menu)
-              // return !hasSetupKey(['pod', 'k8s'])
             },
           },
           component: Layout,

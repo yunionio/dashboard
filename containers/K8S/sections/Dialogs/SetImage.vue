@@ -9,21 +9,56 @@
         :form="form.fc">
         <a-alert :message="$t('k8s.text_65')" banner v-if="!containerImages.length && !initContainerImages.length" />
         <a-form-item :label="$t('k8s.repo.image.source')">
-          <a-radio-group v-decorator="decorators.source">
+          <a-radio-group v-decorator="decorators.source" @change="handleSourceChange">
             <a-radio-button value="custom">{{ $t('k8s.repo.image.custom') }}</a-radio-button>
             <a-radio-button value="registry">{{ $t('k8s.repo.image.registry') }}</a-radio-button>
+            <a-radio-button value="container_image">{{ $t('k8s.repo.image.container_image') }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item :label="$t('k8s.text_66')" v-if="initContainerImages.length">
-          <a-form-item v-for="(item, i) in initContainerImages" :key="i">
-            <mirror-registry v-show="form.fd.source === 'registry'"  v-decorator="decorators.registryImage(i)" :label="item.name" />
-            <a-input v-show="form.fd.source !== 'registry'" v-decorator="decorators.initImage(i)" :placeholder="$t('k8s.text_67')" :addonBefore="item.name" />
+          <a-form-item v-for="(item, i) in initContainerImages" :key="'init-' + i">
+            <mirror-registry v-if="form.fd.source === 'registry'" v-decorator="decorators.initRegistryImage(i)" :label="item.name" />
+            <a-select
+              v-else-if="form.fd.source === 'container_image'"
+              v-decorator="decorators.initContainerImageId(i)"
+              showSearch
+              :filterOption="filterOption"
+              :loading="glanceImageLoading"
+              :placeholder="$t('common.tips.select', [$t('k8s.repo.image.container_image')])"
+              allowClear>
+              <a-select-option
+                v-for="img in glanceImages"
+                :key="img.value"
+                :value="img.value"
+                :label="img.label">
+                <div>{{ img.label }}</div>
+                <div style="font-size: 12px; color: #999;">{{ img.ref }}</div>
+              </a-select-option>
+            </a-select>
+            <a-input v-else v-decorator="decorators.initImage(i)" :placeholder="$t('k8s.text_67')" :addonBefore="item.name" />
           </a-form-item>
         </a-form-item>
         <a-form-item :label="$t('k8s.text_42')" v-if="containerImages.length">
-          <a-form-item v-for="(item, i) in containerImages" :key="i">
-            <mirror-registry v-show="form.fd.source === 'registry'"  v-decorator="decorators.registryImage(i)" :label="item.name" />
-            <a-input v-show="form.fd.source !== 'registry'" v-decorator="decorators.image(i)" :placeholder="$t('k8s.text_67')" :addonBefore="item.name" />
+          <a-form-item v-for="(item, i) in containerImages" :key="'ctn-' + i">
+            <mirror-registry v-if="form.fd.source === 'registry'" v-decorator="decorators.registryImage(i)" :label="item.name" />
+            <a-select
+              v-else-if="form.fd.source === 'container_image'"
+              v-decorator="decorators.containerImageId(i)"
+              showSearch
+              :filterOption="filterOption"
+              :loading="glanceImageLoading"
+              :placeholder="$t('common.tips.select', [$t('k8s.repo.image.container_image')])"
+              allowClear>
+              <a-select-option
+                v-for="img in glanceImages"
+                :key="img.value"
+                :value="img.value"
+                :label="img.label">
+                <div>{{ img.label }}</div>
+                <div style="font-size: 12px; color: #999;">{{ img.ref }}</div>
+              </a-select-option>
+            </a-select>
+            <a-input v-else v-decorator="decorators.image(i)" :placeholder="$t('k8s.text_67')" :addonBefore="item.name" />
           </a-form-item>
         </a-form-item>
       </a-form>
@@ -52,6 +87,8 @@ export default {
   data () {
     return {
       loading: false,
+      glanceImageLoading: false,
+      glanceImages: [],
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -60,7 +97,9 @@ export default {
             })
           },
         }),
-        fd: {},
+        fd: {
+          source: 'custom',
+        },
       },
       data: this.params.data[0],
       containerImages: [],
@@ -77,6 +116,30 @@ export default {
           {
             rules: [
               { required: true, message: this.$t('common.tips.select', [this.$t('k8s.repo.image.registry')]) },
+            ],
+          },
+        ],
+        initRegistryImage: i => [
+          `initRegistryImages${i}`,
+          {
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('k8s.repo.image.registry')]) },
+            ],
+          },
+        ],
+        containerImageId: i => [
+          `containerImageIds${i}`,
+          {
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('k8s.repo.image.container_image')]) },
+            ],
+          },
+        ],
+        initContainerImageId: i => [
+          `initContainerImageIds${i}`,
+          {
+            rules: [
+              { required: true, message: this.$t('common.tips.select', [this.$t('k8s.repo.image.container_image')]) },
             ],
           },
         ],
@@ -111,6 +174,40 @@ export default {
     this.fetchData()
   },
   methods: {
+    filterOption (input, option) {
+      const label = option.componentOptions?.propsData?.label || ''
+      return label.toLowerCase().indexOf((input || '').toLowerCase()) >= 0
+    },
+    handleSourceChange (e) {
+      const source = e.target.value
+      this.$set(this.form.fd, 'source', source)
+      if (source === 'container_image' && this.glanceImages.length === 0) {
+        this.fetchGlanceImages()
+      }
+    },
+    async fetchGlanceImages () {
+      try {
+        this.glanceImageLoading = true
+        const manager = new this.$Manager('container_images', 'v1')
+        const result = await manager.list({
+          params: {
+            details: true,
+            limit: 100,
+            scope: this.$store.getters.scope,
+          },
+        })
+        const dataArr = result.data.data || []
+        this.glanceImages = dataArr.map(item => ({
+          label: item.name || `${item.image_name}:${item.image_label}`,
+          value: item.id,
+          ref: `${item.image_name}:${item.image_label}`,
+        }))
+      } catch (error) {
+        throw error
+      } finally {
+        this.glanceImageLoading = false
+      }
+    },
     async fetchData () {
       const { data } = await this.params.onManager('get', {
         managerArgs: {
@@ -134,41 +231,39 @@ export default {
         this.form.fc.setFieldsValue(imagesFieldValue)
       })
     },
-    async doUpdate (params) {
-      const containers = []
-      const initContainers = []
-      const getImages = (field, decorator, detailField) => {
-        Object.keys(params).forEach(key => {
-          if (params.source === 'registry') {
-            if (key.startsWith('registryImages')) {
-              const i = key.replace('registryImages', '')
-              if (this[detailField][i] && this[detailField][i].name) {
-                field.push({
-                  name: this[detailField][i].name,
-                  image: removeHttp(params[key]),
-                })
-              }
-            }
-          } else {
-            console.log(params)
-            if (key.startsWith('images')) {
-              const i = key.replace('images', '')
-              if (this[detailField][i] && this[detailField][i].name) {
-                field.push({
-                  name: this[detailField][i].name,
-                  image: removeHttp(params[key]),
-                })
-              }
-            }
-          }
-        })
-        return field
+    resolveImage (params, i, { customKey, registryKey, containerImageKey }) {
+      if (params.source === 'registry') {
+        return removeHttp(params[registryKey])
       }
+      if (params.source === 'container_image') {
+        const id = params[containerImageKey]
+        const found = this.glanceImages.find(g => g.value === id)
+        return found ? found.ref : id
+      }
+      return removeHttp(params[customKey])
+    },
+    async doUpdate (params) {
+      const containers = this.containerImages.map((item, i) => ({
+        name: item.name,
+        image: this.resolveImage(params, i, {
+          customKey: `images${i}`,
+          registryKey: `registryImages${i}`,
+          containerImageKey: `containerImageIds${i}`,
+        }),
+      }))
+      const initContainers = this.initContainerImages.map((item, i) => ({
+        name: item.name,
+        image: this.resolveImage(params, i, {
+          customKey: `initImages${i}`,
+          registryKey: `initRegistryImages${i}`,
+          containerImageKey: `initContainerImageIds${i}`,
+        }),
+      }))
       const data = {
         cluster: this.data.cluster,
         namespace: this.data.namespace,
-        containers: getImages(containers, 'images', 'containerImages'),
-        initContainers: getImages(initContainers, 'initImages', 'initContainerImages'),
+        containers,
+        initContainers,
       }
       try {
         await this.params.onManager('update', {

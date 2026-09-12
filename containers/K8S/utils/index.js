@@ -303,6 +303,14 @@ export function getCreateDecorators (resource) {
           ],
         },
       ],
+      containerImageId: i => [
+        `containerImageIds[${i}]`,
+        {
+          rules: [
+            { required: true, message: i18n.t('common.tips.select', [i18n.t('k8s.repo.image.container_image')]) },
+          ],
+        },
+      ],
       image: i => [
         `containerimages[${i}]`,
         {

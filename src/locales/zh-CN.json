@@ -1282,6 +1282,9 @@
     "phoneImage": {
       "ready": "可用"
     },
+    "containerImage": {
+      "ready": "可用"
+    },
     "webappDomains": {
       "available": "受保护",
       "no_bind": "无绑定"
@@ -3184,6 +3187,7 @@
     "daily_report": "日报",
     "meter_instance": "账单资源",
     "container_registry": "镜像仓库",
+    "container_image": "容器镜像",
     "block_account": "封账",
     "price": "实例费用",
     "bill_alert_setting": "异常消费规则",
