@@ -50,7 +50,7 @@
 import _ from 'lodash'
 import * as R from 'ramda'
 import { HYPERVISORS_MAP } from '@/constants'
-import { IMAGES_TYPE_MAP, OS_TYPE_OPTION_MAP, HOST_CPU_ARCHS } from '@/constants/compute'
+import { IMAGES_TYPE_MAP, OS_TYPE_OPTION_MAP, getOsArchParam, isOsArch } from '@/constants/compute'
 import { sizestr, uuid } from '@/utils/utils'
 import mixin from '../mixin'
 
@@ -88,10 +88,13 @@ export default {
       return this.formFd.fd.hypervisor
     },
     isArm () {
-      return this.fe.sku && this.fe.sku.cpu_arch === HOST_CPU_ARCHS.arm.capabilityKey
+      return isOsArch(this.fe.sku && this.fe.sku.cpu_arch, 'arm')
     },
     isLoongarch64 () {
-      return this.fe.sku && this.fe.sku.cpu_arch === HOST_CPU_ARCHS.loongarch64.capabilityKey
+      return isOsArch(this.fe.sku && this.fe.sku.cpu_arch, 'loongarch64')
+    },
+    isRiscv64 () {
+      return isOsArch(this.fe.sku && this.fe.sku.cpu_arch, 'riscv64')
     },
     isIDC () {
       return HYPERVISORS_MAP[this.hypervisor]?.env === 'idc'
@@ -129,9 +132,7 @@ export default {
         }
       }
       if (R.is(Object, this.formFd.fe.sku)) {
-        params.os_arch = HOST_CPU_ARCHS.x86.key
-        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
-        if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
+        params.os_arch = getOsArchParam(this.formFd.fe.sku.cpu_arch)
       }
       return params
     },
@@ -149,9 +150,7 @@ export default {
         }
       }
       if (R.is(Object, this.formFd.fe.sku)) {
-        params.os_arch = HOST_CPU_ARCHS.x86.key
-        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
-        if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
+        params.os_arch = getOsArchParam(this.formFd.fe.sku.cpu_arch)
       }
       return params
     },

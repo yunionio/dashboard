@@ -275,10 +275,9 @@ import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import RegionMap from '@Compute/sections/RegionMap'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { PROVIDER_MAP, HYPERVISORS_MAP, isUcloudLikeHypervisor, resolveHypervisorKey } from '@/constants'
-import { HOST_CPU_ARCHS } from '@/constants/compute'
+import { IMAGES_TYPE_MAP, getOsArchParam, isOsArch } from '@/constants/compute'
 import AreaSelects from '@/sections/AreaSelects'
 import { cloudregionFilterByCapability } from '@/utils/common/capability'
-import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import mixin from './mixin'
 export default {
   name: 'VMPublicCreate',
@@ -301,10 +300,13 @@ export default {
       return this.form.fd.billType === BILL_TYPES_MAP.package.key
     },
     isArm () {
-      return this.form.fd.sku && this.form.fd.sku.cpu_arch === HOST_CPU_ARCHS.arm.capabilityKey
+      return isOsArch(this.form.fd.sku && this.form.fd.sku.cpu_arch, 'arm')
     },
     isLoongarch64 () {
-      return this.form.fd.sku && this.form.fd.sku.cpu_arch === HOST_CPU_ARCHS.loongarch64.capabilityKey
+      return isOsArch(this.form.fd.sku && this.form.fd.sku.cpu_arch, 'loongarch64')
+    },
+    isRiscv64 () {
+      return isOsArch(this.form.fd.sku && this.form.fd.sku.cpu_arch, 'riscv64')
     },
     osArch () {
       if (this.form.fd.sku && this.form.fd.sku.cpu_arch) {
@@ -437,9 +439,7 @@ export default {
     imageParams () {
       const params = {}
       if (R.is(Object, this.form.fd.sku)) {
-        params.os_arch = HOST_CPU_ARCHS.x86.key
-        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
-        if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
+        params.os_arch = getOsArchParam(this.form.fd.sku.cpu_arch)
       }
       return params
     },
