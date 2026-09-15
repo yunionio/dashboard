@@ -217,7 +217,7 @@ import * as R from 'ramda'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { HYPERVISORS_MAP } from '@/constants'
-import { HOST_CPU_ARCHS } from '@/constants/compute'
+import { getOsArchParam, isOsArch } from '@/constants/compute'
 import { uuid } from '@/utils/utils'
 import mixin from './mixin'
 
@@ -229,10 +229,13 @@ export default {
   mixins: [mixin],
   computed: {
     isArm () {
-      return this.form.fd.sku && this.form.fd.sku.cpu_arch === HOST_CPU_ARCHS.arm.capabilityKey
+      return isOsArch(this.form.fd.sku && this.form.fd.sku.cpu_arch, 'arm')
     },
     isLoongarch64 () {
-      return this.form.fd.sku && this.form.fd.sku.cpu_arch === HOST_CPU_ARCHS.loongarch64.capabilityKey
+      return isOsArch(this.form.fd.sku && this.form.fd.sku.cpu_arch, 'loongarch64')
+    },
+    isRiscv64 () {
+      return isOsArch(this.form.fd.sku && this.form.fd.sku.cpu_arch, 'riscv64')
     },
     osArch () {
       if (this.form.fd.sku && this.form.fd.sku.cpu_arch) {
@@ -266,9 +269,7 @@ export default {
         if (this.cloudregionZoneParams.cloudregion) {
           params.cloudregion_id = this.cloudregionZoneParams.cloudregion
         }
-        params.os_arch = HOST_CPU_ARCHS.x86.key
-        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
-        if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
+        params.os_arch = getOsArchParam(this.form.fd.sku.cpu_arch)
       }
       return params
     },
