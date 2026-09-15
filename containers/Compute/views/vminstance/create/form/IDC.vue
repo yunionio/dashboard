@@ -352,7 +352,7 @@ import Machine from '@Compute/sections/Machine'
 import { NETWORK_OPTIONS_MAP, hasVgaGpuInPciForm } from '@Compute/constants'
 import Kickstart from '@Compute/sections/Kickstart'
 import OsArch from '@/sections/OsArch'
-import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
+import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS, getOsArchParam, isOsArch, mapHostCpuArchOptions } from '@/constants/compute'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { HYPERVISORS_MAP } from '@/constants'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
@@ -388,10 +388,13 @@ export default {
       return this.form.fd.imageType === IMAGES_TYPE_MAP.iso.key
     },
     isArm () {
-      return this.form.fd.os_arch === HOST_CPU_ARCHS.arm.key
+      return isOsArch(this.form.fd.os_arch, 'arm')
     },
     isLoongarch64 () {
-      return this.form.fd.os_arch === HOST_CPU_ARCHS.loongarch64.key
+      return isOsArch(this.form.fd.os_arch, 'loongarch64')
+    },
+    isRiscv64 () {
+      return isOsArch(this.form.fd.os_arch, 'riscv64')
     },
     /** 反亲和组 decorator，缺省时给默认结构，避免子组件空读 / 整块被 v-if 摘掉 */
     instanceGroupDecorators () {
@@ -444,13 +447,12 @@ export default {
     cacheImageParams () {
       const params = {
         cloudregion_id: _.get(this.form.fd, 'cloudregion.key'),
-        os_arch: HOST_CPU_ARCHS.x86.key,
+        os_arch: getOsArchParam(this.form.fd.os_arch),
       }
       if (!params.cloudregion_id) return {}
       if (this.form.fd.imageType === 'vmware') {
         params.image_type = 'system'
       }
-      if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
       return params
     },
     showSku () {
@@ -487,7 +489,7 @@ export default {
           usable: true,
           zone,
           hypervisor: this.form.fd.hypervisor,
-          os_arch: HOST_CPU_ARCHS.x86.key,
+          os_arch: getOsArchParam(this.form.fd.os_arch),
           ...this.scopeParams,
         }
         if ([HYPERVISORS_MAP.esxi.key, HYPERVISORS_MAP.kvm.key].includes(params.hypervisor)) {
@@ -505,8 +507,6 @@ export default {
           }
           params.cloudprovider = this.form.fd.prefer_manager
         }
-        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
-        if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
         return params
       }
       return {}
@@ -519,11 +519,9 @@ export default {
           usable: true,
           zone,
           hypervisor: this.form.fd.hypervisor,
-          os_arch: HOST_CPU_ARCHS.x86.key,
+          os_arch: getOsArchParam(this.form.fd.os_arch),
           ...this.scopeParams,
         }
-        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
-        if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
         return params
       }
       return {}
@@ -740,21 +738,14 @@ export default {
     imageParams () {
       const params = {
         ...this.scopeParams,
-        os_arch: HOST_CPU_ARCHS.x86.key,
+        os_arch: getOsArchParam(this.form.fd.os_arch),
       }
-      if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
-      if (this.isLoongarch64) params.os_arch = HOST_CPU_ARCHS.loongarch64.key
       return params
     },
     archOptions () {
       let opts = []
       if (this.form.fi.capability.host_cpu_archs && this.form.fi.capability.host_cpu_archs.length) {
-        opts = this.form.fi.capability.host_cpu_archs.map(item => {
-          if (item === HOST_CPU_ARCHS.arm.capabilityKey) return HOST_CPU_ARCHS.arm
-          if (item === HOST_CPU_ARCHS.x86.capabilityKey) return HOST_CPU_ARCHS.x86
-          if (item === HOST_CPU_ARCHS.loongarch64.capabilityKey) return HOST_CPU_ARCHS.loongarch64
-          return item
-        })
+        opts = mapHostCpuArchOptions(this.form.fi.capability.host_cpu_archs)
       }
       return opts.sort((a, b) => a.order - b.order)
     },
