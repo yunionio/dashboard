@@ -921,6 +921,48 @@ export const HOST_CPU_ARCHS = {
     capabilityKey: 'loongarch64',
     order: 3,
   },
+  riscv64: {
+    key: 'riscv64',
+    label: 'riscv64',
+    capabilityKey: 'riscv64',
+    order: 4,
+  },
+}
+
+/** capability / sku.cpu_arch / 表单 os_arch → 标准 key；无法识别时原样返回 */
+export function resolveOsArchKey (arch) {
+  if (!arch) return null
+  const hit = Object.values(HOST_CPU_ARCHS).find(
+    item => item.key === arch || item.capabilityKey === arch,
+  )
+  return hit ? hit.key : arch
+}
+
+/** 请求参数用的 os_arch，缺省为 x86 */
+export function getOsArchParam (arch, defaultKey = HOST_CPU_ARCHS.x86.key) {
+  return resolveOsArchKey(arch) || defaultKey
+}
+
+/** 是否为指定架构（type 为 HOST_CPU_ARCHS 的 key，如 arm / riscv64） */
+export function isOsArch (arch, type) {
+  const conf = HOST_CPU_ARCHS[type]
+  if (!conf) return false
+  return getOsArchParam(arch) === conf.key
+}
+
+/**
+ * host_cpu_archs → OsArch options
+ * @param {string[]} hostCpuArchs
+ * @param {boolean} asKey true 时返回 key 字符串，否则返回 HOST_CPU_ARCHS 项
+ */
+export function mapHostCpuArchOptions (hostCpuArchs = [], asKey = false) {
+  return (hostCpuArchs || []).map((item) => {
+    const hit = Object.values(HOST_CPU_ARCHS).find(
+      a => a.capabilityKey === item || a.key === item,
+    )
+    if (!hit) return item
+    return asKey ? hit.key : hit
+  })
 }
 
 export const DISK_LABEL_MAP = {
