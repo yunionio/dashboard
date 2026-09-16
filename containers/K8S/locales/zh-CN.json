@@ -444,5 +444,8 @@
   "k8s.repo.image.source": "镜像来源",
   "k8s.repo.image.custom": "自定义URL",
   "k8s.repo.image.registry": "镜像仓库",
+  "k8s.repo.image.container_image": "容器镜像",
+  "k8s.repo.image.container_image.empty_tip": "暂无可用容器镜像，请先创建。",
+  "k8s.repo.image.container_image.manage": "去管理",
   "k8s.federated_kubernetes_resource": "多集群-{0}"
 }

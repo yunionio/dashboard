@@ -1,8 +1,8 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('dictionary.container_registry')"
-    icon="res-k8s-repos"
+    :title="$t('dictionary.container_image')"
+    icon="res-image"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
@@ -31,34 +31,32 @@ import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import Detail from './Detail'
-import ContainerRegistry from './ContainerRegistry'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+
 export default {
-  name: 'K8sReposSidePage',
+  name: 'ContainerImageSidePage',
   components: {
     Detail,
-    ContainerRegistry,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
-        { label: this.$t('compute.text_238'), key: 'detail' },
-        { label: this.$t('k8s.text_42'), key: 'container-registry' },
+        { label: this.$t('common_386'), key: 'detail' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },
   computed: {
     getParams () {
-      return {}
+      return null
     },
     listId () {
       switch (this.params.windowData.currentTab) {
         case 'event-drawer':
-          return 'EventListForNotifySidePage'
+          return 'EventListForContainerImageSidePage'
         default:
           return ''
       }

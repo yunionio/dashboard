@@ -141,7 +141,7 @@ export default {
     },
     async getRegistrys () {
       try {
-        const manager = new this.$Manager('container_registries')
+        const manager = new this.$Manager('container_registries', 'v1')
         this.registryLoading = true
         this.registry = ''
         this.registrys = []
@@ -182,7 +182,7 @@ export default {
     },
     async getImagesByRegistryId (rId) {
       try {
-        const manager = new this.$Manager('container_registries')
+        const manager = new this.$Manager('container_registries', 'v1')
         this.imageLoading = true
         this.image = ''
         this.images = []
@@ -216,7 +216,7 @@ export default {
     },
     async getTagsByImage (rId, image) {
       try {
-        const manager = new this.$Manager('container_registries')
+        const manager = new this.$Manager('container_registries', 'v1')
         this.tagLoading = true
         this.tag = ''
         this.tags = []

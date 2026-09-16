@@ -603,6 +603,10 @@ export default {
   phoneImage: {
     success: ['ready'],
   },
+  containerImage: {
+    success: ['ready'],
+    danger: ['create_failed', 'delete_failed'],
+  },
   webappDomains: {
     success: ['available'],
     danger: ['no_bind'],

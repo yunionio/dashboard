@@ -444,5 +444,8 @@
   "k8s.repo.image.source": "Mirror source",
   "k8s.repo.image.custom": "Custom URL",
   "k8s.repo.image.registry": "Mirror warehouse",
+  "k8s.repo.image.container_image": "Container image",
+  "k8s.repo.image.container_image.empty_tip": "No container images available. Please create one first.",
+  "k8s.repo.image.container_image.manage": "Manage",
   "k8s.federated_kubernetes_resource": "Multi cluster-{0}"
 }
