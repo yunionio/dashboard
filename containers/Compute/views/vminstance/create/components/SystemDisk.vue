@@ -21,6 +21,7 @@
       :isIopsShow="isIopsShow"
       :isThroughputShow="isThroughputShow"
       :iopsLimit="iopsLimit"
+      :throughputLimit="throughputLimit"
       :isAutoResetShow="isAutoResetShow"
       :defaultIops="defaultIops"
       :defaultThroughput="defaultThroughput"
@@ -39,6 +40,11 @@ import { IMAGES_TYPE_MAP, STORAGE_TYPES, DISK_LABEL_MAP } from '@/constants/comp
 import { HYPERVISORS_MAP } from '@/constants'
 import { findAndUnshift, findAndPush } from '@/utils/utils'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
+import {
+  getGoogleDiskPerfElements,
+  getGoogleDiskIopsLimit,
+  getGoogleDiskThroughputLimit,
+} from '@/utils/common/googleDiskPerf'
 
 // 磁盘最小值
 export const DISK_MIN_SIZE = 10
@@ -160,6 +166,9 @@ export default {
     isAws () {
       return this.hypervisor === HYPERVISORS_MAP.aws.key
     },
+    isGoogle () {
+      return this.hypervisor === HYPERVISORS_MAP.google.key
+    },
     imageMinDisk () {
       const image = this.image
       let minSize = 0
@@ -201,6 +210,9 @@ export default {
           ret.push('iops')
         }
       }
+      if (this.isGoogle && !this.isServertemplate) {
+        ret.push(...getGoogleDiskPerfElements(this.currentTypeObj?.key))
+      }
       if (this.forceElements) {
         return this.forceElements
       }
@@ -232,7 +244,23 @@ export default {
           }
         }
       }
+      if (this.isGoogle) {
+        ret = getGoogleDiskIopsLimit(this.currentTypeObj?.key, this.form.fd.systemDiskSize) || { min: 0, max: 0 }
+      }
       return ret
+    },
+    throughputLimit () {
+      if (this.isAws && this.currentTypeObj?.key === 'gp3') {
+        return { min: 125, max: 1000 }
+      }
+      if (this.isGoogle) {
+        return getGoogleDiskThroughputLimit(
+          this.currentTypeObj?.key,
+          this.form.fd.systemDiskSize,
+          this.form.fd.systemDiskIops,
+        ) || { min: 0, max: 0 }
+      }
+      return { min: 125, max: 1000 }
     },
     typesMap () {
       const ret = {}
