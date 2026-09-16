@@ -72,13 +72,13 @@
           </a-col>
           <a-col v-if="isShowThroughput" :span="5">
             <div class="d-flex">
-              <a-tooltip title="125 ~ 1000MiB/s" placement="top">
+              <a-tooltip :title="throughputTooltip" placement="top">
                 <a-input-number
                   v-if="showThroughput"
                   v-decorator="decorators.throughput"
                   :placeholder="$t('compute.throughput')"
-                  :min="125"
-                  :max="1000"
+                  :min="throughputLimit.min"
+                  :max="throughputLimit.max"
                   :precision="0" />
               </a-tooltip>
               <a-button class="mt-1" type="link" @click="() => showThroughput = !showThroughput">{{ showThroughput ? $t('compute.text_135') : $t('compute.set_throughput') }}</a-button>
@@ -133,6 +133,11 @@ import validateForm, { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
+import {
+  getGoogleDiskPerfElements,
+  getGoogleDiskIopsLimit,
+  getGoogleDiskThroughputLimit,
+} from '@/utils/common/googleDiskPerf'
 import Tag from '@/sections/Tag'
 import BottomBar from './components/BottomBar'
 
@@ -362,6 +367,9 @@ export default {
     isAws () {
       return this.currentCloudregion?.provider === HYPERVISORS_MAP.aws.provider
     },
+    isGoogle () {
+      return this.currentCloudregion?.provider === HYPERVISORS_MAP.google.provider
+    },
     isKVM () {
       return true
     },
@@ -479,14 +487,34 @@ export default {
       return this.cloudEnv === 'onpremise'
     },
     isShowIops () {
-      return this.isAws && (this.storageItem?.value?.startsWith('gp3') || this.storageItem?.value?.startsWith('io1') || this.storageItem?.value?.startsWith('io2'))
+      if (this.isAws) {
+        return this.storageItem?.value?.startsWith('gp3') ||
+          this.storageItem?.value?.startsWith('io1') ||
+          this.storageItem?.value?.startsWith('io2')
+      }
+      if (this.isGoogle) {
+        return getGoogleDiskPerfElements(this.storageItem?.value).includes('iops')
+      }
+      return false
     },
     isShowThroughput () {
-      return this.isAws && this.storageItem?.value?.startsWith('gp3')
+      if (this.isAws) {
+        return this.storageItem?.value?.startsWith('gp3')
+      }
+      if (this.isGoogle) {
+        return getGoogleDiskPerfElements(this.storageItem?.value).includes('throughput')
+      }
+      return false
     },
     iopsTooltip () {
-      if (this.iopsLimit.min && this.iopsLimit.max) {
+      if (this.iopsLimit.min != null && this.iopsLimit.max != null) {
         return `${this.iopsLimit.min} ~ ${this.iopsLimit.max}`
+      }
+      return ''
+    },
+    throughputTooltip () {
+      if (this.throughputLimit.min != null && this.throughputLimit.max != null) {
+        return `${this.throughputLimit.min} ~ ${this.throughputLimit.max} MiB/s`
       }
       return ''
     },
@@ -549,7 +577,23 @@ export default {
           }
         }
       }
+      if (this.isGoogle) {
+        ret = getGoogleDiskIopsLimit(this.storageItem?.value, this.form.fd.size) || { min: 0, max: 0 }
+      }
       return ret
+    },
+    throughputLimit () {
+      if (this.isAws && this.storageItem?.value?.startsWith('gp3')) {
+        return { min: 125, max: 1000 }
+      }
+      if (this.isGoogle) {
+        return getGoogleDiskThroughputLimit(
+          this.storageItem?.value,
+          this.form.fd.size,
+          this.form.fd.iops,
+        ) || { min: 0, max: 0 }
+      }
+      return { min: 125, max: 1000 }
     },
   },
   watch: {
