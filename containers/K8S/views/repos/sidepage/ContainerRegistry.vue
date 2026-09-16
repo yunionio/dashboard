@@ -70,7 +70,7 @@ export default {
   methods: {
     async fetchTagByName (name) {
       try {
-        const result = await new this.$Manager('container_registries')
+        const result = await new this.$Manager('container_registries', 'v1')
           .getSpecific({
             id: this.resId,
             spec: 'image-tags',
@@ -87,7 +87,7 @@ export default {
     async fetchData () {
       const response = { data: {} }
       try {
-        const result = await new this.$Manager('container_registries')
+        const result = await new this.$Manager('container_registries', 'v1')
           .getSpecific({
             id: this.resId,
             spec: 'images',

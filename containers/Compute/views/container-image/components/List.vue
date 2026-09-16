@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -13,11 +14,11 @@ import {
   getNameFilter,
   getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
-import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
-  name: 'K8sReposList',
+  name: 'ContainerImageList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
@@ -26,17 +27,20 @@ export default {
       default: () => ({}),
     },
   },
-  data  () {
+  data () {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'container_registries',
+        resource: 'container_images',
         apiVersion: 'v1',
-        getParams: this.getParams,
+        getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
-          url: {
-            label: this.$t('k8s.repo.url'),
+          image_name: {
+            label: this.$t('compute.repo.image.name'),
+          },
+          image_label: {
+            label: this.$t('compute.repo.image.tag'),
           },
           created_at: getCreatedAtFilter(),
         },
@@ -44,9 +48,10 @@ export default {
       groupActions: [
         {
           label: this.$t('common.create'),
-          permission: 'container_registries_create',
+          permission: 'container_images_create',
           action: () => {
-            this.createDialog('ReposCreateDialog', {
+            this.createDialog('ContainerImageCreateDialog', {
+              onManager: this.onManager,
               refresh: this.refresh,
             })
           },
@@ -59,14 +64,14 @@ export default {
         },
         {
           label: this.$t('table.action.delete'),
-          permission: 'container_registries_delete',
+          permission: 'container_images_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
               title: this.$t('table.action.delete'),
-              name: this.$t('dictionary.container_registry'),
+              name: this.$t('dictionary.container_image'),
               onManager: this.onManager,
             })
           },
@@ -82,22 +87,33 @@ export default {
       ],
     }
   },
+  computed: {
+    exportDataOptions () {
+      return {
+        downloadType: 'local',
+        title: this.$t('dictionary.container_image'),
+        items: [
+          { label: 'ID', key: 'id' },
+          ...this.columns,
+        ],
+      }
+    },
+  },
   created () {
     this.initSidePageTab('detail')
     this.list.fetchData()
   },
   methods: {
     getParam () {
-      const ret = {
+      return {
         ...this.getParams,
         details: true,
       }
-      return ret
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8sReposSidePage', {
+      this.sidePageTriggerHandle(this, 'ContainerImageSidePage', {
         id: row.id,
-        resource: 'container_registries',
+        resource: 'container_images',
         apiVersion: 'v1',
         getParams: this.getParam,
       }, {

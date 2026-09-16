@@ -761,6 +761,14 @@ export const createVmDecorators = (initData = {}) => {
       imageCredentialId: i => [
         `imageCredentialIds[${i}]`,
       ],
+      containerImageId: i => [
+        `containerImageIds[${i}]`,
+        {
+          rules: [
+            { required: true, message: i18n.t('common.tips.select', [i18n.t('compute.repo.image.container_image')]) },
+          ],
+        },
+      ],
       image: i => [
         `containerimages[${i}]`,
         {
@@ -1414,6 +1422,7 @@ export class GenCreateData {
       const pciDevices = (this.fd.pciEnable && this.genPciDevices()) || []
       const image = this.fd.registryImages?.[k] || ''
       const credentialId = this.fd.imageCredentialIds?.[k] || ''
+      const containerImageId = this.fd.containerImageIds?.[k] || ''
 
       const spec = {
         name: this.fd.containerNames?.[k],
@@ -1436,6 +1445,17 @@ export class GenCreateData {
         }),
         envs: getEnvs(this.fd.containerEnvNames?.[k], this.fd.containerEnvValues?.[k]),
         volume_mounts: getVolumeMounts(this.fd.containerVolumeMountNames?.[k], this.fd.containerVolumeMountPaths?.[k]),
+      }
+      if (containerImageId) {
+        // region resolves image + credential from container_image_id
+        spec.container_image_id = containerImageId
+        delete spec.image
+        delete spec.image_credential_id
+      } else if (image && credentialId) {
+        spec.image_credential_id = credentialId
+        delete spec.container_image_id
+      } else {
+        delete spec.container_image_id
       }
       if (this.fd.containerEnableSysDiskOverlay?.[k]) {
         const overlayDiskSizes = this.fd.overlayDiskSizes?.[k]
@@ -1474,9 +1494,6 @@ export class GenCreateData {
             }
           }
         }
-      }
-      if (image && credentialId) {
-        spec.image_credential_id = credentialId
       }
       return spec
     })

@@ -444,5 +444,8 @@
   "k8s.repo.image.source": "画像ソース",
   "k8s.repo.image.custom": "カスタム URL",
   "k8s.repo.image.registry": "イメージリポジトリ",
+  "k8s.repo.image.container_image": "コンテナイメージ",
+  "k8s.repo.image.container_image.empty_tip": "利用可能なコンテナイメージがありません。先に作成してください。",
+  "k8s.repo.image.container_image.manage": "管理へ",
   "k8s.federated_kubernetes_resource": "多クラスタ-{0}"
 }
