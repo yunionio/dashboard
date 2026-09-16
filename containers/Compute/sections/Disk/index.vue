@@ -78,13 +78,13 @@
       <!-- throughput 创建时可设置，修改时禁用 -->
       <template v-if="has('throughput') && !disabled && isThroughputShow">
         <a-form-item>
-          <a-tooltip title="125 ~ 1000MiB/s" placement="top">
+          <a-tooltip :title="throughputTooltip" placement="top">
             <a-input-number
               v-if="showThroughput"
               v-decorator="decorator.throughput"
               :placeholder="$t('compute.throughput')"
-              :min="125"
-              :max="1000"
+              :min="throughputLimit.min"
+              :max="throughputLimit.max"
               :precision="0" />
           </a-tooltip>
         </a-form-item>
@@ -217,6 +217,10 @@ export default {
       type: Object,
       default: () => ({ min: 0 }),
     },
+    throughputLimit: {
+      type: Object,
+      default: () => ({ min: 125, max: 1000 }),
+    },
     isAutoResetShow: {
       type: Boolean,
       default: false,
@@ -257,8 +261,14 @@ export default {
       return this.$t('compute.text_137', [this.minSize, this.max])
     },
     iopsTooltip () {
-      if (this.iopsLimit.min && this.iopsLimit.max) {
+      if (this.iopsLimit.min != null && this.iopsLimit.max != null) {
         return `${this.iopsLimit.min} ~ ${this.iopsLimit.max}`
+      }
+      return ''
+    },
+    throughputTooltip () {
+      if (this.throughputLimit.min != null && this.throughputLimit.max != null) {
+        return `${this.throughputLimit.min} ~ ${this.throughputLimit.max} MiB/s`
       }
       return ''
     },
@@ -297,6 +307,21 @@ export default {
       handler (limit) {
         if (!this.showIops || !this.decorator?.iops || !this.form?.fc) return
         const key = this.decorator.iops[0]
+        const cur = Number(this.form.fc.getFieldValue(key))
+        if (!Number.isFinite(cur)) return
+        const min = Number(limit?.min)
+        const max = Number(limit?.max)
+        let next = cur
+        if (Number.isFinite(min) && next < min) next = min
+        if (Number.isFinite(max) && next > max) next = max
+        if (next !== cur) this.setDiskFormFields({ [key]: next })
+      },
+      deep: true,
+    },
+    throughputLimit: {
+      handler (limit) {
+        if (!this.showThroughput || !this.decorator?.throughput || !this.form?.fc) return
+        const key = this.decorator.throughput[0]
         const cur = Number(this.form.fc.getFieldValue(key))
         if (!Number.isFinite(cur)) return
         const min = Number(limit?.min)

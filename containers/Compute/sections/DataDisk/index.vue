@@ -28,6 +28,7 @@
           :defaultIops="item.iops"
           :defaultThroughput="item.throughput"
           :iopsLimit="iopsLimit[item.key]"
+          :throughputLimit="throughputLimit[item.key]"
           :isAutoResetShow="isAutoResetShow"
           :imageType="imageType"
           @snapshotChange="val => snapshotChange(item, val, i)"
@@ -53,6 +54,11 @@ import { STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { uuid, findAndUnshift, findAndPush } from '@/utils/utils'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
+import {
+  getGoogleDiskPerfElements,
+  getGoogleDiskIopsLimit,
+  getGoogleDiskThroughputLimit,
+} from '@/utils/common/googleDiskPerf'
 
 import createFormFieldDraftMixin from '@/mixins/createFormFieldDraft'
 import { pickFields } from '@/utils/createFormDraft'
@@ -214,6 +220,9 @@ export default {
     isAws () {
       return this.hypervisor === HYPERVISORS_MAP.aws.key
     },
+    isGoogle () {
+      return this.hypervisor === HYPERVISORS_MAP.google.key
+    },
     elements () {
       const ret = []
       if (this.forceElements) return this.forceElements
@@ -255,12 +264,17 @@ export default {
     },
     iopsLimit () {
       const value = {}
-      if (!this.isAws || this.isServertemplate) return value
+      if (this.isServertemplate) return value
+      if (!this.isAws && !this.isGoogle) return value
       this.dataDisks.map(item => {
         const type = item.diskType?.key
-        let ret = { min: 0 }
         const sizes = this.form.fd[this._fp('Sizes')] || {}
-        const size = sizes[item.key]
+        const size = sizes[item.key] ?? this.form.fd[this._fp('Sizes', item.key)]
+        if (this.isGoogle) {
+          value[item.key] = getGoogleDiskIopsLimit(type, size) || { min: 0, max: 0 }
+          return
+        }
+        let ret = { min: 0 }
         // gp3 iops 不能超过磁盘500倍，最大80000
         if (type === 'gp3') {
           ret = { min: 3000, max: 80000 }
@@ -283,6 +297,27 @@ export default {
           }
         }
         value[item.key] = ret
+      })
+      return value
+    },
+    throughputLimit () {
+      const value = {}
+      if (this.isServertemplate) return value
+      this.dataDisks.map(item => {
+        const type = item.diskType?.key
+        if (this.isAws && type === 'gp3') {
+          value[item.key] = { min: 125, max: 1000 }
+          return
+        }
+        if (this.isGoogle) {
+          const sizes = this.form.fd[this._fp('Sizes')] || {}
+          const size = sizes[item.key] ?? this.form.fd[this._fp('Sizes', item.key)]
+          const iops = this.form.fd[this._fp('Iops', item.key)] ??
+            _.get(this.form.fd, [this._fp('Iops'), item.key])
+          value[item.key] = getGoogleDiskThroughputLimit(type, size, iops) || { min: 0, max: 0 }
+          return
+        }
+        value[item.key] = { min: 125, max: 1000 }
       })
       return value
     },
@@ -801,7 +836,14 @@ export default {
     },
     getDiskElements (index) {
       if (this.advancedOnlyFirst && index > 0) return []
-      return this.elements
+      const ret = [...this.elements]
+      if (this.isGoogle && !this.isServertemplate) {
+        const typeKey = _.get(this.dataDisks, `[${index}].diskType.key`) || this.currentTypeObj(index)?.key
+        getGoogleDiskPerfElements(typeKey).forEach((el) => {
+          if (!ret.includes(el)) ret.push(el)
+        })
+      }
+      return ret
     },
     genDecorator (uid) {
       const ret = {}
