@@ -29,6 +29,10 @@ export default {
             <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{row.name}</side-page-trigger>
           )
         },
+        formRules: [
+          { required: true, message: this.$t('compute.text_210') },
+          { validator: this.$validate('imageName') },
+        ],
       }),
       getImageNameTableColumn(),
       getImageLabelTableColumn(),

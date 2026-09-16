@@ -144,7 +144,7 @@ export default {
         credential_id: data.credential_id || undefined,
       },
       rules: {
-        name: [{ required: true, validator: this.$validate('resourceName') }],
+        name: [{ required: true, validator: this.$validate('imageName') }],
         registry_id: [{
           validator: (rule, value, callback) => {
             if (this.source === 'registry' && !value) {
