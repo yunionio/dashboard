@@ -29,7 +29,7 @@
           :options="orgs"
           :filterable="true"
           :select-props="{
-            placeholder: $t('compute.bastionHost.bastion_host.placeholder'),
+            placeholder: $t('compute.bastionHost.bastion_org.placeholder'),
             loading: orgLoading
           }"
           @change="bastionOrgChangeHandle" />
@@ -60,7 +60,8 @@
             placeholder: $t('compute.bastionHost.privileged_account.placeholder'),
             allowClear: true,
             loading: accountLoading
-          }" />
+          }"
+          @change="bastionPrivilegedChangeHandle" />
       </a-form-item>
       <a-form-item class="mt-2" :label="$t('compute.bastionHost.account')">
         <base-select
@@ -80,10 +81,11 @@
           :options="domains"
           :filterable="true"
           :select-props="{
-            placeholder: $t('common.tips.select', [$t('compute.bastionHost.domain')]),
+            placeholder: $t('compute.bastionHost.domain.placeholder'),
             allowClear: true,
             loading: domainLoading
-            }" />
+            }"
+          @change="bastionDomainChangeHandle" />
       </a-form-item>
     </template>
   </div>
@@ -143,31 +145,43 @@ export default {
   },
   watch: {
     bastionHostEnable (v) {
-      if (v) this.$nextTick(() => this.tryRestoreBastionDraft())
+      if (v) this.$nextTick(() => this.tryRestoreBastionDraft({ includeHost: true }))
     },
     bastionHosts (list) {
-      if (!Array.isArray(list) || !list.length) return
-      this.$nextTick(() => this.tryRestoreBastionDraft())
+      this.$nextTick(() => {
+        this.pruneBastionFieldByOptions('bastion_host_id', list, { idKey: 'id' })
+        // 主机列表变化：允许回填主机 + 下游
+        if (Array.isArray(list) && list.length) this.tryRestoreBastionDraft({ includeHost: true })
+      })
     },
     orgs (list) {
-      if (!Array.isArray(list) || !list.length) return
-      this.$nextTick(() => this.tryRestoreBastionDraft())
+      this.$nextTick(() => {
+        this.pruneBastionFieldByOptions('bastion_org_id', list)
+        // 下游 opts：只回填下游，不动主机
+        if (Array.isArray(list) && list.length) this.tryRestoreBastionDraft({ includeHost: false })
+      })
     },
     nodes (list) {
-      if (!Array.isArray(list) || !list.length) return
-      this.$nextTick(() => this.tryRestoreBastionDraft())
+      this.$nextTick(() => {
+        this.pruneBastionFieldByOptions('nodes', list, { multiple: true })
+      })
     },
     privilegedAccounts (list) {
-      if (!Array.isArray(list) || !list.length) return
-      this.$nextTick(() => this.tryRestoreBastionDraft())
+      this.$nextTick(() => {
+        this.pruneBastionFieldByOptions('privileged_accounts', list)
+        if (Array.isArray(list) && list.length) this.tryRestoreBastionDraft({ includeHost: false })
+      })
     },
     accounts (list) {
-      if (!Array.isArray(list) || !list.length) return
-      this.$nextTick(() => this.tryRestoreBastionDraft())
+      this.$nextTick(() => {
+        this.pruneBastionFieldByOptions('accounts', list, { multiple: true })
+      })
     },
     domains (list) {
-      if (!Array.isArray(list) || !list.length) return
-      this.$nextTick(() => this.tryRestoreBastionDraft())
+      this.$nextTick(() => {
+        this.pruneBastionFieldByOptions('bastion_domain_id', list)
+        if (Array.isArray(list) && list.length) this.tryRestoreBastionDraft({ includeHost: false })
+      })
     },
   },
   created () {
@@ -175,14 +189,138 @@ export default {
     this._bastionDraftWriting = false
     this._fetchedOrgHostId = ''
     this._fetchedCascadeOrgId = ''
+    // 字段级 touched：下游手改不挡上游；上游手改可清下游再试回填
+    this._bastionFieldTouched = {
+      enable: false,
+      host: false,
+      org: false,
+      privileged: false,
+      domain: false,
+    }
     if (this.isFormDraftKeyWired() || (this.$appConfig.isPrivate && !this.$store.getters.isSysCE)) {
       this.fetchBastionHosts()
     }
   },
   mounted () {
-    this.$nextTick(() => this.tryRestoreBastionDraft())
+    this.$nextTick(() => this.tryRestoreBastionDraft({ includeHost: true }))
   },
   methods: {
+    resetBastionFieldTouched () {
+      this._bastionFieldTouched = {
+        enable: false,
+        host: false,
+        org: false,
+        privileged: false,
+        domain: false,
+      }
+    },
+    isBastionFieldTouched (field) {
+      return !!this._bastionFieldTouched?.[field]
+    },
+    markBastionFieldTouched (field) {
+      if (!this._bastionFieldTouched || !field) return
+      this._bastionFieldTouched[field] = true
+      // 同步页面级 touched，避免 mixin 整包 apply 把开关/结构再盖一遍
+      this.markFormFieldDraftTouched()
+    },
+    clearBastionDownstreamTouched (from) {
+      if (!this._bastionFieldTouched) return
+      if (from === 'host') {
+        this._bastionFieldTouched.org = false
+        this._bastionFieldTouched.privileged = false
+        this._bastionFieldTouched.domain = false
+        return
+      }
+      if (from === 'org') {
+        this._bastionFieldTouched.privileged = false
+        this._bastionFieldTouched.domain = false
+      }
+    },
+    sameBastionId (a, b) {
+      if (a == null || a === '' || b == null || b === '') return false
+      return String(a) === String(b)
+    },
+    getCurrentBastionHostId () {
+      return this.normalizeOptionId(
+        this.form?.fc?.getFieldValue?.('bastion_host_id') || this.currentBastionHostId,
+      )
+    },
+    getCurrentBastionOrgId () {
+      return this.normalizeOptionId(this.form?.fc?.getFieldValue?.('bastion_org_id'))
+    },
+    /**
+     * opts 为空或当前值不在 opts 中时清空/裁剪对应表单字段（含 nodes、accounts）
+     */
+    pruneBastionFieldByOptions (field, options, { idKey = 'key', multiple = false } = {}) {
+      if (!this.form?.fc || !field || this._bastionDraftWriting) return
+      const list = Array.isArray(options) ? options : []
+      const cur = this.form.fc.getFieldValue(field)
+      const emptyVal = multiple ? [] : undefined
+      const isEmptyCur = cur == null || cur === '' || (Array.isArray(cur) && !cur.length)
+      if (isEmptyCur) return
+
+      let nextVal
+      let needClear = false
+
+      if (!list.length) {
+        nextVal = emptyVal
+        needClear = true
+      } else if (multiple) {
+        const raw = Array.isArray(cur) ? cur : [cur]
+        const kept = []
+        raw.forEach((item) => {
+          const id = this.pickValidOptionId(list, item, idKey)
+          if (id !== undefined) kept.push(id)
+        })
+        if (kept.length === raw.length) {
+          const same = kept.every((id, i) => this.sameBastionId(id, this.normalizeOptionId(raw[i])))
+          if (same) return
+        }
+        nextVal = kept.length ? kept : emptyVal
+        needClear = true
+      } else if (this.pickValidOptionId(list, cur, idKey) === undefined) {
+        nextVal = emptyVal
+        needClear = true
+      } else {
+        return
+      }
+
+      if (!needClear) return
+
+      const patch = { [field]: nextVal }
+      // 主机/组织失效时连带清下游，避免节点等残留
+      if (field === 'bastion_host_id') {
+        Object.assign(patch, {
+          bastion_org_id: undefined,
+          privileged_accounts: undefined,
+          bastion_domain_id: undefined,
+          nodes: [],
+          accounts: [],
+        })
+        this.currentBastionHostId = ''
+      } else if (field === 'bastion_org_id') {
+        Object.assign(patch, {
+          privileged_accounts: undefined,
+          bastion_domain_id: undefined,
+          nodes: [],
+          accounts: [],
+        })
+      }
+      this.clearBastionFormFields(patch)
+    },
+    /** 允许清空 nodes / accounts（setBastionFields 故意不写这两项） */
+    clearBastionFormFields (values) {
+      if (!this.form?.fc || !values) return
+      // setFieldsValue 会忽略 undefined；用 setFields 才能真正清空，从而露出 placeholder
+      const fields = {}
+      Object.keys(values).forEach((key) => {
+        const val = values[key]
+        this.ensureFieldDecorator(key, val)
+        fields[key] = { value: val }
+      })
+      this.form.fc.setFields(fields)
+      this.syncFormFieldValuesToFd(values)
+    },
     normalizeBastionDraft (data) {
       if (!data || typeof data !== 'object') return null
       const next = { ...data }
@@ -224,77 +362,102 @@ export default {
       // 跨 tab：不自动开开关；用户打开后再回填选项
       if (this.isFormFieldDraftFromLocal()) {
         if (!this.bastionHostEnable && !this.inDialog) return
-        this.tryRestoreBastionSelections(this.normalizeBastionDraft(draft))
+        this.tryRestoreBastionSelections(this.normalizeBastionDraft(draft), { includeHost: true })
         return
       }
+      // 用户关过开关：不再强制打开
+      if (this.isBastionFieldTouched('enable') && !this.bastionHostEnable && !this.inDialog) return
       this.bastionHostEnable = true
       this.setBastionFields({ bastion_host_enable: true })
-      this.$nextTick(() => this.tryRestoreBastionSelections(this.normalizeBastionDraft(draft)))
+      this.$nextTick(() => this.tryRestoreBastionSelections(this.normalizeBastionDraft(draft), { includeHost: true }))
     },
-    /** opts / 开关变化时尝试回填 */
-    tryRestoreBastionDraft () {
+    /**
+     * @param {{ includeHost?: boolean }} [options]
+     * includeHost=false：下游 opts 变化时只回填下游，禁止写主机
+     */
+    tryRestoreBastionDraft (options = {}) {
       const draft = this.readBastionDraft()
       if (!draft) return
       if (this.isFormFieldDraftFromLocal() && !this.bastionHostEnable && !this.inDialog) return
+      // 用户关过开关：列表 watch 不可再自动打开
       if (!this.bastionHostEnable && !this.inDialog) {
+        if (this.isBastionFieldTouched('enable')) return
         this.bastionHostEnable = true
         this.setBastionFields({ bastion_host_enable: true })
       }
-      this.tryRestoreBastionSelections(draft)
+      this.tryRestoreBastionSelections(draft, options)
     },
     /**
-     * 按当前已就绪的 opts 尽量回填；缺列表则拉级联，下次 watch 再试
-     * 回填：主机 / 组织 / 特权用户 / 网域；不回填：nodes、accounts、port
+     * 字段级回填：
+     * - includeHost：仅整包/主机列表场景写主机；下游 opts 变化不写上游
+     * - 组织：在当前主机 orgs 里 try 草稿（命中才写）
+     * - 特权/网域：当前组织与草稿组织一致时再写
      */
-    tryRestoreBastionSelections (draft) {
+    tryRestoreBastionSelections (draft, options = {}) {
       if (!draft || !this.form?.fc) return
+      const includeHost = options.includeHost !== false
+
       if (!this.bastionHosts.length) {
         if (!this.bastionHostLoading) this.fetchBastionHosts()
         return
       }
-      const hostId = this.pickValidOptionId(this.bastionHosts, draft.bastion_host_id, 'id')
-      if (!hostId) return
 
       const fc = this.form.fc
-      this.currentBastionHostId = hostId
-      // 仅在值变化时写主机/组织，避免反复 set 触发 change → 清空账号列表
-      if (String(fc.getFieldValue('bastion_host_id') || '') !== String(hostId)) {
-        this.withBastionDraftWriting(() => {
-          this.setBastionFields({ bastion_host_id: hostId })
-        })
-      }
+      const draftHostId = this.pickValidOptionId(this.bastionHosts, draft.bastion_host_id, 'id')
 
-      if (!draft.bastion_org_id) return
-      if (!this.orgs.length) {
-        if (!this.orgLoading && this._fetchedOrgHostId !== hostId) {
-          this._fetchedOrgHostId = hostId
-          this.fetchOrgs(hostId)
+      // —— 主机（仅 includeHost 且未手改）——
+      if (includeHost && !this.isBastionFieldTouched('host') && draftHostId) {
+        this.currentBastionHostId = draftHostId
+        if (!this.sameBastionId(fc.getFieldValue('bastion_host_id'), draftHostId)) {
+          this.withBastionDraftWriting(() => {
+            this.setBastionFields({ bastion_host_id: draftHostId })
+          })
         }
-        return
-      }
-      const orgId = this.pickValidOptionId(this.orgs, draft.bastion_org_id)
-      if (!orgId) return
-      if (String(fc.getFieldValue('bastion_org_id') || '') !== String(orgId)) {
-        this.withBastionDraftWriting(() => {
-          this.setBastionFields({ bastion_org_id: orgId })
-        })
+      } else {
+        const curHost = this.getCurrentBastionHostId()
+        if (curHost) this.currentBastionHostId = curHost
       }
 
-      const needAccounts = !!draft.privileged_accounts
-      const needDomains = !!draft.bastion_domain_id
-      const needFetchCascade = (
-        (needAccounts && !this.privilegedAccounts.length && !this.accountLoading) ||
-        (needDomains && !this.domains.length && !this.domainLoading)
+      const currentHostId = this.getCurrentBastionHostId()
+      if (!currentHostId) return
+
+      // —— 组织：按当前主机 opts 尝试命中草稿（不因 host≠草稿主机直接放弃）——
+      this.ensureBastionOrgsLoaded(currentHostId)
+      if (!this.orgs.length) return
+
+      const draftOrgId = draft.bastion_org_id
+        ? this.pickValidOptionId(this.orgs, draft.bastion_org_id)
+        : undefined
+      if (!this.isBastionFieldTouched('org') && draftOrgId) {
+        if (!this.sameBastionId(fc.getFieldValue('bastion_org_id'), draftOrgId)) {
+          this.withBastionDraftWriting(() => {
+            this.setBastionFields({ bastion_org_id: draftOrgId })
+          })
+        }
+      }
+
+      const currentOrgId = this.getCurrentBastionOrgId() || (
+        !this.isBastionFieldTouched('org') && draftOrgId ? draftOrgId : undefined
       )
-      if (needFetchCascade && this._fetchedCascadeOrgId !== orgId) {
-        this._fetchedCascadeOrgId = orgId
-        // 组织变更后仍拉节点/账号列表供手选；仅特权用户、网域会回填
-        this.fetchNodes(orgId)
-        this.fetchAllAccounts(orgId)
-        this.fetchDomains(orgId)
-      }
+      if (!currentOrgId) return
 
+      this.ensureBastionCascadeLoaded(currentOrgId)
       this.writeBastionSelectionFields(draft)
+    },
+    ensureBastionOrgsLoaded (hostId) {
+      if (!hostId || this.orgLoading) return
+      // 仅成功拉取后写入 _fetchedOrgHostId；失败可重试
+      if (this._fetchedOrgHostId === hostId) return
+      this.fetchOrgs(hostId)
+    },
+    ensureBastionCascadeLoaded (orgId) {
+      if (!orgId || !this.currentBastionHostId) return
+      if (this.accountLoading || this.domainLoading || this.nodeLoading) return
+      if (this._fetchedCascadeOrgId === orgId) return
+      this._fetchedCascadeOrgId = orgId
+      this.fetchNodes(orgId)
+      this.fetchAllAccounts(orgId)
+      this.fetchDomains(orgId)
     },
     withBastionDraftWriting (fn) {
       this._bastionDraftWriting = true
@@ -308,15 +471,24 @@ export default {
     },
     writeBastionSelectionFields (draft) {
       if (!draft || !this.form?.fc) return
+      const draftOrgId = this.normalizeOptionId(draft.bastion_org_id)
+      const currentOrgId = this.getCurrentBastionOrgId()
+      // 当前组织与草稿组织不一致：用户在别的组织下，不盖特权/网域
+      if (draftOrgId && currentOrgId && !this.sameBastionId(currentOrgId, draftOrgId)) return
+      if (draftOrgId && !currentOrgId) return
+
       const values = {}
-      const pid = this.pickValidOptionId(this.privilegedAccounts, draft.privileged_accounts)
-      if (pid !== undefined) values.privileged_accounts = pid
-      const domainId = this.pickValidOptionId(this.domains, draft.bastion_domain_id)
-      if (domainId !== undefined) values.bastion_domain_id = domainId
+      if (!this.isBastionFieldTouched('privileged')) {
+        const pid = this.pickValidOptionId(this.privilegedAccounts, draft.privileged_accounts)
+        if (pid !== undefined) values.privileged_accounts = pid
+      }
+      if (!this.isBastionFieldTouched('domain')) {
+        const domainId = this.pickValidOptionId(this.domains, draft.bastion_domain_id)
+        if (domainId !== undefined) values.bastion_domain_id = domainId
+      }
       if (!Object.keys(values).length) return
       this.withBastionDraftWriting(() => {
         this.setBastionFields(values)
-        // BaseSelect / 表单项晚挂载时再补一次
         this.$nextTick(() => {
           this._bastionDraftWriting = true
           this.setBastionFields(values)
@@ -376,6 +548,7 @@ export default {
     },
     /** 工单回填入口（bastion_server.accounts = [特权, ...普通]） */
     async initData (data) {
+      this.resetBastionFieldTouched()
       const hasExplicitPriv = Object.prototype.hasOwnProperty.call(data || {}, 'privileged_accounts')
       const draft = this.normalizeBastionDraft({
         ...data,
@@ -392,10 +565,14 @@ export default {
       if (!this.bastionHosts.length) {
         await this.fetchBastionHosts()
       }
-      this.tryRestoreBastionSelections(draft)
+      this.tryRestoreBastionSelections(draft, { includeHost: true })
     },
     changeHandle (v) {
       this.bastionHostEnable = v
+      // 关闭开关视为手改，避免列表 watch 再自动打开
+      if (!v && !this._bastionDraftWriting) {
+        this.markBastionFieldTouched('enable')
+      }
       if (v && !this.bastionHosts.length && !this.bastionHostLoading) {
         this.fetchBastionHosts()
       }
@@ -403,14 +580,43 @@ export default {
     bastionHostChangeHandle (v) {
       this.currentBastionHostId = v
       if (this._bastionDraftWriting) return
+      // 手改主机：标记 host，清空下游 touched，便于按当前主机再试草稿子项
+      this.markBastionFieldTouched('host')
+      this.clearBastionDownstreamTouched('host')
       this._fetchedOrgHostId = ''
       this._fetchedCascadeOrgId = ''
+      this.withBastionDraftWriting(() => {
+        this.clearBastionFormFields({
+          bastion_org_id: undefined,
+          privileged_accounts: undefined,
+          bastion_domain_id: undefined,
+          nodes: [],
+          accounts: [],
+        })
+      })
+      this.orgs = []
+      this.nodes = []
+      this.accounts = []
+      this.privilegedAccounts = []
+      this.domains = []
       this.fetchOrgs(v)
     },
     bastionOrgChangeHandle (v) {
       if (this._bastionDraftWriting) return
+      // 手改组织：不碰 host touched；清特权/网域 touched 后可再试回填
+      this.markBastionFieldTouched('org')
+      this.clearBastionDownstreamTouched('org')
       this._fetchedCascadeOrgId = ''
+      this.withBastionDraftWriting(() => {
+        this.clearBastionFormFields({
+          privileged_accounts: undefined,
+          bastion_domain_id: undefined,
+          nodes: [],
+          accounts: [],
+        })
+      })
       if (this.currentBastionHostId) {
+        this._fetchedCascadeOrgId = v
         this.fetchNodes(v)
         this.fetchAllAccounts(v)
         this.fetchDomains(v)
@@ -421,6 +627,14 @@ export default {
         this.domains = []
       }
     },
+    bastionPrivilegedChangeHandle () {
+      if (this._bastionDraftWriting) return
+      this.markBastionFieldTouched('privileged')
+    },
+    bastionDomainChangeHandle () {
+      if (this._bastionDraftWriting) return
+      this.markBastionFieldTouched('domain')
+    },
     async fetchOrgs (bastionHostId) {
       try {
         this.orgLoading = true
@@ -429,7 +643,10 @@ export default {
           .getSpecific({ id: bastionHostId, spec: 'bastion-orgs' })
         // BaseSelect 默认 idKey=id / nameKey=name
         this.orgs = orgs.map(o => ({ id: o.id, name: o.name, key: o.id, label: o.name }))
+        this._fetchedOrgHostId = bastionHostId
       } catch (error) {
+        // 失败不记成功标记，便于后续 ensureBastionOrgsLoaded 重试
+        if (this._fetchedOrgHostId === bastionHostId) this._fetchedOrgHostId = ''
         throw error
       } finally {
         this.orgLoading = false
@@ -471,10 +688,10 @@ export default {
         this.accounts = account_templates.filter(o => !o.privileged).map(o => ({ id: o.id, name: o.name, key: o.id, label: o.name }))
         this.privilegedAccounts = account_templates.filter(o => o.privileged).map(o => ({ id: o.id, name: o.name, key: o.id, label: o.name }))
       } catch (error) {
+        if (this._fetchedCascadeOrgId === bastionOrgId) this._fetchedCascadeOrgId = ''
         throw error
       } finally {
         this.accountLoading = false
-        // 列表就绪后立刻补写特权/普通账号（不等 watch，避免被其它 set 冲掉）
         const draft = this.readBastionDraft()
         if (draft) this.writeBastionSelectionFields(draft)
       }
@@ -487,6 +704,7 @@ export default {
           .getSpecific({ id: this.currentBastionHostId, spec: 'bastion-domains', params: { bastion_org_id: bastionOrgId } })
         this.domains = domains.map(o => ({ id: o.id, name: o.name, key: o.id, label: o.name }))
       } catch (error) {
+        if (this._fetchedCascadeOrgId === bastionOrgId) this._fetchedCascadeOrgId = ''
         throw error
       } finally {
         this.domainLoading = false
