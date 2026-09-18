@@ -72,13 +72,13 @@ export function resolveAgentAccessFieldValue (valueKey, {
   }
 }
 
-/** Provider keys blocked from Anthropic Messages routing (matches backend registry). */
+/** Provider keys blocked from Anthropic Messages routing (matches backend nativeMessagesAdapterProviderKeys). */
 export const AIPROXY_ANTHROPIC_BLOCKED_PROVIDER_KEYS = new Set([
   'gemini',
-  // 'cohere', // uncommon
-  'baidu',
-  'aliyun',
-  'vllm',
+  // 'cohere', // uncommon — backend commented out
+  // 'baidu', // uncommon — backend commented out
+  // 'aliyun', // uncommon — backend commented out
+  // vllm / ollama / sglang use Anthropic→OpenAI translation and are supported
 ])
 
 export function supportsAnthropicMessagesRoute (providerKey, providerConfig) {
