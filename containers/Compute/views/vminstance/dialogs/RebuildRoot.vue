@@ -267,6 +267,11 @@ export default {
         order_by: 'ref_count',
         order: 'desc',
         zone: this.params.data[0].zone_id,
+        // 与 image() 对齐，避免误走 cachedimages 时漏掉架构过滤
+        os_arch: HOST_CPU_ARCHS.x86.key,
+      }
+      if (this.osArch === HOST_CPU_ARCHS.arm.capabilityKey) {
+        params.os_arch = HOST_CPU_ARCHS.arm.key
       }
       if (this.hypervisor === HYPERVISORS_MAP.esxi.key) {
         params.image_type = 'system'
