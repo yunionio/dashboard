@@ -168,33 +168,58 @@ export default {
   },
   watch: {
     hypervisor () {
-      const imageType = this.decorator.imageType[1].initialValue || this.mirrorTypeOptions[0].key
-      this.imageType = imageType
-      this.form.fc.setFieldsValue({
-        [this.decorator.imageType[0]]: imageType,
-      })
+      const prefer = this.decorator.imageType[1].initialValue || this.mirrorTypeOptions[0]?.key
+      this.applyImageTypeValue(prefer)
     },
     'form.fd.image.key': {
       handler () {
-        const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
-        const { imageType = lastSelectedImageInfo.imageType } = this.$route.query
-        if (this.isFirstLoad && imageType) {
-          setTimeout(() => {
-            this.form.fc.setFieldsValue({ imageType })
-          }, 0)
-          this.imageType = imageType
+        if (!this.isFirstLoad) return
+        // 重装等 edit 场景：禁止用 storage 里跨云的 imageType（如 public）覆盖当前页默认值
+        // 否则会出现：类型单选空白 + 误走 cachedimages 且无 os_arch
+        let prefer
+        if (this.edit) {
+          prefer = this.decorator.imageType?.[1]?.initialValue
+        } else {
+          const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
+          const { imageType = lastSelectedImageInfo.imageType } = this.$route.query || {}
+          prefer = imageType || this.decorator.imageType?.[1]?.initialValue
         }
+        if (!prefer && !this.edit) return
+        this.$nextTick(() => {
+          this.applyImageTypeValue(prefer)
+        })
       },
       immediate: true,
     },
   },
   methods: {
+    /** 仅采用当前可见且未禁用的镜像类型，避免 storage/query 污染 */
+    pickValidImageType (prefer) {
+      const opts = this.mirrorTypeOptions || []
+      const availableKeys = opts.filter(o => o && !o.disabled).map(o => o.key)
+      if (prefer && availableKeys.includes(prefer)) return prefer
+      const initial = this.decorator.imageType?.[1]?.initialValue
+      if (initial && availableKeys.includes(initial)) return initial
+      return availableKeys[0]
+    },
+    applyImageTypeValue (prefer) {
+      const next = this.pickValidImageType(prefer)
+      if (!next) return
+      this.imageType = next
+      if (this.form?.fc) {
+        this.form.fc.setFieldsValue({
+          [this.decorator.imageType[0]]: next,
+        })
+      }
+    },
     imageInput (image) {
       this.$emit('change', image)
     },
     change (e) {
       this.isFirstLoad = false
       this.imageType = e.target.value
+      const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
+      storage.set('oc_selected_image', { ...lastSelectedImageInfo, imageType: e.target.value })
       this.$emit('update:imageType', e.target.value)
     },
     updateImageMsg (...ret) {
@@ -204,11 +229,19 @@ export default {
       if (image?.properties) {
         let os_distribution = image.properties.os_distribution
         const os_type = image.properties.os_type
+        // 同步当前 imageType，避免只保留旧的跨场景类型（如 public）
+        const payload = {
+          ...lastSelectedImageInfo,
+          imageType: this.imageType,
+          imageId: image.id,
+        }
         if (os_distribution) {
           os_distribution = os_distribution.includes('Windows') ? 'Windows' : os_distribution
-          storage.set('oc_selected_image', { ...lastSelectedImageInfo, imageOs: os_distribution, imageId: image.id })
+          payload.imageOs = os_distribution
+          storage.set('oc_selected_image', payload)
         } else if (os_type) {
-          storage.set('oc_selected_image', { ...lastSelectedImageInfo, imageOs: os_type, imageId: image.id })
+          payload.imageOs = os_type
+          storage.set('oc_selected_image', payload)
         }
       }
       this.$emit('updateImageMsg', ...ret)
