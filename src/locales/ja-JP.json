@@ -180,6 +180,8 @@
       "start_rescue_failed": "緊急モードへの移行に失敗しました",
       "stop_rescue_failed": "緊急モードの終了に失敗しました",
       "qga_set_network": "QGA 構成ネットワーク カード",
+      "set_portmapping": "ポートマッピングを設定中",
+      "set_portmapping_fail": "ポートマッピングの設定に失敗しました",
       "creating_container": "作成中",
       "create_container_failed": "作成に失敗しました",
       "delete_container_failed": "削除に失敗しました",
