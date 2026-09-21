@@ -615,6 +615,8 @@ export default {
       if (this.isInstallOperationSystem) {
         return 'vpcs'
       }
+      // 区域未选时不拼空 id；有值后 OcSelect watch resource 再请求
+      if (!this.cloudregion) return ''
       return `cloudregions/${this.cloudregion}/vpcs`
     },
     scopeParams () {
@@ -958,6 +960,15 @@ export default {
     vpcResourceMapper (list) {
       return list.filter(val => val.id === 'default')
     },
+    // CloudregionZone 程序化 setFieldsValue 不走 onValuesChange，用 update 事件同步
+    onCloudregionUpdate (item) {
+      this.cloudregion = item?.id || ''
+    },
+    onZoneUpdate (item) {
+      const zoneId = item?.id || ''
+      this.zone = zoneId
+      if (zoneId) this.capability(zoneId)
+    },
     setSelectedImage ({ imageMsg }) {
       this.selectedImage = imageMsg
     },
@@ -1044,6 +1055,7 @@ export default {
       })
     },
     capability (v, isIso = false) { // 可用区查询
+      if (!v) return // 避免 zones//capability
       const data = {
         show_emulated: true,
         resource_type: this.resourceType,
