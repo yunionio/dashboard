@@ -7,7 +7,7 @@
       </a-tooltip>
     </a-form-item>
     <template v-if="form.fd.health_check">
-      <advance-config-block>
+      <a-divider orientation="left">{{$t('network.text_94')}}</a-divider>
       <a-form-item :label="$t('network.text_400')">
         <a-radio-group v-decorator="decorators.health_check_type" :disabled="isUpdate">
           <a-radio-button v-for="item in healthCheckTypeOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
@@ -31,7 +31,6 @@
       <a-form-item :label="$t('network.text_413')">
         <a-input v-decorator="decorators.health_check_fall" :addonAfter="$t('network.text_411')" :placeholder="$t('network.text_412')" />
       </a-form-item>
-      </advance-config-block>
     </template>
   </a-form>
 </template>
