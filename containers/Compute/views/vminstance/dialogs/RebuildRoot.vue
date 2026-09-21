@@ -152,7 +152,10 @@ export default {
     },
     osArch () {
       const { instance_type = '', os_arch } = this.params.data[0]
-      if (instance_type.startsWith('k') || os_arch === HOST_CPU_ARCHS.arm.capabilityKey) {
+      // 兼容后端返回 aarch64 / arm
+      const isArm = os_arch === HOST_CPU_ARCHS.arm.capabilityKey ||
+        os_arch === HOST_CPU_ARCHS.arm.key
+      if (instance_type.startsWith('k') || isArm) {
         return HOST_CPU_ARCHS.arm.capabilityKey
       }
       return ''
