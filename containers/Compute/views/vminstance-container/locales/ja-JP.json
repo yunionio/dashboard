@@ -69,7 +69,7 @@
   "compute.repo.value": "値",
   "compute.repo.example": "例: {0}",
   "compute.repo.port_mapping": "ポート マッピング",
-  "compute.repo.container_port": "コンテナ ポート",
+  "compute.repo.container_port": "内部ポート",
   "compute.repo.host_port": "ホスト ポート",
   "compute.repo.mount_point.check_content": "マウント ポイントを / にすることはできません",
   "compute.repo.mount_point.check_start": "マウント ポイントは / で始まります",

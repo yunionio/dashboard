@@ -50,13 +50,37 @@ export function resolveDraftNetworkType (initData) {
 }
 
 /**
+ * 端口映射（Port Mapping）：优先 extraData.port_mappings，其次第一块网卡的 port_mappings
+ * @param {object} initData
+ * @returns {Array}
+ */
+export function resolveDraftPortMappings (initData) {
+  if (!initData || typeof initData !== 'object') return []
+  if (Array.isArray(initData.extraData?.port_mappings) && initData.extraData.port_mappings.length) {
+    return initData.extraData.port_mappings
+  }
+  const nets = initData.nets || initData.extraData?.nets
+  if (Array.isArray(nets)) {
+    for (let i = 0; i < nets.length; i++) {
+      const n = nets[i]
+      if (n && Array.isArray(n.port_mappings) && n.port_mappings.length) {
+        return n.port_mappings
+      }
+    }
+  }
+  return []
+}
+
+/**
  * 工单 initData 是否含高级区字段（仅用于跳过空回填，与 UI 展开无关）
  * @param {object} initData
  * @returns {boolean}
  */
 export function hasAdvanceConfigInitFields (initData) {
   if (!initData || typeof initData !== 'object') return false
+  const hasPortMappings = resolveDraftPortMappings(initData).length > 0
   return !!(
+    hasPortMappings ||
     initData.hostname ||
     initData.hostName ||
     initData.eip ||

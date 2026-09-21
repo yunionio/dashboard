@@ -69,7 +69,7 @@
   "compute.repo.value": "value",
   "compute.repo.example": "Example: {0}",
   "compute.repo.port_mapping": "Port Mapping",
-  "compute.repo.container_port": "Container port",
+  "compute.repo.container_port": "Internal port",
   "compute.repo.host_port": "Host port",
   "compute.repo.mount_point.check_content": "The mount point cannot be /",
   "compute.repo.mount_point.check_start": "Mount point starts with /",
