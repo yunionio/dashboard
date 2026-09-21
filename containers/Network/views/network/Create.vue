@@ -119,7 +119,8 @@
           <tag
             v-decorator="decorators.__meta__" />
         </a-form-item>
-        <advance-config-block v-if="isShowAdvanceOptions">
+        <a-collapse :bordered="false" v-if="isShowAdvanceOptions">
+          <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
             <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="hasBgpType">
               <a-input v-decorator="decorators.bgp_type" />
               <span slot="extra">{{$t('network.text_744')}}</span>
@@ -153,7 +154,8 @@
             <a-form-item label="dhcp_relay" v-if="show">
               <a-input class="w-50" v-decorator="decorators.guest_dhcp" :placeholder="$t('validator.IPs')" />
             </a-form-item>
-        </advance-config-block>
+          </a-collapse-panel>
+        </a-collapse>
         <page-footer>
           <template v-slot:right>
             <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting">{{$t('network.text_30')}}</a-button>
