@@ -35,7 +35,8 @@
               :parser="v => `${ isNaN(parseInt(v)) ? 1 : parseInt(v) }`" />
           </a-tooltip>
         </a-form-item>
-        <advance-config-block>
+        <a-collapse :bordered="false">
+         <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
             <a-collapse @change="handleCollapseChange">
               <a-collapse-panel key="telegraf" :header="$t('network.text_97')" forceRender>
                 <a-form-item :label="$t('network.text_98')" :extra="$t('network.text_99')">
@@ -87,7 +88,8 @@
                 </a-form-item>
               </a-collapse-panel>
             </a-collapse>
-        </advance-config-block>
+         </a-collapse-panel>
+        </a-collapse>
       </a-form>
     </page-body>
     <page-footer>
