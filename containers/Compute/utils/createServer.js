@@ -1073,6 +1073,19 @@ export const createVmDecorators = (type, initData = {}) => {
         initialValue: initData.hostname || '',
       },
     ],
+    portMapping: {
+      key: i => [
+        `containerPorts[${i}]`,
+        {
+          rules: [
+            { required: true, message: i18n.t('common.tips.input', [i18n.t('compute.repo.container_port')]) },
+          ],
+        },
+      ],
+      value: i => [
+        `hostPorts[${i}]`,
+      ],
+    },
     encrypt_keys: {
       encryptEnable: [
         'encryptEnable',
@@ -1184,9 +1197,9 @@ export const createVmDecorators = (type, initData = {}) => {
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'kickstart', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys', 'custom_data_type', 'deploy_telegraf', 'pci', 'bastion_host', 'is_daemon'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'kickstart', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'portMapping', 'encrypt_keys', 'custom_data_type', 'deploy_telegraf', 'pci', 'bastion_host', 'is_daemon'],
   public: ['domain', 'project', 'name', 'description', 'count', 'enableWorldMap', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider', 'hostName', 'custom_data_type', 'bastion_host'],
-  private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName', 'custom_data_type', 'bastion_host', 'pci'],
+  private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName', 'portMapping', 'custom_data_type', 'bastion_host', 'pci'],
 }
 
 export class Decorator {
@@ -1418,6 +1431,29 @@ export class GenCreateData {
   }
 
   /**
+   * 组装端口映射数据（Port Mapping）
+   * 字段形如 containerPorts[uuid] / hostPorts[uuid]，来自 Labels 组件
+   *
+   * @returns { Array }
+   * @memberof GenCreateData
+   */
+  getPortMappings () {
+    const port_mappings = []
+    if (this.fd.containerPorts) {
+      for (const k in this.fd.containerPorts) {
+        const port = this.fd.containerPorts[k]
+        if (port == null || port === '') continue
+        const pm = { port }
+        if (this.fd.hostPorts && this.fd.hostPorts[k] != null && this.fd.hostPorts[k] !== '') {
+          pm.host_port = this.fd.hostPorts[k]
+        }
+        port_mappings.push(pm)
+      }
+    }
+    return port_mappings
+  }
+
+  /**
    * 组装所有网络数据
    *
    * @returns { Array }
@@ -1426,6 +1462,7 @@ export class GenCreateData {
   genNetworks () {
     let ret = [{ exit: false }]
     const extraRet = []
+    const portMappings = this.getPortMappings()
     // 指定 IP 子网
     if (this.fd.networkType === NETWORK_OPTIONS_MAP.manual.key) {
       ret = []
@@ -1492,6 +1529,10 @@ export class GenCreateData {
             obj.secgroups = secgroup
           }
         }
+        // 端口映射只挂在第一块网卡上
+        if (!ret.length && portMappings.length > 0) {
+          obj.port_mappings = portMappings
+        }
         ret.push(obj)
         extraRet.push({ ...obj, ...extraObj })
       }, this.fd.networks)
@@ -1514,11 +1555,24 @@ export class GenCreateData {
             obj.sriov_device = { model: device }
           }
         }
-        ret.push({
+        const netObj = {
           schedtags: [obj],
-        })
-        extraRet.push({ schedtags: [{ ...obj, ...extraObj }] })
+        }
+        const extraNetObj = { schedtags: [{ ...obj, ...extraObj }] }
+        // 端口映射只挂在第一块网卡上
+        if (!ret.length && portMappings.length > 0) {
+          netObj.port_mappings = portMappings
+          extraNetObj.port_mappings = portMappings
+        }
+        ret.push(netObj)
+        extraRet.push(extraNetObj)
       }, this.fd.networkSchedtags)
+    }
+    // 自动调度：默认 nets 也要带上端口映射
+    if (portMappings.length > 0 &&
+      this.fd.networkType !== NETWORK_OPTIONS_MAP.manual.key &&
+      this.fd.networkType !== NETWORK_OPTIONS_MAP.schedtag.key) {
+      ret[0].port_mappings = portMappings
     }
     return { networks: ret, extraNetworks: extraRet }
   }

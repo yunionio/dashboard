@@ -12,6 +12,7 @@ import { Decorator, GenCreateData, resolveInitPreferZone } from '@Compute/utils/
 import {
   resolveDraftNetworkType,
   resolveDraftLoginType,
+  resolveDraftPortMappings,
   normalizeDraftUserData,
   hasAdvanceConfigInitFields,
 } from '@Compute/utils/vminstanceCreateDraft'
@@ -46,6 +47,7 @@ import { deleteInvalid, uuid } from '@/utils/utils'
 import { diskSupportTypeMedium } from '@/utils/common/hypervisor'
 import { hasSetupKey, isLicense2 } from '@/utils/auth'
 import createFormDraftMixin from '@/mixins/createFormDraft'
+import Labels from '@Compute/sections/Labels'
 import Tag from '../components/Tag'
 import SystemDisk from '../components/SystemDisk'
 import Servertemplate from '../components/Servertemplate'
@@ -95,6 +97,7 @@ export default {
     pci,
     CustomData,
     BastionHost,
+    Labels,
   },
   mixins: [workflowMixin, createFormDraftMixin],
   props: {
@@ -382,6 +385,22 @@ export default {
       if (init.schedtags?.length) return init.schedtags
       if (init.extraData?.schedtags?.length) return init.extraData.schedtags
       return []
+    },
+    /** 仅工单：端口映射 */
+    workflowInitPortMappings () {
+      if (!this.isFormBackfill) return []
+      return resolveDraftPortMappings(this.effectiveInitFormData)
+    },
+    /** 端口映射：仅 kvm / pod 支持（普通创建页的可选 hypervisor 已过滤 pod） */
+    showPortMapping () {
+      const hypervisor = this.form.fd.hypervisor
+      return hypervisor === HYPERVISORS_MAP.kvm.key || hypervisor === HYPERVISORS_MAP.pod.key
+    },
+    portMappingDisableConf () {
+      return {
+        tooltip: '',
+        disabled: false,
+      }
     },
     /** 有网络控件草稿时禁止 capability 刷新拆掉 NetworkConfig */
     ignoreAutoNetworkTypeForDraft () {
@@ -1359,6 +1378,18 @@ export default {
       if (initData.bastion_server && this.$refs.bastionHostRef) {
         this.$refs.bastionHostRef.initData(initData.bastion_server)
       }
+
+      // 端口映射（Labels）：优先靠 init-pairs；再兜底调 initData
+      const portMappings = resolveDraftPortMappings(initData)
+      if (portMappings.length) {
+        const applyPortMappings = () => {
+          const ref = this.$refs.labelRef
+          if (ref?.initData) ref.initData(portMappings)
+        }
+        applyPortMappings()
+        setTimeout(applyPortMappings, 500)
+        setTimeout(applyPortMappings, 1500)
+      }
     },
     /**
      * 回填指定 IP 子网 / 调度标签网络
@@ -1887,6 +1918,15 @@ export default {
       }, newField)
       if (changeKeys.some(val => val.includes('dataDiskSizes'))) { // 动态赋值默认值的表单需要单独处理
         this.$set(this.form.fd, 'dataDiskSizes', formValue.dataDiskSizes)
+      }
+      // 端口映射：字段名是 containerPorts[uuid]，需从 getFieldsValue 取嵌套对象写入 fd
+      if (changeKeys.some(val => val.includes('containerPorts') || val.includes('hostPorts'))) {
+        if (formValue.containerPorts) {
+          this.$set(this.form.fd, 'containerPorts', formValue.containerPorts)
+        }
+        if (formValue.hostPorts) {
+          this.$set(this.form.fd, 'hostPorts', formValue.hostPorts)
+        }
       }
     },
     /** setFieldsValue 后同步 fd（程序化赋值不走 onValuesChange） */

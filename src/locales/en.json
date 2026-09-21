@@ -180,6 +180,8 @@
       "start_rescue_failed": "Enter emergency mode failed",
       "stop_rescue_failed": "Exiting emergency mode failed",
       "qga_set_network": "QGA configuration network card",
+      "set_portmapping": "Setting Port Mappings",
+      "set_portmapping_fail": "Set Port Mappings Failed",
       "creating_container": "Creating",
       "create_container_failed": "Creation failed",
       "delete_container_failed": "Delete container failed",

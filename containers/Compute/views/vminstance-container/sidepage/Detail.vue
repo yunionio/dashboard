@@ -20,6 +20,7 @@ import {
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { formatCpuNumaPin } from '@Compute/views/vminstance/utils'
 import { formatServerSecgroupText, getNetworkTags, renderNetworkTagNodes } from '@Compute/utils/secgroupDisplay'
+import { getPortMappingDetailColumn } from '@Compute/utils/portMappingDisplay'
 import { getIsolatedDeviceDetailColumns } from '@Compute/views/gpu/utils/columns'
 import {
   getUserTagColumn,
@@ -267,36 +268,7 @@ export default {
                 return this.renderIsolatedDeviceRows(devices)
               },
             },
-            {
-              field: 'port_mapping',
-              title: this.$t('compute.repo.port_mapping'),
-              slots: {
-                default: ({ row }) => {
-                  const colors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
-                  let index = 0
-                  const ret = []
-                  if (row.nics) {
-                    row.nics.forEach(item => {
-                      if (item.port_mappings) {
-                        for (let i = 0; i < item.port_mappings.length; i++) {
-                          index++
-                          const color = colors[index % 7]
-                          const port_mapping = item.port_mappings[i]
-                          ret.push(
-                            <p>
-                              <a-tag color={color}>
-                                {this.$t('compute.repo.container_port')}: {item.ip_addr}:{port_mapping.port} = {this.$t('compute.repo.host_port')}: {row.host_access_ip}:{port_mapping.host_port} ({port_mapping.protocol.toUpperCase()})
-                              </a-tag>
-                            </p>,
-                          )
-                        }
-                      }
-                    })
-                  }
-                  return ret.length ? ret : '-'
-                },
-              },
-            },
+            getPortMappingDetailColumn(),
           ],
         },
         {

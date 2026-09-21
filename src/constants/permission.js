@@ -439,6 +439,7 @@ export const PERMISSION = {
   server_perform_instance_snapshot_reset: ['compute', 'servers', 'perform', 'instance-snapshot-reset'],
   server_perform_change_bandwidth: ['compute', 'servers', 'perform', 'change-bandwidth'],
   server_perform_change_ipaddr: ['compute', 'servers', 'perform', 'change-ipaddr'],
+  server_perform_set_port_mapping: ['compute', 'servers', 'perform', 'set-port-mapping'],
   server_perform_detachnetwork: ['compute', 'servers', 'perform', 'detachnetwork'],
   server_perform_attachnetwork: ['compute', 'servers', 'perform', 'attachnetwork'],
   server_perform_detach_scaling_group: ['compute', 'servers', 'perform', 'detach-scaling-group'],
