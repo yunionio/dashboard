@@ -85,6 +85,7 @@ import {
 import { findPlatform } from '@/utils/common/hypervisor'
 import { sizestr } from '@/utils/utils'
 import DiscountPrice from '@/sections/DiscountPrice'
+import { isOsArch } from '@/constants/compute'
 
 export default {
   name: 'AdjustConfig',
@@ -198,7 +199,7 @@ export default {
       return this.params.data.some(val => val.status === 'running')
     },
     isSomeArm () {
-      return this.selectedItem.os_arch === 'arm'
+      return isOsArch(this.selectedItem.os_arch, 'arm')
     },
     runningArm () {
       return this.isSomeArm && this.isSomeRunning
