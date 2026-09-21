@@ -19,7 +19,9 @@
           :cloudregion-params="params.region"
           :decorator="decorators.regionZone"
           :form-draft-key="baremetalDraftFields.cloudregionZone"
-          filterBrandResource="compute_engine" />
+          filterBrandResource="compute_engine"
+          @update:cloudregion="onCloudregionUpdate"
+          @update:zone="onZoneUpdate" />
       </a-form-item>
       <a-form-item
         :label="$t('compute.text_228')"
