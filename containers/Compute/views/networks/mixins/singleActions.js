@@ -1,4 +1,5 @@
 import { SERVER_TYPE } from '@Compute/constants'
+import { HYPERVISORS_MAP } from '@/constants'
 import { findPlatform } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 import { hasSetupKey } from '@/utils/auth'
@@ -8,6 +9,8 @@ export default {
     const type = findPlatform(this.data.hypervisor)
     const isPublic = type === SERVER_TYPE.private
     const isPrivate = type === SERVER_TYPE.public
+    // 端口映射（port_mapping）仅 kvm / pod 支持
+    const supportPortMapping = [HYPERVISORS_MAP.kvm.key, HYPERVISORS_MAP.pod.key].includes(this.data.hypervisor)
     this.singleActions = [
       {
         label: i18n.t('compute.text_389'),
@@ -54,6 +57,36 @@ export default {
                 return ret
               },
               hidden: () => !hasSetupKey(['onecloud']),
+            },
+            {
+              label: i18n.t('compute.port_mappings.set'),
+              permission: 'server_perform_set_port_mapping',
+              action: (obj) => {
+                this.createDialog('VmSetPortMappingDialog', {
+                  resId: this.resId,
+                  data: [obj],
+                  columns: this.columns,
+                  refresh: this.refresh,
+                })
+              },
+              meta: (obj) => {
+                const ret = { validate: false, tooltip: null }
+                if (!supportPortMapping) {
+                  ret.tooltip = i18n.t('compute.port_mappings.unsupported')
+                  return ret
+                }
+                if (this.data.status === 'set_portmapping') {
+                  ret.tooltip = i18n.t('compute.port_mappings.pending_status')
+                  return ret
+                }
+                if (!['running', 'ready'].includes(this.data.status)) {
+                  ret.tooltip = i18n.t('compute.port_mappings.invalid_status')
+                  return ret
+                }
+                ret.validate = true
+                return ret
+              },
+              hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_port_mapping'),
             },
             {
               label: i18n.t('compute.text_390'),

@@ -19,6 +19,7 @@ import { ALL_STORAGE, SERVER_TYPE } from '@Compute/constants/index'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { formatCpuNumaPin } from '@Compute/views/vminstance/utils'
 import { formatServerSecgroupText, getNetworkTags, renderNetworkTagNodes } from '@Compute/utils/secgroupDisplay'
+import { getPortMappingDetailColumn } from '@Compute/utils/portMappingDisplay'
 import { getIsolatedDeviceDetailColumns } from '@Compute/views/gpu/utils/columns'
 import {
   getUserTagColumn,
@@ -530,6 +531,7 @@ export default {
                 return this.renderIsolatedDeviceRows(devices)
               },
             },
+            getPortMappingDetailColumn(),
             {
               field: 'is_daemon',
               title: () => {
