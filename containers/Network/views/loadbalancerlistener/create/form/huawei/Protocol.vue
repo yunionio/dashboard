@@ -20,7 +20,8 @@
         :select-props="{ placeholder: $t('network.text_421') }" />
       <div slot="extra">{{$t('network.text_422')}}<help-link href="/lbcert">{{$t('network.text_321')}}</help-link></div>
     </a-form-item>
-    <advance-config-block>
+    <a-collapse :bordered="false">
+      <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
         <a-form-item :label="$t('network.text_423')" class="mb-0">
           <scheduler-types :decorators="decorators" :form="form" :schedulerTypeOpts="schedulerTypeOpts" />
         </a-form-item>
@@ -29,7 +30,9 @@
         <a-form-item :label="$t('network.text_426')" v-if="['https'].includes(form.fd.listener_type)">
           <a-switch v-decorator="decorators.enable_http2" />
         </a-form-item>
-    </advance-config-block>
+      </a-collapse-panel>
+    </a-collapse>
+    <!-- <a-divider orientation="left">{{$t('network.text_94')}}</a-divider> -->
   </a-form>
 </template>
 
