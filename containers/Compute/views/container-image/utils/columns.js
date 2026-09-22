@@ -46,3 +46,30 @@ export const getCredentialTableColumn = () => {
     formatter: ({ row }) => row.credential_id || '-',
   }
 }
+
+export const getCommandTableColumn = () => {
+  return {
+    field: 'command',
+    title: i18n.t('compute.repo.command'),
+    minWidth: 160,
+    formatter: ({ row }) => (row.command || []).join(' ') || '-',
+  }
+}
+
+export const getArgsTableColumn = () => {
+  return {
+    field: 'args',
+    title: i18n.t('compute.repo.command.params'),
+    minWidth: 160,
+    formatter: ({ row }) => (row.args || []).join(' ') || '-',
+  }
+}
+
+export const getEnvsTableColumn = () => {
+  return {
+    field: 'envs',
+    title: i18n.t('compute.repo.env_variables'),
+    minWidth: 200,
+    formatter: ({ row }) => (row.envs || []).map(env => `${env.key}=${env.value}`).join(', ') || '-',
+  }
+}

@@ -4,6 +4,7 @@ import {
 } from '@/utils/common/tableColumn'
 import {
   getImageTableColumn,
+  getContainerImageTableColumn,
   getEnvTableColumn,
   getCommandTableColumn,
   getArgsTableColumn,
@@ -31,6 +32,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'container' }),
+      getContainerImageTableColumn({ vm: this }),
       getImageTableColumn(),
       getEnvTableColumn(),
       getCommandTableColumn(),

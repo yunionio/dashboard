@@ -12,8 +12,10 @@
 <script>
 import jsYaml from 'js-yaml'
 import WindowsMixin from '@/mixins/windows'
+import ContainerImageMixin from '../mixins/containerImage'
 import {
   getImageTableColumn,
+  getContainerImageTableColumn,
   getEnvTableColumn,
   getCommandTableColumn,
   getArgsTableColumn,
@@ -24,7 +26,7 @@ import {
 
 export default {
   name: 'VmPodContainerDetail',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ContainerImageMixin],
   props: {
     onManager: {
       type: Function,
@@ -38,6 +40,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getContainerImageTableColumn({ vm: this }),
         getImageTableColumn(),
         getEnvTableColumn(),
         getCommandTableColumn(),
@@ -63,6 +66,9 @@ export default {
         ...this.data,
       }
     },
+    containerImageId () {
+      return this.data?.spec?.container_image_id || ''
+    },
     extraInfo () {
       return [
         {
@@ -76,6 +82,14 @@ export default {
           },
         },
       ]
+    },
+  },
+  watch: {
+    containerImageId: {
+      immediate: true,
+      handler (val) {
+        if (val) this.fetchContainerImageNames([val])
+      },
     },
   },
   created () { },

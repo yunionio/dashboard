@@ -67,10 +67,12 @@
         @blur="e => formatInput(e, 'memory')" />
     </a-form-item>
     <a-form-item :label="$t('compute.repo.command')">
-      <a-input v-decorator="decorators.command" :placeholder="$t('compute.repo.command.placeholder')" />
+      <a-input v-decorator="decorators.command" :disabled="imageHasCommand" :placeholder="$t('compute.repo.command.placeholder')" />
+      <div v-if="imageHasCommand" class="ant-form-explain">{{ $t('compute.repo.image.container_image.locked_tip') }}</div>
     </a-form-item>
     <a-form-item :label="$t('compute.repo.command.params')">
-      <a-input v-decorator="decorators.arg" :placeholder="$t('compute.repo.command.params.placeholder')" />
+      <a-input v-decorator="decorators.arg" :disabled="imageHasArgs" :placeholder="$t('compute.repo.command.params.placeholder')" />
+      <div v-if="imageHasArgs" class="ant-form-explain">{{ $t('compute.repo.image.container_image.locked_tip') }}</div>
     </a-form-item>
     <a-form-item :label="$t('compute.repo.data_volume')">
       <labels
@@ -86,7 +88,8 @@
         @label-change="labelChangeHandle" />
     </a-form-item>
     <a-form-item :label="$t('compute.repo.env_variables')">
-      <labels ref="envRef" :decorators="decorators.env" :title="$t('compute.repo.variables')" :keyLabel="$t('compute.repo.variables')" />
+      <labels ref="envRef" :decorators="decorators.env" :title="$t('compute.repo.variables')" :keyLabel="$t('compute.repo.variables')" :readonly-keys="lockedEnvKeys" />
+      <div v-if="lockedEnvKeys.length" class="ant-form-explain">{{ $t('compute.repo.image.container_image.env_locked_tip') }}</div>
     </a-form-item>
     <a-form-item label="">
       <a-checkbox v-decorator="decorators.enableLxcfs">{{$t('compute.repo.enable_lxcfs')}}</a-checkbox>
@@ -187,6 +190,10 @@ export default {
       initApplied: false,
       containerImageLoading: false,
       containerImages: [],
+      // 当前选中的容器镜像（含 command/args/envs）
+      selectedImage: null,
+      // 由容器镜像提供的环境变量 key，这些行不可修改、不可删除
+      lockedEnvKeys: [],
     }
   },
   computed: {
@@ -219,6 +226,12 @@ export default {
       }
       return checkedValues
     },
+    imageHasCommand () {
+      return !!(this.selectedImage && (this.selectedImage.command || []).filter(Boolean).length)
+    },
+    imageHasArgs () {
+      return !!(this.selectedImage && (this.selectedImage.args || []).filter(Boolean).length)
+    },
   },
   watch: {
     initItem: {
@@ -230,7 +243,7 @@ export default {
       },
     },
     source (val) {
-      if (val === 'container_image' && this.containerImages.length === 0) {
+      if (val === 'container_image' && this.containerImages.length === 0 && !this.containerImageLoading) {
         this.fetchContainerImages()
       }
     },
@@ -261,6 +274,9 @@ export default {
           label: item.name || `${item.image_name}:${item.image_label}`,
           value: item.id,
           ref: `${item.image_name}:${item.image_label}`,
+          command: item.command || [],
+          args: item.args || [],
+          envs: item.envs || [],
         }))
       } catch (error) {
         throw error
@@ -268,7 +284,98 @@ export default {
         this.containerImageLoading = false
       }
     },
-    handleContainerImageChange () {},
+    findContainerImage (imageId) {
+      return this.containerImages.find(img => img.value === imageId) || null
+    },
+    /** env 行的 decorator 定义（create 表单里是已求值的对象，Update 弹窗里是函数） */
+    envDecorators () {
+      const env = this.decorators && this.decorators.env
+      if (!env) return null
+      return typeof env === 'function' ? env(0) : env
+    },
+    /** 读取当前表单里已填写的环境变量行 */
+    readEnvRows () {
+      const envRef = this.$refs.envRef
+      const fc = this.form && this.form.fc
+      const d = this.envDecorators
+      if (!envRef || !fc || !d) return []
+      const rows = []
+      ;(envRef.labelList || []).forEach((row) => {
+        const keyField = d.key(row.key) && d.key(row.key)[0]
+        const valueField = d.value(row.key) && d.value(row.key)[0]
+        const key = keyField ? fc.getFieldValue(keyField) : undefined
+        if (key == null || key === '') return
+        rows.push({ key, value: valueField ? fc.getFieldValue(valueField) : undefined })
+      })
+      return rows
+    },
+    /** 镜像环境变量中可在表单里展示的行（value_from 类型的值无法用表单表达，交由后端合并） */
+    imageEnvRows (image) {
+      return ((image && image.envs) || [])
+        .filter(env => env.key && !env.value_from)
+        .map(env => ({ key: env.key, value: env.value }))
+    },
+    /** 合并环境变量：以已有行为基础，镜像同名 key 覆盖其值，新 key 追加（与后端语义一致） */
+    mergeImageEnvs (baseRows, imageEnvs) {
+      const out = []
+      const indexByKey = {}
+      ;(baseRows || []).forEach((row) => {
+        const key = (row.key || '').trim()
+        if (!key) return
+        indexByKey[key] = out.length
+        out.push({ key, value: row.value })
+      })
+      ;(imageEnvs || []).forEach((env) => {
+        const key = (env.key || '').trim()
+        if (!key) return
+        if (indexByKey[key] !== undefined) {
+          out[indexByKey[key]] = { key: out[indexByKey[key]].key, value: env.value }
+          return
+        }
+        indexByKey[key] = out.length
+        out.push({ key, value: env.value })
+      })
+      return out
+    },
+    /**
+     * 应用容器镜像的默认启动参数与环境变量
+     * @param {Object} image 容器镜像对象
+     * @param {Object} options
+     *   refillCommand: 回填 command/args（默认 true）
+     *   refreshEnvs: 重新渲染 env 行（默认 true）
+     *   keepExistingEnvs: 保留并合并表单里已填写的 env 行（默认 false）
+     */
+    applyImageDefaults (image, options = {}) {
+      const { refillCommand = true, refreshEnvs = true, keepExistingEnvs = false } = options
+      this.selectedImage = image || null
+      const envs = (image && image.envs) || []
+      this.lockedEnvKeys = envs.map(env => env.key).filter(Boolean)
+      const fc = this.form && this.form.fc
+      if (image && refillCommand && fc) {
+        const values = {}
+        const commandField = this.decorators.command && this.decorators.command[0]
+        const argField = this.decorators.arg && this.decorators.arg[0]
+        const command = (image.command || []).filter(Boolean)
+        const args = (image.args || []).filter(Boolean)
+        if (command.length && commandField) values[commandField] = command.join(' ')
+        if (args.length && argField) values[argField] = args.join(' ')
+        if (Object.keys(values).length) fc.setFieldsValue(values)
+      }
+      if (!refreshEnvs) return
+      const envRef = this.$refs.envRef
+      if (!envRef) return
+      const base = keepExistingEnvs ? this.readEnvRows() : []
+      const rows = this.mergeImageEnvs(base, this.imageEnvRows(image))
+      envRef.reset()
+      if (rows.length) {
+        this.$nextTick(() => {
+          envRef.initData(rows)
+        })
+      }
+    },
+    handleContainerImageChange (value) {
+      this.applyImageDefaults(this.findContainerImage(value), { keepExistingEnvs: true })
+    },
     formatInput (e, field) {
       if (this.form && this.form.fc) {
         const val = Number(e.target.value)
@@ -282,6 +389,9 @@ export default {
     },
     handleSourceChange (e) {
       this.source = e.target.value
+      // 离开容器镜像来源时，清空锁定状态
+      this.selectedImage = null
+      this.lockedEnvKeys = []
       if (this.form && this.form.fc) {
         const values = {}
         if (this.decorators.image) values[this.decorators.image[0]] = undefined
@@ -315,7 +425,13 @@ export default {
       if (!item || this.initApplied) return
       if (item.container_image_id) {
         this.source = 'container_image'
-        this.fetchContainerImages()
+        // 回显时不重置 envs（容器自身的变量要保留），只同步锁定状态
+        this.fetchContainerImages().then(() => {
+          this.applyImageDefaults(this.findContainerImage(item.container_image_id), {
+            refillCommand: false,
+            refreshEnvs: false,
+          })
+        }).catch(() => {})
       } else if (item.image_credential_id) {
         this.source = 'registry'
       }
