@@ -16,10 +16,11 @@ import {
 } from '@/utils/common/tableFilter'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import ContainerImageMixin from '../mixins/containerImage'
 
 export default {
   name: 'ContainerList',
-  mixins: [ListMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
+  mixins: [ListMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin, ContainerImageMixin],
   props: {
     id: String,
     resId: String,
@@ -37,6 +38,7 @@ export default {
           guest_id: this.resId,
         },
         steadyStatus: Object.values(expectStatus.container).flat(),
+        fetchDataCb: res => this.fetchContainerImageNamesForRows(res),
         filterOptions: {
           name: getNameFilter(),
           status: getStatusFilter('container'),
