@@ -5,16 +5,16 @@
         <a-input-group compact v-if="keyBaseSelectProps">
           <div class="d-flex">
             <a-input class="oc-addonBefore ant-input-group-addon" style="width: 80px;" :defaultValue="keyLabel" readonly />
-            <base-select v-decorator="decorators.key(item.key)" v-bind="getBindProps(item.key)" />
+            <base-select v-decorator="getDecorator(item.key, 'key')" v-bind="getBindProps(item.key, item)" />
           </div>
         </a-input-group>
-        <a-input v-else :addonBefore="keyLabel" v-decorator="decorators.key(item.key)" :placeholder="keyPlaceholder" />
+        <a-input v-else :addonBefore="keyLabel" v-decorator="getDecorator(item.key, 'key')" :placeholder="keyPlaceholder" :disabled="isLocked(item)" />
       </a-form-item>
       <div class="mx-3"> = </div>
       <a-form-item :wrapperCol="{ span: 24 }">
-        <a-input :addonBefore="valueLabel" v-decorator="decorators.value(item.key)" :placeholder="valuePlaceholder" />
+        <a-input :addonBefore="valueLabel" v-decorator="getDecorator(item.key, 'value')" :placeholder="valuePlaceholder" :disabled="isLocked(item)" />
       </a-form-item>
-      <a-button v-if="firstCanDelete || labelList.length > 1" shape="circle" icon="minus" size="small" @click="del(item)" class="mt-2 ml-2" />
+      <a-button v-if="(firstCanDelete || labelList.length > 1) && !isLocked(item)" shape="circle" icon="minus" size="small" @click="del(item)" class="mt-2 ml-2" />
     </div>
     <div class="d-flex align-items-center">
       <a-tooltip :title="disableConf?.tooltip">
@@ -85,11 +85,21 @@ export default {
       type: Array,
       default: () => [],
     },
+    /**
+     * 需要锁定的环境变量 key：命中的行不可编辑、不可删除
+     * 用于容器镜像提供的默认环境变量
+     */
+    readonlyKeys: {
+      type: Array,
+      default: () => [],
+    },
   },
   data () {
     return {
       labelList: [],
       pendingPairs: [],
+      // 行 uuid -> 环境变量 key，用于判断该行是否来自容器镜像
+      rowEnvKey: {},
     }
   },
   inject: {
@@ -137,6 +147,7 @@ export default {
     reset () {
       this.labelList = []
       this.pendingPairs = []
+      this.rowEnvKey = {}
     },
     normalizePairs (pairs = []) {
       return (pairs || []).map((pair) => {
@@ -162,12 +173,43 @@ export default {
       if (!normalized.length) return
       this.pendingPairs = normalized
       this.labelList = normalized.map(() => ({ key: uuid() }))
+      this.syncRowEnvKey()
       this.$nextTick(() => {
         this.writePendingPairs()
         this.$nextTick(() => {
           this.writePendingPairs()
         })
       })
+    },
+    /** 记录 行 uuid -> env key 的映射，供 readonlyKeys 判断锁定行 */
+    syncRowEnvKey (pairs = this.pendingPairs) {
+      const mapping = {}
+      pairs.forEach((pair, i) => {
+        const rowKey = this.labelList[i]?.key
+        if (rowKey && pair?.key != null && pair.key !== '') {
+          mapping[rowKey] = pair.key
+        }
+      })
+      this.rowEnvKey = mapping
+    },
+    isLocked (item) {
+      const envKey = this.rowEnvKey[item?.key]
+      if (envKey == null) return false
+      return (this.readonlyKeys || []).includes(envKey)
+    },
+    /**
+     * 取该行的 decorator 定义；锁定行去掉 required 校验，
+     * 避免用户被自己无法编辑的值（如镜像的 value_from）卡住提交
+     */
+    getDecorator (rowKey, type) {
+      const dec = this.decorators[type](rowKey)
+      const item = this.labelList.find(row => row.key === rowKey)
+      if (!item || !this.isLocked(item)) return dec
+      const options = dec && dec[1]
+      if (!options || !options.rules) return dec
+      const rules = options.rules.filter(rule => !rule.required)
+      if (rules.length === options.rules.length) return dec
+      return [dec[0], { ...options, rules }]
     },
     writePendingPairs () {
       const form = this.effectiveForm
@@ -178,6 +220,7 @@ export default {
         this.labelList = pairs.map(() => ({ key: uuid() }))
         if (!pairs.length) return
       }
+      this.syncRowEnvKey(pairs)
       const values = {}
       pairs.forEach((pair, i) => {
         const rowKey = this.labelList[i]?.key
@@ -206,7 +249,7 @@ export default {
         this.$set(form.fd, 'hostPorts', hostPorts)
       }
     },
-    getBindProps (key) {
+    getBindProps (key, item) {
       const { options } = this.keyBaseSelectProps
       const bindProps = {
         ...this.keyBaseSelectProps,
@@ -216,6 +259,9 @@ export default {
           }
           return true
         }),
+      }
+      if (item && this.isLocked(item)) {
+        bindProps.disabled = true
       }
       return bindProps
     },
