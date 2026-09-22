@@ -9,6 +9,9 @@ import {
   getImageNameTableColumn,
   getImageLabelTableColumn,
   getRegistryTableColumn,
+  getCommandTableColumn,
+  getArgsTableColumn,
+  getEnvsTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -31,6 +34,9 @@ export default {
       getImageNameTableColumn(),
       getImageLabelTableColumn(),
       getRegistryTableColumn({ vm: this }),
+      getCommandTableColumn(),
+      getArgsTableColumn(),
+      getEnvsTableColumn(),
       getProjectTableColumn(),
       getPublicScopeTableColumn({
         vm: this,

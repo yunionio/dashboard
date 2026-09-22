@@ -103,6 +103,26 @@
             :params="credentialParams"
             :selectProps="{ placeholder: $t('common.tips.select', [$t('common.container_image_secret')]), allowClear: true }" />
         </a-form-model-item>
+
+        <a-form-model-item :label="$t('compute.repo.command')" :extra="$t('compute.repo.image.container_image.command_tip')">
+          <a-input
+            v-model="form.command"
+            :placeholder="$t('common.tips.input', [$t('compute.repo.command')])" />
+        </a-form-model-item>
+        <a-form-model-item :label="$t('compute.repo.command.params')" :extra="$t('compute.repo.image.container_image.args_tip')">
+          <a-input
+            v-model="form.args"
+            :placeholder="$t('common.tips.input', [$t('compute.repo.command.params')])" />
+        </a-form-model-item>
+        <a-form-model-item :label="$t('compute.repo.env_variables')" :extra="$t('compute.repo.image.container_image.env_tip')">
+          <div v-for="(item, idx) in envList" :key="item.id" class="d-flex align-items-center mb-2">
+            <a-input v-model="item.key" :placeholder="$t('compute.repo.key')" />
+            <span class="mx-2">=</span>
+            <a-input v-model="item.value" :placeholder="$t('compute.repo.value')" />
+            <a-button class="ml-2" shape="circle" size="small" icon="minus" @click="removeEnv(idx)" />
+          </div>
+          <a-button type="link" @click="addEnv">{{ $t('compute.repo.add', [$t('compute.repo.variables')]) }}</a-button>
+        </a-form-model-item>
       </a-form-model>
     </div>
     <div slot="footer">
@@ -134,6 +154,7 @@ export default {
       registries: [],
       imageOptions: [],
       tagOptions: [],
+      envList: (data.envs || []).map(env => ({ id: uuid(), key: env.key || '', value: env.value || '' })),
       // edit 时暂存完整 image_name，等 registries 加载后再拆前缀
       pendingFullImageName: hasRegistry ? (data.image_name || '') : '',
       form: {
@@ -142,6 +163,8 @@ export default {
         image_label: data.image_label || undefined,
         registry_id: data.registry_id || undefined,
         credential_id: data.credential_id || undefined,
+        command: (data.command || []).join(' ') || undefined,
+        args: (data.args || []).join(' ') || undefined,
       },
       rules: {
         name: [{ required: true, validator: this.$validate('imageName') }],
@@ -244,6 +267,12 @@ export default {
       if (this.source === 'registry' && this.registries.length === 0) {
         this.fetchRegistries()
       }
+    },
+    addEnv () {
+      this.envList.push({ id: uuid(), key: '', value: '' })
+    },
+    removeEnv (idx) {
+      this.envList.splice(idx, 1)
     },
     async fetchRegistries () {
       try {
@@ -370,6 +399,24 @@ export default {
         } else if (this.type === 'edit') {
           data.credential_id = ''
         }
+      }
+      const command = (this.form.command || '').trim()
+      const args = (this.form.args || '').trim()
+      if (command) {
+        data.command = command.split(/\s+/)
+      } else if (this.type === 'edit') {
+        data.command = []
+      }
+      if (args) {
+        data.args = args.split(/\s+/)
+      } else if (this.type === 'edit') {
+        data.args = []
+      }
+      const envs = (this.envList || [])
+        .filter(item => (item.key || '').trim())
+        .map(item => ({ key: item.key.trim(), value: item.value || '' }))
+      if (envs.length > 0 || this.type === 'edit') {
+        data.envs = envs
       }
       return data
     },

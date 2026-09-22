@@ -13,6 +13,30 @@ export const getImageTableColumn = () => {
   })
 }
 
+export const getContainerImageTableColumn = ({ vm = {} } = {}) => {
+  return {
+    field: 'container_image',
+    title: i18n.t('dictionary.container_image'),
+    minWidth: 180,
+    slots: {
+      default: ({ row }, h) => {
+        const id = row.spec?.container_image_id
+        if (!id) return '-'
+        const text = row.container_image_name ||
+          (typeof vm.containerImageName === 'function' ? vm.containerImageName(id) : '') ||
+          row.spec?.image || id
+        return [
+          <side-page-trigger permission="container_images_get" name="ContainerImageSidePage" id={id} vm={vm}>{text}</side-page-trigger>,
+        ]
+      },
+    },
+    formatter: ({ row }) => {
+      if (!row.spec?.container_image_id) return '-'
+      return row.container_image_name || row.spec?.image || row.spec?.container_image_id
+    },
+  }
+}
+
 export const getEnvTableColumn = () => {
   return {
     field: 'env',
