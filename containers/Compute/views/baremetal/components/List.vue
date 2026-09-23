@@ -28,6 +28,8 @@ import GlobalSearchMixin from '@/mixins/globalSearch'
 import regexp from '@/utils/regexp'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import { getBatchStartAction } from '../utils/startActions'
+import { getBatchRenewAction } from '../utils/renewActions'
 import { cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 
 export default {
@@ -81,6 +83,14 @@ export default {
       project_domains: getDomainFilter(),
       status: getStatusFilter({ statusModule: 'server' }),
       os_type: getOsTypeFilter(),
+      billing_type: {
+        label: this.$t('table.title.bill_type'),
+        dropdown: true,
+        items: [
+          { label: this.$t('billingType.postpaid'), key: 'postpaid' },
+          { label: this.$t('billingType.prepaid'), key: 'prepaid' },
+        ],
+      },
       created_at: getCreatedAtFilter(),
     }
     this.hiddenFilterOptions.forEach(key => {
@@ -117,34 +127,9 @@ export default {
               buttonType: 'primary',
             }
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_create'),
         },
-        {
-          label: this.$t('compute.text_272'),
-          permission: 'server_perform_start',
-          action: () => {
-            const ids = this.list.selectedItems.map(item => item.id)
-            this.onManager('batchPerformAction', {
-              steadyStatus: 'running',
-              id: ids,
-              managerArgs: {
-                action: 'start',
-              },
-            })
-          },
-          meta: () => {
-            let ret = {
-              validate: true,
-              tooltip: null,
-            }
-            ret.validate = this.list.selectedItems.length > 0
-            if (!ret.validate) return ret
-            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
-              ret.validate = this.list.selectedItems.every(item => item.status === 'ready')
-              return ret
-            })
-            return ret
-          },
-        },
+        getBatchStartAction(this),
         {
           label: this.$t('compute.text_273'),
           permission: 'server_perform_stop',
@@ -168,6 +153,7 @@ export default {
             })
             return ret
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_stop'),
         },
         {
           label: this.$t('compute.text_274'),
@@ -192,11 +178,14 @@ export default {
             })
             return ret
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_restart'),
         },
         {
           label: this.$t('compute.text_275'),
           actions: () => {
             return [
+              // 续费
+              getBatchRenewAction(this),
               {
                 label: this.$t('compute.text_276'),
                 permission: 'server_perform_deploy',
@@ -229,6 +218,7 @@ export default {
                     tooltip: this.$t('compute.text_278'),
                   }
                 },
+                hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_reset_password'),
               },
               {
                 label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
@@ -254,6 +244,7 @@ export default {
                   }
                   return ret
                 },
+                hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_change_owner'),
               },
               {
                 label: this.$t('compute.perform_sync_status'),
@@ -266,6 +257,7 @@ export default {
                     },
                   })
                 },
+                hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_syncstatus'),
               },
               {
                 label: this.$t('compute.vminstance.monitor.install_agent'),
@@ -290,7 +282,7 @@ export default {
                   })
                   return ret
                 },
-                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_detect_ssh_proxy'),
+                hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_detect_ssh_proxy'),
               },
               {
                 label: this.$t('table.action.set_tag'),
@@ -306,8 +298,11 @@ export default {
                     },
                   })
                 },
+                hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_set_user_metadata'),
               },
-              disableDeleteAction(Object.assign(this, { permission: 'server_update' })),
+              disableDeleteAction(Object.assign(this, { permission: 'server_update' }), {
+                hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_set_delete_protection'),
+              }),
               {
                 label: this.$t('compute.perform_delete'),
                 permission: 'server_delete',
@@ -332,6 +327,7 @@ export default {
                   }
                   return this.$getDeleteResult(this.list.selectedItems)
                 },
+                hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_delete'),
               },
             ]
           },

@@ -134,7 +134,14 @@ export default {
       const disksInfo = this.data.disks_info
       if (!disksInfo) return {}
       const dataDisk = {}
+      const sysDisk = {}
+      const sysDisks = disksInfo.filter(v => v.disk_type === 'sys')
       const dataDisks = disksInfo.filter(v => v.disk_type === 'data')
+
+      if (sysDisks && sysDisks.length > 0) {
+        const sysKey = sysDisks[0].storage_type
+        sysDisk[sysKey] = this._dealSize(sysDisks)
+      }
 
       if (dataDisks && dataDisks.length > 0) {
         for (const k in ALL_STORAGE) {
@@ -147,6 +154,7 @@ export default {
       }
 
       return {
+        sysDisk: this._diskStringify(sysDisk),
         dataDisk: this._diskStringify(dataDisk),
       }
     },
@@ -243,6 +251,15 @@ export default {
               formatter: ({ row }) => {
                 return formatCpuNumaPin(row)
               },
+            },
+            {
+              field: 'sysDisk',
+              title: this.$t('compute.text_49'),
+              formatter: ({ row }) => {
+                if (!this.diskInfos.sysDisk) return '-'
+                return <a onClick={() => this.$emit('tab-change', 'disk-list')}>{this.diskInfos.sysDisk}</a>
+              },
+              hidden: () => this.$isScopedPolicyMenuHidden('server_hidden_columns.disk'),
             },
             {
               field: 'dataDisk',

@@ -698,6 +698,8 @@
   "cloudenv.res_networks": "IP サブネット",
   "cloudenv.res_ports": "IP の総数",
   "cloudenv.disk_hidden_menus": "ハードドライブの操作メニューを非表示にします",
+  "cloudenv.vminstance_container_hidden_menus": "コンテナホストのメニューを非表示にする",
+  "cloudenv.baremetal_hidden_menus": "ベアメタルのメニューを非表示にする",
   "cloudenv.sub_hidden_menus": "メインメニューを非表示にする",
   "cloudenv.billing_scope": "請求分析の範囲",
   "cloudenv.billing_scope.extra": "このプラットフォームの管理アカウントの請求書:プラットフォームによって同期されたマスターアカウントとマスターアカウントのすべてのサブアカウントの請求書のみを収集し、請求ファイルに他の請求書がある場合は破棄されます。 すべてのアカウントの請求書: 請求ファイル内のすべての請求書が収集され、対応する Alibaba Cloud アカウントの請求エントリがプラットフォームで見つからない場合、Alibaba Cloud サブスクリプションは「このアカウント名 - 請求項目に関連付けられている Alibaba Cloud アカウントのデジタル ID」と表示されます。",
