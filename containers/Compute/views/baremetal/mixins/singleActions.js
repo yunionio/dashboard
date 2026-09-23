@@ -43,7 +43,7 @@ export default {
                   manager: this.webconsoleManager,
                   params,
                   errorMsg: connectParams.login_error_message,
-                  data: { name: obj.name, ip: params.action, id: obj.id, resource: 'servers' },
+                  data: { name: obj.name, ip: params.data?.ip, id: obj.id, resource: 'servers' },
                   success: (data) => {
                     this.openWebConsole(obj, data, 'ws')
                   },
@@ -81,16 +81,22 @@ export default {
                 }
                 return ret
               }
+              // 与虚拟机一致：webconsole ssh 的 action 使用实例 id，ip 放在 data 中
+              const buildSshParams = (extra = {}) => ({
+                id: 'ssh',
+                action: obj.id,
+                data: {
+                  id: obj.id,
+                  ip: v,
+                  type: 'server',
+                  ...extra,
+                },
+              })
               options.push({
                 label: `SSH ${v}`,
                 action: () => {
                   const success = () => {
-                    const params = {
-                      id: 'ssh',
-                      action: v,
-                      data: {},
-                    }
-                    openWebConsole(params)
+                    openWebConsole(buildSshParams())
                   }
                   if (this.enableMFA) {
                     this.createDialog('SecretVertifyDialog', {
@@ -116,11 +122,7 @@ export default {
                   }
                   const sshConnectHandle = () => {
                     const success = () => {
-                      openWebConsole({
-                        action: v,
-                        data: { },
-                        id: 'ssh',
-                      })
+                      openWebConsole(buildSshParams())
                     }
                     if (this.enableMFA) {
                       this.createDialog('SecretVertifyDialog', {
@@ -135,12 +137,11 @@ export default {
                       title: i18n.t('compute.custom_ssh_connect', ['SSH']),
                       data: [obj],
                       callback: async (data) => {
-                        const pms = {
-                          action: v,
-                          data: { port: data.port, username: data.username, password: data.password },
-                          id: 'ssh',
-                        }
-                        openWebConsole(pms)
+                        openWebConsole(buildSshParams({
+                          port: data.port,
+                          username: data.username,
+                          password: data.password,
+                        }))
                       },
                       decorators: SMART_SSH_FORM_DECORATORS,
                     })
