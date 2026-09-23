@@ -936,6 +936,32 @@ export default {
                     },
                     hidden: () => !hasSetupKey(['onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_gpu'),
                   },
+                  // 批量安装Agent
+                  {
+                    label: this.$t('compute.vminstance.monitor.install_agent'),
+                    permission: 'server_perform_install_agent',
+                    action: () => {
+                      this.createDialog('InstallAgentDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      let ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      ret.validate = this.list.selectedItems.length > 0
+                      if (!ret.validate) return ret
+                      ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
+                        ret.validate = this.list.selectedItems.every(item => ['running'].includes(item.status))
+                        return ret
+                      })
+                      return ret
+                    },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_install_agent'),
+                  },
                 ],
               },
               {

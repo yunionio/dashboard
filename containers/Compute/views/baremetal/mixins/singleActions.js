@@ -4,7 +4,8 @@ import { SMART_SSH_FORM_DECORATORS } from '@Compute/constants'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import i18n from '@/locales'
-import { commonUnabled, cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
+import { typeClouds } from '@/utils/common/hypervisor'
+import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, validateRescueMode } from '../../vminstance/utils'
 import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
 import { hostServerActions } from '../../../utils/hostActions'
 import { getRenewAction } from '../utils/renewActions'
@@ -399,6 +400,76 @@ export default {
                   hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_unbind_key'),
                 },
               ],
+            },
+            // 设置免密登录
+            {
+              label: i18n.t('compute.vminstance.actions.setup_ssh_authentication'),
+              permission: 'server_perform_setup_ssh_proxy',
+              action: () => {
+                this.createDialog('SetupSSHDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: true,
+                  tooltip: null,
+                }
+                if (obj.hypervisor === typeClouds.hypervisorMap.sangfor.key) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_473', [typeClouds.hypervisorMap.sangfor.label])
+                  return ret
+                }
+                const rescueModeValid = validateRescueMode(obj)
+                if (!rescueModeValid.validate) return rescueModeValid
+                const isLinux = obj.os_type && obj.os_type.toLowerCase() === 'linux'
+                if (!isLinux) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_362')
+                  return ret
+                }
+                if (!commonEnabled(obj, ['running'])) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('db.text_156')
+                  return ret
+                }
+                return ret
+              },
+              hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_setup_ssh_proxy'),
+            },
+            // 探测免密登录
+            {
+              label: i18n.t('compute.vminstance.actions.detect_ssh_authentication'),
+              permission: 'server_perform_make_sshable',
+              action: () => {
+                this.createDialog('DetectSSHDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: true,
+                  tooltip: null,
+                }
+                if (obj.hypervisor === typeClouds.hypervisorMap.sangfor.key) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_473', [typeClouds.hypervisorMap.sangfor.label])
+                  return ret
+                }
+                const rescueModeValid = validateRescueMode(obj)
+                if (!rescueModeValid.validate) return rescueModeValid
+                if (!commonEnabled(obj, ['running'])) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('db.text_156')
+                  return ret
+                }
+                return ret
+              },
+              hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_detect_ssh_proxy'),
             },
             {
               label: i18n.t('compute.text_96'),

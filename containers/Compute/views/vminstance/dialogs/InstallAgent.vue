@@ -74,9 +74,17 @@ export default {
         } else {
           const data = {
             auto_choose_proxy_endpoint: true,
-            server_id: this.params.data[0].id,
           }
-          const ret = await new this.$Manager('scripts').performAction({ id: 'monitor agent', action: 'apply', data: data })
+          var action = 'apply'
+          if (this.params.data.length > 1) {
+            data.server_ids = this.params.data.map((i) => { return i.id })
+            action = 'batch-apply'
+          } else if (this.params.data.length === 1) {
+            data.server_id = this.params.data[0].id
+          } else {
+            throw new Error('No server selected')
+          }
+          const ret = await new this.$Manager('scripts').performAction({ id: 'monitor agent', action: action, data: data })
           this.loading = false
           if (this.params.callback && typeof this.params.callback === 'function') {
             this.params.callback(ret.data.script_apply_id)
