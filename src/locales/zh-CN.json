@@ -1276,7 +1276,14 @@
       "no_container": "容器未创建",
       "no_server": "主机未创建",
       "container_exited": "容器退出",
-      "sync_config": "同步配置"
+      "sync_config": "同步配置",
+      "network": "配置网络",
+      "net_fail": "网络配置失败",
+      "disk": "分配磁盘",
+      "disk_fail": "磁盘分配失败",
+      "start_deploy": "开始部署",
+      "deploying": "部署中",
+      "deploy_fail": "部署失败"
     },
     "phoneModel": {
       "ready": "可用"
@@ -6612,6 +6619,11 @@
   "common.existing_custom_duration": "已存在自定义选项",
   "common.duration.none": "无限制",
   "common.duration.custom": "自定义",
+  "common.date.hours": "{0}小时",
+  "common.date.days": "{0}天",
+  "common.date.weeks": "{0}周",
+  "common.date.months": "{0}个月",
+  "common.date.years": "{0}年",
   "common.not_set": "未设置",
   "common.not_expired": "有效",
   "common.alert_info": "告警信息",

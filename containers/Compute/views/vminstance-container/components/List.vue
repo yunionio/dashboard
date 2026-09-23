@@ -48,6 +48,8 @@ import regexp from '@/utils/regexp'
 import { Manager } from '@/utils/manager'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import { getBatchStartAction } from '../utils/startActions'
+import { getBatchRenewAction } from '../utils/renewActions'
 
 export default {
   name: 'VmContainerInstanceList',
@@ -165,34 +167,10 @@ export default {
             }
             return ret
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_create'),
         },
         // 开机
-        {
-          label: this.$t('compute.text_272'),
-          action: () => {
-            const ids = this.list.selectedItems.map(item => item.id)
-            this.list.onManager('batchPerformAction', {
-              steadyStatus: 'running',
-              id: ids,
-              managerArgs: {
-                action: 'start',
-              },
-            })
-          },
-          meta: () => {
-            const ret = { validate: true, tooltip: null }
-            if (this.list.selectedItems.length === 0) {
-              ret.validate = false
-              return ret
-            }
-            const isStatusOk = this.list.selectedItems.every(item => ['ready'].includes(item.status))
-            if (!isStatusOk) {
-              ret.validate = false
-              return ret
-            }
-            return ret
-          },
-        },
+        getBatchStartAction(this),
         // 批量关机
         {
           label: this.$t('compute.text_273'),
@@ -216,6 +194,7 @@ export default {
             }
             return ret
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_perform_stop'),
         },
         // 重启
         {
@@ -240,6 +219,7 @@ export default {
             }
             return ret
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_perform_restart'),
         },
         // 同步状态
         {
@@ -257,12 +237,15 @@ export default {
               validate: this.list.selectedItems.length > 0,
             }
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_perform_syncstatus'),
         },
         /* 批量操作 */
         {
           label: this.$t('compute.text_275'),
           actions: () => {
             return [
+              // 续费
+              getBatchRenewAction(this),
               // 更改项目
               {
                 label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
@@ -275,6 +258,7 @@ export default {
                     resource: 'servers',
                   })
                 },
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_perform_change_owner'),
               },
               // 到期释放
               {
@@ -314,6 +298,7 @@ export default {
                   }
                   return ret
                 },
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_perform_cancel_expire'),
               },
               // 编辑标签
               {
@@ -333,6 +318,7 @@ export default {
                   const ret = { validate: true }
                   return ret
                 },
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_perform_set_user_metadata'),
               },
               // 推送配置
               {
@@ -359,7 +345,7 @@ export default {
                   ret.validate = true
                   return ret
                 },
-                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_sync_config'),
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_perform_sync_config'),
               },
               // 关联安全组
               {
@@ -388,11 +374,12 @@ export default {
                   ret.validate = true
                   return ret
                 },
-                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_perform_add_secgroup'),
               },
               // 设置删除保护
               disableDeleteAction(Object.assign(this, {}), {
                 name: this.$t('compute.vminstance-container'),
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_set_delete_protection'),
               }),
               // 删除
               {
@@ -409,6 +396,7 @@ export default {
                 meta: () => {
                   return this.$getDeleteResult(this.list.selectedItems)
                 },
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_perform_delete'),
               },
             ]
           },
