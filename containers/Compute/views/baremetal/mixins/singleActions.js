@@ -42,7 +42,7 @@ export default {
                   manager: this.webconsoleManager,
                   params,
                   errorMsg: connectParams.login_error_message,
-                  data: { name: obj.name, ip: params.action, id: obj.id, resource: 'servers' },
+                  data: { name: obj.name, ip: params.data?.ip || params.action, id: obj.id, resource: 'servers' },
                   success: (data) => {
                     this.openWebConsole(obj, data, 'ws')
                   },
@@ -80,16 +80,24 @@ export default {
                 }
                 return ret
               }
+              const openSsh = (port) => {
+                const params = {
+                  id: 'ssh',
+                  action: obj.id,
+                  data: {
+                    id: obj.id,
+                    ip: v,
+                    type: 'server',
+                  },
+                }
+                if (port) params.data.port = port
+                openWebConsole(params)
+              }
               options.push({
                 label: `SSH ${v}`,
                 action: () => {
                   const success = () => {
-                    const params = {
-                      id: 'ssh',
-                      action: v,
-                      data: {},
-                    }
-                    openWebConsole(params)
+                    openSsh(22)
                   }
                   if (this.enableMFA) {
                     this.createDialog('SecretVertifyDialog', {
@@ -109,12 +117,7 @@ export default {
                     data: [obj],
                     callback: async (data) => {
                       const success = () => {
-                        const params = {
-                          action: v,
-                          data,
-                          id: 'ssh',
-                        }
-                        openWebConsole(params)
+                        openSsh(data.port)
                       }
                       if (this.enableMFA) {
                         this.createDialog('SecretVertifyDialog', {
