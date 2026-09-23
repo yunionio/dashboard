@@ -1,5 +1,6 @@
 import i18n from '@/locales'
 import { commonUnabled } from '../views/vminstance/utils'
+import { getStartAction as getBaremetalStartAction } from '../views/baremetal/utils/startActions'
 export function hostCommonActions (hostList) {
   return [
     {
@@ -236,24 +237,7 @@ export function hostCommonActions (hostList) {
 
 export function hostServerActions (manager, obj, objList, isHostServer) {
   return [
-    {
-      label: i18n.t('compute.text_272'),
-      permission: 'server_perform_start',
-      action: () => {
-        manager('performAction', {
-          steadyStatus: 'running',
-          id: isHostServer ? obj.server_id : obj.id,
-          managerArgs: {
-            action: 'start',
-          },
-        })
-      },
-      meta: () => {
-        return {
-          validate: obj.status === 'ready' && !commonUnabled(obj),
-        }
-      },
-    },
+    getBaremetalStartAction(objList, obj, manager, isHostServer),
     {
       label: i18n.t('compute.text_273'),
       permission: 'server_perform_stop',
@@ -270,6 +254,7 @@ export function hostServerActions (manager, obj, objList, isHostServer) {
           validate: obj.status === 'running' && !commonUnabled(obj),
         }
       },
+      hidden: () => objList.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_stop'),
     },
     {
       label: i18n.t('compute.text_274'),
@@ -287,6 +272,7 @@ export function hostServerActions (manager, obj, objList, isHostServer) {
           validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
         }
       },
+      hidden: () => objList.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_restart'),
     },
   ]
 }

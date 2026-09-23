@@ -59,6 +59,8 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { getHostIsolatedDeviceAvailableTypes } from '../constants/actions'
 import { cloudEnabled, cloudUnabledTip, commonEnabled, validateRescueMode } from '../utils'
+import { getBatchRenewAction } from '../utils/renewActions'
+import { getBatchStartAction } from '../utils/startActions'
 
 export default {
   name: 'VmInstanceList',
@@ -243,37 +245,7 @@ export default {
           hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_create') || this.hiddenActions.includes('create'),
         },
         // 开机
-        {
-          label: this.$t('compute.text_272'),
-          permission: 'server_perform_start',
-          action: () => {
-            this.createDialog('VmStartDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-            })
-          },
-          meta: () => {
-            let ret = {
-              validate: true,
-              tooltip: null,
-            }
-            ret.validate = this.list.selectedItems.length > 0
-            if (!ret.validate) return ret
-            // 某些云不支持
-            const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
-            if (!unenableCloudCheck.validate) {
-              ret = unenableCloudCheck
-              return ret
-            }
-            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
-              ret.validate = this.list.selectedItems.every(item => item.status === 'ready')
-              return ret
-            })
-            return ret
-          },
-          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start'),
-        },
+        getBatchStartAction(this),
         // 批量关机
         {
           label: this.$t('compute.text_273'),
@@ -708,37 +680,7 @@ export default {
                     hidden: () => !hasSetupKey(['onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_clone'),
                   },
                   // 续费
-                  {
-                    label: this.$t('compute.text_1117'),
-                    permission: 'server_perform_renew',
-                    action: () => {
-                      this.createDialog('VmResourceFeeDialog', {
-                        data: this.list.selectedItems,
-                        columns: this.columns,
-                        onManager: this.onManager,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: true,
-                        tooltip: null,
-                      }
-                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
-                      if (!rescueModeValid.validate) return rescueModeValid
-                      const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
-                      const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
-                      if (!isAllPublic) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.text_1118')
-                      }
-                      if (!isAllPrepaid) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.text_1119')
-                      }
-                      return ret
-                    },
-                    hidden: () => !hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'rockbase', 'ecloud', 'jdcloud', 'ctyun']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_Renew'),
-                  },
+                  getBatchRenewAction(this),
                   // 自动续费设置
                   {
                     label: this.$t('compute.text_1120'),
@@ -831,6 +773,7 @@ export default {
                       }
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_user_metadata'),
                   },
                 ],
               },
@@ -1028,7 +971,7 @@ export default {
                         tooltip: cloudUnabledTip('resetPassword', this.list.selectedItems),
                       }
                     },
-                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_deploy'),
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_reset_password'),
                   },
                   // 设置免密登录
                   {

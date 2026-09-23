@@ -155,6 +155,8 @@ router.beforeEach(async (to, from, next) => {
         'fee_hidden_items',
         'bill_resource_hidden_columns',
         'vminstance_hidden_menus',
+        'vminstance_container_hidden_menus',
+        'baremetal_hidden_menus',
         'vminstance_configured_callback_address',
       ],
     })

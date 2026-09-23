@@ -372,7 +372,7 @@ export default {
       }),
       getBillingTableColumn({
         vm: this,
-        hiddenSetBtn: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_cancel_expire'),
+        hiddenSetBtn: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_perform_cancel_expire'),
         hidden: () => {
           return this.$isScopedPolicyMenuHidden('server_hidden_columns.billing_type')
         },

@@ -336,6 +336,7 @@ export default {
           await commit('CLEAR_LOGGED_USERS')
         }
         await commit('CLEAR_DASHBOARD_CACHE')
+        await commit('app/CLEAR_BILLING_ACCOUNT_CHECK', null, { root: true })
         // 清除本地用户
         storage.session.remove(SESSION_LOGIN_USER_KEY)
         return response.data
