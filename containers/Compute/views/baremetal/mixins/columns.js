@@ -1,7 +1,7 @@
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn, getTagTableColumn, getRegionTableColumn, getTimeTableColumn, getBrandTableColumn, getAccountTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getNameDescriptionTableColumn, getTagTableColumn, getRegionTableColumn, getTimeTableColumn, getBrandTableColumn, getAccountTableColumn, getBillingTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -82,6 +82,10 @@ export default {
         hidden: () => this.$store.getters.isProjectMode,
       }),
       getBrandTableColumn(),
+      getBillingTableColumn({
+        vm: this,
+        hiddenSetBtn: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_cancel_expire'),
+      }),
       {
         field: 'host_sn',
         title: 'SN',

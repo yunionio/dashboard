@@ -1254,7 +1254,14 @@
       "no_container": "no container",
       "no_server": "no server",
       "container_exited": "container exited",
-      "sync_config": "sync config"
+      "sync_config": "sync config",
+      "network": "network config",
+      "net_fail": "network config failed",
+      "disk": "disk allocation",
+      "disk_fail": "disk allocation failed",
+      "start_deploy": "start deploy",
+      "deploying": "deploying",
+      "deploy_fail": "deploy failed"
     },
     "phoneModel": {
       "ready": "available"
@@ -6588,6 +6595,11 @@
   "common.existing_custom_duration": "Existing custom option",
   "common.duration.none": "None",
   "common.duration.custom": "Custom",
+  "common.date.hours": "{0} hours",
+  "common.date.days": "{0} days",
+  "common.date.weeks": "{0} weeks",
+  "common.date.months": "{0} months",
+  "common.date.years": "{0} years",
   "common.not_set": "Not set",
   "common.not_expired": "Effective",
   "common.alert_info": "Alert information",

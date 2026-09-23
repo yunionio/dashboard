@@ -10,6 +10,8 @@ import { hasSetupKey, isLicense2 } from '@/utils/auth'
 import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip, validateRescueMode } from '../utils'
+import { getRenewAction } from '../utils/renewActions'
+import { getStartAction } from '../utils/startActions'
 
 // 策略仅保留 server_perform_set_gpu（展示名：设置透传设备）；PCI/USB 均由此控制
 export const getHostIsolatedDeviceAvailableTypes = (vm, obj) => {
@@ -388,23 +390,7 @@ const getSingleActions = function (ctx) {
                 hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
               },
               // 开机
-              {
-                label: i18n.t('compute.text_272'),
-                permission: 'server_perform_start',
-                action: (obj) => {
-                  this.createDialog('VmStartDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: cloudEnabled('start', obj),
-                  }
-                },
-                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start'),
-              },
+              getStartAction(this, obj),
               // 关机
               {
                 label: i18n.t('compute.text_273'),
@@ -890,38 +876,7 @@ const getSingleActions = function (ctx) {
                 hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_clone'),
               },
               // 续费
-              {
-                label: i18n.t('compute.text_1117'),
-                permission: 'server_perform_renew',
-                action: () => {
-                  this.$openNewWindowForMenuHook('vminstance_configured_callback_address.renew_callback_address', () => {
-                    this.createDialog('VmResourceFeeDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                    })
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
-                  const rescueModeValid = validateRescueMode(obj)
-                  if (!rescueModeValid.validate) return rescueModeValid
-                  if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
-                    ret.tooltip = i18n.t('compute.text_1118')
-                    return ret
-                  }
-                  if (obj.billing_type !== 'prepaid') {
-                    ret.tooltip = i18n.t('compute.text_1119')
-                    return ret
-                  }
-                  ret.validate = true
-                  return ret
-                },
-                hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'rockbase', 'ecloud', 'jdcloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_Renew'),
-              },
+              getRenewAction(this, obj),
               // 自动续费设置
               {
                 label: i18n.t('compute.text_1120'),

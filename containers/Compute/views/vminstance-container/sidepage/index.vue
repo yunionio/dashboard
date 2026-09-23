@@ -261,7 +261,7 @@ export default {
     },
     beforeShowMenu () {
       return this.$store.dispatch('scopedPolicy/get', {
-        category: ['vminstance_hidden_menus', 'vminstance_configured_callback_address', 'disk_hidden_menus'],
+        category: ['vminstance_container_hidden_menus', 'vminstance_configured_callback_address', 'disk_hidden_menus'],
       })
     },
     async handleInstallTask (params) {
