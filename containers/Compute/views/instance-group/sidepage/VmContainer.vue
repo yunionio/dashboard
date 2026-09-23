@@ -8,7 +8,7 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getCopyWithContentTableColumn, getNameDescriptionTableColumn, getIpsTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getCopyWithContentTableColumn, getNameDescriptionTableColumn, getIpsTableColumn } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -19,6 +19,10 @@ export default {
   props: {
     resId: {
       type: String,
+      required: true,
+    },
+    data: {
+      type: Object,
       required: true,
     },
   },
@@ -88,13 +92,33 @@ export default {
           },
         },
         getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
-        getTimeTableColumn({
+        /* getTimeTableColumn({
           field: 'attach_time',
           title: this.$t('compute.text_722'),
-        }),
+        }), */
         getCopyWithContentTableColumn({ field: 'host', title: this.$t('compute.text_111') }),
       ],
       groupActions: [
+        {
+          label: this.$t('compute.text_902'),
+          permission: 'instancegroups_perform_bind_guests',
+          action: () => {
+            this.createDialog('InstanceGroupBindGuestsDialog', {
+              data: this.data,
+              hypervisor: 'pod',
+              resourceName: this.$t('dictionary.server_container'),
+              alerts: ['compute.text_704_1', 'compute.text_707_1'],
+              refresh: this.refresh,
+            })
+          },
+          meta: () => {
+            const enabled = this.data && this.data.enabled
+            return {
+              validate: !!enabled,
+              tooltip: enabled ? null : this.$t('compute.text_717'),
+            }
+          },
+        },
         {
           label: this.$t('compute.text_723'),
           action: () => {
