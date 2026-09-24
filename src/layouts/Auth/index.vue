@@ -7,8 +7,8 @@
           <div class="auth-header-left flex-shrink-0 flex-grow-0">
             <img class="auth-header-logo" :src="loginLogo" />
           </div>
-          <!-- 多语言切换按钮 -->
-          <div v-if="!languages.length || languages.length > 1" class="auth-header-right flex-fill d-flex justify-content-end">
+          <!-- 多语言切换按钮：配置 VUE_APP_FORCE_LANGUAGE 时隐藏 -->
+          <div v-if="!forceLanguage && (!languages.length || languages.length > 1)" class="auth-header-right flex-fill d-flex justify-content-end">
             <a-dropdown :trigger="['click']">
               <div class="oc-pointer">
                 <a-icon type="global" />
@@ -61,7 +61,7 @@
 import { mapGetters } from 'vuex'
 import storage from '@/utils/storage'
 import { isChrome } from '@/utils/utils'
-import { setLanguage } from '@/utils/common/cookie'
+import { setLanguage, getForcedLanguage } from '@/utils/common/cookie'
 import TopAlert from '@/sections/TopAlert'
 export default {
   name: 'AuthLayout',
@@ -91,6 +91,9 @@ export default {
       } else {
         return 'English'
       }
+    },
+    forceLanguage () {
+      return getForcedLanguage()
     },
   },
   async created () {
@@ -144,6 +147,7 @@ export default {
     //   }
     // },
     handleChangeLanguage (e) {
+      if (getForcedLanguage()) return
       setLanguage(e.key)
       window.location.reload()
     },
