@@ -22,6 +22,8 @@
       :getParams="getParams"
       :columns="columns"
       :force-kvm="true"
+      :guest_id="detailData.server_id || ''"
+      cloud-env="baremetal"
       taskResource="compute-tasks"
       @tab-change="handleTabChange" />
   </base-side-page>
@@ -37,7 +39,7 @@ import NetworkList from './Network'
 import BmcLog from './BMCLog'
 import StorageList from '../../host/sidepage/Storage'
 import GpuList from '../../host/sidepage/Gpu'
-import Monitor from '../../host/sidepage/Monitor'
+import Monitor from '../../baremetal/sidepage/Monitor'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 export default {

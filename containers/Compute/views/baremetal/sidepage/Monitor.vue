@@ -1,18 +1,18 @@
 <template>
-  <div>
-    <install-agent-form-visible :data="data" :serverColumns="[]" :isPageDestroyed="isPageDestroyed" />
+  <div v-if="serverData">
+    <install-agent-form-visible :data="serverData" :serverColumns="[]" :isPageDestroyed="isPageDestroyed" />
     <!-- monitor tabs -->
     <div>
       <a-tabs default-active-key="agent-basic" @change="handleTabChange">
         <a-tab-pane key="agent-basic" :tab="$t('compute.monitor.agent')">
           <agent-monitor
-            :data="data"
+            :data="serverData"
             idKey="vm_id"
             v-if="true" />
         </a-tab-pane>
         <a-tab-pane key="agent-temperature" :tab="$t('compute.monitor.agent.temperature')">
           <agent-temperature-monitor
-            :data="data"
+            :data="serverData"
             idKey="vm_id"
             v-if="true" />
         </a-tab-pane>
@@ -41,14 +41,39 @@ export default {
       required: true,
     },
     isPageDestroyed: Boolean,
+    guest_id: String,
   },
-  computed: {
-    serverId () {
-      return this.data.id
+  data () {
+    return {
+      serverData: null,
+    }
+  },
+  watch: {
+    guest_id: {
+      async handler (val) {
+        if (!val) {
+          this.serverData = this.data
+          return
+        }
+        this.serverData = await this.fetchServerData()
+      },
+      immediate: true,
     },
   },
   methods: {
     handleTabChange (tab) {
+    },
+    async fetchServerData () {
+      if (this.guest_id) {
+        const serverData = await new this.$Manager('servers').get({
+          id: this.guest_id,
+          params: {
+            with_meta: true,
+          },
+        })
+        return serverData.data
+      }
+      return this.data
     },
   },
 }
