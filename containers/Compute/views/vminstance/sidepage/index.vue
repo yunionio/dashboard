@@ -123,6 +123,7 @@ export default {
       agent_status: '',
       agent_fail_reason: '',
       agent_fail_code: '',
+      agent_record_id: '',
       isPageDestroyed: false,
     }
   },
@@ -226,7 +227,7 @@ export default {
       }
     },
     componentData () {
-      return Object.assign({}, this.detailData, { agent_status: this.agent_status, agent_fail_reason: this.agent_fail_reason, agent_fail_code: this.agent_fail_code })
+      return Object.assign({}, this.detailData, { agent_status: this.agent_status, agent_fail_reason: this.agent_fail_reason, agent_fail_code: this.agent_fail_code, agent_record_id: this.agent_record_id })
     },
     hiddenColumns () {
       if (this.params.windowData.currentTab === 'scheduledtasks-list') {
@@ -292,6 +293,7 @@ export default {
         const { data: { data = [] } } = await new this.$Manager('scriptapplyrecords').list({ params: { server_id: this.data.data.id, details: false, limit: 1 } })
         if (data[0]) {
           this.agent_status = data[0].status
+          this.agent_record_id = data[0].id || ''
           if (data[0].status === 'applying') {
             if (!this.componentData.id) return
             this.handleInstallTask({
@@ -320,6 +322,7 @@ export default {
           }
           const { data: { data = [] } } = await new this.$Manager('scriptapplyrecords').list({ params: params })
           if (data[0]) {
+            this.agent_record_id = data[0].id || ''
             if (data[0].status === 'succeed' || data[0].status === 'failed') {
               this.agent_status = data[0].status
               this.agent_fail_reason = data[0].reason
