@@ -1,10 +1,26 @@
 import Cookies from 'js-cookie'
 
+/** 合法值：zh-CN | en | ja-JP；未配置则不强制 */
+export function getForcedLanguage () {
+  const lang = process.env.VUE_APP_FORCE_LANGUAGE
+  if (!lang || !String(lang).trim()) return ''
+  return String(lang).trim()
+}
+
 export function setLanguage (val) {
+  const forced = getForcedLanguage()
+  if (forced) {
+    return Cookies.set('lang', forced, { expires: 365 })
+  }
   return Cookies.set('lang', val, { expires: 365 })
 }
 
 export function getLanguage () {
+  const forced = getForcedLanguage()
+  if (forced) {
+    Cookies.set('lang', forced, { expires: 365 })
+    return forced
+  }
   let lang = Cookies.get('lang')
   if (lang) return lang
   lang = navigator.language
