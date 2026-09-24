@@ -284,7 +284,8 @@ export default {
 }
 .uplot-chart-tooltip {
   position: absolute;
-  z-index: 1000;
+  /* 仅需盖住图表区域；过高会盖住侧栏抽屉 mask（z-index: 98） */
+  z-index: 2;
   pointer-events: none;
   background: rgba(50, 50, 50, 0.9);
   color: #fff;
@@ -325,7 +326,8 @@ export default {
   width: 100%;
   height: 100%;
   min-height: 300px;
-  z-index: 1001;
+  /* 仅需盖住图表；过高会盖住侧栏抽屉 mask（z-index: 98） */
+  z-index: 1;
   background: #fff;
   display: flex;
   align-items: center;
