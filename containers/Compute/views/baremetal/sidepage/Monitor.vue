@@ -1,22 +1,25 @@
 <template>
-  <div v-if="serverData">
-    <install-agent-form-visible :data="serverData" :serverColumns="[]" :isPageDestroyed="isPageDestroyed" />
-    <!-- monitor tabs -->
-    <div>
-      <a-tabs default-active-key="agent-basic" @change="handleTabChange">
-        <a-tab-pane key="agent-basic" :tab="$t('compute.monitor.agent')">
-          <agent-monitor
-            :data="serverData"
-            idKey="vm_id"
-            v-if="true" />
-        </a-tab-pane>
-        <a-tab-pane key="agent-temperature" :tab="$t('compute.monitor.agent.temperature')">
-          <agent-temperature-monitor
-            :data="serverData"
-            idKey="vm_id"
-            v-if="true" />
-        </a-tab-pane>
-      </a-tabs>
+  <div>
+    <a-alert v-if="showGuestMonitorTip" class="mb-2" :type="isGuestUuid ? 'info' : 'warning'" :message="guestMonitorTip" />
+    <div v-if="serverData">
+      <install-agent-form-visible :data="serverData" :serverColumns="[]" :isPageDestroyed="isPageDestroyed" v-if="!hideInstallAgentForm" />
+      <!-- monitor tabs -->
+      <div>
+        <a-tabs default-active-key="agent-basic" @change="handleTabChange">
+          <a-tab-pane key="agent-basic" :tab="$t('compute.monitor.agent')">
+            <agent-monitor
+              :data="serverData"
+              idKey="vm_id"
+              v-if="true" />
+          </a-tab-pane>
+          <a-tab-pane key="agent-temperature" :tab="$t('compute.monitor.agent.temperature')">
+            <agent-temperature-monitor
+              :data="serverData"
+              idKey="vm_id"
+              v-if="true" />
+          </a-tab-pane>
+        </a-tabs>
+      </div>
     </div>
   </div>
 </template>
@@ -48,14 +51,35 @@ export default {
       serverData: null,
     }
   },
+  computed: {
+    hideInstallAgentForm () {
+      return this.guest_id && this.guest_id !== ''
+    },
+    showGuestMonitorTip () {
+      return this.guest_id !== undefined
+    },
+    isGuestUuid () {
+      return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(this.guest_id || '')
+    },
+    guestMonitorTip () {
+      return this.isGuestUuid
+        ? this.$t('compute.monitor.physicalmachine.guest_assigned')
+        : this.$t('compute.monitor.physicalmachine.guest_unassigned')
+    },
+  },
   watch: {
     guest_id: {
       async handler (val) {
-        if (!val) {
-          this.serverData = this.data
+        if (val) {
+          this.serverData = await this.fetchServerData()
           return
         }
-        this.serverData = await this.fetchServerData()
+        // 空字符串表示物理机侧页还在等 server_id，先不要用物理机详情渲染安装状态
+        if (val === '') {
+          this.serverData = null
+          return
+        }
+        this.serverData = this.data
       },
       immediate: true,
     },
@@ -67,9 +91,6 @@ export default {
       if (this.guest_id) {
         const serverData = await new this.$Manager('servers').get({
           id: this.guest_id,
-          params: {
-            with_meta: true,
-          },
         })
         return serverData.data
       }

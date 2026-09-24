@@ -52,28 +52,10 @@ export default {
     isPageDestroyed: Boolean,
   },
   data () {
-    let agent_install_status
-    const deploy = _.get(this.data, ['metadata', 'telegraf_deployed'])
-    if (deploy) {
-      agent_install_status = 'installed'
-    } else if (this.data.hasOwnProperty('agent_status')) {
-      const { agent_status } = this.data
-      if (agent_status === 'succeed') {
-        agent_install_status = 'installed'
-      } else if (agent_status === 'applying') {
-        agent_install_status = 'installing'
-      } else if (agent_status === 'failed') {
-        agent_install_status = 'install_failed'
-      } else {
-        agent_install_status = 'install'
-      }
-    } else {
-      agent_install_status = 'install'
-    }
     return {
       showDocsLink,
       /* install, installed, installing, install_failed */
-      agent_install_status,
+      agent_install_status: this.resolveAgentInstallStatus(this.data),
     }
   },
   computed: {
@@ -149,6 +131,13 @@ export default {
     },
   },
   watch: {
+    data: {
+      handler (val) {
+        const next = this.resolveAgentInstallStatus(val)
+        if (this.agent_install_status === 'installing' && next === 'install') return
+        this.agent_install_status = next
+      },
+    },
     'data.agent_status': {
       handler: function (val, oldval) {
         if (oldval === 'applying' || this.agent_install_status === 'installing') {
@@ -169,6 +158,19 @@ export default {
     },
   },
   methods: {
+    resolveAgentInstallStatus (data) {
+      if (!data) return 'install'
+      const deploy = _.get(data, ['metadata', 'telegraf_deployed'])
+      const monitorAgent = _.get(data, ['metadata', 'sys:monitor_agent']) || _.get(data, ['metadata', '__monitor_agent'])
+      const deployed = deploy === true || deploy === 'true'
+      if (deployed || monitorAgent) return 'installed'
+      if (Object.prototype.hasOwnProperty.call(data, 'agent_status')) {
+        if (data.agent_status === 'succeed') return 'installed'
+        if (data.agent_status === 'applying') return 'installing'
+        if (data.agent_status === 'failed') return 'install_failed'
+      }
+      return 'install'
+    },
     async handleInstallAgent (e) {
       if (this.data.hypervisor === 'kvm' || this.data.hypervisor === 'esxi') {
         if (this.data.status === 'running') {
