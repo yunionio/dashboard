@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-show="!installing">
+  <div class="install-agent-form">
+    <div v-show="!installing" class="install-agent-form-status">
       <a-tooltip>
         <template slot="title" v-if="install_failed_reason">
           {{ install_failed_reason }}
@@ -17,10 +17,18 @@
         </a-button>
       </a-tooltip>
     </div>
-    <div v-show="installing">
+    <div v-show="installing" class="install-agent-form-status">
       {{ $t('compute.vminstance.monitor.install_agent.installing') }}
       <a-icon type="loading" />
     </div>
+    <a-tooltip v-if="agent_record_id">
+      <template slot="title">{{ $t('compute.vminstance.monitor.install_agent.view_log_tips') }}</template>
+      <span class="install-agent-form-log">
+        <a-button type="link" @click="handleViewLog">
+          {{ $t('compute.vminstance.monitor.install_agent.view_log') }}
+        </a-button>
+      </span>
+    </a-tooltip>
   </div>
 </template>
 
@@ -71,6 +79,12 @@ export default {
   computed: {
     installing () {
       return this.agent_install_status === 'installing'
+    },
+    // The side page passes the id of the script apply record of the latest attempt;
+    // it is absent for the install paths that are not driven by an ansible script
+    // (for instance the deploy of a ready KVM guest) and for the container hosts.
+    agent_record_id () {
+      return this.data.agent_record_id
     },
     showInstallButton () {
       return this.agent_install_status === 'install' || this.agent_install_status === 'install_failed'
@@ -203,6 +217,11 @@ export default {
       this.agent_install_status = 'installing'
       this.$bus.$emit('agentStatusQuery', id)
     },
+    handleViewLog () {
+      this.createDialog('MonitorAgentAnsibleLogDialog', {
+        recordId: this.agent_record_id,
+      })
+    },
     // async handleInstallTask (id) {
     //   if (!id) return
     //   this.agent_install_status = 'installing'
@@ -239,5 +258,22 @@ export default {
 </script>
 
 <style scoped>
-
+/* Keep the install status, the install button and the deploy log link on a single
+   line. The children are blocks by default, which used to push the log link onto a
+   line of its own. The status text is the only part allowed to shrink, so the log
+   link never breaks onto a separate line, the text wraps instead. */
+.install-agent-form {
+  display: flex;
+  align-items: center;
+}
+.install-agent-form-status {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+.install-agent-form-log {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  /* ml-2 equivalent, the install button next to it uses the same spacing */
+  margin-left: 8px;
+}
 </style>
