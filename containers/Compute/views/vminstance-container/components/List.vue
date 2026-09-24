@@ -145,6 +145,7 @@ export default {
         // 新建
         {
           label: this.$t('compute.perform_create'),
+          permission: 'server_create',
           action: () => {
             this.$openNewWindowForMenuHook('vminstance_configured_callback_address.create_callback_address', () => {
               this.$router.push({
@@ -174,6 +175,7 @@ export default {
         // 批量关机
         {
           label: this.$t('compute.text_273'),
+          permission: 'server_perform_stop',
           action: () => {
             this.createDialog('VmShutDownDialog', {
               data: this.list.selectedItems,
@@ -199,6 +201,7 @@ export default {
         // 重启
         {
           label: this.$t('compute.text_274'),
+          permission: 'server_perform_restart',
           action: () => {
             this.createDialog('VmContainerRestartDialog', {
               data: this.list.selectedItems,
@@ -224,6 +227,7 @@ export default {
         // 同步状态
         {
           label: this.$t('compute.perform_sync_status'),
+          permission: 'server_perform_syncstatus',
           action: () => {
             this.onManager('batchPerformAction', {
               steadyStatus: ['running', 'ready'],
@@ -249,6 +253,7 @@ export default {
               // 更改项目
               {
                 label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
+                permission: 'server_perform_change_owner',
                 action: (obj) => {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
@@ -263,6 +268,7 @@ export default {
               // 到期释放
               {
                 label: this.$t('compute.text_1132'),
+                permission: 'server_perform_cancel_expire',
                 action: () => {
                   this.createDialog('SetDurationDialog', {
                     data: this.list.selectedItems,
@@ -303,6 +309,7 @@ export default {
               // 编辑标签
               {
                 label: this.$t('compute.text_283'),
+                permission: 'server_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -377,13 +384,16 @@ export default {
                 hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_perform_add_secgroup'),
               },
               // 设置删除保护
-              disableDeleteAction(Object.assign(this, {}), {
+              disableDeleteAction(Object.assign(this, {
+                permission: 'server_update',
+              }), {
                 name: this.$t('compute.vminstance-container'),
                 hidden: () => this.$isScopedPolicyMenuHidden('vminstance_container_hidden_menus.server_set_delete_protection'),
               }),
               // 删除
               {
                 label: this.$t('compute.perform_delete'),
+                permission: 'server_delete',
                 action: () => {
                   this.createDialog('DeleteVmContainerDialog', {
                     vm: this,

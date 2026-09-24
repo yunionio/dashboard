@@ -16,6 +16,7 @@ const scopeStart = loadScopeStartModule()
 function getDefaultStartAction (vm, obj) {
   return {
     label: vm.$t('compute.text_272'),
+    permission: 'server_perform_start',
     action: () => {
       vm.onManager('performAction', {
         steadyStatus: 'running',
@@ -37,6 +38,7 @@ function getDefaultStartAction (vm, obj) {
 function getDefaultBatchStartAction (vm) {
   return {
     label: vm.$t('compute.text_272'),
+    permission: 'server_perform_start',
     action: () => {
       const ids = vm.list.selectedItems.map(item => item.id)
       vm.list.onManager('batchPerformAction', {
