@@ -132,7 +132,7 @@
           <span class="ml-2 text-truncate" style="max-width: 100px;">{{ username }}</span>
         </div>
         <a-menu slot="overlay" @click="userMenuClick">
-          <a-sub-menu v-if="!supportLanguages.length || supportLanguages.length > 1 && showMenuMap.language" key="language">
+          <a-sub-menu v-if="!forceLanguage && (!supportLanguages.length || supportLanguages.length > 1 && showMenuMap.language)" key="language">
             <span slot="title"><a-icon class="mr-2 ml-2" type="global" /><span>{{$t('common_630')}}</span></span>
             <a-menu-item v-if="!supportLanguages.length || supportLanguages.includes('zh-CN')" key="3" @click="settingLanguageCH">
               <span class="mr-2" style="cursor: pointer">简体中文</span><a-icon v-show="language === 'zh-CN'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
@@ -160,7 +160,7 @@ import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
 import storage from '@/utils/storage'
 import Alertresource from '@/sections/Navbar/components/Alertresource'
-import { setLanguage } from '@/utils/common/cookie'
+import { setLanguage, getForcedLanguage } from '@/utils/common/cookie'
 import CloudShell from '@/sections/Navbar/components/CloudShell'
 import NotifyPopover from '@/sections/Navbar/components/NotifyPopover'
 import MorePopover from '@/sections/Navbar/components/MorePopover'
@@ -255,6 +255,9 @@ export default {
     language () {
       return this.setting.language
     },
+    forceLanguage () {
+      return getForcedLanguage()
+    },
     showAlertresource () {
       if (this.isAdminMode) {
         if (this.alertresource) {
@@ -307,6 +310,8 @@ export default {
     supportLanguages: {
       handler: function (val) {
         this.setSupportLanguages(val)
+        // 强制语言时不根据 setupKeys / 浏览器语言改写
+        if (getForcedLanguage()) return
         if (val.length && !val.includes(this.language)) {
           const navigatorL = navigator.language || navigator.userLanguage
           setLanguage(val.includes(navigatorL) ? navigatorL : val[0])
@@ -399,14 +404,17 @@ export default {
       })
     },
     settingLanguageCH () {
+      if (getForcedLanguage()) return
       setLanguage('zh-CN')
       window.location.reload()
     },
     settingLanguageEN () {
+      if (getForcedLanguage()) return
       setLanguage('en')
       window.location.reload()
     },
     settingLanguageJP () {
+      if (getForcedLanguage()) return
       setLanguage('ja-JP')
       window.location.reload()
     },
