@@ -1534,6 +1534,7 @@ export const PERMISSION = {
   scriptapplyrecords_update: ['devtool', 'scriptapplyrecords', 'update'],
   scriptapplyrecords_create: ['devtool', 'scriptapplyrecords', 'create'],
   scriptapplyrecords_delete: ['devtool', 'scriptapplyrecords', 'delete'],
+  scriptapplyrecords_perform_ansible_log: ['devtool', 'scriptapplyrecords', 'perform', 'ansible-log'],
 
   metadatas_perform_tag_value_pairs: ['compute', 'metadatas', 'perform', 'tag-value-pairs'],
 
