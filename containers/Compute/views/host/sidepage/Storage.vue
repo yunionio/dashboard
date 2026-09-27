@@ -2,6 +2,7 @@
   <block-storage-list
     :id="id"
     :getParams="getParams"
+    :cloudEnv="cloudEnv"
     :hidenGroupActions="true" />
 </template>
 
@@ -18,6 +19,7 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    cloudEnv: String,
   },
 }
 </script>

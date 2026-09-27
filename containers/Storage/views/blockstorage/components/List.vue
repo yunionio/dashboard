@@ -350,6 +350,7 @@ export default {
   },
   methods: {
     getParam () {
+      console.log('this.cloudEnv', this.cloudEnv)
       const ret = {
         details: true,
         with_meta: true,

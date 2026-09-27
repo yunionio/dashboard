@@ -8,7 +8,7 @@
 
 <script>
 import _ from 'lodash'
-import InstallAgentForm from '@Compute/views/vminstance/components/InstallAgentForm'
+import InstallAgentForm from './InstallAgentForm'
 
 export default {
   name: 'InstallAgentFormVisible',

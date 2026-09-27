@@ -4,7 +4,7 @@
     <div slot="body">
       <steps class="my-3" v-model="step" />
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" v-show="showSetup" />
-      <detect-ssh-table ref="endpointsTable" @onDetecting="handleDetectStatusChange" :params="params" :key="step.currentStep" :ansibleTasks="ansibleTasks" :remote="!showSetup" />
+      <detect-ssh-table ref="endpointsTable" @onDetecting="handleDetectStatusChange" :params="params" :key="step.currentStep" :ansibleTasks="ansibleTasks" :remote="true" />
       <setup-ssh-form ref="stepForm" :servers="servers" @tasks="handleSetupSSHTasks" v-show="showSetup" />
     </div>
     <div slot="footer">
