@@ -32,7 +32,7 @@
       <div class="ant-form-item-label">
         <label :title="$t('common_166')">{{$t('common_166')}}</label>
       </div>
-      <a-select class="mr-2" style="width: 80px" :value="timeGroup" @change="timeGroupChange">
+      <a-select class="mr-2" style="width: 90px" :value="timeGroup" @change="timeGroupChange">
         <a-select-option v-for="item in timeGroupOpts" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
       </a-select>
     </template>

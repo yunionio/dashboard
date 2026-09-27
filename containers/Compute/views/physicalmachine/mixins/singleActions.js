@@ -199,9 +199,17 @@ export default {
               permission: 'hosts_perform_public',
             }),
             {
-              label: i18n.t('compute.text_298'),
+              label: i18n.t('compute.text_299'),
               permission: 'server_create',
               action: () => {
+                if (obj.is_import) {
+                  this.createDialog('CreateFromImportBaremetal', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                  return
+                }
                 let wire_id = ''
                 if (obj.nic_info) {
                   const arr = obj.nic_info.filter(item => {
@@ -230,16 +238,19 @@ export default {
                 if (!obj.is_baremetal) {
                   return {
                     validate: false,
+                    tooltip: i18n.t('compute.host_is_not_baremetal'),
                   }
                 }
                 if (obj.host_type !== 'baremetal') {
                   return {
                     validate: false,
+                    tooltip: i18n.t('compute.host_is_not_baremetal'),
                   }
                 }
                 if (obj.server_id) {
                   return {
                     validate: false,
+                    tooltip: i18n.t('compute.host_is_occupied'),
                   }
                 }
                 if (!obj.enabled) {
@@ -256,6 +267,7 @@ export default {
                 }
                 return {
                   validate: true,
+                  tooltip: i18n.t('compute.text_298'),
                 }
               },
             },
