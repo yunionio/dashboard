@@ -50,23 +50,19 @@ export function resolveDraftNetworkType (initData) {
 }
 
 /**
- * 端口映射（Port Mapping）：优先 extraData.port_mappings，其次第一块网卡的 port_mappings
+ * 旧稿全局端口映射（仅当各网卡都没有 port_mappings 时可用）
+ * 多网卡逐卡请读 nets[i].port_mappings，勿把本方法结果灌到无配置的网卡。
  * @param {object} initData
  * @returns {Array}
  */
 export function resolveDraftPortMappings (initData) {
   if (!initData || typeof initData !== 'object') return []
+  const nets = initData.extraData?.nets || initData.nets
+  const hasPerNic = Array.isArray(nets) && nets.some(n => Array.isArray(n?.port_mappings) && n.port_mappings.length)
+  // 已有按网卡数据时，禁止返回聚合/它卡映射，否则会误回填到未配置的网卡
+  if (hasPerNic) return []
   if (Array.isArray(initData.extraData?.port_mappings) && initData.extraData.port_mappings.length) {
     return initData.extraData.port_mappings
-  }
-  const nets = initData.nets || initData.extraData?.nets
-  if (Array.isArray(nets)) {
-    for (let i = 0; i < nets.length; i++) {
-      const n = nets[i]
-      if (n && Array.isArray(n.port_mappings) && n.port_mappings.length) {
-        return n.port_mappings
-      }
-    }
   }
   return []
 }
@@ -78,9 +74,7 @@ export function resolveDraftPortMappings (initData) {
  */
 export function hasAdvanceConfigInitFields (initData) {
   if (!initData || typeof initData !== 'object') return false
-  const hasPortMappings = resolveDraftPortMappings(initData).length > 0
   return !!(
-    hasPortMappings ||
     initData.hostname ||
     initData.hostName ||
     initData.eip ||
