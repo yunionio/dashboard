@@ -20,6 +20,7 @@ import store from '@/store'
 import i18n from '@/locales'
 import { removeHttp } from '@/utils/url'
 import { diskSupportTypeMedium, getOriginDiskKey } from '@/utils/common/hypervisor'
+import { validateHostPortRange } from '@Compute/utils/createServer'
 
 export function getIpv6Start (ipv6) {
   try {
@@ -519,6 +520,35 @@ export const createVmDecorators = (initData = {}) => {
             }],
           },
         ],
+        // 端口映射：挂在每张网卡下 networkContainerPorts[netKey][rowKey]
+        portMapping: {
+          key: (netKey, i) => [
+            `networkContainerPorts[${netKey}][${i}]`,
+            {
+              rules: [
+                { required: true, message: i18n.t('common.tips.input', [i18n.t('compute.repo.container_port')]) },
+              ],
+            },
+          ],
+          value: (netKey, i) => [
+            `networkHostPorts[${netKey}][${i}]`,
+            {
+              validateTrigger: ['change', 'blur'],
+              rules: [
+                { validator: validateHostPortRange(20000, 25000) },
+              ],
+            },
+          ],
+          protocol: (netKey, i) => [
+            `networkPortProtocols[${netKey}][${i}]`,
+            {
+              initialValue: 'tcp',
+              rules: [
+                { required: true, message: i18n.t('common.tips.select', [i18n.t('compute.port_mappings.protocol')]) },
+              ],
+            },
+          ],
+        },
       },
       networkSchedtag: {
         schedtags: i => [
@@ -721,19 +751,6 @@ export const createVmDecorators = (initData = {}) => {
         initialValue: initData.hostname || '',
       },
     ],
-    portMapping: {
-      key: i => [
-        `containerPorts[${i}]`,
-        {
-          rules: [
-            { required: true, message: i18n.t('common.tips.input', [i18n.t('compute.repo.container_port')]) },
-          ],
-        },
-      ],
-      value: i => [
-        `hostPorts[${i}]`,
-      ],
-    },
     containers: {
       name: i => [
         `containerNames[${i}]`,
@@ -1103,18 +1120,45 @@ export class GenCreateData {
   }
 
   /**
-   * 组装所有网络数据
-   *
-   * @returns { Array }
-   * @memberof GenCreateData
+   * 组装指定网卡的端口映射
    */
+  getPortMappingsByNetworkKey (netKey) {
+    const port_mappings = []
+    const ports = this.fd.networkContainerPorts && this.fd.networkContainerPorts[netKey]
+    if (!ports) return port_mappings
+    const hostPorts = (this.fd.networkHostPorts && this.fd.networkHostPorts[netKey]) || {}
+    const protocols = (this.fd.networkPortProtocols && this.fd.networkPortProtocols[netKey]) || {}
+    for (const k in ports) {
+      const port = ports[k]
+      if (port == null || port === '') continue
+      const pm = {
+        port,
+        protocol: (protocols[k] || 'tcp').toLowerCase(),
+      }
+      if (hostPorts[k] != null && hostPorts[k] !== '') {
+        pm.host_port = hostPorts[k]
+      }
+      port_mappings.push(pm)
+    }
+    return port_mappings
+  }
+
+  /** 汇总所有网卡端口映射（兼容旧草稿 containerPorts / hostPorts） */
   getPortMappings () {
     const port_mappings = []
-    if (this.fd.containerPorts) {
+    const portsByNet = this.fd.networkContainerPorts || {}
+    Object.keys(portsByNet).forEach((netKey) => {
+      port_mappings.push(...this.getPortMappingsByNetworkKey(netKey))
+    })
+    // 兼容旧表单：高级配置全局 Labels
+    if (!port_mappings.length && this.fd.containerPorts) {
       for (const k in this.fd.containerPorts) {
         const port = this.fd.containerPorts[k]
         if (port == null || port === '') continue
-        const pm = { port }
+        const pm = {
+          port,
+          protocol: ((this.fd.portProtocols && this.fd.portProtocols[k]) || 'tcp').toLowerCase(),
+        }
         if (this.fd.hostPorts && this.fd.hostPorts[k] != null && this.fd.hostPorts[k] !== '') {
           pm.host_port = this.fd.hostPorts[k]
         }
@@ -1126,7 +1170,6 @@ export class GenCreateData {
 
   genNetworks () {
     let ret = [{ exit: false }]
-    const portMappings = this.getPortMappings()
     // 指定 IP 子网
     if (this.fd.networkType === NETWORK_OPTIONS_MAP.manual.key) {
       ret = []
@@ -1178,6 +1221,7 @@ export class GenCreateData {
             obj.sriov_device = { model: device }
           }
         }
+        const portMappings = this.getPortMappingsByNetworkKey(key)
         if (portMappings.length > 0) {
           obj.port_mappings = portMappings
         }
@@ -1200,18 +1244,10 @@ export class GenCreateData {
             obj.sriov_device = { model: device }
           }
         }
-        const netObj = {
+        ret.push({
           schedtags: [obj],
-        }
-        // 端口映射挂在第一块网卡上（与手动网络一致，便于草稿/工单反填）
-        if (!ret.length && portMappings.length > 0) {
-          netObj.port_mappings = portMappings
-        }
-        ret.push(netObj)
+        })
       }, this.fd.networkSchedtags)
-    } else if (portMappings.length > 0) {
-      // 自动调度：默认 nets 也要带上端口映射，否则草稿丢失
-      ret[0].port_mappings = portMappings
     }
     return ret
   }
@@ -1651,6 +1687,10 @@ export class GenCreateData {
         }
         if (this.fd.networkMacs && this.fd.networkMacs[key]) {
           item.mac = this.fd.networkMacs[key]
+        }
+        const portMappings = this.getPortMappingsByNetworkKey(key)
+        if (portMappings.length) {
+          item.port_mappings = portMappings
         }
         data.extraData.nets.push(item)
       }, this.fd.networks)

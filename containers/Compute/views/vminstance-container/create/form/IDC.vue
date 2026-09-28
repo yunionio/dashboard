@@ -113,6 +113,7 @@
           :networkResourceMapper="networkResourceMapper"
           :showMacConfig="true"
           :showDeviceConfig="true"
+          :showPortMapping="true"
           :ignore-auto-network-type="isFormBackfill"
           :form-draft-key="containerDraftFields.serverNetwork" />
       </a-form-item>
@@ -188,19 +189,6 @@
               :decorators="instanceGroupDecorators"
               :params="instanceGroupsParams" />
           </a-form-item>
-          <a-form-item :label="$t('compute.repo.port_mapping')">
-            <labels
-              ref="labelRef"
-              :create-form="form"
-              :decorators="decorators.portMapping"
-              :disableConf="portMappingDisableConf"
-              :init-pairs="workflowInitPortMappings"
-              :title="$t('compute.repo.port_mapping')"
-              :keyLabel="$t('compute.repo.container_port')"
-              :valueLabel="$t('compute.repo.host_port')"
-              :keyPlaceholder="$t('compute.repo.example', ['443'])"
-              :valuePlaceholder="$t('compute.repo.example', ['443'])" />
-          </a-form-item>
       </advance-config-block>
       <bottom-bar
         :loading="submiting"
@@ -222,7 +210,6 @@ import _ from 'lodash'
 import * as R from 'ramda'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import EipConfig from '@Compute/sections/EipConfig'
-import Labels from '@Compute/sections/Labels'
 import SpecContainer from '@Compute/sections/SpecContainer'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import OsArch from '@/sections/OsArch'
@@ -242,7 +229,6 @@ export default {
     OsArch,
     ContainerTitle,
     SpecContainer,
-    Labels,
   },
   mixins: [mixin],
   data () {
@@ -539,15 +525,6 @@ export default {
     enableEncryption () {
       return this.$appConfig.isPrivate
     },
-    isMultiServer () {
-      return this.form.fd.count > 1
-    },
-    portMappingDisableConf () {
-      return {
-        tooltip: '', // this.isMultiServer ? this.$t('compute.container.port_mapping.tooltip') : '',
-        disabled: false, // this.isMultiServer,
-      }
-    },
     containerInitList () {
       // 修改工单 / 草稿回填：优先 props，其次草稿，再次路由 params
       if (this.$route.query.workflow) {
@@ -637,13 +614,6 @@ export default {
           }
         })
       },
-    },
-    isMultiServer (val) {
-      if (val && this.$refs.labelRef) {
-        this.$refs.labelRef.reset()
-        this.form.fd.containerPorts = {}
-        this.form.fd.hostPorts = {}
-      }
     },
   },
   destroyed () {
