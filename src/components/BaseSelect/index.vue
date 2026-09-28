@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="base-select-wrap">
     <a-select
       class="base-select"
       :disabled="disabled"
       v-bind="{ ...selectProps, ...filterOpts, ...otherOpts }"
-      :style="{ width: (showSync ? 'calc(100% - 24px)' : '100%'), 'min-width': minWidth, ...selectStyle }"
+      :style="{ width: '100%', 'min-width': minWidth, ...selectStyle }"
       :value="value"
       :option-label-prop="optionLabelProp"
       @blur="onBlur"
@@ -31,7 +31,7 @@
         </a-select-option>
       </template>
     </a-select>
-    <a-icon v-if="showSync" type="sync" class="ml-2 primary-color" :spin="loading" @click="refresh" />
+    <a-icon v-if="showSync" type="sync" class="base-select-sync primary-color" :spin="loading" @click="refresh" />
   </div>
 </template>
 <script>
@@ -709,6 +709,24 @@ export default {
 .dropdown-item-word-wrap {
   .ant-select-dropdown-menu-item {
     white-space: inherit;
+  }
+}
+
+.base-select-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: 100%;
+  min-width: 0;
+
+  .base-select {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .base-select-sync {
+    flex: 0 0 auto;
+    margin-left: 8px;
   }
 }
 </style>
