@@ -192,6 +192,7 @@
           :showDeviceConfig="form.fd.hypervisor === 'kvm'"
           :showSecgroupConfig="form.fd.hypervisor === 'kvm'"
           :secgroupParams="networkSecgroupParams"
+          :showPortMapping="showPortMapping"
           :ignore-auto-network-type="ignoreAutoNetworkTypeForDraft"
           :form-draft-key="vmDraftFields.serverNetwork" />
       </a-form-item>
@@ -251,19 +252,6 @@
             :preserve-init-prefer-host="preserveAdvanceInitProps"
             :init-schedtags="workflowInitSchedtags"
             :form-draft-key="vmDraftFields.schedPolicy" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.repo.port_mapping')" v-if="showPortMapping">
-          <labels
-            ref="labelRef"
-            :create-form="form"
-            :decorators="decorators.portMapping"
-            :disableConf="portMappingDisableConf"
-            :init-pairs="workflowInitPortMappings"
-            :title="$t('compute.repo.port_mapping')"
-            :keyLabel="$t('compute.repo.container_port')"
-            :valueLabel="$t('compute.repo.host_port')"
-            :keyPlaceholder="$t('compute.repo.example', ['443'])"
-            :valuePlaceholder="$t('compute.repo.example', ['443'])" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_1155')" class="mb-0" v-if="isKvm">
           <bios

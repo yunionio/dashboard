@@ -15,7 +15,9 @@
             :keyLabel="$t('compute.repo.container_port')"
             :valueLabel="$t('compute.repo.host_port')"
             :keyPlaceholder="$t('compute.repo.example', ['443'])"
-            :valuePlaceholder="$t('compute.repo.example', ['443'])" />
+            :valuePlaceholder="$t('compute.repo.example', ['443'])"
+            :valueTooltip="$t('compute.port_mappings.host_port_tip', [20000, 25000])"
+            show-protocol />
         </a-form-item>
       </a-form>
     </div>
@@ -63,6 +65,15 @@ export default {
               validateTrigger: ['change', 'blur'],
               rules: [
                 { validator: this.validatePort(20000, 25000, 'compute.port_mappings.invalid_host_port') },
+              ],
+            },
+          ],
+          protocol: i => [
+            `portProtocols[${i}]`,
+            {
+              initialValue: 'tcp',
+              rules: [
+                { required: true, message: this.$t('common.tips.select', [this.$t('compute.port_mappings.protocol')]) },
               ],
             },
           ],
@@ -141,6 +152,7 @@ export default {
     genPortMappings (values) {
       const containerPorts = this.pickPortValues(values, 'containerPorts')
       const hostPorts = this.pickPortValues(values, 'hostPorts')
+      const protocols = this.pickPortValues(values, 'portProtocols')
       const usedIndexes = {}
       const ret = []
       Object.keys(containerPorts).forEach(key => {
@@ -149,6 +161,7 @@ export default {
         const existing = this.matchExistingPortMapping(usedIndexes, port)
         const pm = existing ? { ...existing } : {}
         pm.port = port
+        pm.protocol = (protocols[key] || pm.protocol || 'tcp').toLowerCase()
         const hostPort = this.toNumber(hostPorts[key])
         if (hostPort === null) {
           // 留空表示由宿主机自动分配

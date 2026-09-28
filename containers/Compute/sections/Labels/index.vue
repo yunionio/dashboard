@@ -1,6 +1,16 @@
 <template>
   <div>
     <div class="d-flex" v-for="(item) in labelList" :key="item.key">
+      <a-form-item v-if="showProtocol && decorators.protocol" :wrapperCol="{ span: 24 }" class="labels-protocol mb-0">
+        <a-select
+          v-decorator="getDecorator(item.key, 'protocol')"
+          :disabled="isLocked(item)"
+          style="width: 88px">
+          <a-select-option v-for="opt in protocolOptions" :key="opt.id" :value="opt.id">
+            {{ opt.name }}
+          </a-select-option>
+        </a-select>
+      </a-form-item>
       <a-form-item :wrapperCol="{ span: 24 }">
         <a-input-group compact v-if="keyBaseSelectProps">
           <div class="d-flex">
@@ -12,7 +22,10 @@
       </a-form-item>
       <div class="mx-3"> = </div>
       <a-form-item :wrapperCol="{ span: 24 }">
-        <a-input :addonBefore="valueLabel" v-decorator="getDecorator(item.key, 'value')" :placeholder="valuePlaceholder" :disabled="isLocked(item)" />
+        <a-tooltip v-if="valueTooltip" :title="valueTooltip" placement="top">
+          <a-input :addonBefore="valueLabel" v-decorator="getDecorator(item.key, 'value')" :placeholder="valuePlaceholder" :disabled="isLocked(item)" />
+        </a-tooltip>
+        <a-input v-else :addonBefore="valueLabel" v-decorator="getDecorator(item.key, 'value')" :placeholder="valuePlaceholder" :disabled="isLocked(item)" />
       </a-form-item>
       <a-button v-if="(firstCanDelete || labelList.length > 1) && !isLocked(item)" shape="circle" icon="minus" size="small" @click="del(item)" class="mt-2 ml-2" />
     </div>
@@ -29,6 +42,20 @@
 import * as R from 'ramda'
 import { uuid } from '@/utils/utils'
 import i18n from '@/locales'
+
+const DEFAULT_PROTOCOL_OPTIONS = [
+  { id: 'tcp', name: 'TCP' },
+  { id: 'udp', name: 'UDP' },
+]
+
+const PORT_MAPPING_FD_KEYS = [
+  'networkContainerPorts',
+  'networkHostPorts',
+  'networkPortProtocols',
+  'containerPorts',
+  'hostPorts',
+  'portProtocols',
+]
 
 export default {
   name: 'ContainerLables',
@@ -57,6 +84,10 @@ export default {
       type: String,
       default: '',
     },
+    valueTooltip: {
+      type: String,
+      default: '',
+    },
     keyBaseSelectProps: {
       type: Object,
     },
@@ -78,7 +109,7 @@ export default {
       default: null,
     },
     /**
-     * 工单端口映射：[{ port, host_port }] 或 [{ key, value }]
+     * 工单端口映射：[{ port, host_port, protocol }] 或 [{ key, value, protocol }]
      * 挂载后自动回填
      */
     initPairs: {
@@ -92,6 +123,15 @@ export default {
     readonlyKeys: {
       type: Array,
       default: () => [],
+    },
+    /** 端口映射：展示协议（TCP/UDP）选择 */
+    showProtocol: {
+      type: Boolean,
+      default: false,
+    },
+    protocolOptions: {
+      type: Array,
+      default: () => DEFAULT_PROTOCOL_OPTIONS,
     },
   },
   data () {
@@ -152,11 +192,12 @@ export default {
     normalizePairs (pairs = []) {
       return (pairs || []).map((pair) => {
         if (!pair || typeof pair !== 'object') return null
-        // 兼容 port_mappings: { port, host_port } 与 Labels: { key, value }
+        // 兼容 port_mappings: { port, host_port, protocol } 与 Labels: { key, value, protocol }
         const key = pair.key != null ? pair.key : pair.port
         const value = pair.value != null ? pair.value : pair.host_port
         if (key == null || key === '') return null
-        return { key, value }
+        const protocol = (pair.protocol || 'tcp').toLowerCase()
+        return { key, value, protocol }
       }).filter(Boolean)
     },
     /** 有 keyBaseSelect 时：options 空不回填；非空只保留命中 key */
@@ -167,7 +208,7 @@ export default {
       const ids = new Set(options.map(o => o.id ?? o.key))
       return pairs.filter(p => ids.has(p.key))
     },
-    /** pairs: [{ key, value }] 或 [{ port, host_port }] */
+    /** pairs: [{ key, value, protocol? }] 或 [{ port, host_port, protocol? }] */
     initData (pairs = []) {
       const normalized = this.filterPairsByKeyOptions(this.normalizePairs(pairs))
       if (!normalized.length) return
@@ -202,7 +243,9 @@ export default {
      * 避免用户被自己无法编辑的值（如镜像的 value_from）卡住提交
      */
     getDecorator (rowKey, type) {
-      const dec = this.decorators[type](rowKey)
+      const decFn = this.decorators[type]
+      if (!R.is(Function, decFn)) return undefined
+      const dec = decFn(rowKey)
       const item = this.labelList.find(row => row.key === rowKey)
       if (!item || !this.isLocked(item)) return dec
       const options = dec && dec[1]
@@ -227,26 +270,26 @@ export default {
         if (!rowKey) return
         const keyField = this.decorators.key(rowKey)?.[0]
         const valueField = this.decorators.value(rowKey)?.[0]
+        const protocolField = this.showProtocol && R.is(Function, this.decorators.protocol)
+          ? this.decorators.protocol(rowKey)?.[0]
+          : null
         if (keyField) values[keyField] = pair.key
         if (valueField && pair.value != null && pair.value !== '') {
           values[valueField] = pair.value
         }
+        if (protocolField) {
+          values[protocolField] = pair.protocol || 'tcp'
+        }
       })
       form.fc.setFieldsValue(values)
-      // 同步嵌套对象到 fd，便于 GenCreateData
+      // 按实际表单字段同步到 fd（支持 networkContainerPorts 嵌套与旧 containerPorts）
       if (form.fd) {
-        const containerPorts = { ...(form.fd.containerPorts || {}) }
-        const hostPorts = { ...(form.fd.hostPorts || {}) }
-        this.labelList.forEach((row, i) => {
-          const pair = pairs[i]
-          if (!pair || !row?.key) return
-          containerPorts[row.key] = pair.key
-          if (pair.value != null && pair.value !== '') {
-            hostPorts[row.key] = pair.value
+        const all = form.fc.getFieldsValue() || {}
+        PORT_MAPPING_FD_KEYS.forEach((k) => {
+          if (all[k] != null) {
+            this.$set(form.fd, k, all[k])
           }
         })
-        this.$set(form.fd, 'containerPorts', containerPorts)
-        this.$set(form.fd, 'hostPorts', hostPorts)
       }
     },
     getBindProps (key, item) {
@@ -268,3 +311,9 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.labels-protocol {
+  margin-right: 8px;
+}
+</style>

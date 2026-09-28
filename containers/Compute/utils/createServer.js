@@ -75,6 +75,18 @@ export function checkIpV6 (i, networkData) {
   }
 }
 
+/** 宿主机端口：可空；填写时需为 [min, max] 整数（默认 20000-25000） */
+export function validateHostPortRange (min = 20000, max = 25000) {
+  return (rule, value, callback) => {
+    if (value === undefined || value === null || value === '') return callback()
+    const port = Number(value)
+    if (!Number.isInteger(port) || port < min || port > max) {
+      return callback(new Error(i18n.t('compute.port_mappings.invalid_host_port', [min, max])))
+    }
+    return callback()
+  }
+}
+
 export function diskValidator (rule, value, callback) {
   if (R.isNil(value) || R.isEmpty(value)) {
     return callback(new Error(i18n.t('compute.text_206')))
@@ -805,6 +817,35 @@ export const createVmDecorators = (type, initData = {}) => {
             }],
           },
         ],
+        // 端口映射：挂在每张网卡下 networkContainerPorts[netKey][rowKey]
+        portMapping: {
+          key: (netKey, i) => [
+            `networkContainerPorts[${netKey}][${i}]`,
+            {
+              rules: [
+                { required: true, message: i18n.t('common.tips.input', [i18n.t('compute.repo.container_port')]) },
+              ],
+            },
+          ],
+          value: (netKey, i) => [
+            `networkHostPorts[${netKey}][${i}]`,
+            {
+              validateTrigger: ['change', 'blur'],
+              rules: [
+                { validator: validateHostPortRange(20000, 25000) },
+              ],
+            },
+          ],
+          protocol: (netKey, i) => [
+            `networkPortProtocols[${netKey}][${i}]`,
+            {
+              initialValue: 'tcp',
+              rules: [
+                { required: true, message: i18n.t('common.tips.select', [i18n.t('compute.port_mappings.protocol')]) },
+              ],
+            },
+          ],
+        },
       },
       networkSchedtag: {
         schedtags: i => [
@@ -1073,19 +1114,6 @@ export const createVmDecorators = (type, initData = {}) => {
         initialValue: initData.hostname || '',
       },
     ],
-    portMapping: {
-      key: i => [
-        `containerPorts[${i}]`,
-        {
-          rules: [
-            { required: true, message: i18n.t('common.tips.input', [i18n.t('compute.repo.container_port')]) },
-          ],
-        },
-      ],
-      value: i => [
-        `hostPorts[${i}]`,
-      ],
-    },
     encrypt_keys: {
       encryptEnable: [
         'encryptEnable',
@@ -1199,9 +1227,9 @@ export const createVmDecorators = (type, initData = {}) => {
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'kickstart', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'portMapping', 'encrypt_keys', 'custom_data_type', 'deploy_telegraf', 'pci', 'bastion_host', 'is_daemon'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'kickstart', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys', 'custom_data_type', 'deploy_telegraf', 'pci', 'bastion_host', 'is_daemon'],
   public: ['domain', 'project', 'name', 'description', 'count', 'enableWorldMap', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider', 'hostName', 'custom_data_type', 'bastion_host'],
-  private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName', 'portMapping', 'custom_data_type', 'bastion_host', 'pci'],
+  private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName', 'custom_data_type', 'bastion_host', 'pci'],
 }
 
 export class Decorator {
@@ -1433,19 +1461,48 @@ export class GenCreateData {
   }
 
   /**
-   * 组装端口映射数据（Port Mapping）
-   * 字段形如 containerPorts[uuid] / hostPorts[uuid]，来自 Labels 组件
-   *
-   * @returns { Array }
-   * @memberof GenCreateData
+   * 组装指定网卡的端口映射
+   * 字段形如 networkContainerPorts[netKey][rowKey] / networkHostPorts / networkPortProtocols
+   */
+  getPortMappingsByNetworkKey (netKey) {
+    const port_mappings = []
+    const ports = this.fd.networkContainerPorts && this.fd.networkContainerPorts[netKey]
+    if (!ports) return port_mappings
+    const hostPorts = (this.fd.networkHostPorts && this.fd.networkHostPorts[netKey]) || {}
+    const protocols = (this.fd.networkPortProtocols && this.fd.networkPortProtocols[netKey]) || {}
+    for (const k in ports) {
+      const port = ports[k]
+      if (port == null || port === '') continue
+      const pm = {
+        port,
+        protocol: (protocols[k] || 'tcp').toLowerCase(),
+      }
+      if (hostPorts[k] != null && hostPorts[k] !== '') {
+        pm.host_port = hostPorts[k]
+      }
+      port_mappings.push(pm)
+    }
+    return port_mappings
+  }
+
+  /**
+   * 汇总所有网卡端口映射（兼容旧草稿 containerPorts / hostPorts）
    */
   getPortMappings () {
     const port_mappings = []
-    if (this.fd.containerPorts) {
+    const portsByNet = this.fd.networkContainerPorts || {}
+    Object.keys(portsByNet).forEach((netKey) => {
+      port_mappings.push(...this.getPortMappingsByNetworkKey(netKey))
+    })
+    // 兼容旧表单：高级配置全局 Labels
+    if (!port_mappings.length && this.fd.containerPorts) {
       for (const k in this.fd.containerPorts) {
         const port = this.fd.containerPorts[k]
         if (port == null || port === '') continue
-        const pm = { port }
+        const pm = {
+          port,
+          protocol: ((this.fd.portProtocols && this.fd.portProtocols[k]) || 'tcp').toLowerCase(),
+        }
         if (this.fd.hostPorts && this.fd.hostPorts[k] != null && this.fd.hostPorts[k] !== '') {
           pm.host_port = this.fd.hostPorts[k]
         }
@@ -1464,7 +1521,7 @@ export class GenCreateData {
   genNetworks () {
     let ret = [{ exit: false }]
     const extraRet = []
-    const portMappings = this.getPortMappings()
+    const legacyPortMappings = this.getPortMappings()
     // 指定 IP 子网
     if (this.fd.networkType === NETWORK_OPTIONS_MAP.manual.key) {
       ret = []
@@ -1531,8 +1588,8 @@ export class GenCreateData {
             obj.secgroups = secgroup
           }
         }
-        // 端口映射只挂在第一块网卡上
-        if (!ret.length && portMappings.length > 0) {
+        const portMappings = this.getPortMappingsByNetworkKey(key)
+        if (portMappings.length > 0) {
           obj.port_mappings = portMappings
         }
         ret.push(obj)
@@ -1561,20 +1618,15 @@ export class GenCreateData {
           schedtags: [obj],
         }
         const extraNetObj = { schedtags: [{ ...obj, ...extraObj }] }
-        // 端口映射只挂在第一块网卡上
-        if (!ret.length && portMappings.length > 0) {
-          netObj.port_mappings = portMappings
-          extraNetObj.port_mappings = portMappings
-        }
         ret.push(netObj)
         extraRet.push(extraNetObj)
       }, this.fd.networkSchedtags)
     }
-    // 自动调度：默认 nets 也要带上端口映射
-    if (portMappings.length > 0 &&
+    // 自动调度：旧草稿全局端口映射仍挂第一块网卡
+    if (legacyPortMappings.length > 0 &&
       this.fd.networkType !== NETWORK_OPTIONS_MAP.manual.key &&
       this.fd.networkType !== NETWORK_OPTIONS_MAP.schedtag.key) {
-      ret[0].port_mappings = portMappings
+      ret[0].port_mappings = legacyPortMappings
     }
     return { networks: ret, extraNetworks: extraRet }
   }
@@ -1845,6 +1897,10 @@ export class GenCreateData {
         os: this.fd.os,
         nets: extraNetworks,
       },
+    }
+    const allPortMappings = this.getPortMappings()
+    if (allPortMappings.length) {
+      data.extraData.port_mappings = allPortMappings
     }
     // 私有云按 hypervisor 显式指定 provider，避免落到 OneCloud
     const hypervisor = this.getHypervisor()
