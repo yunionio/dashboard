@@ -1530,6 +1530,19 @@
   "compute.monitor.basic": "Basic Monitor",
   "compute.monitor.agent": "Agent Monitor",
   "compute.monitor.agent.temperature": "Temperature Monitor",
+  "compute.monitor.gpu": "GPU Monitor",
+  "compute.monitor.gpu.no_isolated_device": "No passthrough device bound",
+  "compute.monitor.gpu.no_matched_vendor": "No GPU metrics available for the bound devices",
+  "compute.metric.gpu_vendor.nvidia": "NVIDIA",
+  "compute.metric.gpu_vendor.ascend": "Ascend",
+  "compute.metric.gpu_vendor.hygon": "Hygon",
+  "compute.metric.gpu_vendor.iluvatar": "Iluvatar",
+  "compute.metric.gpu_vendor.ppu": "Pingtouge",
+  "compute.metric.gpu_vendor.kunlun": "Kunlunxin",
+  "compute.metric.gpu_field.utilization_gpu": "Utilization",
+  "compute.metric.gpu_field.utilization_memory": "Memory Utilization",
+  "compute.metric.gpu_field.temperature_gpu": "Temperature",
+  "compute.metric.gpu_field.power_draw": "Power Draw",
   "compute.monitor.physicalmachine.guest_assigned": "A baremetal server is assigned to this physical machine and can view the monitoring data",
   "compute.monitor.physicalmachine.guest_unassigned": "This physical machine has no baremetal server assigned and cannot view the monitoring data",
   "compute.monitor.temperature.cpu": "CPU Temp",
@@ -2121,5 +2134,6 @@
   "compute.servertemplate_container": "Container Host Templates",
   "compute.servertemplate_baremetal": "Baremetal Templates",
   "compute.not_allow_reason.out_of_resource": "Out of resource",
-  "compute.not_allow_reason.out_of_quota": "Out of quota"
+  "compute.not_allow_reason.out_of_quota": "Out of quota",
+  "compute.isolated_device_located_baremetal": "Located Baremetal"
 }

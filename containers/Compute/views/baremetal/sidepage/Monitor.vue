@@ -18,6 +18,11 @@
               idKey="vm_id"
               v-if="true" />
           </a-tab-pane>
+          <a-tab-pane key="agent-gpu" :tab="$t('compute.monitor.gpu')">
+            <agent-gpu-monitor
+              :data="serverData"
+              idKey="vm_id" />
+          </a-tab-pane>
         </a-tabs>
       </div>
     </div>
@@ -27,6 +32,7 @@
 <script>
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
 import AgentTemperatureMonitor from '@Compute/sections/monitor/AgentTemperatureMonitor.vue'
+import AgentGpuMonitor from '@Compute/sections/monitor/AgentGpuMonitor.vue'
 import WindowsMixin from '@/mixins/windows'
 import InstallAgentFormVisible from '../../vminstance/components/InstallAgentFormVisible'
 
@@ -35,6 +41,7 @@ export default {
   components: {
     AgentMonitor,
     AgentTemperatureMonitor,
+    AgentGpuMonitor,
     InstallAgentFormVisible,
   },
   mixins: [WindowsMixin],
