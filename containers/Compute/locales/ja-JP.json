@@ -1531,6 +1531,19 @@
   "compute.monitor.basic": "基本的な監視",
   "compute.monitor.agent": "エージェントの監視",
   "compute.monitor.agent.temperature": "温度監視",
+  "compute.monitor.gpu": "GPU監視",
+  "compute.monitor.gpu.no_isolated_device": "パススルーデバイスが未バインドです",
+  "compute.monitor.gpu.no_matched_vendor": "表示可能なGPU監視指標がありません",
+  "compute.metric.gpu_vendor.nvidia": "NVIDIA",
+  "compute.metric.gpu_vendor.ascend": "Ascend",
+  "compute.metric.gpu_vendor.hygon": "海光",
+  "compute.metric.gpu_vendor.iluvatar": "天数智芯",
+  "compute.metric.gpu_vendor.ppu": "平頭哥",
+  "compute.metric.gpu_vendor.kunlun": "昆仑芯",
+  "compute.metric.gpu_field.utilization_gpu": "利用率",
+  "compute.metric.gpu_field.utilization_memory": "メモリ利用率",
+  "compute.metric.gpu_field.temperature_gpu": "温度",
+  "compute.metric.gpu_field.power_draw": "消費電力",
   "compute.monitor.physicalmachine.guest_assigned": "この物理マシンにはベアメタルサーバーが割り当てられており、監視データを表示できます",
   "compute.monitor.physicalmachine.guest_unassigned": "この物理マシンにはベアメタルサーバーが割り当てられておらず、監視データを表示できません",
   "compute.monitor.temperature.cpu": "CPU 温度",
@@ -2123,5 +2136,6 @@
   "compute.servertemplate_container": "コンテナホストテンプレート",
   "compute.servertemplate_baremetal": "ベアメタルテンプレート",
   "compute.not_allow_reason.out_of_resource": "空きリソース不足",
-  "compute.not_allow_reason.out_of_quota": "クォータ不足"
+  "compute.not_allow_reason.out_of_quota": "クォータ不足",
+  "compute.isolated_device_located_baremetal": "ベアメタル"
 }

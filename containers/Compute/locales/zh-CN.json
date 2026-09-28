@@ -1531,6 +1531,19 @@
   "compute.monitor.basic": "基础监控",
   "compute.monitor.agent": "Agent监控",
   "compute.monitor.agent.temperature": "温度监控",
+  "compute.monitor.gpu": "GPU监控",
+  "compute.monitor.gpu.no_isolated_device": "未绑定透传设备",
+  "compute.monitor.gpu.no_matched_vendor": "暂无可展示的GPU监控指标",
+  "compute.metric.gpu_vendor.nvidia": "英伟达",
+  "compute.metric.gpu_vendor.ascend": "昇腾",
+  "compute.metric.gpu_vendor.hygon": "海光",
+  "compute.metric.gpu_vendor.iluvatar": "天数智芯",
+  "compute.metric.gpu_vendor.ppu": "平头哥",
+  "compute.metric.gpu_vendor.kunlun": "昆仑芯",
+  "compute.metric.gpu_field.utilization_gpu": "利用率",
+  "compute.metric.gpu_field.utilization_memory": "显存利用率",
+  "compute.metric.gpu_field.temperature_gpu": "温度",
+  "compute.metric.gpu_field.power_draw": "功耗",
   "compute.monitor.physicalmachine.guest_assigned": "该物理机已分配裸金属，可查看裸金属监控数据",
   "compute.monitor.physicalmachine.guest_unassigned": "该物理机未分配裸金属，无法查看裸金属监控数据",
   "compute.monitor.temperature.cpu": "CPU 温度",
@@ -2125,5 +2138,6 @@
   "compute.servertemplate_container": "容器主机模板",
   "compute.servertemplate_baremetal": "裸金属模板",
   "compute.not_allow_reason.out_of_resource": "空闲资源不足",
-  "compute.not_allow_reason.out_of_quota": "配额不足"
+  "compute.not_allow_reason.out_of_quota": "配额不足",
+  "compute.isolated_device_located_baremetal": "所在裸金属"
 }

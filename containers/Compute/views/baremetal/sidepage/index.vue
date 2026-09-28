@@ -37,6 +37,7 @@ import BaremetalDetail from './Detail'
 import NetworkListForBaremetalSidepage from './Network'
 import DiskListForBaremetalSidepage from './Disk'
 import BaremetalMonitorSidepage from './Monitor'
+import GpuList from './Gpu'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 // import BaremetalAlertSidepage from './Alert'
@@ -49,6 +50,7 @@ export default {
     DiskListForBaremetalSidepage,
     // BaremetalAlertSidepage,
     BaremetalMonitorSidepage,
+    GpuList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -57,6 +59,7 @@ export default {
         { label: this.$t('compute.text_238'), key: 'baremetal-detail' },
         { label: this.$t('compute.text_104'), key: 'network-list-for-baremetal-sidepage' },
         { label: this.$t('compute.text_376'), key: 'disk-list-for-baremetal-sidepage' },
+        { label: this.$t('compute.text_607'), key: 'gpu-list' },
         { label: this.$t('compute.text_608'), key: 'baremetal-monitor-sidepage' },
         { label: this.$t('table.title.task'), key: 'task-drawer' },
         // { label: '报警', key: 'baremetal-alert-sidepage' },
@@ -83,12 +86,20 @@ export default {
           with_meta: true,
         }
       }
+      if (this.params.windowData.currentTab === 'gpu-list') {
+        return {
+          guest_id: this.data.id,
+          show_baremetal_isolated_devices: true,
+        }
+      }
       return null
     },
     listId () {
       switch (this.params.windowData.currentTab) {
         case 'event-drawer':
           return 'EventListForBaremetalSidepage'
+        case 'gpu-list':
+          return 'GpuListForBaremetalSidepage'
         default:
           return ''
       }
