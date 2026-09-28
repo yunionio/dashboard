@@ -254,7 +254,13 @@ export default {
     },
     async fetchCharts (refresh = false) {
       this.saveMonitorConfig()
-      if (this.useLocalPanels && !refresh) return
+      // 资源详情本地面板：刷新时只更新 updatedAt，触发各卡片重新拉取 unifiedmonitors
+      if (this.useLocalPanels) {
+        if (refresh) {
+          this.updatedAt = new Date().toISOString()
+        }
+        return
+      }
       this.loading = true
       try {
         const params = {

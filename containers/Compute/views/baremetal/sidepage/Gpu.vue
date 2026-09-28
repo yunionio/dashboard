@@ -7,7 +7,6 @@
 <script>
 import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
-import { sizestr } from '@/utils/utils'
 
 const DEVICE_MAP = {
   '10de': 'nvidia',
@@ -15,30 +14,26 @@ const DEVICE_MAP = {
 }
 
 export default {
-  name: 'HostGpuList',
+  name: 'BaremetalGpuList',
   mixins: [WindowsMixin],
   props: {
     resId: String,
     getParams: {
       type: [Function, Object],
     },
-    source: {
-      type: String,
-      default: 'host',
-    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
-        id: 'GpuListForHostSidePage',
-        resource: 'isolated_devices',
+        id: 'GpuListForBaremetalSidepage',
+        resource: 'guestisolateddevices',
         getParams: this.getParam,
       }),
     }
   },
   computed: {
     columns () {
-      const ret = [
+      return [
         {
           field: 'dev_type',
           title: this.$t('compute.text_481'),
@@ -65,34 +60,10 @@ export default {
           },
         },
         {
-          field: 'guest_id',
-          title: this.$t('compute.text_232'),
-          formatter: ({ cellValue, row }) => {
-            return row.guest || cellValue
-          },
-        },
-        {
-          field: '',
-          title: this.$t('compute.text_501'),
-          minWidth: 100,
-          showOverflow: 'title',
-          slots: {
-            default: ({ row }, h) => {
-              const ret = []
-              const config = row.reserved_cpu + 'C' + sizestr(row.reserved_memory, 'M', 1024) + (row.reserved_storage ? sizestr(row.reserved_storage, 'M', 1024) : '')
-              return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
-            },
-          },
+          field: 'host',
+          title: this.$t('compute.isolated_device_located_baremetal'),
         },
       ]
-      if (this.source === 'physicalmachine') {
-        const addObj = {
-          field: 'host',
-          title: this.$t('compute.text_1318'),
-        }
-        ret.splice(ret.length - 2, 2, addObj)
-      }
-      return ret
     },
   },
   created () {
@@ -100,11 +71,13 @@ export default {
   },
   methods: {
     getParam () {
-      const ret = {
+      return {
+        show_baremetal_isolated_devices: true,
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
-        host_id: this.resId,
+        guest_id: this.resId,
+        with_meta: true,
+        details: true,
       }
-      return ret
     },
   },
 }
