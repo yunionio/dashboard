@@ -3,19 +3,14 @@
  */
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 
-/** 从工单数据取出端口映射 */
+/** 旧稿全局端口映射；有按网卡 port_mappings 时返回空，避免误回填到未配置的网卡 */
 export function resolveDraftPortMappings (initData) {
   if (!initData || typeof initData !== 'object') return []
+  const nets = initData.extraData?.nets || initData.nets
+  const hasPerNic = Array.isArray(nets) && nets.some(n => Array.isArray(n?.port_mappings) && n.port_mappings.length)
+  if (hasPerNic) return []
   if (Array.isArray(initData.extraData?.port_mappings) && initData.extraData.port_mappings.length) {
     return initData.extraData.port_mappings
-  }
-  if (Array.isArray(initData.nets)) {
-    for (let i = 0; i < initData.nets.length; i++) {
-      const n = initData.nets[i]
-      if (n && Array.isArray(n.port_mappings) && n.port_mappings.length) {
-        return n.port_mappings
-      }
-    }
   }
   return []
 }
@@ -23,7 +18,6 @@ export function resolveDraftPortMappings (initData) {
 /** 工单 initData 是否含高级区字段（仅用于跳过空回填，与 UI 展开无关） */
 export function hasAdvanceConfigInitFields (initData) {
   if (!initData || typeof initData !== 'object') return false
-  const hasPortMappings = resolveDraftPortMappings(initData).length > 0
   return !!(
     initData.hostname ||
     initData.eip_charge_type ||
@@ -34,8 +28,7 @@ export function hasAdvanceConfigInitFields (initData) {
     (Array.isArray(initData.extraData?.schedtags) && initData.extraData.schedtags.length) ||
     (Array.isArray(initData.secgroups) && initData.secgroups.length) ||
     (Array.isArray(initData.network_tags) && initData.network_tags.length) ||
-    (Array.isArray(initData.groups) && initData.groups.length) ||
-    hasPortMappings
+    (Array.isArray(initData.groups) && initData.groups.length)
   )
 }
 
