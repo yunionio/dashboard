@@ -9,6 +9,7 @@ import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, validateRe
 import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
 import { hostServerActions } from '../../../utils/hostActions'
 import { getRenewAction } from '../utils/renewActions'
+import { getAutoRenewAction } from '../utils/autoRenewActions'
 // import { Base64 } from 'js-base64'
 export default {
   computed: {
@@ -288,6 +289,8 @@ export default {
                 },
                 // 续费
                 getRenewAction(this, obj),
+                // 自动续费设置
+                getAutoRenewAction(this, obj),
               ],
             },
             {
