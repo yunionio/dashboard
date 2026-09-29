@@ -16,6 +16,21 @@ import SystemIcon from '@/sections/SystemIcon'
 import RegionalAvailabilityPopover from '@/sections/RegionalAvailabilityPopover'
 const brandMap = typeClouds.getBrand()
 
+/**
+ * 计费列桥接：优先加载 GPU scope/utils/billingTableColumns.js
+ * dashboard 无此文件时 keys 为空，回退下方默认实现
+ */
+function loadScopeBillingColumns () {
+  try {
+    const ctx = require.context('../../../scope', true, /[/\\]utils[/\\]billingTableColumns\.js$/)
+    const key = (ctx.keys() || []).find(k => /billingTableColumns\.js$/.test(k))
+    if (key) return ctx(key)
+  } catch (e) { /* ignore */ }
+  return null
+}
+
+const scopeBillingColumns = loadScopeBillingColumns()
+
 export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100, domainField } = {}) => {
   return {
     field,
@@ -922,7 +937,17 @@ export const getAccountTableColumn = ({
   }
 }
 
-export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n.t('table.title.bill_type'), width = '120px', hidden } = {}) => {
+export const getBillingTypeTableColumn = (options = {}) => {
+  if (scopeBillingColumns && typeof scopeBillingColumns.getBillingTypeTableColumn === 'function') {
+    try {
+      const custom = scopeBillingColumns.getBillingTypeTableColumn(options)
+      if (custom) return custom
+    } catch (e) { /* fallback */ }
+  }
+  return getDefaultBillingTypeTableColumn(options)
+}
+
+const getDefaultBillingTypeTableColumn = ({ field = 'billing_type', title = i18n.t('table.title.bill_type'), width = '120px', hidden } = {}) => {
   return {
     field,
     title,
@@ -1236,7 +1261,17 @@ export const getApplicationScopeTableColumn = ({
   }
 }
 
-export const getBillingTableColumn = ({
+export const getBillingTableColumn = (options = {}) => {
+  if (scopeBillingColumns && typeof scopeBillingColumns.getBillingTableColumn === 'function') {
+    try {
+      const custom = scopeBillingColumns.getBillingTableColumn(options)
+      if (custom) return custom
+    } catch (e) { /* fallback */ }
+  }
+  return getDefaultBillingTableColumn(options)
+}
+
+const getDefaultBillingTableColumn = ({
   vm,
   field = 'billing_type',
   title = i18n.t('table.title.bill_type'),
