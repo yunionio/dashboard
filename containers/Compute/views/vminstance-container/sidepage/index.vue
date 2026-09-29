@@ -68,7 +68,7 @@ export default {
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
-    let detailTabs = [
+    const detailTabs = [
       { label: this.$t('compute.text_238'), key: 'detail' },
       { label: this.$t('compute.container', []), key: 'container-list' },
       { label: this.$t('compute.text_105'), key: 'secgroup-list' },
@@ -81,9 +81,6 @@ export default {
       // { label: this.$t('compute.repo.terminal'), key: 'terminal' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
-    if (this.$store.getters.isProjectMode) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'gpu-list'))(detailTabs), 1, detailTabs)
-    }
     return {
       detailTabs,
       agent_status: '',
