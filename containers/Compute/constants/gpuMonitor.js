@@ -68,24 +68,40 @@ const GPU_METRIC_FIELDS = [
     seleteItem: 'utilization_gpu',
     metricLabel: () => i18n.t('compute.metric.gpu_field.utilization_gpu'),
     unit: '%',
+    transfer: 1,
   },
   {
     name: 'utilization_memory',
     seleteItem: 'utilization_memory',
     metricLabel: () => i18n.t('compute.metric.gpu_field.utilization_memory'),
     unit: '%',
+    transfer: 1,
+  },
+  {
+    name: 'memory',
+    seleteItem: 'memory_total,memory_free,memory_used',
+    metricLabel: () => i18n.t('compute.metric.gpu_field.memory'),
+    seriesLabels: () => [
+      i18n.t('compute.metric.gpu_field.memory_total'),
+      i18n.t('compute.metric.gpu_field.memory_free'),
+      i18n.t('compute.metric.gpu_field.memory_used'),
+    ],
+    unit: 'B',
+    transfer: 1024,
   },
   {
     name: 'temperature_gpu',
     seleteItem: 'temperature_gpu',
     metricLabel: () => i18n.t('compute.metric.gpu_field.temperature_gpu'),
     unit: '℃',
+    transfer: 1,
   },
   {
     name: 'power_draw',
     seleteItem: 'power_draw',
     metricLabel: () => i18n.t('compute.metric.gpu_field.power_draw'),
     unit: 'W',
+    transfer: 1,
   },
 ]
 
@@ -123,15 +139,19 @@ export function buildGpuMonitorOpts (measurementKey, vendorKeys) {
     const vendorLabel = vendor.vendorLabel()
     GPU_METRIC_FIELDS.forEach(field => {
       const label = `${vendorLabel} ${field.metricLabel()}`
+      const seriesLabels = typeof field.seriesLabels === 'function' ? field.seriesLabels() : null
+      const as = seriesLabels?.length
+        ? seriesLabels.map(l => `${vendorLabel} ${l}`).join(',')
+        : label
       list.push({
         name: `${vendor.key}_${field.name}`,
         label,
-        as: label,
+        as,
         seleteItem: field.seleteItem,
         fromItem,
         groupBy: vendor.groupBy,
         unit: field.unit,
-        transfer: 1,
+        transfer: field.transfer ?? 1,
         vendorKey: vendor.key,
       })
     })
