@@ -109,9 +109,6 @@ export default {
     if (!hasPermission({ key: 'eip_list' })) {
       detailTabs = detailTabs.filter(item => item.key !== 'eip-list-for-vm-instance-sidepage')
     }
-    if (this.$store.getters.isProjectMode) {
-      detailTabs = detailTabs.filter(item => item.key !== 'gpu-list')
-    }
     if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_snapshot') && isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot')) {
       detailTabs = detailTabs.filter(item => item.key !== 'vm-snapshot-sidepage')
     }

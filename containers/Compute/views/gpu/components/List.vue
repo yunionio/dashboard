@@ -4,7 +4,8 @@
     :columns="templateListColumns || columns"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
-    :show-single-actions="!isTemplate"
+    :show-single-actions="showGpuSingleActions"
+    :hide-rowselect="isProjectMode"
     :show-page="!isTemplate"
     :group-actions="getFinalGroupActions(groupActions)"
     :single-actions="getFinalSingleActions(singleActions)"
@@ -13,6 +14,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 // import { isUpdatableGpuType } from '@Compute/constants'
 import { getNameFilter, getRegionFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
@@ -332,12 +334,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isProjectMode']),
     exportDataOptions () {
       return {
         downloadType: 'local',
         items: this.columns,
         title: this.$t('compute.text_113'),
       }
+    },
+    showGpuSingleActions () {
+      return !this.isTemplate && !this.isProjectMode
     },
   },
   created () {
@@ -393,12 +399,14 @@ export default {
       }
     },
     getFinalGroupActions () {
+      if (this.isProjectMode) return []
       if (this.hiddenActionKeys?.length > 0) {
         return this.groupActions.filter(o => !this.hiddenActionKeys.includes(o.key))
       }
       return this.groupActions
     },
     getFinalSingleActions () {
+      if (this.isProjectMode) return []
       if (this.hiddenActionKeys?.length > 0) {
         return this.singleActions.filter(o => !this.hiddenActionKeys.includes(o.key))
       }
