@@ -11,6 +11,7 @@ import { KVM_SHARE_STORAGES } from '@/constants/storage'
 import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip, validateRescueMode } from '../utils'
 import { getRenewAction } from '../utils/renewActions'
+import { getAutoRenewAction } from '../utils/autoRenewActions'
 import { getStartAction } from '../utils/startActions'
 
 // 策略仅保留 server_perform_set_gpu（展示名：设置透传设备）；PCI/USB 均由此控制
@@ -878,37 +879,7 @@ const getSingleActions = function (ctx) {
               // 续费
               getRenewAction(this, obj),
               // 自动续费设置
-              {
-                label: i18n.t('compute.text_1120'),
-                permission: 'server_perform_aet_auto_renew',
-                action: () => {
-                  this.createDialog('VmResourceRenewFeeDialog', {
-                    data: [obj],
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    refresh: this.refresh,
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
-                  const rescueModeValid = validateRescueMode(obj)
-                  if (!rescueModeValid.validate) return rescueModeValid
-                  if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
-                    ret.tooltip = i18n.t('compute.text_1118')
-                    return ret
-                  }
-                  if (obj.billing_type !== 'prepaid') {
-                    ret.tooltip = i18n.t('compute.text_1119')
-                    return ret
-                  }
-                  ret.validate = true
-                  return ret
-                },
-                hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'rockbase', 'ecloud', 'jdcloud', 'ctyun'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
-              },
+              getAutoRenewAction(this, obj),
               // 更改计费模式
               {
                 label: i18n.t('compute.change_billing_type'),
