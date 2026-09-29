@@ -50,6 +50,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { getBatchStartAction } from '../utils/startActions'
 import { getBatchRenewAction } from '../utils/renewActions'
+import { getBatchAutoRenewAction } from '../utils/autoRenewActions'
 
 export default {
   name: 'VmContainerInstanceList',
@@ -250,6 +251,8 @@ export default {
             return [
               // 续费
               getBatchRenewAction(this),
+              // 自动续费设置
+              getBatchAutoRenewAction(this),
               // 更改项目
               {
                 label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
