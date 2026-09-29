@@ -72,34 +72,46 @@
         <div class="network-config-item__advanced-main">
           <div class="network-config-item__toggles">
             <template v-if="isSupportIPv4(item) && !(isSupportIPv6(item) && item.ipv6Mode === 'only' && item.requireIpv6)">
-              <a-tooltip v-if="!item.ipShow" :title="ipBtnTooltip">
-                <a-button type="link" size="small" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
+              <a-tooltip :title="ipsDisabled ? ipBtnTooltip : undefined">
+                <span class="network-config-item__toggle">
+                  <a-checkbox
+                    :checked="item.ipShow"
+                    :disabled="ipsDisabled"
+                    @change="() => triggerShowIp(item)">
+                    {{$t('compute.text_198')}}
+                  </a-checkbox>
+                </span>
               </a-tooltip>
-              <a-button v-else type="link" size="small" class="is-active" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
             </template>
             <template v-if="showMacConfig">
-              <a-tooltip v-if="!item.macShow" :title="ipBtnTooltip">
-                <a-button type="link" size="small" :disabled="ipsDisabled" @click="triggerShowMac(item)">{{$t('compute.mac_config')}}</a-button>
+              <a-tooltip :title="ipsDisabled ? ipBtnTooltip : undefined">
+                <span class="network-config-item__toggle">
+                  <a-checkbox
+                    :checked="item.macShow"
+                    :disabled="ipsDisabled"
+                    @change="() => triggerShowMac(item)">
+                    {{$t('compute.mac_config')}}
+                  </a-checkbox>
+                </span>
               </a-tooltip>
-              <a-button v-else type="link" size="small" class="is-active" @click="triggerShowMac(item)">{{$t('compute.mac_config')}}</a-button>
             </template>
             <template v-if="showDeviceConfig">
-              <a-button
-                type="link"
-                size="small"
-                :class="{ 'is-active': item.deviceShow }"
-                @click="triggerShowDevice(item)">
-                {{ $t('compute.config_transparent_net') }}
-              </a-button>
+              <span class="network-config-item__toggle">
+                <a-checkbox
+                  :checked="item.deviceShow"
+                  @change="() => triggerShowDevice(item)">
+                  {{ $t('compute.config_transparent_net') }}
+                </a-checkbox>
+              </span>
             </template>
             <template v-if="showSecgroupConfig">
-              <a-button
-                type="link"
-                size="small"
-                :class="{ 'is-active': item.secgroupShow }"
-                @click="triggerShowSecgroup(item)">
-                {{ $t('compute.config_secgroup') }}
-              </a-button>
+              <span class="network-config-item__toggle">
+                <a-checkbox
+                  :checked="item.secgroupShow"
+                  @change="() => triggerShowSecgroup(item)">
+                  {{ $t('compute.config_secgroup') }}
+                </a-checkbox>
+              </span>
             </template>
             <template v-if="isSupportIPv6(item) && isSupportIPv4(item)">
               <div class="network-config-item__ipv6-toggle">
@@ -117,22 +129,22 @@
               </div>
             </template>
             <template v-if="(isSupportIPv6(item) && item.requireIpv6) || (!isSupportIPv4(item) && isSupportIPv6(item))">
-              <a-button
-                type="link"
-                size="small"
-                :class="{ 'is-active': item.ipv6Show }"
-                @click="triggerShowIpv6(item)">
-                {{$t('compute.ipv6_config')}}
-              </a-button>
+              <span class="network-config-item__toggle">
+                <a-checkbox
+                  :checked="item.ipv6Show"
+                  @change="() => triggerShowIpv6(item)">
+                  {{$t('compute.ipv6_config')}}
+                </a-checkbox>
+              </span>
             </template>
             <template v-if="showPortMapping">
-              <a-button
-                type="link"
-                size="small"
-                :class="{ 'is-active': item.portMappingShow }"
-                @click="triggerShowPortMapping(item)">
-                {{ $t('compute.port_mappings.set') }}
-              </a-button>
+              <span class="network-config-item__toggle">
+                <a-checkbox
+                  :checked="item.portMappingShow"
+                  @change="() => triggerShowPortMapping(item)">
+                  {{ $t('compute.port_mappings.set') }}
+                </a-checkbox>
+              </span>
             </template>
           </div>
 
@@ -975,19 +987,24 @@ export default {
       min-height: 32px;
       column-gap: 16px;
       row-gap: 4px;
+    }
 
-      .ant-btn-link {
-        display: inline-flex;
-        align-items: center;
-        height: 32px;
-        padding: 0;
-        line-height: 32px;
+    &__toggle {
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      margin: 0;
+      vertical-align: top;
+      color: rgba(0, 0, 0, 0.45);
+
+      ::v-deep .ant-checkbox + span {
         color: rgba(0, 0, 0, 0.45);
+        padding-right: 0;
+      }
 
-        &:hover,
-        &.is-active {
-          color: @primary-color;
-        }
+      ::v-deep .ant-checkbox-wrapper {
+        margin: 0;
+        color: rgba(0, 0, 0, 0.45);
       }
     }
 
@@ -996,6 +1013,15 @@ export default {
       align-items: center;
       height: 32px;
       gap: 4px;
+
+      .ant-btn-link {
+        padding: 0;
+        color: rgba(0, 0, 0, 0.45);
+
+        &:hover {
+          color: @primary-color;
+        }
+      }
     }
 
     &__fields {
