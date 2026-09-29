@@ -60,6 +60,7 @@ import ColumnsMixin from '../mixins/columns'
 import { getHostIsolatedDeviceAvailableTypes } from '../constants/actions'
 import { cloudEnabled, cloudUnabledTip, commonEnabled, validateRescueMode } from '../utils'
 import { getBatchRenewAction } from '../utils/renewActions'
+import { getBatchAutoRenewAction } from '../utils/autoRenewActions'
 import { getBatchStartAction } from '../utils/startActions'
 
 export default {
@@ -682,38 +683,7 @@ export default {
                   // 续费
                   getBatchRenewAction(this),
                   // 自动续费设置
-                  {
-                    label: this.$t('compute.text_1120'),
-                    permission: 'server_perform_aet_auto_renew',
-                    action: () => {
-                      this.createDialog('VmResourceRenewFeeDialog', {
-                        data: this.list.selectedItems,
-                        columns: this.columns,
-                        onManager: this.onManager,
-                        refresh: this.refresh,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: true,
-                        tooltip: null,
-                      }
-                      const rescueModeValid = validateRescueMode(this.list.selectedItems)
-                      if (!rescueModeValid.validate) return rescueModeValid
-                      const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
-                      const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
-                      if (!isAllPublic) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.text_1118')
-                      }
-                      if (!isAllPrepaid) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.text_1119')
-                      }
-                      return ret
-                    },
-                    hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'rockbase', 'ecloud', 'jdcloud', 'ctyun'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
-                  },
+                  getBatchAutoRenewAction(this),
                   // 更改计费模式
                   {
                     label: this.$t('compute.change_billing_type'),
