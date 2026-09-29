@@ -2,7 +2,17 @@
   <div>
     <a-tabs @change="handleTabChange">
       <a-tab-pane v-for="type in types" :key="type" :tab="$t(`compute.monitor.${type}`)">
-        <base-monitor v-if="type === 'basic'" :data="server" :constants="monitorConstants" idKey="vm_id" monitorType="basic" :currentMonitorType="currentMonitorType" />
+        <base-monitor
+          v-if="type === 'basic'"
+          :data="server"
+          :constants="monitorConstants"
+          idKey="vm_id"
+          monitorType="basic"
+          :currentMonitorType="currentMonitorType" />
+        <agent-gpu-monitor
+          v-else-if="type === 'gpu'"
+          :data="server"
+          idKey="vm_id" />
         <div v-else>
           <install-agent-form-visible
             :data="server"
@@ -21,8 +31,10 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import BaseMonitor from '@Compute/sections/monitor/BaseMonitor'
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
+import AgentGpuMonitor from '@Compute/sections/monitor/AgentGpuMonitor.vue'
 import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR, SANGFOR_MONITOR } from '@Compute/views/vminstance/constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import WindowsMixin from '@/mixins/windows'
@@ -33,6 +45,7 @@ export default {
   components: {
     BaseMonitor,
     AgentMonitor,
+    AgentGpuMonitor,
     InstallAgentFormVisible,
   },
   mixins: [WindowsMixin],
@@ -60,12 +73,33 @@ export default {
       timeGroup: '1m',
       monitorList: [],
       server: this.data,
-      types: this.data.hypervisor === 'kvm' ? ['agent', 'basic'] : ['basic', 'agent'],
+      gpuHasDevices: false,
     }
   },
   computed: {
     hypervisor () {
       return this.server.hypervisor
+    },
+    isAgentInstalled () {
+      const data = this.server || {}
+      let ok = _.get(data, ['metadata', 'sys:monitor_agent']) || _.get(data, ['metadata', '__monitor_agent'])
+      const deploy = _.get(data, ['metadata', 'telegraf_deployed'])
+      if (Object.prototype.hasOwnProperty.call(data, 'agent_status') || deploy) {
+        ok = data.agent_status === 'succeed' || !!deploy
+      }
+      return !!ok
+    },
+    hasPassthroughDevices () {
+      if (Array.isArray(this.server.isolated_devices) && this.server.isolated_devices.length) return true
+      if (Number(this.server.gpu_count) > 0) return true
+      return this.gpuHasDevices
+    },
+    showGpuTab () {
+      return this.isAgentInstalled && this.hasPassthroughDevices
+    },
+    types () {
+      const base = this.hypervisor === HYPERVISORS_MAP.kvm.key ? ['agent', 'basic'] : ['basic', 'agent']
+      return this.showGpuTab ? [...base, 'gpu'] : base
     },
     monitorConstants () {
       if (this.hypervisor === HYPERVISORS_MAP.esxi.key) {
@@ -99,8 +133,22 @@ export default {
     },
   },
   watch: {
+    data: {
+      handler (val) {
+        if (!this.needFetchResource && val) {
+          this.server = val
+        }
+      },
+      deep: true,
+    },
     'data.id' () {
       this.fetchResource()
+    },
+    serverId: {
+      handler (val) {
+        if (val) this.fetchGpuDevices()
+      },
+      immediate: true,
     },
   },
   created () {
@@ -115,6 +163,28 @@ export default {
         } catch (err) {
           throw err
         }
+      } else {
+        this.server = this.data
+      }
+    },
+    async fetchGpuDevices () {
+      if (!this.serverId) {
+        this.gpuHasDevices = false
+        return
+      }
+      try {
+        const { data: { data = [] } } = await new this.$Manager('guestisolateddevices').list({
+          params: {
+            guest_id: this.serverId,
+            show_baremetal_isolated_devices: true,
+            details: true,
+            limit: 0,
+            scope: this.$store.getters.scope,
+          },
+        })
+        this.gpuHasDevices = data.length > 0
+      } catch (e) {
+        this.gpuHasDevices = false
       }
     },
     handleTabChange (tab) {
