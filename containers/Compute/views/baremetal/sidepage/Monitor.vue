@@ -75,6 +75,14 @@ export default {
     },
   },
   watch: {
+    // 仅裸金属侧页（未传 guest_id）同步 agent_status 等字段；物理机总会传 guest_id（'' 或 uuid）
+    data: {
+      handler (val) {
+        if (this.guest_id !== undefined) return
+        if (val) this.serverData = val
+      },
+      deep: true,
+    },
     guest_id: {
       async handler (val) {
         if (val) {
