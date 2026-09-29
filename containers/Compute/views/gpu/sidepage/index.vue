@@ -10,7 +10,7 @@
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions>
+    <template v-slot:actions v-if="!isProjectMode">
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -51,6 +52,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isProjectMode']),
     getParams () {
       if (this.params.windowData.currentTab === 'servers-list') {
         return {
