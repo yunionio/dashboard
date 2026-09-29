@@ -86,7 +86,7 @@ const GPU_METRIC_FIELDS = [
       i18n.t('compute.metric.gpu_field.memory_free'),
       i18n.t('compute.metric.gpu_field.memory_used'),
     ],
-    unit: 'B',
+    unit: 'M',
     transfer: 1024,
   },
   {
