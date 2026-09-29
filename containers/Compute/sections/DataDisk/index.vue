@@ -2,7 +2,7 @@
   <div class="data-disk">
     <template v-if="dataDisks.length === 0 && (disabled || imageType === 'backup' || imageType === 'snapshot')"><span class="warning-color">{{$t('compute.text_128')}}</span></template>
     <template v-else>
-      <div class="d-flex" v-for="(item, i) in dataDisks" :key="item.key">
+      <div class="data-disk-item" v-for="(item, i) in dataDisks" :key="item.key">
         <disk
           :ref="'disks'"
           :diskKey="item.key"
@@ -33,8 +33,15 @@
           :imageType="imageType"
           @snapshotChange="val => snapshotChange(item, val, i)"
           @diskTypeChange="val => diskTypeChange(item, val, i)"
-          @storageHostChange="(val) => $emit('storageHostChange', val)" />
-        <a-button v-if="!getDisabled(item, 'minus') && (dataDisks.length > 1 ? (i !== 0) : true) && isAddDiskShow" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2" />
+          @storageHostChange="(val) => $emit('storageHostChange', val)">
+          <a-button
+            v-if="!getDisabled(item, 'minus') && (dataDisks.length > 1 ? (i !== 0) : true) && isAddDiskShow"
+            slot="aside"
+            shape="circle"
+            icon="minus"
+            size="small"
+            @click="decrease(item.key)" />
+        </disk>
       </div>
       <div class="d-flex align-items-center" v-if="diskRemain > 0 && !disabled && isAddDiskShow && imageType !== 'backup' && imageType !== 'snapshot'">
         <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />

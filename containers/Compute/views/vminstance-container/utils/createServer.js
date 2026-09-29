@@ -74,8 +74,9 @@ export function checkIpInSegment (i, networkData) {
 }
 
 export function diskValidator (rule, value, callback) {
+  // 空值由 required 规则提示「请填写挂载点」，此处只校验路径格式
   if (R.isNil(value) || R.isEmpty(value)) {
-    return callback(new Error(i18n.t('compute.text_206')))
+    return callback()
   }
   if (!value.startsWith('/')) {
     return callback(new Error(i18n.t('compute.text_207')))
@@ -378,6 +379,7 @@ export const createVmDecorators = (initData = {}) => {
       mountPath: i => [
         `dataDiskMountPaths[${i}]`,
         {
+          validateFirst: true,
           validateTrigger: ['blur', 'change'],
           rules: [{
             required: true,
