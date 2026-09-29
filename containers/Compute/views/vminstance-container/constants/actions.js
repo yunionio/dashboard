@@ -6,6 +6,7 @@ import { hasSetupKey } from '@/utils/auth'
 import { validateRescueMode, cloudEnabled, cloudUnabledTip, commonUnabled } from '../utils'
 import { getStartAction } from '../utils/startActions'
 import { getRenewAction } from '../utils/renewActions'
+import { getAutoRenewAction } from '../utils/autoRenewActions'
 // import { POLICY_RES_NAME_KEY_MAP } from '@/constants/policy'
 const getSingleActions = function () {
   return [
@@ -190,6 +191,8 @@ const getSingleActions = function () {
               },
               // 续费
               getRenewAction(this, obj),
+              // 自动续费设置
+              getAutoRenewAction(this, obj),
               // 更改项目
               {
                 label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),

@@ -30,6 +30,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { getBatchStartAction } from '../utils/startActions'
 import { getBatchRenewAction } from '../utils/renewActions'
+import { getBatchAutoRenewAction } from '../utils/autoRenewActions'
 import { cloudEnabled, cloudUnabledTip, commonEnabled, validateRescueMode } from '../../vminstance/utils'
 
 export default {
@@ -191,6 +192,8 @@ export default {
             return [
               // 续费
               getBatchRenewAction(this),
+              // 自动续费设置
+              getBatchAutoRenewAction(this),
               // 重置密码
               {
                 label: this.$t('compute.text_276'),
