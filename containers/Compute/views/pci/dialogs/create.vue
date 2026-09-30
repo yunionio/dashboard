@@ -15,7 +15,12 @@
           <template #extra v-if="showDocsLink()">
             {{ $t('compute.pci.vendor_id.extra') }}<help-link v-if="vendorAndDeviceLink" :href="vendorAndDeviceLink">{{ $t('compute.pci.document') }}</help-link>
           </template>
-          <a-input v-decorator="decorators.vendor_id" :placeholder="$t('compute.pci.vendor_id.placeholder')" />
+          <select-or-input
+            v-decorator="decorators.vendor_id"
+            value-type="String"
+            force-init-type="select"
+            :options="vendorIdOptions"
+            :name="$t('compute.pci.vendor_id')" />
         </a-form-item>
         <a-form-item :label="$t('compute.pci.device_id')">
           <template #extra v-if="showDocsLink()">
@@ -102,9 +107,10 @@ export default {
           'vendor_id',
           {
             validateFirst: true,
+            initialValue: '',
             rules: [
               { required: true, message: this.$t('compute.pci.vendor_id.placeholder') },
-              { validator: this.validateVendorId(), trigger: 'blur' },
+              { validator: this.validateVendorId(), trigger: ['change', 'blur'] },
             ],
           },
         ],
@@ -147,6 +153,19 @@ export default {
         baremetal: false,
         brand: typeClouds.brandMap.OneCloud.brand,
       },
+      // vendor id 与后端常量保持一致的裸 hex 格式，展示也不带 0x 前缀
+      vendorIdOptions: [
+        { id: '10de', name: 'NVIDIA', dropdownShowText: '10de' },
+        { id: '1002', name: 'AMD', dropdownShowText: '1002' },
+        { id: '1022', name: 'AMD', dropdownShowText: '1022' },
+        { id: '1ec6', name: 'VastaiTech (瀚博半导体)', dropdownShowText: '1ec6' },
+        { id: '1d94', name: 'Hygon (海光)', dropdownShowText: '1d94' },
+        { id: '19e5', name: 'Ascend (华为昇腾)', dropdownShowText: '19e5' },
+        { id: '1e3e', name: 'Iluvatar (天数智芯)', dropdownShowText: '1e3e' },
+        { id: '1ded', name: 'T-Head (平头哥)', dropdownShowText: '1ded' },
+        { id: '1d22', name: 'Kunlunxin (昆仑芯)', dropdownShowText: '1d22' },
+        { id: '1d79', name: 'MetaX (沐曦)', dropdownShowText: '1d79' },
+      ],
     }
   },
   computed: {
@@ -155,10 +174,13 @@ export default {
     },
   },
   methods: {
+    normalizeVendorId (val) {
+      return String(val || '').trim().toLowerCase().replace(/^0x/, '')
+    },
     validateVendorId () {
       return (rule, value, callback) => {
-        const reg = /^[a-f0-9]{4}$/
-        if (reg.test(value)) {
+        const reg = /^(0x)?[a-f0-9]{4}$/i
+        if (reg.test(String(value || '').trim())) {
           return callback()
         }
         return callback(new Error(this.$t('compute.pci.vendor_id.reg_error_msg')))
@@ -186,7 +208,7 @@ export default {
         const data = {
           dev_type: values.dev_type.trim(),
           model: values.model.trim(),
-          vendor_id: values.vendor_id.trim(),
+          vendor_id: this.normalizeVendorId(values.vendor_id),
           device_id: values.device_id.trim(),
           hosts: values.hosts,
           hot_pluggable: values.hot_pluggable,
