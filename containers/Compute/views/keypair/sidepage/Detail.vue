@@ -37,7 +37,15 @@ export default {
         },
         {
           field: 'linked_guest_count',
-          title: this.$t('compute.text_699', [this.$t('dictionary.server')]),
+          title: this.$t('compute.associated_instance_count'),
+          slots: {
+            default: ({ row }) => {
+              if (!row.linked_guest_count) return row.linked_guest_count ?? 0
+              return [
+                <a onClick={() => this.$emit('tab-change', 'associated-instances')}>{ row.linked_guest_count }</a>,
+              ]
+            },
+          },
         },
       ],
     }

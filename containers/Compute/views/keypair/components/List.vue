@@ -47,7 +47,7 @@ export default {
           { label: this.$t('compute.text_725'), key: 'public_key' },
           { label: this.$t('compute.text_726'), key: 'fingerprint' },
           { label: this.$t('compute.text_175'), key: 'scheme' },
-          { label: this.$t('compute.text_699', [this.$t('dictionary.server')]), key: 'linked_guest_count' },
+          { label: this.$t('compute.associated_instance_count'), key: 'linked_guest_count' },
           { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
