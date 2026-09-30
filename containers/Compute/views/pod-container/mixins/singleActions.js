@@ -84,6 +84,27 @@ export default {
                 return ret
               },
             },
+            // 保存镜像
+            {
+              label: this.$t('compute.repo.image.save_image'),
+              permission: 'containers_perform_commit',
+              action: (obj) => {
+                this.createDialog('ContainerCommitImageDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: (obj) => {
+                const ret = { validate: true, tooltip: null }
+                if (!['running', 'exited'].includes(obj.status)) {
+                  ret.tooltip = this.$t('compute.repo.image.commit_status_tip')
+                  ret.validate = false
+                }
+                return ret
+              },
+            },
           ]
         },
       },
