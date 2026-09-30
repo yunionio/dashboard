@@ -1269,6 +1269,8 @@
       "no_container": "コンテナが作成されていません",
       "no_server": "ホストが作成されていません",
       "container_exited": "コンテナ終了",
+      "committing": "イメージを保存中",
+      "commit_failed": "イメージの保存に失敗しました",
       "sync_config": "設定の同期",
       "network": "ネットワーク設定",
       "net_fail": "ネットワーク設定に失敗しました",
