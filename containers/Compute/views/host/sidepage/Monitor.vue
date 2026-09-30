@@ -30,7 +30,7 @@
 import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
 import { buildGpuMonitorOpts, getGpuVendorKeysFromDevices } from '@Compute/constants/gpuMonitor'
 import WindowsMixin from '@/mixins/windows'
-import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS, NIC_RSRC_MON_OPTS, RADEONTOP_OPTS, VASMI_OPTS, HYSMI_OPTS } from '../constants'
+import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS, NIC_RSRC_MON_OPTS, RADEONTOP_OPTS, VASMI_OPTS } from '../constants'
 export default {
   name: 'HostMonitorSidepage',
   components: {
@@ -85,10 +85,6 @@ export default {
         }
         if (this.isolatedDeviceTypes.some(type => ['VASTAITECH_GPU'].includes(type))) {
           list = [...list, ...VASMI_OPTS]
-        }
-        // 容器宿主机 GPU 指标统一放到 GPU 监控 Tab
-        if (!this.isContainerHost && this.isolatedDeviceTypes.some(type => ['HYGON_DCU', 'HYGON_DCU_HAMI'].includes(type))) {
-          list = [...list, ...HYSMI_OPTS]
         }
       }
       return list

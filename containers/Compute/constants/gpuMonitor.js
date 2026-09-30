@@ -1,9 +1,71 @@
 import i18n from '@/locales'
 
+const pct = name => ({
+  name,
+  seleteItem: name,
+  metricLabel: () => i18n.t(`compute.metric.gpu_field.${name}`),
+  unit: '%',
+  transfer: 1,
+})
+
+const temp = (name, labelKey = name) => ({
+  name,
+  seleteItem: name,
+  metricLabel: () => i18n.t(`compute.metric.gpu_field.${labelKey}`),
+  unit: '℃',
+  transfer: 1,
+})
+
+const watt = (name, labelKey = name) => ({
+  name,
+  seleteItem: name,
+  metricLabel: () => i18n.t(`compute.metric.gpu_field.${labelKey}`),
+  unit: 'W',
+  transfer: 1,
+})
+
+const mhz = name => ({
+  name,
+  seleteItem: name,
+  metricLabel: () => i18n.t(`compute.metric.gpu_field.${name}`),
+  unit: 'MHz',
+  transfer: 1,
+})
+
+const plain = (name, labelKey = name) => ({
+  name,
+  seleteItem: name,
+  metricLabel: () => i18n.t(`compute.metric.gpu_field.${labelKey}`),
+  unit: '',
+  transfer: 1,
+})
+
+const memoryGroup = (prefix, labelKey) => ({
+  name: prefix,
+  seleteItem: `${prefix}_total,${prefix}_free,${prefix}_used`,
+  metricLabel: () => i18n.t(`compute.metric.gpu_field.${labelKey}`),
+  seriesLabels: () => [
+    i18n.t('compute.metric.gpu_field.memory_total'),
+    i18n.t('compute.metric.gpu_field.memory_free'),
+    i18n.t('compute.metric.gpu_field.memory_used'),
+  ],
+  unit: 'M',
+  transfer: 1024,
+})
+
+const sizeField = (name, labelKey = name) => ({
+  name,
+  seleteItem: name,
+  metricLabel: () => i18n.t(`compute.metric.gpu_field.${labelKey}`),
+  unit: 'M',
+  transfer: 1024,
+})
+
 /**
  * GPU / 加速卡监控 measurement：
- * - 裸金属：多数带 agent_ 前缀；昆仑芯后端约定为 xpusmi（无 agent_）
+ * - 裸金属 / 虚拟机 Agent：多数带 agent_ 前缀；昆仑芯后端约定为 xpusmi（无 agent_）
  * - 容器宿主机：与裸金属相同，去掉 agent_ 前缀
+ * fields 与后端各卡 Metrics 对齐，按厂商全量展示
  */
 export const GPU_VENDORS = [
   {
@@ -14,6 +76,14 @@ export const GPU_VENDORS = [
     host: 'nvidia_smi',
     matchers: [/nvidia/i],
     pciIds: ['10de'],
+    fields: [
+      mhz('clocks_current_graphics'),
+      mhz('clocks_current_memory'),
+      temp('temperature_gpu'),
+      memoryGroup('memory', 'memory'),
+      pct('utilization_gpu'),
+      pct('utilization_memory'),
+    ],
   },
   {
     key: 'ascend',
@@ -23,15 +93,39 @@ export const GPU_VENDORS = [
     host: 'npu_smi',
     matchers: [/ascend/i, /huawei/i, /昇腾/],
     pciIds: [],
+    fields: [
+      temp('temperature', 'temperature'),
+      watt('npu_real_time_power'),
+      pct('npu_utilization'),
+      pct('hbm_usage_rate'),
+      sizeField('hbm_capacity'),
+      pct('aicore_usage_rate'),
+      pct('aivector_usage_rate'),
+      pct('aicube_usage_rate'),
+      pct('aicpu_usage_rate'),
+      pct('hbm_bandwidth_usage_rate'),
+    ],
   },
   {
     key: 'hygon',
     vendorLabel: () => i18n.t('compute.metric.gpu_vendor.hygon'),
-    groupBy: ['dcu'],
+    groupBy: ['index'],
     baremetal: 'agent_hysmi',
     host: 'hysmi',
     matchers: [/hygon/i, /海光/],
     pciIds: [],
+    fields: [
+      temp('temperature_gpu'),
+      watt('power_draw'),
+      watt('power_cap'),
+      pct('utilization_gpu'),
+      pct('utilization_memory'),
+      pct('utilization_encoder'),
+      pct('utilization_decoder'),
+      memoryGroup('memory', 'memory'),
+      memoryGroup('memory_gtt', 'memory_gtt'),
+      memoryGroup('memory_vis_vram', 'memory_vis_vram'),
+    ],
   },
   {
     key: 'iluvatar',
@@ -41,6 +135,16 @@ export const GPU_VENDORS = [
     host: 'ixsmi',
     matchers: [/iluvatar/i, /ixsmi/i, /天数/],
     pciIds: [],
+    fields: [
+      temp('temperature_gpu'),
+      temp('temperature_memory'),
+      memoryGroup('memory', 'memory'),
+      pct('utilization_gpu'),
+      pct('utilization_memory'),
+      watt('power_draw'),
+      mhz('clocks_current_sm'),
+      mhz('clocks_current_memory'),
+    ],
   },
   {
     key: 'ppu',
@@ -50,6 +154,16 @@ export const GPU_VENDORS = [
     host: 'ppusmi',
     matchers: [/ppu/i, /pingtouge/i, /平头哥/, /t-?head/i],
     pciIds: [],
+    fields: [
+      temp('temperature_gpu'),
+      temp('temperature_memory'),
+      memoryGroup('memory', 'memory'),
+      pct('utilization_gpu'),
+      pct('utilization_memory'),
+      watt('power_draw'),
+      mhz('clocks_current_sm'),
+      mhz('clocks_current_memory'),
+    ],
   },
   {
     key: 'kunlun',
@@ -59,49 +173,22 @@ export const GPU_VENDORS = [
     host: 'xpusmi',
     matchers: [/kunlun/i, /xpu/i, /昆仑/],
     pciIds: [],
-  },
-]
-
-const GPU_METRIC_FIELDS = [
-  {
-    name: 'utilization_gpu',
-    seleteItem: 'utilization_gpu',
-    metricLabel: () => i18n.t('compute.metric.gpu_field.utilization_gpu'),
-    unit: '%',
-    transfer: 1,
-  },
-  {
-    name: 'utilization_memory',
-    seleteItem: 'utilization_memory',
-    metricLabel: () => i18n.t('compute.metric.gpu_field.utilization_memory'),
-    unit: '%',
-    transfer: 1,
-  },
-  {
-    name: 'memory',
-    seleteItem: 'memory_total,memory_free,memory_used',
-    metricLabel: () => i18n.t('compute.metric.gpu_field.memory'),
-    seriesLabels: () => [
-      i18n.t('compute.metric.gpu_field.memory_total'),
-      i18n.t('compute.metric.gpu_field.memory_free'),
-      i18n.t('compute.metric.gpu_field.memory_used'),
+    fields: [
+      temp('temperature_gpu'),
+      memoryGroup('memory', 'memory'),
+      memoryGroup('l3_memory', 'l3_memory'),
+      pct('utilization_gpu'),
+      watt('power_draw'),
+      watt('power_limit'),
+      mhz('clocks_current_cluster'),
+      mhz('clocks_current_cdnn'),
+      plain('pcie_link_gen_current'),
+      plain('pcie_link_width_current'),
+      plain('ecc_errors_dram_correctable'),
+      plain('ecc_errors_dram_uncorrectable'),
+      plain('ecc_errors_dram_correctable_aggregate'),
+      plain('ecc_errors_dram_uncorrectable_aggregate'),
     ],
-    unit: 'M',
-    transfer: 1024,
-  },
-  {
-    name: 'temperature_gpu',
-    seleteItem: 'temperature_gpu',
-    metricLabel: () => i18n.t('compute.metric.gpu_field.temperature_gpu'),
-    unit: '℃',
-    transfer: 1,
-  },
-  {
-    name: 'power_draw',
-    seleteItem: 'power_draw',
-    metricLabel: () => i18n.t('compute.metric.gpu_field.power_draw'),
-    unit: 'W',
-    transfer: 1,
   },
 ]
 
@@ -137,7 +224,8 @@ export function buildGpuMonitorOpts (measurementKey, vendorKeys) {
     }
     const fromItem = vendor[measurementKey]
     const vendorLabel = vendor.vendorLabel()
-    GPU_METRIC_FIELDS.forEach(field => {
+    const fields = vendor.fields || []
+    fields.forEach(field => {
       const label = `${vendorLabel} ${field.metricLabel()}`
       const seriesLabels = typeof field.seriesLabels === 'function' ? field.seriesLabels() : null
       const as = seriesLabels?.length
