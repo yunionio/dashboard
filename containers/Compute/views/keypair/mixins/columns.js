@@ -31,12 +31,20 @@ export default {
       },
       {
         field: 'linked_guest_count',
-        title: this.$t('compute.text_699', [this.$t('dictionary.server')]),
+        title: this.$t('compute.associated_instance_count'),
         width: 120,
         slots: {
-          default: ({ row }, h) => {
+          default: ({ row }) => {
             if (this.isPreLoad && row.linked_guest_count === undefined) return [<data-loading />]
-            return `${row.linked_guest_count}`
+            if (!row.linked_guest_count) return row.linked_guest_count ?? 0
+            return [
+              <side-page-trigger
+                name="KeyPairSidePage"
+                id={row.id}
+                tab="associated-instances"
+                vm={this}
+                list={this.list}>{ row.linked_guest_count }</side-page-trigger>,
+            ]
           },
         },
       },
