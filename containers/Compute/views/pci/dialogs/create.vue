@@ -156,7 +156,7 @@ export default {
       // vendor id 与后端常量保持一致的裸 hex 格式，展示也不带 0x 前缀
       vendorIdOptions: [
         { id: '10de', name: 'NVIDIA', dropdownShowText: '10de' },
-        { id: '1002', name: 'AMD', dropdownShowText: '1002' },
+        { id: '1002', name: 'AMD/ATI', dropdownShowText: '1002' },
         { id: '1022', name: 'AMD', dropdownShowText: '1022' },
         { id: '1ec6', name: 'VastaiTech (瀚博半导体)', dropdownShowText: '1ec6' },
         { id: '1d94', name: 'Hygon (海光)', dropdownShowText: '1d94' },
