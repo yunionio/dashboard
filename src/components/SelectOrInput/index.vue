@@ -17,12 +17,14 @@
     </a-select>
     <a-input-number :disabled="disabled" class="w-100" v-else-if="inputType === 'number'" :value="valueType === 'Object' ? value.name : valueText" :placeholder="getUsePlaceholder('input')" @change="inputNumberChange" />
     <a-input v-else :disabled="disabled" :value="valueType === 'Object' ? value.name : valueText" :placeholder="getUsePlaceholder('input')" @change="inputChange" />
-    <a-button type="link" @click="handleSwitch" style="padding-right:0" :disabled="disabled">
-      <template v-if="showSwitchText">
-        {{type === 'select' ? $t('common.switch_to_input') : $t('common.switch_to_select') }}
-      </template>
-      <icon v-else type="select-switch" size="24" />
-    </a-button>
+    <a-tooltip :title="type === 'select' ? $t('common.switch_to_input') : $t('common.switch_to_select')">
+      <a-button type="link" @click="handleSwitch" style="padding-right:0" :disabled="disabled">
+        <template v-if="showSwitchText">
+          {{type === 'select' ? $t('common.switch_to_input') : $t('common.switch_to_select') }}
+        </template>
+        <icon v-else type="select-switch" size="24" />
+      </a-button>
+    </a-tooltip>
   </div>
 </template>
 
