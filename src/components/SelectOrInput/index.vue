@@ -9,7 +9,10 @@
       v-bind="{...filterOptions}"
       @change="selectChange">
       <a-select-option v-for="(item,index) of options" :key="index" :value="item.id">
-        {{item.name}}<span v-if="item.dropdownShowText" class="text-color-secondary oc-selected-display-none">{{ item.dropdownShowText }}</span>
+        <div class="d-flex justify-content-between align-items-center">
+          <span>{{item.name}}<span v-if="item.dropdownShowText" class="oc-dropdown-display-none">&nbsp;&nbsp;{{ item.dropdownShowText }}</span></span>
+          <span v-if="item.dropdownShowText" class="text-color-secondary oc-selected-display-none ml-3">{{ item.dropdownShowText }}</span>
+        </div>
       </a-select-option>
     </a-select>
     <a-input-number :disabled="disabled" class="w-100" v-else-if="inputType === 'number'" :value="valueType === 'Object' ? value.name : valueText" :placeholder="getUsePlaceholder('input')" @change="inputNumberChange" />
