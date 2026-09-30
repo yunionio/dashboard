@@ -1254,6 +1254,8 @@
       "no_container": "no container",
       "no_server": "no server",
       "container_exited": "container exited",
+      "committing": "saving image",
+      "commit_failed": "save image failed",
       "sync_config": "sync config",
       "network": "network config",
       "net_fail": "network config failed",
