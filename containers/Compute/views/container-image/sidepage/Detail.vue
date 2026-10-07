@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 import {
   getImageNameTableColumn,
   getImageLabelTableColumn,
@@ -21,6 +22,7 @@ import {
 
 export default {
   name: 'ContainerImageDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
