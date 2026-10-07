@@ -76,7 +76,7 @@
   "compute.repo.image.registry_username": "Registry username",
   "compute.repo.image.registry_password": "Registry password",
   "compute.repo.image.tag_tip": "Leave empty to generate a timestamp tag",
-  "compute.repo.image.commit_status_tip": "Only running or exited containers can save an image",
+  "compute.repo.image.commit_status_tip": "Only running containers can save an image",
   "compute.repo.image.commit_success": "Save image task submitted: {0}",
   "compute.repo.add": "Add {0}",
   "compute.repo.label": "label",

@@ -98,7 +98,7 @@ export default {
               },
               meta: (obj) => {
                 const ret = { validate: true, tooltip: null }
-                if (!['running', 'exited'].includes(obj.status)) {
+                if (obj.status !== 'running') {
                   ret.tooltip = this.$t('compute.repo.image.commit_status_tip')
                   ret.validate = false
                 }
