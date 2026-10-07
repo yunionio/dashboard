@@ -1018,7 +1018,7 @@ export default {
           vcpu: cpuNum,
         })
       }
-      this.form.fi.cpuMem.mems_mb = memOpts
+      this.$set(this.form.fi.cpuMem, 'mems_mb', memOpts)
       const currentMem = Number(this.form.fc.getFieldValue('vmem'))
       if (currentMem && memOpts.some(m => Number(m) === currentMem)) {
         // 保持工单回填的内存，避免被默认 2G 覆盖导致套餐错选

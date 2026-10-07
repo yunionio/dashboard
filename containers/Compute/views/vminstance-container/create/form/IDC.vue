@@ -715,6 +715,8 @@ export default {
             hypervisor: HYPERVISORS_MAP.pod.key,
           })
           this.init()
+          // 区域是 setFields 写入的，onValuesChange 不一定带 cloudregion，这里补拉规格
+          this.$nextTick(this.fetchInstanceSpecs)
         })
     },
     fetchInstanceSpecs () {
