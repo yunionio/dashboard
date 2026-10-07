@@ -92,6 +92,7 @@ export default {
               { label: 'AMD', key: 'AMD' },
               { label: 'HYGON', key: 'HYGON' },
               { label: 'VASTAITECH', key: 'VASTAITECH' },
+              { label: 'ILUVATAR', key: 'ILUVATAR' },
             ],
           },
           vendor_device_id: {

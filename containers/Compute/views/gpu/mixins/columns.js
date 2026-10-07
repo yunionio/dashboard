@@ -42,6 +42,7 @@ function getVendorIconType (row) {
     1002: 'amd',
     '1d94': 'hygon',
     '1ec6': 'vastaitech',
+    '1e3e': 'iluvatar',
   }
   return DEVICE_MAP[vendorId]
 }
