@@ -76,7 +76,7 @@
   "compute.repo.image.registry_username": "リポジトリのユーザー名",
   "compute.repo.image.registry_password": "リポジトリのパスワード",
   "compute.repo.image.tag_tip": "未入力の場合はタイムスタンプのタグを自動生成します",
-  "compute.repo.image.commit_status_tip": "実行中または停止済みのコンテナのみイメージを保存できます",
+  "compute.repo.image.commit_status_tip": "実行中のコンテナのみイメージを保存できます",
   "compute.repo.image.commit_success": "イメージ保存タスクを送信しました：{0}",
   "compute.repo.add": "{0} を追加",
   "compute.repo.label": "ラベル",
