@@ -76,7 +76,7 @@
   "compute.repo.image.registry_username": "仓库用户名",
   "compute.repo.image.registry_password": "仓库密码",
   "compute.repo.image.tag_tip": "留空则自动生成时间戳标签",
-  "compute.repo.image.commit_status_tip": "仅运行中或已停止的容器可保存镜像",
+  "compute.repo.image.commit_status_tip": "仅运行中的容器可保存镜像",
   "compute.repo.image.commit_success": "已提交保存镜像任务：{0}",
   "compute.repo.add": "添加{0}",
   "compute.repo.label": "标签",

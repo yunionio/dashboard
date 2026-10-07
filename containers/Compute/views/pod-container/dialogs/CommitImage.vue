@@ -4,14 +4,7 @@
     <div slot="body">
       <dialog-selected-tips :name="$t('compute.container', [])" :count="params.data.length" :action="$t('compute.repo.image.save_image')" />
       <a-form-model ref="form" :model="form" :rules="rules" :label-col="{ span: 5 }" :wrapper-col="{ span: 17 }">
-        <a-form-model-item :label="$t('compute.repo.image.source')">
-          <a-radio-group v-model="source" @change="onSourceChange">
-            <a-radio-button value="registry">{{ $t('compute.repo.image.registered') }}</a-radio-button>
-            <a-radio-button value="external">{{ $t('compute.repo.image.external') }}</a-radio-button>
-          </a-radio-group>
-        </a-form-model-item>
-
-        <a-form-model-item v-if="source === 'registry'" :label="$t('dictionary.container_registry')" prop="registry_id">
+        <a-form-model-item :label="$t('dictionary.container_registry')" prop="registry_id">
           <a-select
             v-model="form.registry_id"
             showSearch
@@ -29,18 +22,6 @@
             </a-select-option>
           </a-select>
         </a-form-model-item>
-
-        <template v-else>
-          <a-form-model-item :label="$t('compute.repo.image.registry_url')" prop="url">
-            <a-input v-model="form.url" :placeholder="$t('compute.repo.image.registry_url.example')" />
-          </a-form-model-item>
-          <a-form-model-item :label="$t('compute.repo.image.registry_username')">
-            <a-input v-model="form.username" :placeholder="$t('common.tips.input', [$t('compute.repo.image.registry_username')])" />
-          </a-form-model-item>
-          <a-form-model-item :label="$t('compute.repo.image.registry_password')">
-            <a-input-password v-model="form.password" :placeholder="$t('common.tips.input', [$t('compute.repo.image.registry_password')])" />
-          </a-form-model-item>
-        </template>
 
         <a-form-model-item :label="$t('compute.repo.image.name')" prop="image_name">
           <a-input v-model="form.image_name" :addonBefore="registryPrefixAddon" :placeholder="$t('common.tips.input', [$t('compute.repo.image.name')])" />
@@ -72,38 +53,16 @@ export default {
     return {
       loading: false,
       registryLoading: false,
-      // 仓库来源：registry 使用已注册仓库，external 使用外部仓库
-      source: 'registry',
       registries: [],
       form: {
         registry_id: undefined,
-        url: undefined,
-        username: undefined,
-        password: undefined,
         // 为空时后端默认使用容器名称
         image_name: container.name,
         // 为空时后端默认使用时间戳
         tag: undefined,
       },
       rules: {
-        registry_id: [{
-          validator: (rule, value, callback) => {
-            if (this.source === 'registry' && !value) {
-              callback(new Error(this.$t('common.tips.select', [this.$t('dictionary.container_registry')])))
-            } else {
-              callback()
-            }
-          },
-        }],
-        url: [{
-          validator: (rule, value, callback) => {
-            if (this.source === 'external' && !value) {
-              callback(new Error(this.$t('common.tips.input', [this.$t('compute.repo.image.registry_url')])))
-            } else {
-              callback()
-            }
-          },
-        }],
+        registry_id: [{ required: true, message: this.$t('common.tips.select', [this.$t('dictionary.container_registry')]) }],
         image_name: [{ required: true, message: this.$t('common.tips.input', [this.$t('compute.repo.image.name')]) }],
       },
     }
@@ -113,8 +72,7 @@ export default {
       return this.registries.find(r => r.id === this.form.registry_id)
     },
     registryPrefix () {
-      const url = this.source === 'external' ? this.form.url : this.selectedRegistry?.url
-      return this.stripProtocol(url || '')
+      return this.stripProtocol(this.selectedRegistry?.url || '')
     },
     registryPrefixAddon () {
       return this.registryPrefix ? `${this.registryPrefix}/` : ''
@@ -135,9 +93,6 @@ export default {
     filterOption (input, option) {
       const label = option.componentOptions?.propsData?.label || ''
       return label.toLowerCase().indexOf((input || '').toLowerCase()) >= 0
-    },
-    onSourceChange () {
-      this.$refs.form && this.$refs.form.clearValidate()
     },
     async fetchRegistries () {
       try {
@@ -166,20 +121,10 @@ export default {
     buildCommitInput () {
       const container = {
         image_name: this.form.image_name,
+        registry_id: this.form.registry_id,
       }
       if (this.form.tag) {
         container.tag = this.form.tag
-      }
-      if (this.source === 'registry') {
-        container.registry_id = this.form.registry_id
-      } else {
-        container.external_registry = {
-          url: this.form.url,
-          auth: {
-            username: this.form.username,
-            password: this.form.password,
-          },
-        }
       }
       return container
     },
