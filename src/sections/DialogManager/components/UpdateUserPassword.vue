@@ -43,27 +43,16 @@ export default {
   data () {
     const validatePassword = async (rule, value, callback) => {
       if (R.isNil(this.minPasswordLen) || R.isNil(this.complexity)) {
-        const manager = new this.$Manager('services', 'v1')
         try {
-          const response = await manager.list({
-            params: {
-              type: 'identity',
-            },
-          })
-          const id = response.data.data && response.data.data[0] && response.data.data[0].id
-          if (id) {
-            const configRes = await manager.getSpecific({
-              id,
-              spec: 'config',
-            })
-            const len = configRes.data.config && configRes.data.config.default && configRes.data.config.default.password_minimal_length
-            const complexity = configRes.data.config && configRes.data.config.default && configRes.data.config.default.password_char_complexity
-            if (!R.isNil(len)) {
-              this.minPasswordLen = len
-            }
-            if (!R.isNil(complexity)) {
-              this.complexity = complexity
-            }
+          const response = await new this.$Manager('service_settings', 'v1').list()
+          const identity = (response.data && response.data.identity) || {}
+          const len = identity.password_minimal_length
+          const complexity = identity.password_char_complexity
+          if (!R.isNil(len)) {
+            this.minPasswordLen = len
+          }
+          if (!R.isNil(complexity)) {
+            this.complexity = complexity
           }
         } catch (error) {
           callback()
