@@ -1,11 +1,11 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('k8s.text_47')}}</div>
+    <div slot="header">{{ readonly ? $t('k8s.vc_view_yaml') : $t('k8s.text_47') }}</div>
     <div class="k8s-edit-yaml-dialog w-100" v-if="configText" slot="body">
       <code-mirror v-model="configText" :options="cmOptions" />
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button v-if="!readonly" type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -24,6 +24,7 @@ export default {
     return {
       loading: false,
       scope: this.$store.getters.scope,
+      readonly: !!this.params.readonly,
       configText: R.is(Object, this.params.configText) ? jsYaml.safeDump(this.params.configText, { lineWidth: Infinity }) : this.params.configText,
       data: this.params.data[0],
       cmOptions: {
@@ -34,6 +35,7 @@ export default {
         mode: 'text/x-yaml',
         lineWrapping: true,
         theme: 'material',
+        readOnly: this.params.readonly ? 'nocursor' : false,
       },
     }
   },
