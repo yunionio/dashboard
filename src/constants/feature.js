@@ -600,7 +600,7 @@ const FEATURE_MENUS = {
     ceMenus: ['cloudaccount', 'proxysetting', 'projectmapping', 'bucket'],
   },
   k8s: {
-    ceMenus: ['k8s-deployment', 'k8s-statefulset', 'k8s-daemonset', 'k8s-job', 'k8s-cronjob', 'k8s-pod', 'k8s-persistentvolumeclaim', 'k8s-service', 'k8s-ingress', 'k8s-configmap', 'k8s-secret', 'k8s-cluster', 'k8s-node', 'k8s-storageclass', 'k8s-namespace', 'k8s-rbacrole', 'k8s-rbacclusterrole', 'k8s-rbacrolebinding', 'k8s-rbacclusterrolebinding', 'k8s-serviceaccount', 'k8s-kubecomponent'],
+    ceMenus: ['k8s-deployment', 'k8s-statefulset', 'k8s-daemonset', 'k8s-job', 'k8s-cronjob', 'k8s-vcjob', 'k8s-vcqueue', 'k8s-vcpodgroup', 'k8s-vchypernode', 'k8s-priorityclass', 'k8s-pod', 'k8s-persistentvolumeclaim', 'k8s-service', 'k8s-ingress', 'k8s-configmap', 'k8s-secret', 'k8s-cluster', 'k8s-node', 'k8s-storageclass', 'k8s-namespace', 'k8s-rbacrole', 'k8s-rbacclusterrole', 'k8s-rbacrolebinding', 'k8s-rbacclusterrolebinding', 'k8s-serviceaccount', 'k8s-kubecomponent'],
   },
   monitor: {
     ceMenus: ['monitoroverview', 'monitor-dashboard', 'explorer', 'commonalerts', 'alertresource', 'alertrecord', 'monitorresourcealerts', 'notification', 'notify-topic', 'notifyconfig', 'contact', 'robot', 'scheduledtask', 'navbar-alert', 'navbar-notification'],
