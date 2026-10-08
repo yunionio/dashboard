@@ -76,33 +76,18 @@ export default {
   computed: {
     ...mapGetters(['userInfo']),
   },
-  destroyed () {
-    this.manager = null
-  },
   created () {
-    this.manager = new this.$Manager('services', 'v1')
     this.fetchApiServiceConfig()
   },
   methods: {
     async fetchApiServiceConfig () {
       try {
-        const serviceRes = await this.manager.list({
-          params: {
-            type: ['yunionapi'],
-          },
-        })
-        if (serviceRes.data.data && serviceRes.data.data[0]) {
-          const id = serviceRes.data.data[0].id
-          const configRes = await this.manager.getSpecific({
-            id,
-            spec: 'config',
-          })
-          const config = (configRes.data.config && configRes.data.config.default) || {}
-          if (!config.enable_totp) {
-            this.mfaExtra = this.$t('system.text_509')
-          }
-          return config
+        const response = await new this.$Manager('service_settings', 'v1').list()
+        const config = (response.data && response.data.yunionapi) || {}
+        if (!config.enable_totp) {
+          this.mfaExtra = this.$t('system.text_509')
         }
+        return config
       } catch (error) {
         if (error.response && error.response.status) {
           this.mfaExtra = this.$t('system.text_510')
