@@ -167,31 +167,16 @@ export default {
       })
     },
     async getServerUrl () {
-      let manager = new this.$Manager('services', 'v1')
       try {
-        const response = await manager.list({
+        const response = await new this.$Manager('service_settings', 'v1').list({
           params: {
-            type: ['common'],
             $t: getRequestT(),
           },
         })
-        const id = (response.data.data && response.data.data.length && response.data.data[0].id) || ''
-        if (id) {
-          const configResponse = await manager.getSpecific({
-            id,
-            spec: 'config',
-            params: {
-              $t: getRequestT(),
-            },
-          })
-          const config = (configResponse.data.config && configResponse.data.config.default) || {}
-          const apiServer = config.api_server || ''
-          this.serverUrl = apiServer
-        }
+        const apiServer = (response.data && response.data.common && response.data.common.api_server) || ''
+        this.serverUrl = apiServer
       } catch (error) {
         throw error
-      } finally {
-        manager = null
       }
     },
   },
