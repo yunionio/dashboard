@@ -469,11 +469,8 @@ export default {
         async beforeExport () {
           const checkOpenExportUsernamePassword = async () => {
             try {
-              const configM = new Manager('services', 'v1')
-              const servicesRes = await configM.list({ params: { type: 'compute_v2' } })
-              const serviceId = servicesRes.data.data?.[0]?.id
-              const configData = await configM.getSpecific({ id: serviceId, spec: 'config' })
-              const { enable_export_username_password = false } = configData.data?.config?.default
+              const response = await new Manager('service_settings', 'v1').list()
+              const { enable_export_username_password = false } = (response.data && response.data.compute_v2) || {}
               ret.isOpenExportUsernamePassword = enable_export_username_password
               return enable_export_username_password
             } catch (error) {
