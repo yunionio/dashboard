@@ -1,4 +1,3 @@
-import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -17,26 +16,21 @@ export default {
         },
       }),
       {
-        field: 'podIP',
-        title: 'IP',
-        minWidth: '100px',
-      },
-      {
-        field: 'nodeName',
-        title: i18n.t('k8s.text_21'),
-        minWidth: '120px',
-      },
-      {
-        field: 'namespace',
-        title: i18n.t('k8s.text_23'),
+        field: 'value',
+        title: i18n.t('k8s.vc_priority_value'),
         width: 120,
-        sortable: true,
       },
-      k8sStatusColumn({ path: 'warnings' }),
       {
-        field: 'restartCount',
-        title: i18n.t('k8s.text_317'),
-        minWidth: '80px',
+        field: 'globalDefault',
+        title: i18n.t('k8s.vc_global_default'),
+        width: 110,
+        formatter: ({ row }) => row.globalDefault ? i18n.t('k8s.vc_yes') : i18n.t('k8s.vc_no'),
+      },
+      {
+        field: 'description',
+        title: i18n.t('k8s.vc_description'),
+        minWidth: 160,
+        formatter: ({ row }) => row.description || '-',
       },
       getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]

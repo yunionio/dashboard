@@ -39,6 +39,16 @@ export default {
         },
       },
       {
+        label: i18n.t('k8s.vc_set_labels'),
+        permission: 'k8s_nodes_perform_set_labels',
+        action: obj => {
+          this.createDialog('K8SNodeSetLabelsDialog', {
+            data: [obj],
+            refresh: this.refresh,
+          })
+        },
+      },
+      {
         label: i18n.t('k8s.text_215'),
         permission: 'k8s_nodes_update',
         action: async obj => {
