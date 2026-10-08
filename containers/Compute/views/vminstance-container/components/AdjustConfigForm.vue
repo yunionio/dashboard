@@ -85,7 +85,7 @@ import {
 import { findPlatform } from '@/utils/common/hypervisor'
 import { sizestr } from '@/utils/utils'
 import DiscountPrice from '@/sections/DiscountPrice'
-import { isOsArch } from '@/constants/compute'
+import { HOST_CPU_ARCHS } from '@/constants/compute'
 
 export default {
   name: 'AdjustConfig',
@@ -199,7 +199,11 @@ export default {
       return this.params.data.some(val => val.status === 'running')
     },
     isSomeArm () {
-      return isOsArch(this.selectedItem.os_arch, 'arm')
+      const arch = (this.selectedItem.os_arch || '').toLowerCase()
+      return arch === HOST_CPU_ARCHS.arm.key ||
+        arch === HOST_CPU_ARCHS.arm.capabilityKey ||
+        arch.includes('arm') ||
+        arch.includes('aarch64')
     },
     runningArm () {
       return this.isSomeArm && this.isSomeRunning
