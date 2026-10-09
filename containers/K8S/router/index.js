@@ -43,6 +43,16 @@ const Job = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true 
 const K8sJobCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/job/create')
 const CronJob = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/cronjob')
 const K8sCronJobCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/cronjob/create')
+const Vcjob = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vcjob')
+const K8sVcjobCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vcjob/create')
+const Vcqueue = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vcqueue')
+const K8sVcqueueCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vcqueue/create')
+const K8sVcqueueUpdate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vcqueue/update')
+const Vcpodgroup = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vcpodgroup')
+const Vchypernode = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vchypernode')
+const K8sVchypernodeCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vchypernode/create')
+const Priorityclass = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/priorityclass')
+const K8sPriorityclassCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/priorityclass/create')
 const Persistentvolumeclaim = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/persistentvolumeclaim')
 const K8sPersistentvolumeclaimCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/persistentvolumeclaim/create')
 const Service = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/service')
@@ -640,6 +650,143 @@ export default {
               name: 'K8sKubeComponentUpdate',
               path: 'update',
               component: K8sKubeComponentUpdate,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: i18n.t('k8s.vc_menu'),
+      },
+      submenus: [
+        {
+          path: '/k8s-vcjob',
+          meta: {
+            label: i18n.t('k8s.vc_job'),
+            permission: 'k8s_vcjobs_list',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_vcjob')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sVcjobList',
+              path: '',
+              component: Vcjob,
+            },
+            {
+              name: 'K8sVcjobCreate',
+              path: 'create',
+              component: K8sVcjobCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-vcqueue',
+          meta: {
+            label: i18n.t('k8s.vc_queue'),
+            permission: 'k8s_vcqueues_list',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_vcqueue')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sVcqueueList',
+              path: '',
+              component: Vcqueue,
+            },
+            {
+              name: 'K8sVcqueueCreate',
+              path: 'create',
+              component: K8sVcqueueCreate,
+            },
+            {
+              name: 'K8sVcqueueUpdate',
+              path: 'update',
+              component: K8sVcqueueUpdate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-vcpodgroup',
+          meta: {
+            label: i18n.t('k8s.vc_podgroup'),
+            permission: 'k8s_vcpodgroups_list',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_vcpodgroup')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sVcpodgroupList',
+              path: '',
+              component: Vcpodgroup,
+            },
+          ],
+        },
+        {
+          path: '/k8s-vchypernode',
+          meta: {
+            label: i18n.t('k8s.vc_hypernode'),
+            permission: 'k8s_vchypernodes_list',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_vchypernode')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sVchypernodeList',
+              path: '',
+              component: Vchypernode,
+            },
+            {
+              name: 'K8sVchypernodeCreate',
+              path: 'create',
+              component: K8sVchypernodeCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-priorityclass',
+          meta: {
+            label: i18n.t('k8s.vc_priority_class'),
+            permission: 'k8s_priorityclasses_list',
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_priorityclass')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sPriorityclassList',
+              path: '',
+              component: Priorityclass,
+            },
+            {
+              name: 'K8sPriorityclassCreate',
+              path: 'create',
+              component: K8sPriorityclassCreate,
             },
           ],
         },
