@@ -1,31 +1,34 @@
-
 <template>
   <page-list
     :list="list"
     :columns="columns"
+    :noDataText="noDataText"
+    :group-actions="groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions">
     <template v-slot:group-actions-append>
-      <cluster-namespace v-if="showGroupActions" :getParams.sync="list.getParams" :ignoreNamespace="true" @refresh="fetchData" class="ml-3" />
+      <cluster-namespace :getParams.sync="list.getParams" :namespaceMap="namespaceMap" @refresh="fetchData" class="ml-3" />
     </template>
-    </page-list>
+  </page-list>
 </template>
 
 <script>
 import ClusterNamespace from '@K8S/sections/ClusterNamespace'
-import { getNameFilter, getStatusFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import clusterNamespaceMixin from '@K8S/mixins/clusterNamespace'
+import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { getNameFilter } from '@/utils/common/tableFilter'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
-  name: 'K8SNodeList',
+  name: 'K8SVcpodgroupList',
   components: {
     ClusterNamespace,
   },
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, clusterNamespaceMixin],
   props: {
     id: String,
     getParams: {
@@ -42,43 +45,44 @@ export default {
     },
   },
   data () {
-    const filter = {}
-    if (this.$route.query.status) {
-      filter.status = [this.$route.query.status]
-    }
-    if (this.$route.query.domain) {
-      filter.domain = [this.$route.query.domain]
-    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'k8s_nodes',
+        resource: 'vcpodgroups',
         apiVersion: 'v1',
         getParams: this.getParams,
         filterOptions: {
           name: getNameFilter(),
-          status: getStatusFilter({ statusMoule: 'kubecluster' }),
-          project_domain: getProjectDomainFilter(),
         },
-        filter,
+        steadyStatus: {
+          status: Object.values(expectStatus.k8s_resource_vcpodgroup).flat(),
+        },
+        itemGetParams: {
+          cluster: '',
+          namespace: '',
+        },
       }),
+      groupActions: [],
     }
   },
   created () {
-    this.fetchData()
+    if (this.inBaseSidePage && this.list.getParams && this.list.getParams.cluster) {
+      this.list.fetchData()
+    }
   },
   methods: {
-    fetchData () {
-      if (this.list.getParams.cluster) {
-        this.list.fetchData()
-      }
-    },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8SNodeSidePage', {
+      this.sidePageTriggerHandle(this, 'K8SVCPodGroupSidePage', {
         id: row.id,
-        resource: 'k8s_nodes',
+        resource: 'vcpodgroups',
+        getParams: () => ({
+          cluster: row.clusterID,
+          namespace: row.namespace,
+        }),
         apiVersion: 'v1',
-        getParams: this.list.getParams,
+        steadyStatus: {
+          status: Object.values(expectStatus.k8s_resource_vcpodgroup).flat(),
+        },
       }, {
         list: this.list,
       })
