@@ -276,6 +276,23 @@ export default {
     success: ['Complete'],
     danger: ['Failed'],
   },
+  k8s_resource_vcjob: {
+    success: ['Running', 'Completed'],
+    danger: ['Failed', 'Aborted'],
+    info: ['Terminating', 'Restarting', 'Completing', 'Aborting', 'Unknown', 'active', 'Active'],
+  },
+  k8s_resource_vcqueue: {
+    success: ['Open'],
+    info: ['Closed', 'Closing', 'Unknown', 'active', 'Active'],
+  },
+  k8s_resource_vcpodgroup: {
+    success: ['Running', 'Completed'],
+    info: ['Pending', 'Inqueue', 'Unknown', 'active', 'Active'],
+  },
+  k8s_resource_vchypernode: {
+    success: ['Ready'],
+    info: ['Pending', 'active', 'Active'],
+  },
   release: {
     success: ['deployed', 'created'],
     info: ['superseded'],

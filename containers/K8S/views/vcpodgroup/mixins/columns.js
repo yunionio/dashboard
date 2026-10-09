@@ -17,27 +17,22 @@ export default {
         },
       }),
       {
-        field: 'podIP',
-        title: 'IP',
-        minWidth: '100px',
-      },
-      {
-        field: 'nodeName',
-        title: i18n.t('k8s.text_21'),
-        minWidth: '120px',
-      },
-      {
         field: 'namespace',
         title: i18n.t('k8s.text_23'),
-        width: 120,
+        width: 140,
         sortable: true,
       },
-      k8sStatusColumn({ path: 'warnings' }),
       {
-        field: 'restartCount',
-        title: i18n.t('k8s.text_317'),
-        minWidth: '80px',
+        field: 'queue',
+        title: i18n.t('k8s.vc_queue_field'),
+        width: 140,
       },
+      {
+        field: 'minMember',
+        title: i18n.t('k8s.vc_min_member'),
+        width: 120,
+      },
+      k8sStatusColumn({ statusModule: 'k8s_resource_vcpodgroup' }),
       getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },
