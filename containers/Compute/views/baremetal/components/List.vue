@@ -31,6 +31,7 @@ import ColumnsMixin from '../mixins/columns'
 import { getBatchStartAction } from '../utils/startActions'
 import { getBatchRenewAction } from '../utils/renewActions'
 import { getBatchAutoRenewAction } from '../utils/autoRenewActions'
+import { getBatchDeleteAction } from '../utils/deleteActions'
 import { cloudEnabled, cloudUnabledTip, commonEnabled, validateRescueMode } from '../../vminstance/utils'
 
 export default {
@@ -390,33 +391,8 @@ export default {
               disableDeleteAction(Object.assign(this, { permission: 'server_update' }), {
                 hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_set_delete_protection'),
               }),
-              // 批量删除
-              {
-                label: this.$t('compute.perform_delete'),
-                permission: 'server_delete',
-                action: () => {
-                  this.createDialog('DeleteResDialog', {
-                    vm: this,
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    title: this.$t('compute.perform_delete'),
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: true,
-                    tooltip: null,
-                  }
-                  if (this.list.selectedItems.some(item => item.billing_type === 'prepaid')) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_285')
-                    return ret
-                  }
-                  return this.$getDeleteResult(this.list.selectedItems)
-                },
-                hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_delete'),
-              },
+              // 批量删除（GPU scope 可自定义，默认 DeleteResDialog）
+              getBatchDeleteAction(this),
             ]
           },
           meta: () => {
