@@ -10,6 +10,7 @@ import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
 import { hostServerActions } from '../../../utils/hostActions'
 import { getRenewAction } from '../utils/renewActions'
 import { getAutoRenewAction } from '../utils/autoRenewActions'
+import { getDeleteAction } from '../utils/deleteActions'
 // import { Base64 } from 'js-base64'
 export default {
   computed: {
@@ -507,39 +508,8 @@ export default {
                 disableDeleteAction(this, {
                   hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_set_delete_protection'),
                 }),
-                {
-                  label: i18n.t('compute.perform_delete'),
-                  permission: 'server_delete',
-                  action: () => {
-                    this.createDialog('DeleteResDialog', {
-                      vm: this,
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                      title: i18n.t('compute.perform_delete'),
-                      success: () => {
-                        this.destroySidePages()
-                      },
-                    })
-                  },
-                  meta: () => {
-                    const ret = {
-                      validate: false,
-                      tooltip: null,
-                    }
-                    if (this.isAdminMode && obj.billing_type === 'prepaid') {
-                      ret.tooltip = i18n.t('compute.text_285')
-                      return ret
-                    }
-                    if (!obj.can_delete) {
-                      ret.tooltip = i18n.t('compute.text_284')
-                      return ret
-                    }
-                    ret.validate = true
-                    return ret
-                  },
-                  hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_delete'),
-                },
+                // 删除（GPU scope 可自定义，默认 DeleteResDialog）
+                getDeleteAction(this, obj),
               ],
             },
           ]
