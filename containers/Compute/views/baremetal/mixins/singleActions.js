@@ -35,7 +35,9 @@ export default {
         permission: 'server_get_vnc',
         actions: obj => {
           let ret = []
-          ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole, this.createDialog))
+          if (this.isAdminMode) {
+            ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole, this.createDialog))
+          }
           const openWebConsole = (params) => {
             this.webconsoleManager.performAction(params).then(({ data }) => {
               const connectParams = qs.parse(data.connect_params)
@@ -170,7 +172,9 @@ export default {
           eips = eips.length ? mapIpActions(eips, 'EIP SSH') : []
           ips = ips.length ? mapIpActions(ips, 'IP SSH') : []
           ret = ret.concat(eips).concat(ips)
-          ret.push({ ...jnlpConsole(new this.$Manager('servers', 'v2'), obj, this.createDialog), permission: 'server_get_jnlp' })
+          if (this.isAdminMode) {
+            ret.push({ ...jnlpConsole(new this.$Manager('servers', 'v2'), obj, this.createDialog), permission: 'server_get_jnlp' })
+          }
           return ret
         },
         meta: (obj) => {
