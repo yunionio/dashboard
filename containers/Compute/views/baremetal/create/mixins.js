@@ -110,6 +110,10 @@ export default {
     if (seedSchedtags && seedSchedtags.length) {
       initSchedPolicyType = 'schedtag'
     }
+    const initFakeCreateFromBmImport = (() => {
+      const flag = initData.fake_create_from_bm_import ?? initData.extraData?.fake_create_from_bm_import
+      return flag === true || flag === 'true' || flag === 1
+    })()
     return {
       _initFormPromise: null,
       _initFormDone: false,
@@ -504,6 +508,8 @@ export default {
       },
       isBonding: initBonding,
       isShowFalseIcon: false,
+      // 从托管物理机新建：隐藏 OS/磁盘/密码/网络且不传相关参数
+      fakeCreateFromBmImport: initFakeCreateFromBmImport,
       count: 1,
       hostData: [],
       filterHostData: [],
@@ -635,6 +641,10 @@ export default {
       }
       return false
     },
+    // 非「从托管物理机新建」时展示操作系统/硬盘/密码/网络
+    showBaremetalInstallFields () {
+      return !this.fakeCreateFromBmImport
+    },
     isInstallOperationSystem () { // 是否是安装操作系统
       if (this.$route.query.host_id) {
         return true
@@ -734,6 +744,12 @@ export default {
     project_domain (newVal, oldVal) {
       if (this.isInstallOperationSystem) this.fetchSpec()
       this.capability(this.zone)
+    },
+    fakeCreateFromBmImport () {
+      if (this.isInstallOperationSystem) return
+      const hosts = this.form?.fi?.capability?.specs?.hosts
+      if (!hosts || R.isEmpty(hosts)) return
+      this._refreshSpecOptionsFromHosts()
     },
   },
   created () {
@@ -1095,6 +1111,10 @@ export default {
         }
       })
     },
+    isImportBaremetalSpec (spec) {
+      const flag = spec?.create_from_import_baremetal
+      return flag === true || flag === 'true' || flag === 1
+    },
     _loadSpecificationOptions (data) {
       const specs = {}
       let entries = Object.entries(data)
@@ -1105,15 +1125,23 @@ export default {
       entries.forEach(item => {
         specs[item[0]] = item[1]
       })
+      this.form.fi.capability.specs.hosts = specs
+      this._refreshSpecOptionsFromHosts()
+    },
+    // 按「从托管物理机新建」过滤规格下拉；hosts 全量保留以便切换开关时重筛
+    _refreshSpecOptionsFromHosts () {
+      const specs = this.form.fi.capability.specs.hosts || {}
       const options = []
       for (const k in specs) {
-        const spec = {
+        if (!this.isInstallOperationSystem) {
+          const isImport = this.isImportBaremetalSpec(specs[k])
+          if (this.fakeCreateFromBmImport ? !isImport : isImport) continue
+        }
+        options.push({
           text: this.__getSpecification(specs[k]),
           value: k,
-        }
-        options.push(spec)
+        })
       }
-      this.form.fi.capability.specs.hosts = specs
       this.specOptions = this.__ignoreModel(options)
       if (this.specOptions && this.specOptions.length) {
         // 工单/同 tab 草稿：优先已选规格，避免被默认第一项覆盖
@@ -1124,6 +1152,8 @@ export default {
         } else if (this.canRestoreCreateFormDraft) {
           const draftSpec = this.readCreateFormFieldDraft(BAREMETAL_CREATE_FORM_DRAFT_FIELD.SPECIFICATIONS)
           preferSpec = draftSpec || this.form.fc.getFieldValue('specifications') || ''
+        } else {
+          preferSpec = this.form.fc.getFieldValue('specifications') || ''
         }
         const matched = preferSpec
           ? this.specOptions.find(o => o.value === preferSpec)
@@ -1152,6 +1182,13 @@ export default {
           this.selectedSpecItem.isolated_devices = currentSpec.isolated_devices
         }
         this.$nextTick(() => this.restoreBaremetalDiskDraft())
+      } else {
+        this.specOptions = []
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ specifications: '' })
+        })
+        this.diskData = {}
+        this.selectedSpecItem = {}
       }
     },
     /**
@@ -1468,20 +1505,25 @@ export default {
       const values = await this.validateForm()
       const disks = []
       const nets = []
+      const fromBmImport = !!this.fakeCreateFromBmImport
       const extraData = {
         formType: this.cloudEnv,
         __resource_type__: 'baremetal',
-        image_type: values.imageType,
-        os: values.os,
-        image: values.image.key,
         domain_id: values.domain?.key || this.$store.getters.userInfo.projectDomainId,
         specifications: values.specifications,
         extraNets: [],
-        loginType: values.loginType,
         isBonding: this.isBonding,
       }
-      // 判断数据盘是否合法
-      if (this.diskOptionsDate.length > 0) {
+      if (!fromBmImport) {
+        extraData.image_type = values.imageType
+        extraData.os = values.os
+        extraData.image = values.image && values.image.key
+        extraData.loginType = values.loginType
+      } else {
+        extraData.fake_create_from_bm_import = true
+      }
+      // 判断数据盘是否合法（从托管物理机新建不校验磁盘）
+      if (!fromBmImport && this.diskOptionsDate.length > 0) {
         if (this.isShowFalseIcon) {
           this.$message.error(i18n.t('compute.text_319'))
           throw new Error(i18n.t('compute.text_319'))
@@ -1535,74 +1577,76 @@ export default {
         // 根据adapter排序diskConfigs
         diskConfigs.sort((a, b) => { return a.adapter - b.adapter })
       }
-      if (values.networks) {
-        const networks = values.networks
-        for (const key in networks) {
-          const option = {
-            network: networks[key],
+      if (!fromBmImport) {
+        if (values.networks) {
+          const networks = values.networks
+          for (const key in networks) {
+            const option = {
+              network: networks[key],
+            }
+            if (!R.isNil(values.networkIps) && !R.isEmpty(values.networkIps)) {
+              option.address = values.networkIps[key]
+            }
+            if (values.networkIPv6s && values.networkIPv6s[key]) {
+              option.require_ipv6 = true
+            }
+            if (values.networkIpsAddress6 && values.networkIpsAddress6[key]) {
+              const ipv6Last = values.networkIpsAddress6[key]
+              const target = this.form.fi.networkList.filter(item => item.key === key)
+              const ipv6First = getIpv6Start(target[0]?.network?.guest_ip6_start)
+              option.address6 = ipv6First + ipv6Last
+            }
+            if (values.networkIPv6Modes && values.networkIPv6Modes[key] === 'only' && option.require_ipv6) {
+              option.strict_ipv6 = true
+            }
+            // 是否启用bonding
+            if (this.isBonding) {
+              option.require_teaming = true
+              if (this.isInstallOperationSystem) option.private = false
+              nets.push(option)
+              if (values.vpcs && values.vpcs[key]) {
+                const extraOption = { ...option, vpc: values.vpcs[key] }
+                extraData.extraNets.push(extraOption)
+              } else {
+                extraData.extraNets.push(option)
+              }
+            } else {
+              nets.push(option)
+              if (values.vpcs && values.vpcs[key]) {
+                const extraOption = { ...option, vpc: values.vpcs[key] }
+                extraData.extraNets.push(extraOption)
+              } else {
+                extraData.extraNets.push(option)
+              }
+            }
           }
-          if (!R.isNil(values.networkIps) && !R.isEmpty(values.networkIps)) {
-            option.address = values.networkIps[key]
-          }
-          if (values.networkIPv6s && values.networkIPv6s[key]) {
-            option.require_ipv6 = true
-          }
-          if (values.networkIpsAddress6 && values.networkIpsAddress6[key]) {
-            const ipv6Last = values.networkIpsAddress6[key]
-            const target = this.form.fi.networkList.filter(item => item.key === key)
-            const ipv6First = getIpv6Start(target[0]?.network?.guest_ip6_start)
-            option.address6 = ipv6First + ipv6Last
-          }
-          if (values.networkIPv6Modes && values.networkIPv6Modes[key] === 'only' && option.require_ipv6) {
-            option.strict_ipv6 = true
-          }
+        } else if (values.networkSchedtags) {
+          R.forEachObjIndexed((value, key) => {
+            const obj = {
+              id: value,
+            }
+            if (this.isBonding) {
+              obj.require_teaming = true
+            }
+            const strategy = values.networkPolicys[key]
+            if (strategy) {
+              obj.strategy = strategy
+            }
+            nets.push({
+              schedtags: [obj],
+            })
+          }, values.networkSchedtags)
+        } else {
           // 是否启用bonding
           if (this.isBonding) {
-            option.require_teaming = true
-            if (this.isInstallOperationSystem) option.private = false
-            nets.push(option)
-            if (values.vpcs && values.vpcs[key]) {
-              const extraOption = { ...option, vpc: values.vpcs[key] }
-              extraData.extraNets.push(extraOption)
-            } else {
-              extraData.extraNets.push(option)
-            }
+            nets.push({ exit: false, require_teaming: true })
           } else {
-            nets.push(option)
-            if (values.vpcs && values.vpcs[key]) {
-              const extraOption = { ...option, vpc: values.vpcs[key] }
-              extraData.extraNets.push(extraOption)
-            } else {
-              extraData.extraNets.push(option)
-            }
+            nets.push({ exit: false })
           }
-        }
-      } else if (values.networkSchedtags) {
-        R.forEachObjIndexed((value, key) => {
-          const obj = {
-            id: value,
-          }
-          if (this.isBonding) {
-            obj.require_teaming = true
-          }
-          const strategy = values.networkPolicys[key]
-          if (strategy) {
-            obj.strategy = strategy
-          }
-          nets.push({
-            schedtags: [obj],
-          })
-        }, values.networkSchedtags)
-      } else {
-        // 是否启用bonding
-        if (this.isBonding) {
-          nets.push({ exit: false, require_teaming: true })
-        } else {
-          nets.push({ exit: false })
         }
       }
       // 判断是否是安装操作系统
-      let params = {
+      const params = {
         project_id: this.projectId?.key,
         count: values.count,
         vmem_size: Number(this.selectedSpecItem.mem.substr(0, this.selectedSpecItem.mem.length - 1)),
@@ -1612,14 +1656,18 @@ export default {
         provider: this.cloudEnv === 'private' ? 'Cloudpods' : 'OneCloud',
         auto_start: true,
         vdi: 'vnc',
-        disks,
-        baremetal_disk_configs: diskConfigs,
-        nets,
         prefer_host: this.isInstallOperationSystem ? this.$route.query.id : values.schedPolicyHost,
         description: values.description,
         prefer_region: values.cloudregion ? values.cloudregion.key : this.$route.query.region_id,
         prefer_zone: values.zone ? values.zone.key : this.$route.query.zone_id,
         __meta__: values.__meta__,
+      }
+      if (fromBmImport) {
+        params.fake_create_from_bm_import = true
+      } else {
+        params.disks = disks
+        params.baremetal_disk_configs = diskConfigs
+        params.nets = nets
       }
       if (values.policySchedtagSchedtags) {
         const schedtags = []
@@ -1640,17 +1688,16 @@ export default {
           extraData.schedtags = schedtags
         }
       }
-      if (values.loginPassword) params.password = values.loginPassword
-      if (values.loginKeypair) params.keypair = values.loginKeypair.key
-      if (values.loginType === 'image') params.reset_password = false
-      if (this.selectedSpecItem.isolated_devices) params.isolated_devices = this.selectedSpecItem.isolated_devices
-      // 判断是否是iso导入
-      if (values.imageType === 'iso') {
-        params = {
-          ...params,
-          cdrom: values.image.key,
+      if (!fromBmImport) {
+        if (values.loginPassword) params.password = values.loginPassword
+        if (values.loginKeypair) params.keypair = values.loginKeypair.key
+        if (values.loginType === 'image') params.reset_password = false
+        // 判断是否是iso导入
+        if (values.imageType === 'iso' && values.image && values.image.key) {
+          params.cdrom = values.image.key
         }
       }
+      if (this.selectedSpecItem.isolated_devices) params.isolated_devices = this.selectedSpecItem.isolated_devices
       if (this.isInstallOperationSystem) {
         // Reflect.deleteProperty(params, 'project_id')
         this.createBaremetal(params)

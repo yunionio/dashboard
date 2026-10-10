@@ -119,6 +119,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    fakeCreateFromBmImport: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -187,7 +191,9 @@ export default {
         ],
         [
           { label: this.$t('compute.text_295'), labelClass: 'label-w-80', value: this.config },
-          { label: this.$t('compute.text_267'), labelClass: 'label-w-80', value: this.image },
+          this.fakeCreateFromBmImport
+            ? { label: this.$t('scope.server_package.fake_create_from_bm_import'), labelClass: 'label-w-80', value: this.$t('table.title.on') }
+            : { label: this.$t('compute.text_267'), labelClass: 'label-w-80', value: this.image },
         ],
       ]
       return ret
