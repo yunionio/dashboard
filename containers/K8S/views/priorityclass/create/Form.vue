@@ -1,19 +1,19 @@
 <template>
   <div class="w-75">
     <a-form :form="form.fc" v-bind="formItemLayout">
-      <a-form-item :label="$t('k8s.text_41')">
+      <a-form-item :label="$t('k8s.text_41')" :extra="$t('k8s.vc_priorityclass_name_hint')">
         <a-input v-decorator="decorators.name" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.text_19')">
+      <a-form-item :label="$t('k8s.text_19')" :extra="$t('k8s.vc_priorityclass_cluster_hint')">
         <cluster-select v-decorator="decorators.cluster" @input="setCluster" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.vc_priority_value')">
+      <a-form-item :label="$t('k8s.vc_priority_value')" :extra="$t('k8s.vc_priority_value_hint')">
         <a-input-number v-decorator="decorators.value" style="width: 200px" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.vc_global_default')">
+      <a-form-item :label="$t('k8s.vc_global_default')" :extra="$t('k8s.vc_global_default_hint')">
         <a-switch v-decorator="decorators.globalDefault" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.vc_description')">
+      <a-form-item :label="$t('k8s.vc_description')" :extra="$t('k8s.vc_description_hint')">
         <a-input v-decorator="decorators.description" />
       </a-form-item>
     </a-form>

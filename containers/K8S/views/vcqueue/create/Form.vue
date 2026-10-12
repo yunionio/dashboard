@@ -1,13 +1,13 @@
 <template>
   <div class="w-75">
     <a-form :form="form.fc" v-bind="formItemLayout">
-      <a-form-item :label="$t('k8s.text_41')">
+      <a-form-item :label="$t('k8s.text_41')" :extra="$t('k8s.vc_queue_name_hint')">
         <a-input :disabled="isUpdate" v-decorator="decorators.name" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.text_19')">
+      <a-form-item :label="$t('k8s.text_19')" :extra="$t('k8s.vc_queue_cluster_hint')">
         <cluster-select :disabled="isUpdate" v-decorator="decorators.cluster" @input="setCluster" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.vc_parent')">
+      <a-form-item :label="$t('k8s.vc_parent')" :extra="$t('k8s.vc_parent_hint')">
         <base-select
           v-decorator="decorators.parent"
           resource="vcqueues"
@@ -18,13 +18,13 @@
           :mapper="parentQueueMapper"
           :select-props="{ placeholder: $t('k8s.vc_parent') }" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.vc_weight')">
+      <a-form-item :label="$t('k8s.vc_weight')" :extra="$t('k8s.vc_weight_hint')">
         <a-input-number v-decorator="decorators.weight" :min="1" style="width: 200px" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.vc_priority')">
+      <a-form-item :label="$t('k8s.vc_priority')" :extra="$t('k8s.vc_priority_hint')">
         <a-input-number v-decorator="decorators.priority" style="width: 200px" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.vc_reclaimable')">
+      <a-form-item :label="$t('k8s.vc_reclaimable')" :extra="$t('k8s.vc_reclaimable_hint')">
         <a-switch v-decorator="decorators.reclaimable" />
       </a-form-item>
       <a-form-item :label="$t('k8s.vc_guarantee')" :extra="$t('k8s.vc_guarantee_hint')">
