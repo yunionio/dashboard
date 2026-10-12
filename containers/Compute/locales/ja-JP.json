@@ -2177,5 +2177,6 @@
   "compute.servertemplate_baremetal": "ベアメタルテンプレート",
   "compute.not_allow_reason.out_of_resource": "空きリソース不足",
   "compute.not_allow_reason.out_of_quota": "クォータ不足",
-  "compute.isolated_device_located_baremetal": "ベアメタル"
+  "compute.isolated_device_located_baremetal": "ベアメタル",
+  "compute.server_package.fake_create_from_bm_import": "ベアメタルから新規作成"
 }
