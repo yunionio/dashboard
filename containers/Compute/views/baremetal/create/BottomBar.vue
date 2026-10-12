@@ -192,7 +192,7 @@ export default {
         [
           { label: this.$t('compute.text_295'), labelClass: 'label-w-80', value: this.config },
           this.fakeCreateFromBmImport
-            ? { label: this.$t('scope.server_package.fake_create_from_bm_import'), labelClass: 'label-w-80', value: this.$t('table.title.on') }
+            ? { label: this.$t('compute.server_package.fake_create_from_bm_import'), labelClass: 'label-w-80', value: this.$t('table.title.on') }
             : { label: this.$t('compute.text_267'), labelClass: 'label-w-80', value: this.image },
         ],
       ]

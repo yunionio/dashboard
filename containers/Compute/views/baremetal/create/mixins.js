@@ -745,7 +745,10 @@ export default {
       if (this.isInstallOperationSystem) this.fetchSpec()
       this.capability(this.zone)
     },
-    fakeCreateFromBmImport () {
+    fakeCreateFromBmImport (val) {
+      if (!this.isInstallOperationSystem && this.canUseCreateFormDraft && !this.isFormBackfill && this.createFormDraftUserInteracted) {
+        this.writeCreateFormFieldDraft(BAREMETAL_CREATE_FORM_DRAFT_FIELD.FAKE_CREATE_FROM_BM_IMPORT, !!val)
+      }
       if (this.isInstallOperationSystem) return
       const hosts = this.form?.fi?.capability?.specs?.hosts
       if (!hosts || R.isEmpty(hosts)) return
@@ -776,6 +779,14 @@ export default {
       get: () => this.isBonding,
       set: (val) => {
         this.isBonding = !!val
+      },
+    })
+    this.bindCreateFormFieldDraft({
+      key: BAREMETAL_CREATE_FORM_DRAFT_FIELD.FAKE_CREATE_FROM_BM_IMPORT,
+      kind: 'selection',
+      get: () => !!this.fakeCreateFromBmImport,
+      set: (val) => {
+        this.fakeCreateFromBmImport = !!val
       },
     })
     // 规格：selection 双写；回填在 _loadSpecificationOptions 对照 options
@@ -856,6 +867,23 @@ export default {
         throw error
       }
       this.$nextTick(() => {
+        const fromBmImport = !!(initData.fake_create_from_bm_import ?? initData.extraData?.fake_create_from_bm_import)
+        // 从托管物理机新建：无操作系统/磁盘/网络，跳过安装相关回填
+        if (fromBmImport) {
+          this.fakeCreateFromBmImport = true
+          if (cData?.specs?.hosts) {
+            this._loadSpecificationOptions(cData.specs.hosts)
+          }
+          this.backfillSchedPolicyFromInitData(initData)
+          if (initData.__meta__) {
+            const ret = {}
+            R.forEachObjIndexed((value, key) => {
+              ret[key] = R.is(Array, value) ? value : [value]
+            }, initData.__meta__)
+            this.tagDefaultChecked = ret
+          }
+          return
+        }
         // 初始化磁盘
         if (initData.baremetal_disk_configs && initData.baremetal_disk_configs.length) {
           let diskData = null
