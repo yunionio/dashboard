@@ -35,7 +35,7 @@
       <a-form-item :label="$t('compute.text_294')" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="100" :disabled="isInstallOperationSystem" />
       </a-form-item>
-      <a-form-item :label="$t('scope.server_package.fake_create_from_bm_import')" v-bind="formItemLayout" v-if="!isInstallOperationSystem">
+      <a-form-item :label="$t('compute.server_package.fake_create_from_bm_import')" v-bind="formItemLayout" v-if="!isInstallOperationSystem">
         <a-switch
           v-model="fakeCreateFromBmImport"
           :disabled="isInitForm"
