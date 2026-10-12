@@ -23,6 +23,9 @@ export default {
     {
       meta: {
         label: 'RDS',
+        composeGroup: 'middleware-db',
+        composeGroupLabel: i18n.t('db.text_28'),
+        composeOrder: 10,
       },
       submenus: [
         {
@@ -30,6 +33,7 @@ export default {
           component: Layout,
           meta: {
             label: i18n.t('dictionary.dbinstance'),
+            composeOrder: 10,
             permission: 'rds_dbinstances_list',
             t: 'dictionary.dbinstance',
             hidden: (userInfo, menu) => {
@@ -63,12 +67,15 @@ export default {
     {
       meta: {
         label: 'Redis',
+        composeGroup: 'middleware-db',
+        composeOrder: 20,
       },
       submenus: [
         {
           path: '/redis',
           meta: {
             label: i18n.t('dictionary.elasticcache'),
+            composeOrder: 20,
             permission: 'redis_elasticcaches_list',
             hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.redis')) {
@@ -99,12 +106,15 @@ export default {
     {
       meta: {
         label: 'MongoDB',
+        composeGroup: 'middleware-db',
+        composeOrder: 30,
       },
       submenus: [
         {
           path: '/mongodb',
           meta: {
             label: i18n.t('dictionary.mongodb'),
+            composeOrder: 30,
             permission: 'mongodbs_list',
             hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.mongodb')) {
