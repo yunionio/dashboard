@@ -2175,5 +2175,6 @@
   "compute.servertemplate_baremetal": "Baremetal Templates",
   "compute.not_allow_reason.out_of_resource": "Out of resource",
   "compute.not_allow_reason.out_of_quota": "Out of quota",
-  "compute.isolated_device_located_baremetal": "Located Baremetal"
+  "compute.isolated_device_located_baremetal": "Located Baremetal",
+  "compute.server_package.fake_create_from_bm_import": "Fake create from baremetal"
 }
