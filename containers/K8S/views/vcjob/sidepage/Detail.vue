@@ -79,7 +79,13 @@ export default {
           title: this.$t('k8s.vc_network_topology'),
           formatter: ({ row }) => {
             if (!row.networkTopologyMode) return '-'
-            return `${row.networkTopologyMode} / ${row.highestTierAllowed}`
+            const mode = row.networkTopologyMode === 'hard'
+              ? this.$t('k8s.vc_topology_hard')
+              : row.networkTopologyMode === 'soft'
+                ? this.$t('k8s.vc_topology_soft')
+                : row.networkTopologyMode
+            if (!row.highestTierAllowed) return mode
+            return `${mode} / ${row.highestTierAllowed}`
           },
         },
         {
