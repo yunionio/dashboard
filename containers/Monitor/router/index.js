@@ -34,7 +34,7 @@ export default {
     {
       path: '/monitoroverview',
       meta: {
-        label: i18n.t('monitor.text_18'),
+        label: i18n.t('common.monitor_overview'),
         permission: 'commonalerts_list',
         hidden: (userInfo, menu) => {
           if (isScopedPolicyMenuHidden('sub_hidden_menus.monitoroverview')) {
