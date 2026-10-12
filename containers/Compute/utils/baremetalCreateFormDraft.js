@@ -12,6 +12,7 @@ export const BAREMETAL_CREATE_FORM_DRAFT_FIELD = {
   SERVER_NETWORK: 'serverNetwork',
   SCHED_POLICY: 'schedPolicy',
   IS_BONDING: 'isBonding',
+  FAKE_CREATE_FROM_BM_IMPORT: 'fakeCreateFromBmImport',
 }
 
 export const BAREMETAL_CREATE_FORM_DRAFT_FC_BINDINGS = []

@@ -2179,5 +2179,6 @@
   "compute.servertemplate_baremetal": "裸金属模板",
   "compute.not_allow_reason.out_of_resource": "空闲资源不足",
   "compute.not_allow_reason.out_of_quota": "配额不足",
-  "compute.isolated_device_located_baremetal": "所在裸金属"
+  "compute.isolated_device_located_baremetal": "所在裸金属",
+  "compute.server_package.fake_create_from_bm_import": "从托管物理机新建"
 }
