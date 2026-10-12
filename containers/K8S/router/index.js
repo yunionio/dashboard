@@ -48,7 +48,6 @@ const K8sVcjobCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPref
 const Vcqueue = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vcqueue')
 const K8sVcqueueCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vcqueue/create')
 const K8sVcqueueUpdate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vcqueue/update')
-const Vcpodgroup = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vcpodgroup')
 const Vchypernode = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vchypernode')
 const K8sVchypernodeCreate = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/vchypernode/create')
 const Priorityclass = () => import(/* webpackChunkName: "k8s" */ /* webpackPrefetch: true */ '@K8S/views/priorityclass')
@@ -714,27 +713,6 @@ export default {
               name: 'K8sVcqueueUpdate',
               path: 'update',
               component: K8sVcqueueUpdate,
-            },
-          ],
-        },
-        {
-          path: '/k8s-vcpodgroup',
-          meta: {
-            label: i18n.t('k8s.vc_podgroup'),
-            permission: 'k8s_vcpodgroups_list',
-            hidden: (userInfo, menu) => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_vcpodgroup')) {
-                return true
-              }
-              return featureMenuHiddenCheck(menu)
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'K8sVcpodgroupList',
-              path: '',
-              component: Vcpodgroup,
             },
           ],
         },
