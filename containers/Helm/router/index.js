@@ -22,39 +22,6 @@ export default {
   menus: [
     {
       meta: {
-        label: i18n.t('helm.text_7'),
-      },
-      submenus: [
-        {
-          path: '/scheduledtask',
-          meta: {
-            hidden: (userInfo, menu) => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.scheduledtask')) {
-                return true
-              }
-              return featureMenuHiddenCheck(menu)
-            },
-            label: i18n.t('helm.text_8'),
-            permission: 'scheduledtasks_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Scheduledtasks',
-              path: '',
-              component: Scheduledtask,
-            },
-            {
-              name: 'ScheduledtaskCreate',
-              path: 'create',
-              component: ScheduledtaskCreate,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      meta: {
         label: i18n.t('helm.text_2'),
       },
       submenus: [
@@ -154,6 +121,39 @@ export default {
               name: 'K8sRepoList',
               path: '',
               component: Repo,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: i18n.t('helm.text_7'),
+      },
+      submenus: [
+        {
+          path: '/scheduledtask',
+          meta: {
+            hidden: (userInfo, menu) => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.scheduledtask')) {
+                return true
+              }
+              return featureMenuHiddenCheck(menu)
+            },
+            label: i18n.t('helm.text_8'),
+            permission: 'scheduledtasks_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Scheduledtasks',
+              path: '',
+              component: Scheduledtask,
+            },
+            {
+              name: 'ScheduledtaskCreate',
+              path: 'create',
+              component: ScheduledtaskCreate,
             },
           ],
         },

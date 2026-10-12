@@ -112,6 +112,8 @@ export default {
     {
       meta: {
         label: i18n.t('network.text_711'),
+        composeGroup: 'network-basic',
+        composeGroupLabel: i18n.t('cloudenv.text_7'),
       },
       submenus: [
         {

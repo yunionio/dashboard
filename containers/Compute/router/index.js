@@ -539,12 +539,15 @@ export default {
     {
       meta: {
         label: i18n.t('compute.text_99'),
+        composeGroup: 'compute-disk',
+        composeGroupLabel: i18n.t('compute.text_100'),
       },
       submenus: [
         {
           path: '/disk',
           meta: {
             label: i18n.t('compute.text_100'),
+            composeOrder: 10,
             permission: 'disks_list',
             hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.disk')) {
@@ -573,6 +576,7 @@ export default {
           meta: {
             label: i18n.t('compute.text_101'),
             t: 'compute.text_101',
+            composeOrder: 20,
             permission: 'snapshots_list',
             hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_snapshot')) {
@@ -596,6 +600,7 @@ export default {
           meta: {
             label: i18n.t('compute.text_102'),
             t: 'compute.text_102',
+            composeOrder: 30,
             permission: 'instance_snapshots_list',
             hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot')) {
@@ -619,6 +624,7 @@ export default {
           meta: {
             label: i18n.t('compute.text_103'),
             t: 'compute.text_103',
+            composeOrder: 60,
             permission: 'snapshotpolicy_list',
             hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.snapshotpolicy')) {
@@ -642,12 +648,14 @@ export default {
     {
       meta: {
         label: i18n.t('common.backup'),
+        composeGroup: 'compute-disk',
       },
       submenus: [
         {
           path: '/disk-backup',
           meta: {
             label: i18n.t('compute.disk_backup'),
+            composeOrder: 40,
             permission: 'diskbackups_list',
             hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_backup')) {
@@ -670,6 +678,7 @@ export default {
           path: '/instance-backup',
           meta: {
             label: i18n.t('compute.instance_backup'),
+            composeOrder: 50,
             permission: 'instancebackups_list',
             hidden: (userInfo, menu) => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.instance_backup')) {
