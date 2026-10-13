@@ -23,7 +23,7 @@
     <div slot="footer">
       <a-button type="primary" :loading="loading" @click="handleConfirm">{{ $t('dialog.ok') }}</a-button>
       <a-button @click="handleLogout">{{ $t('common_348') }}</a-button>
-      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+      <a-button v-if="!isForcedReset" @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
 </template>
@@ -135,6 +135,10 @@ export default {
       regions: state => state.regions,
     }),
     ...mapGetters(['userInfo']),
+    isForcedReset () {
+      const modalProps = (this.params && this.params.modalProps) || {}
+      return !!(this.userInfo.need_reset_password || (this.params && this.params.tip) || modalProps.closable === false)
+    },
   },
   destroyed () {
     this.manager = null
