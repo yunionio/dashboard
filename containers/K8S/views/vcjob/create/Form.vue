@@ -1,5 +1,17 @@
 <template>
   <div class="w-75">
+    <a-tabs
+      class="vc-scenario-tabs"
+      :activeKey="scenario"
+      :animated="false"
+      @change="setScenario">
+      <a-tab-pane key="topology" :tab="$t('k8s.vc_scenario_topology')" />
+      <a-tab-pane key="gang" :tab="$t('k8s.vc_scenario_gang')" />
+      <a-tab-pane key="priority" :tab="$t('k8s.vc_scenario_priority')" />
+      <a-tab-pane key="tidal" :tab="$t('k8s.vc_scenario_tidal')" />
+      <a-tab-pane key="custom" :tab="$t('k8s.vc_scenario_custom')" />
+    </a-tabs>
+    <div class="vc-scenario-hint">{{ scenarioHint }}</div>
     <a-form :form="form.fc" v-bind="formItemLayout">
       <a-form-item :label="$t('k8s.text_41')" :extra="$t('k8s.vc_job_name_hint')">
         <a-input v-decorator="decorators.name" />
@@ -10,7 +22,7 @@
       <a-form-item :label="$t('k8s.text_23')" :extra="$t('k8s.vc_job_namespace_hint')">
         <namespace-select v-decorator="decorators.namespace" @input="setNamespace" :cluster="cluster" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.vc_queue_field')" :extra="$t('k8s.vc_job_queue_hint')">
+      <a-form-item :label="$t('k8s.vc_queue_field')" :extra="queueExtra">
         <base-select
           v-decorator="decorators.queue"
           resource="vcqueues"
@@ -20,10 +32,24 @@
           :params="clusterListParams"
           :select-props="{ placeholder: $t('k8s.vc_queue_field') }" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.vc_min_available')" :extra="$t('k8s.vc_min_available_hint')">
-        <a-input-number v-decorator="decorators.minAvailable" :min="1" style="width: 200px" />
+      <template v-if="scenario === 'topology'">
+        <a-form-item :label="$t('k8s.vc_network_topology')" :extra="$t('k8s.vc_network_topology_hint')">
+          <a-select v-decorator="decorators.networkTopologyMode" @change="setTopologyMode">
+            <a-select-option value="hard">{{ $t('k8s.vc_topology_hard') }}</a-select-option>
+            <a-select-option value="soft">{{ $t('k8s.vc_topology_soft') }}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('k8s.vc_highest_tier')" :extra="$t('k8s.vc_highest_tier_hint')">
+          <a-input-number v-decorator="decorators.highestTierAllowed" :min="1" style="width: 200px" />
+        </a-form-item>
+      </template>
+      <a-form-item v-if="scenario === 'gang'" :label="$t('k8s.vc_gang_mode')" :extra="$t('k8s.vc_gang_mode_hint')">
+        <a-radio-group v-model="gangMode">
+          <a-radio value="all">{{ $t('k8s.vc_gang_all') }}</a-radio>
+          <a-radio value="partial">{{ $t('k8s.vc_gang_partial') }}</a-radio>
+        </a-radio-group>
       </a-form-item>
-      <a-form-item :label="$t('k8s.vc_priority_class')" :extra="priorityClassExtra">
+      <a-form-item v-if="scenario === 'priority'" :label="$t('k8s.vc_priority_class')" :extra="$t('k8s.vc_priority_class_hint')">
         <base-select
           v-decorator="decorators.priorityClassName"
           resource="priorityclasses"
@@ -33,77 +59,46 @@
           :label-format="priorityLabel"
           :need-params="true"
           :params="clusterListParams"
-          :select-props="{ allowClear: true, placeholder: $t('k8s.vc_priority_class') }" />
+          :select-props="{ placeholder: $t('k8s.vc_priority_class') }" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.vc_restart_on_evict')" :extra="$t('k8s.vc_restart_on_evict_hint')">
-        <a-switch v-decorator="decorators.restartOnEvict" />
+      <template v-if="scenario === 'custom'">
+        <a-form-item :label="$t('k8s.vc_min_available')" :extra="$t('k8s.vc_min_available_hint')">
+          <a-input-number v-decorator="decorators.minAvailable" :min="1" style="width: 200px" />
+        </a-form-item>
+        <a-form-item :label="$t('k8s.vc_priority_class')" :extra="priorityClassExtra">
+          <base-select
+            v-decorator="decorators.priorityClassName"
+            resource="priorityclasses"
+            version="v1"
+            id-key="name"
+            option-label-prop="label"
+            :label-format="priorityLabel"
+            :need-params="true"
+            :params="clusterListParams"
+            :select-props="{ allowClear: true, placeholder: $t('k8s.vc_priority_class') }" />
+        </a-form-item>
+        <a-form-item :label="$t('k8s.vc_restart_on_evict')" :extra="$t('k8s.vc_restart_on_evict_hint')">
+          <a-switch v-decorator="decorators.restartOnEvict" />
+        </a-form-item>
+        <a-form-item :label="$t('k8s.vc_network_topology')" :extra="$t('k8s.vc_network_topology_hint')">
+          <a-select v-decorator="decorators.networkTopologyMode" @change="setTopologyMode">
+            <a-select-option value="none">{{ $t('k8s.vc_topology_none') }}</a-select-option>
+            <a-select-option value="hard">{{ $t('k8s.vc_topology_hard') }}</a-select-option>
+            <a-select-option value="soft">{{ $t('k8s.vc_topology_soft') }}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item v-if="topologyMode" :label="$t('k8s.vc_highest_tier')" :extra="$t('k8s.vc_highest_tier_hint')">
+          <a-input-number v-decorator="decorators.highestTierAllowed" :min="1" style="width: 200px" />
+        </a-form-item>
+        <a-form-item :label="$t('k8s.vc_task')">
+          <task-editor :tasks="tasks" :nested-layout="nestedLayout" />
+        </a-form-item>
+      </template>
+      <a-form-item v-if="showScenarioMinAvailable" :label="$t('k8s.vc_min_available')" :extra="minAvailableExtra">
+        <a-input-number v-decorator="decorators.minAvailable" :min="1" :max="minAvailableMax" style="width: 200px" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.vc_network_topology')" :extra="$t('k8s.vc_network_topology_hint')">
-        <a-select v-decorator="decorators.networkTopologyMode" @change="setTopologyMode">
-          <a-select-option value="none">{{ $t('k8s.vc_topology_none') }}</a-select-option>
-          <a-select-option value="hard">{{ $t('k8s.vc_topology_hard') }}</a-select-option>
-          <a-select-option value="soft">{{ $t('k8s.vc_topology_soft') }}</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item v-if="topologyMode" :label="$t('k8s.vc_highest_tier')" :extra="$t('k8s.vc_highest_tier_hint')">
-        <a-input-number v-decorator="decorators.highestTierAllowed" :min="1" style="width: 200px" />
-      </a-form-item>
-      <a-form-item :label="$t('k8s.vc_task')">
-        <div>
-          <a-card v-for="(task, taskIndex) in tasks" :key="taskIndex" class="mb-3" size="small" :title="taskTitle(taskIndex)">
-            <a-button v-if="tasks.length > 1" slot="extra" type="link" @click="removeTask(taskIndex)">{{ $t('k8s.vc_remove') }}</a-button>
-            <a-form-item :label="$t('k8s.text_41')" :extra="$t('k8s.vc_task_name_hint')" v-bind="nestedLayout">
-              <a-input v-model="task.name" />
-            </a-form-item>
-            <a-form-item :label="$t('k8s.vc_replicas')" :extra="$t('k8s.vc_replicas_hint')" v-bind="nestedLayout">
-              <a-input-number v-model="task.replicas" :min="1" style="width: 200px" />
-            </a-form-item>
-            <a-form-item :label="$t('k8s.vc_restart_policy')" :extra="$t('k8s.vc_restart_policy_hint')" v-bind="nestedLayout">
-              <a-select v-model="task.restartPolicy">
-                <a-select-option value="OnFailure">OnFailure</a-select-option>
-                <a-select-option value="Never">Never</a-select-option>
-                <a-select-option value="Always">Always</a-select-option>
-              </a-select>
-            </a-form-item>
-            <a-form-item :label="$t('k8s.vc_container')" v-bind="nestedLayout">
-              <div>
-                <a-card v-for="(container, containerIndex) in task.containers" :key="containerIndex" class="mb-2" size="small">
-                  <a-button v-if="task.containers.length > 1" slot="extra" type="link" @click="removeContainer(taskIndex, containerIndex)">{{ $t('k8s.vc_remove') }}</a-button>
-                  <a-form-item :label="$t('k8s.text_41')" :extra="$t('k8s.vc_container_name_hint')" v-bind="nestedLayout">
-                    <a-input v-model="container.name" />
-                  </a-form-item>
-                  <a-form-item :label="$t('k8s.vc_image')" :extra="$t('k8s.vc_image_hint')" v-bind="nestedLayout">
-                    <a-input v-model="container.image" placeholder="nginx" />
-                  </a-form-item>
-                  <a-form-item :label="$t('k8s.vc_image_pull_policy')" :extra="$t('k8s.vc_image_pull_policy_hint')" v-bind="nestedLayout">
-                    <a-select v-model="container.imagePullPolicy">
-                      <a-select-option value="IfNotPresent">IfNotPresent</a-select-option>
-                      <a-select-option value="Always">Always</a-select-option>
-                      <a-select-option value="Never">Never</a-select-option>
-                    </a-select>
-                  </a-form-item>
-                  <a-form-item :label="$t('k8s.vc_command')" :extra="$t('k8s.vc_command_hint')" v-bind="nestedLayout">
-                    <a-input v-model="container.command" placeholder="sleep 3600" />
-                  </a-form-item>
-                  <a-form-item :label="$t('k8s.vc_cpu_request')" :extra="$t('k8s.vc_cpu_request_hint')" v-bind="nestedLayout">
-                    <a-input v-model="container.cpu" placeholder="1" />
-                  </a-form-item>
-                  <a-form-item :label="$t('k8s.vc_cpu_limit')" :extra="$t('k8s.vc_cpu_limit_hint')" v-bind="nestedLayout">
-                    <a-input v-model="container.cpuLimit" :placeholder="$t('k8s.vc_limit_same_as_request')" />
-                  </a-form-item>
-                  <a-form-item :label="$t('k8s.vc_memory_request')" :extra="$t('k8s.vc_memory_request_hint')" v-bind="nestedLayout">
-                    <a-input v-model="container.memory" type="number" addonAfter="G" placeholder="1" :min="0" />
-                  </a-form-item>
-                  <a-form-item :label="$t('k8s.vc_memory_limit')" :extra="$t('k8s.vc_memory_limit_hint')" v-bind="nestedLayout">
-                    <a-input v-model="container.memoryLimit" type="number" addonAfter="G" :placeholder="$t('k8s.vc_limit_same_as_request')" :min="0" />
-                  </a-form-item>
-                </a-card>
-                <a-button type="dashed" @click="addContainer(taskIndex)">{{ $t('k8s.vc_add_container') }}</a-button>
-              </div>
-            </a-form-item>
-          </a-card>
-          <a-button type="dashed" @click="addTask">{{ $t('k8s.vc_add_task') }}</a-button>
-        </div>
+      <a-form-item v-if="scenario !== 'custom'" :label="$t('k8s.vc_task')">
+        <task-editor :tasks="tasks" :nested-layout="nestedLayout" />
       </a-form-item>
     </a-form>
   </div>
@@ -113,6 +108,7 @@
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import k8sCreateMixin from '@K8S/mixins/create'
+import TaskEditor from './TaskEditor'
 
 function memoryQuantity (value) {
   const v = String(value == null ? '' : value).trim()
@@ -121,33 +117,12 @@ function memoryQuantity (value) {
   return v
 }
 
-function newContainer () {
-  return {
-    name: '',
-    image: '',
-    imagePullPolicy: 'IfNotPresent',
-    command: 'sleep 3600',
-    cpu: '',
-    cpuLimit: '',
-    memory: '',
-    memoryLimit: '',
-  }
-}
-
-function newTask () {
-  return {
-    name: '',
-    replicas: 1,
-    restartPolicy: 'OnFailure',
-    containers: [newContainer()],
-  }
-}
-
 export default {
   name: 'K8sVcjobCreateForm',
   components: {
     ClusterSelect,
     NamespaceSelect,
+    TaskEditor,
   },
   mixins: [k8sCreateMixin],
   data () {
@@ -163,7 +138,9 @@ export default {
         labelCol: { span: 5 },
         wrapperCol: { span: 19 },
       },
-      topologyMode: '',
+      scenario: 'topology',
+      gangMode: 'all',
+      topologyMode: 'hard',
       tasks: [{
         name: 'worker',
         replicas: 1,
@@ -222,7 +199,7 @@ export default {
         ],
         networkTopologyMode: [
           'networkTopologyMode',
-          { initialValue: 'none' },
+          { initialValue: 'hard' },
         ],
         highestTierAllowed: [
           'highestTierAllowed',
@@ -239,10 +216,55 @@ export default {
         limit: 0,
       }
     },
+    scenarioHint () {
+      const key = {
+        topology: 'k8s.vc_scenario_topology_hint',
+        gang: 'k8s.vc_scenario_gang_hint',
+        priority: 'k8s.vc_scenario_priority_hint',
+        tidal: 'k8s.vc_scenario_tidal_hint',
+        custom: 'k8s.vc_scenario_custom_hint',
+      }[this.scenario]
+      return this.$t(key || 'k8s.vc_scenario_custom_hint')
+    },
+    replicaSum () {
+      return this.tasks.reduce((sum, task) => sum + Number(task.replicas || 0), 0)
+    },
+    elasticMinAvailable () {
+      return this.scenario === 'priority' || this.scenario === 'tidal' || (this.scenario === 'gang' && this.gangMode === 'partial')
+    },
+    showScenarioMinAvailable () {
+      return this.scenario === 'topology' || this.elasticMinAvailable
+    },
+    minAvailableMax () {
+      if (!this.elasticMinAvailable) return Math.max(this.replicaSum, 1)
+      const cap = this.replicaSum - 1
+      return cap >= 1 ? cap : undefined
+    },
+    minAvailableExtra () {
+      const key = {
+        topology: 'k8s.vc_min_available_topology_hint',
+        gang: 'k8s.vc_min_available_gang_hint',
+        priority: 'k8s.vc_min_available_priority_hint',
+        tidal: 'k8s.vc_min_available_tidal_hint',
+      }[this.scenario]
+      return this.$t(key || 'k8s.vc_min_available_hint')
+    },
+    queueExtra () {
+      if (this.scenario === 'tidal') return this.$t('k8s.vc_scenario_tidal_queue_hint')
+      return this.$t('k8s.vc_job_queue_hint')
+    },
     priorityClassExtra () {
       const hint = this.$t('k8s.vc_priority_class_hint')
       if (!this.topologyMode) return hint
       return `${hint} ${this.$t('k8s.vc_priority_no_preempt_hint')}`
+    },
+  },
+  watch: {
+    gangMode (mode) {
+      if (this.scenario !== 'gang' || mode !== 'partial') return
+      this.$nextTick(() => {
+        this.form.fc.setFieldsValue({ minAvailable: 1 })
+      })
     },
   },
   methods: {
@@ -252,26 +274,39 @@ export default {
       if (item.value === undefined || item.value === null || item.value === '') return name
       return `${name} (${item.value})`
     },
+    setScenario (value) {
+      this.scenario = value
+      if (value === 'topology') {
+        this.topologyMode = 'hard'
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({
+            networkTopologyMode: 'hard',
+            highestTierAllowed: 1,
+            minAvailable: this.replicaSum || 1,
+          })
+        })
+        return
+      }
+      this.topologyMode = ''
+      if (value === 'custom') {
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({
+            networkTopologyMode: 'none',
+            minAvailable: 1,
+            restartOnEvict: false,
+            priorityClassName: undefined,
+          })
+        })
+        return
+      }
+      if (value === 'priority' || value === 'tidal' || (value === 'gang' && this.gangMode === 'partial')) {
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ minAvailable: 1 })
+        })
+      }
+    },
     setTopologyMode (value) {
       this.topologyMode = value && value !== 'none' ? value : ''
-    },
-    taskTitle (index) {
-      return `${this.$t('k8s.vc_task')} ${index + 1}`
-    },
-    addTask () {
-      this.tasks.push(newTask())
-    },
-    removeTask (index) {
-      if (this.tasks.length <= 1) return
-      this.tasks.splice(index, 1)
-    },
-    addContainer (taskIndex) {
-      this.tasks[taskIndex].containers.push(newContainer())
-    },
-    removeContainer (taskIndex, containerIndex) {
-      const containers = this.tasks[taskIndex].containers
-      if (containers.length <= 1) return
-      containers.splice(containerIndex, 1)
     },
     validateForm () {
       return new Promise((resolve, reject) => {
@@ -319,15 +354,73 @@ export default {
         throw this.fail('k8s.vc_min_available_gt_replicas')
       }
     },
-    buildPayload (values) {
+    readMinAvailable (values, replicas, belowReplicas) {
       const minAvailable = Number(values.minAvailable)
       if (!Number.isInteger(minAvailable) || minAvailable < 1) {
         throw this.fail('k8s.vc_min_available_invalid')
       }
-      this.validateTasks(minAvailable)
-      const topologyMode = (values.networkTopologyMode && values.networkTopologyMode !== 'none')
+      if (belowReplicas) {
+        if (replicas < 2 || minAvailable >= replicas) {
+          throw this.fail('k8s.vc_min_available_elastic_cap')
+        }
+      } else if (minAvailable > replicas) {
+        throw this.fail('k8s.vc_min_available_gt_replicas')
+      }
+      return minAvailable
+    },
+    scenarioPayload (values, replicas) {
+      if (this.scenario === 'topology') {
+        return {
+          minAvailable: this.readMinAvailable(values, replicas, false),
+          restartOnEvict: false,
+          priorityClassName: '',
+          topologyMode: values.networkTopologyMode === 'soft' ? 'soft' : 'hard',
+        }
+      }
+      if (this.scenario === 'gang') {
+        const partial = this.gangMode === 'partial'
+        return {
+          minAvailable: partial ? this.readMinAvailable(values, replicas, true) : replicas,
+          restartOnEvict: false,
+          priorityClassName: '',
+          topologyMode: '',
+        }
+      }
+      if (this.scenario === 'priority') {
+        const priorityClassName = (values.priorityClassName || '').trim()
+        if (!priorityClassName) throw this.fail('k8s.vc_priority_class_required')
+        return {
+          minAvailable: this.readMinAvailable(values, replicas, true),
+          restartOnEvict: true,
+          priorityClassName,
+          topologyMode: '',
+        }
+      }
+      return {
+        minAvailable: this.readMinAvailable(values, replicas, true),
+        restartOnEvict: true,
+        priorityClassName: '',
+        topologyMode: '',
+      }
+    },
+    buildPayload (values) {
+      let minAvailable = Number(values.minAvailable)
+      let restartOnEvict = values.restartOnEvict === true
+      let priorityClassName = (values.priorityClassName || '').trim()
+      let topologyMode = (values.networkTopologyMode && values.networkTopologyMode !== 'none')
         ? values.networkTopologyMode
-        : this.topologyMode
+        : ''
+      if (this.scenario !== 'custom') {
+        const preset = this.scenarioPayload(values, this.replicaSum)
+        minAvailable = preset.minAvailable
+        restartOnEvict = preset.restartOnEvict
+        priorityClassName = preset.priorityClassName
+        topologyMode = preset.topologyMode
+      }
+      if (!Number.isInteger(minAvailable) || minAvailable < 1) {
+        throw this.fail('k8s.vc_min_available_invalid')
+      }
+      this.validateTasks(minAvailable)
       const payload = {
         name: values.name.trim(),
         cluster: values.cluster,
@@ -335,8 +428,8 @@ export default {
         queue: values.queue.trim(),
         minAvailable,
         schedulerName: 'volcano',
-        priorityClassName: (values.priorityClassName || '').trim(),
-        restartOnEvict: values.restartOnEvict === true,
+        priorityClassName,
+        restartOnEvict,
         tasks: this.tasks.map(task => ({
           name: task.name.trim(),
           replicas: Number(task.replicas),
@@ -372,3 +465,17 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.vc-scenario-tabs ::v-deep .ant-tabs-content {
+  display: none;
+}
+.vc-scenario-tabs ::v-deep .ant-tabs-bar {
+  margin-bottom: 8px;
+}
+.vc-scenario-hint {
+  margin-bottom: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  line-height: 22px;
+}
+</style>
