@@ -1,5 +1,5 @@
 <template>
-    <div class="table-container d-flex">
+    <div class="table-container d-flex" :class="{ 'with-org-tree': showTagConfig && treeToggleOpen }">
       <template v-if="showTagConfig">
         <tree-project
           ref="projectTag"
@@ -9,7 +9,7 @@
           @select="handleProjectTagSelect"
           @treeProjectConfig="handleTreeProjectConfig" />
       </template>
-      <div style="width: 100%">
+      <div class="table-main">
         <vxe-grid
           show-header-overflow
           show-overflow
@@ -158,7 +158,7 @@ export default {
     treeToggleOpen: Boolean,
     tagConfigParams: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     // create list传递的resource
     resource: [String, Object, Function],
@@ -581,6 +581,9 @@ export default {
       this.$emit('project-tag-filter-change', filter)
     },
     handleTreeProjectConfig () {
+      // 组织架构只读侧栏（默认）不开放层级配置
+      const mode = this.tagConfigParams && this.tagConfigParams.treeMode
+      if (!mode || mode === 'organization') return
       this.createDialog('TreeConfigDialog', {
         title: this.$t('common.text00011'),
         resource: this.resource,
@@ -592,6 +595,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.table-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  &.with-org-tree {
+    overflow: hidden;
+  }
+}
+.table-main {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+}
 .page-list-grid {
   min-width: 100%;
   ::v-deep {

@@ -126,10 +126,6 @@ export default {
         hiddenColumns: ['created_at'],
       }),
       tagConfigParams: {
-        id: this.id,
-        title: this.$t('common.text00124'),
-        resource: 'projects',
-        queryTreeId: 'tag-value-tree',
         tagFilterKey: 'tags',
       },
     }

@@ -8,8 +8,7 @@
     :list="list"
     :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
-    :export-data-options="exportDataOptions"
-    :tag-config-params="tagConfigParams" />
+    :export-data-options="exportDataOptions" />
 </template>
 <script>
 
@@ -98,10 +97,6 @@ export default {
         hiddenColumns: ['metadata', 'vcpu_count', 'account', 'created_at'],
         autoHiddenFilterKey: 'rds_hidden_columns',
       }),
-      tagConfigParams: {
-        resource: 'dbinstances',
-        queryTreeId: 'project-tag-value-tree',
-      },
     }
   },
   computed: {
