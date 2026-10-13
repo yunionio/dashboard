@@ -8,7 +8,6 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :tag-config-params="tagConfigParams"
     tag-filter-resource="credentials" />
 </template>
 
@@ -51,9 +50,6 @@ export default {
         },
         hiddenColumns: [],
       }),
-      tagConfigParams: {
-        resource: 'credentials',
-      },
       groupActions: [
         {
           label: this.$t('common.create'),

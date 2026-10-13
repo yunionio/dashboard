@@ -15,7 +15,6 @@
     :showSearchbox="showSearchbox"
     :defaultSearchKey="defaultSearchKey"
     :refresh-method="handleListRefresh"
-    :tag-config-params="tagConfigParams"
     :tableOverviewIndexs="tableOverviewIndexs"
     :show-page="!isTemplate" />
 </template>
@@ -1480,11 +1479,6 @@ export default {
         },
       ],
       execLoading: false,
-      tagConfigParams: {
-        title: this.$t('common.text00124'),
-        resource: 'servers',
-        queryTreeId: 'project-tag-value-tree',
-      },
     }
   },
   computed: {

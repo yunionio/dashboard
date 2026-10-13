@@ -11,7 +11,6 @@
     :show-tag-columns="true"
     :show-tag-columns2="true"
     :show-tag-filter="true"
-    :tag-config-params="tagConfigParams"
     :show-page="!isTemplate" />
 </template>
 
@@ -166,10 +165,6 @@ export default {
           },
         },
       ],
-      tagConfigParams: {
-        resource: 'mongodbs',
-        queryTreeId: 'project-tag-value-tree',
-      },
     }
   },
   computed: {
