@@ -712,6 +712,7 @@ export default {
         VM_CREATE_FORM_DRAFT_FIELD.VGA,
         VM_CREATE_FORM_DRAFT_FIELD.MACHINE,
         VM_CREATE_FORM_DRAFT_FIELD.IS_DAEMON,
+        VM_CREATE_FORM_DRAFT_FIELD.QEMU_VERSION,
       ]
       return keys.some((key) => {
         const draft = this.readCreateFormFieldDraft(key)
@@ -740,6 +741,7 @@ export default {
         }
         ;[
           VM_CREATE_FORM_DRAFT_FIELD.IS_DAEMON,
+          VM_CREATE_FORM_DRAFT_FIELD.QEMU_VERSION,
           VM_CREATE_FORM_DRAFT_FIELD.DEPLOY_TELEGRAF,
         ].forEach((key) => {
           try { this.restoreCreateFormFieldDraft(key) } catch (e) { /* ignore */ }
@@ -1365,6 +1367,25 @@ export default {
 
       if (initData.bastion_server && this.$refs.bastionHostRef) {
         this.$refs.bastionHostRef.initData(initData.bastion_server)
+      }
+
+      // KVM 高级项：装饰器初值可能因 v-if 晚挂载未生效，再显式回填一次
+      const kvmAdvance = {}
+      if (initData.bios) kvmAdvance.bios = initData.bios
+      if (initData.vdi) kvmAdvance.vdi = initData.vdi
+      if (initData.vga) kvmAdvance.vga = initData.vga
+      if (initData.machine) kvmAdvance.machine = initData.machine
+      if (initData.qemu_version) kvmAdvance.qemu_version = initData.qemu_version
+      if (Object.prototype.hasOwnProperty.call(initData, 'is_daemon')) {
+        kvmAdvance.is_daemon = !!initData.is_daemon
+      }
+      if (Object.keys(kvmAdvance).length) {
+        await this.$nextTick()
+        this.form.fc.setFieldsValue(kvmAdvance)
+        // isKvm 异步到位后再补一次
+        setTimeout(() => {
+          if (this.form?.fc) this.form.fc.setFieldsValue(kvmAdvance)
+        }, 1500)
       }
     },
     /**

@@ -26,6 +26,7 @@ export const VM_CREATE_FORM_DRAFT_FIELD = {
   MACHINE: 'machine',
   BACKUP: 'backup',
   IS_DAEMON: 'isDaemon',
+  QEMU_VERSION: 'qemuVersion',
   PCI: 'pci',
   ENCRYPT_KEYS: 'encryptKeys',
   BASTION_HOST: 'bastionHost',
@@ -36,6 +37,7 @@ export const VM_CREATE_FORM_DRAFT_FC_BINDINGS = [
   { key: VM_CREATE_FORM_DRAFT_FIELD.CLOUDPROVIDER, formField: 'cloudprovider', kind: 'selection' },
   { key: VM_CREATE_FORM_DRAFT_FIELD.DEPLOY_TELEGRAF, formField: 'deploy_telegraf', types: ['idc'], kind: 'selection' },
   { key: VM_CREATE_FORM_DRAFT_FIELD.IS_DAEMON, formField: 'is_daemon', types: ['idc'], kind: 'selection' },
+  { key: VM_CREATE_FORM_DRAFT_FIELD.QEMU_VERSION, formField: 'qemu_version', types: ['idc'], kind: 'selection' },
 ]
 
 export function getVmCreateFormDraftScope ({ type, isServertemplate }) {
