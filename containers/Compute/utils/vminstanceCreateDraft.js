@@ -95,6 +95,7 @@ export function hasAdvanceConfigInitFields (initData) {
     initData.vga ||
     initData.machine ||
     initData.is_daemon ||
+    initData.qemu_version ||
     (Array.isArray(initData.groups) && initData.groups.length)
   )
 }
