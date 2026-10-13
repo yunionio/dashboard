@@ -1,5 +1,6 @@
 <template>
   <div class="w-75">
+    <a-alert class="mb-3" type="info" showIcon :message="$t('k8s.vc_hypernode_scenario_hint')" />
     <a-form :form="form.fc" v-bind="formItemLayout">
       <a-form-item :label="$t('k8s.text_41')" :extra="$t('k8s.vc_hypernode_name_hint')">
         <a-input v-decorator="decorators.name" />
