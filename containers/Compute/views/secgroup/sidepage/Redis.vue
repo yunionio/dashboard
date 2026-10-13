@@ -7,8 +7,7 @@
     :columns="columns"
     :list="list"
     :showSearchbox="showSearchbox"
-    :export-data-options="exportDataOptions"
-    :tag-config-params="tagConfigParams" />
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -106,10 +105,6 @@ export default {
         hiddenColumns: ['metadata', 'instance_type', 'created_at'],
         autoHiddenFilterKey: 'redis_hidden_columns',
       }),
-      tagConfigParams: {
-        resource: 'elasticcaches',
-        queryTreeId: 'project-tag-value-tree',
-      },
     }
   },
   computed: {

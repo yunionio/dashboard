@@ -12,7 +12,6 @@
     :showSingleActions="isTemplate ? false : showActions"
     :showGroupActions="showActions && showGroupActions"
     :export-data-options="exportDataOptions"
-    :tag-config-params="tagConfigParams"
     :show-page="!isTemplate" />
 </template>
 
@@ -351,10 +350,6 @@ export default {
           },
         },
       ],
-      tagConfigParams: {
-        resource: 'elasticcaches',
-        queryTreeId: 'project-tag-value-tree',
-      },
     }
   },
   computed: {
