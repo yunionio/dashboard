@@ -305,6 +305,16 @@
             :checkedChildren="$t('compute.text_115')"
             :unCheckedChildren="$t('compute.text_116')" />
         </a-form-item>
+        <a-form-item v-if="isKvm" :label="$t('compute.qemu_version')">
+          <a-select
+            v-decorator="decorators.qemu_version"
+            style="width: 200px"
+            :placeholder="$t('common.select')">
+            <a-select-option value="">{{ $t('compute.text_1') }}</a-select-option>
+            <a-select-option value="4.2.0">4.2.0</a-select-option>
+            <a-select-option value="10.0.7">10.0.7</a-select-option>
+          </a-select>
+        </a-form-item>
         <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" :extra="$t('compute.text_1158')">
           <instance-groups
             ref="instanceGroupsRef"
