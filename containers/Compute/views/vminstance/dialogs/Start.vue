@@ -9,6 +9,16 @@
         <a-form-item :label="$t('compute.text_1041')" v-bind="formItemLayout" v-if="isOpenWorkflow">
           <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
         </a-form-item>
+        <a-form-item v-if="showQemuVersion" :label="$t('compute.qemu_version')" v-bind="formItemLayout">
+          <a-select
+            v-decorator="decorators.qemu_version"
+            style="width: 200px"
+            :placeholder="$t('common.select')">
+            <a-select-option value="">{{ $t('compute.text_1') }}</a-select-option>
+            <a-select-option value="4.2.0">4.2.0</a-select-option>
+            <a-select-option value="10.0.7">10.0.7</a-select-option>
+          </a-select>
+        </a-form-item>
         <a-form-item class="mb-0" v-show="canAutoPrepaid">
           <a-checkbox
           v-model="form.fd.auto_prepaid"
@@ -55,6 +65,12 @@ export default {
             initialValue: formData.reason || '',
           },
         ],
+        qemu_version: [
+          'qemu_version',
+          {
+            initialValue: formData.qemu_version || '',
+          },
+        ],
         auto_prepaid: [
           'stopPaying',
           {
@@ -95,6 +111,10 @@ export default {
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_START)
     },
+    /** 所选机器均为 KVM 时才展示 QEMU 版本 */
+    showQemuVersion () {
+      return this.dataList.length > 0 && this.dataList.every(item => item.hypervisor === 'kvm')
+    },
   },
   created () {
     this.initData()
@@ -110,11 +130,21 @@ export default {
         this.dataList = this.params.data || []
       }
     },
-    async doShutDownSubmit () {
+    buildStartParams () {
       const data = {}
       if (this.form.fd.auto_prepaid) {
         data.auto_prepaid = true
       }
+      if (this.showQemuVersion) {
+        const qemuVersion = this.form.fc.getFieldValue('qemu_version')
+        if (qemuVersion) {
+          data.qemu_version = qemuVersion
+        }
+      }
+      return data
+    },
+    async doShutDownSubmit () {
+      const data = this.buildStartParams()
       const ids = this.dataList.map(item => item.id)
       return this.params.onManager('batchPerformAction', {
         id: ids,
@@ -158,8 +188,7 @@ export default {
     async handleShutDownByWorkflowSubmit () {
       const ids = this.dataList.map(item => item.id)
       const values = await this.form.fc.validateFields()
-      const params = {}
-      if (this.form.fd.auto_prepaid) params.auto_prepaid = true
+      const params = this.buildStartParams()
       const variables = {
         project: this.dataList[0].tenant_id,
         project_domain: this.dataList[0].domain_id,
