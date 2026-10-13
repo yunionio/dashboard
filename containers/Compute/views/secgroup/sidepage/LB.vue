@@ -7,8 +7,7 @@
     :list="list"
     :columns="columns"
     :showSearchbox="showSearchbox"
-    :export-data-options="exportDataOptions"
-    :tag-config-params="tagConfigParams" />
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -89,10 +88,6 @@ export default {
         hiddenColumns: ['metadata', 'account', 'cluster', 'created_at'],
         autoHiddenFilterKey: 'slb_hidden_columns',
       }),
-      tagConfigParams: {
-        resource: 'loadbalancers',
-        queryTreeId: 'project-tag-value-tree',
-      },
     }
   },
   computed: {

@@ -14,7 +14,6 @@
     :export-data-options="exportDataOptions"
     :defaultSearchKey="defaultSearchKey"
     :refresh-method="handleListRefresh"
-    :tag-config-params="tagConfigParams"
     :tableOverviewIndexs="tableOverviewIndexs"
     :show-single-actions="!isTemplate"
     :show-page="!isTemplate" />
@@ -416,11 +415,6 @@ export default {
         },
       ],
       execLoading: false,
-      tagConfigParams: {
-        title: this.$t('common.text00124'),
-        resource: 'servers',
-        queryTreeId: 'project-tag-value-tree',
-      },
     }
   },
   computed: {
