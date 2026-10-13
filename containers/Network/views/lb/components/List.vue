@@ -12,7 +12,6 @@
     :showSingleActions="isTemplate ? false : showActions"
     :showGroupActions="showActions && showGroupActions"
     :export-data-options="exportDataOptions"
-    :tag-config-params="tagConfigParams"
     :show-page="!isTemplate" />
 </template>
 
@@ -105,10 +104,6 @@ export default {
           this.$emit('resStatisticsChange', totals)
         },
       }),
-      tagConfigParams: {
-        resource: 'loadbalancers',
-        queryTreeId: 'project-tag-value-tree',
-      },
     }
   },
   computed: {

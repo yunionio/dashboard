@@ -13,7 +13,6 @@
     :showGroupActions="showActions && showGroupActions"
     :defaultSearchKey="defaultSearchKey"
     :export-data-options="exportDataOptions"
-    :tag-config-params="tagConfigParams"
     :show-page="!isTemplate" />
 </template>
 <script>
@@ -308,10 +307,6 @@ export default {
           },
         },
       ],
-      tagConfigParams: {
-        resource: 'dbinstances',
-        queryTreeId: 'project-tag-value-tree',
-      },
     }
   },
   computed: {

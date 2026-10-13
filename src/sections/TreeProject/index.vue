@@ -1,20 +1,37 @@
 <template>
-  <div :class="`${isInPopover?'':'tree-wrapper mr-2'}`" style="position: relative">
+  <div
+    :class="[isInPopover ? '' : 'tree-wrapper mr-2', { resizing }]"
+    :style="wrapperStyle">
+    <div
+      v-if="!isInPopover"
+      class="org-resize-handle"
+      @mousedown="startResize" />
     <div class="tree-wrapper-content">
-      <div v-if="!isInPopover" class="tree-wrapper-header d-flex justify-content-between">
-        <a-button size="small" @click="initTree(tagConfigParams.useOrgLevel)"><icon type="refresh" /></a-button>
-        <a-button size="small" v-if="!isHideTreeConfig" @click="handleSetting"><icon type="setting" /></a-button>
+      <div v-if="!isInPopover" class="tree-toolbar">
+        <a-button class="tree-toolbar-btn" @click="handleRefresh">
+          <icon type="refresh" />
+        </a-button>
+        <a-input-search
+          class="tree-toolbar-search"
+          v-model="searchValue"
+          :placeholder="searchPlaceholder"
+          allowClear />
+        <a-button
+          v-if="!isHideTreeConfig"
+          class="tree-toolbar-btn"
+          @click="handleSetting">
+          <icon type="setting" />
+        </a-button>
       </div>
-      <div class="search-box mt-2 mb-2">
+      <div v-else class="search-box mb-2">
         <a-input-search
           class="search"
           v-model="searchValue"
-          :placeholder="$t('common.search')"
-          allowClear
-          @search="onSearch" />
+          :placeholder="searchPlaceholder"
+          allowClear />
       </div>
       <data-empty v-if="!loading && !treeData.length" />
-      <div :style="contentStyle">
+      <div class="tree-body">
         <a-tree
           v-if="treeData.length"
           default-expand-all
@@ -22,7 +39,7 @@
           :selectedKeys.sync="selectedKeys"
           :treeData="filteredTreeData"
           @select="handleTreeNodeSelect"
-          style="padding:10px 0">
+          style="padding: 8px 0">
           <a-icon slot="switcherIcon" type="caret-down" style="font-size: 16px;color:#999" />
           <icon slot="organization" class="tree-node-icon" style="font-size: 14px;color:#999" type="organization" />
         </a-tree>
@@ -37,13 +54,24 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import * as R from 'ramda'
 import { uuid } from '@/utils/utils'
 import storage from '@/utils/storage'
+import {
+  buildOrgTree,
+  clampOrgSidebarWidth,
+  deepFilterOrgTree,
+  DEFAULT_ORG_SIDEBAR_WIDTH,
+  getStoredOrgSidebarWidth,
+  orgNodeToProjectTagFilter,
+  setStoredOrgSidebarWidth,
+} from '@/utils/organizationTree'
 
 export default {
   name: 'TreeProject',
   props: {
     isInPopover: Boolean,
+    treeToggleOpen: Boolean,
     tagConfigParams: {
       type: Object,
+      default: () => ({}),
     },
   },
   data () {
@@ -52,10 +80,12 @@ export default {
       treeData: [],
       selectedKeys: [],
       searchValue: '',
+      sidebarHeight: 0,
+      sidebarWidth: DEFAULT_ORG_SIDEBAR_WIDTH,
+      resizing: false,
     }
   },
   computed: {
-    // ...mapGetters(['projectTags']),
     ...mapGetters(['common', 'isAdminMode']),
     topAlert () {
       return this.common.topAlert || {}
@@ -70,11 +100,9 @@ export default {
             if (key === 'apiServer') {
               const url = value.messageOptions[1][2]
               if (url !== location.origin) {
-                // const message = this.renderMessage(key, value)
                 items.push(1)
               }
             } else {
-              // const message = this.renderMessage(key, value)
               items.push(1)
             }
           }
@@ -86,50 +114,127 @@ export default {
       projectTreeTags: state => state.projectTags.projectTreeTags,
       isLoaded: state => state.projectTags.isLoaded,
     }),
-    contentStyle () {
-      const ret = {
-        maxWidth: '400px',
-        overflow: 'auto',
+    // 按元素距视口顶部动态计算剩余高度，避免硬编码偏移导致页面出现竖向滚动条
+    wrapperStyle () {
+      if (this.isInPopover) return { position: 'relative' }
+      const style = {
+        position: 'relative',
+        width: `${this.sidebarWidth}px`,
+        flex: `0 0 ${this.sidebarWidth}px`,
       }
-      const h = document.body.clientHeight
-      ret.maxHeight = (h - 60 - 60 - 30 - 48 - 38 - 66 - this.topAlertLen * 41) + 'px'
-      return ret
+      if (this.sidebarHeight) {
+        style.height = `${this.sidebarHeight}px`
+      }
+      return style
+    },
+    isOrganizationMode () {
+      // 侧栏默认组织架构；仅当显式传入其它 treeMode（如 tag）时走旧聚合树
+      // 仍传入的 resource / queryTreeId 在组织模式下忽略
+      const mode = this.tagConfigParams && this.tagConfigParams.treeMode
+      if (mode && mode !== 'organization') return false
+      return true
     },
     isHideTreeConfig () {
-      return this.tagConfigParams.useOrgLevel
+      return this.isOrganizationMode
+    },
+    searchPlaceholder () {
+      if (this.isOrganizationMode && this.$te('iamee.organization_search')) {
+        return this.$t('iamee.organization_search')
+      }
+      return this.$t('common.search')
     },
     filteredTreeData () {
       if (this.searchValue) {
-        const treeData = this.deepFilter(this.treeData)
-        return treeData
+        if (this.isOrganizationMode) {
+          return deepFilterOrgTree(this.treeData, this.searchValue)
+        }
+        return this.deepFilter(this.treeData)
       }
       return this.treeData
     },
   },
   watch: {
     projectTreeTags: {
-      handler: function (val) {
+      handler: function () {
+        if (this.isOrganizationMode) return
         this.initTree()
       },
       immediate: true,
     },
-    // 'tagConfigParams.treeParams': {
-    //   handler: function (val = {}, oldVal = {}) {
-    //     if (!R.equals(val, oldVal)) {
-    //       this.initTree()
-    //     }
-    //   },
-    //   deep: true,
-    // },
+    treeToggleOpen (val) {
+      if (val) {
+        this.$nextTick(() => this.updateSidebarHeight())
+      }
+    },
+    topAlertLen () {
+      this.$nextTick(() => this.updateSidebarHeight())
+    },
   },
   created () {
-    this.pM = new this.$Manager('parmeters', 'v1')
-    this.tM = new this.$Manager(this.tagConfigParams.resource, 'v1')
     this.oM = new this.$Manager('organizations', 'v1')
+    this.onM = new this.$Manager('organization_nodes', 'v1')
+    if (this.tagConfigParams && this.tagConfigParams.resource) {
+      this.tM = new this.$Manager(this.tagConfigParams.resource, 'v1')
+    }
+    this.sidebarWidth = getStoredOrgSidebarWidth()
     this.initProjectTags()
+  },
+  mounted () {
+    this.updateSidebarHeight()
+    window.addEventListener('resize', this.updateSidebarHeight)
+    this.$bus.$on('GlobalTopAlertUpdate', this.updateSidebarHeight)
+  },
+  beforeDestroy () {
+    this.stopResize()
+    window.removeEventListener('resize', this.updateSidebarHeight)
+    this.$bus.$off('GlobalTopAlertUpdate', this.updateSidebarHeight)
   },
   methods: {
     ...mapActions({ getProjectTreeTags: 'projectTags/getProjectTreeTags' }),
+    startResize (e) {
+      if (this.isInPopover) return
+      e.preventDefault()
+      e.stopPropagation()
+      this.resizing = true
+      this._resizeStartX = e.clientX
+      this._resizeStartWidth = this.sidebarWidth
+      document.addEventListener('mousemove', this.onResize)
+      document.addEventListener('mouseup', this.stopResize)
+    },
+    onResize (e) {
+      if (!this.resizing) return
+      const next = this._resizeStartWidth + (e.clientX - this._resizeStartX)
+      this.sidebarWidth = clampOrgSidebarWidth(next)
+    },
+    stopResize () {
+      if (!this.resizing) {
+        document.removeEventListener('mousemove', this.onResize)
+        document.removeEventListener('mouseup', this.stopResize)
+        return
+      }
+      this.resizing = false
+      setStoredOrgSidebarWidth(this.sidebarWidth)
+      document.removeEventListener('mousemove', this.onResize)
+      document.removeEventListener('mouseup', this.stopResize)
+    },
+    updateSidebarHeight () {
+      if (this.isInPopover) return
+      const el = this.$el
+      if (!el || typeof el.getBoundingClientRect !== 'function') return
+      // v-show=false 时无法测量
+      if (getComputedStyle(el).display === 'none') return
+      const top = el.getBoundingClientRect().top
+      // 预留底部留白，避免撑出视口产生整页竖向滚动条
+      const bottomGap = 16
+      this.sidebarHeight = Math.max(Math.floor(window.innerHeight - top - bottomGap), 200)
+    },
+    handleRefresh () {
+      if (this.isOrganizationMode) {
+        this.initOrganizationTree()
+      } else {
+        this.initTree(this.tagConfigParams.useOrgLevel)
+      }
+    },
     deepFilter (list) {
       const cloneList = list.map(item => {
         const ret = { ...item }
@@ -146,6 +251,10 @@ export default {
       })
     },
     async initProjectTags () {
+      if (this.isOrganizationMode) {
+        await this.initOrganizationTree()
+        return
+      }
       if (this.tagConfigParams.useOrgLevel) {
         this.initTree(true)
       } else {
@@ -156,12 +265,68 @@ export default {
         }
       }
     },
+    applyOrgTreeTitles (node) {
+      const treeNode = node
+      if (treeNode.id === 'root' || treeNode.key === 'root') {
+        treeNode.title = (
+          <span class="tree-node-title">{treeNode.name || treeNode.tagValue}</span>
+        )
+      } else {
+        treeNode.title = (
+          <span class="tree-node-title"><span class="tag-title-budge">{(treeNode.tagKey || '').replace('org:', '')}:</span>{treeNode.tagValue}</span>
+        )
+      }
+      treeNode.slots = { icon: 'organization' }
+      if (treeNode.children && treeNode.children.length) {
+        treeNode.children = treeNode.children.map(child => this.applyOrgTreeTitles(child))
+      }
+      return treeNode
+    },
+    async initOrganizationTree () {
+      try {
+        this.loading = true
+        const orgRes = await this.oM.list({
+          params: {
+            scope: this.$store.getters.scope,
+            enabled: true,
+          },
+        })
+        const orgList = orgRes.data.data || []
+        if (!orgList.length) {
+          this.treeData = []
+          this.$emit('select', orgNodeToProjectTagFilter({}, this.tagConfigParams.tagFilterKey || 'project_tags'))
+          return
+        }
+        const organization = orgList[0]
+        const nodeRes = await this.onM.list({
+          params: {
+            org_id: organization.id,
+            scope: this.$store.getters.scope,
+          },
+        })
+        const nodeList = nodeRes.data.data || []
+        const { tree } = buildOrgTree({ organization, nodeList })
+        const rooted = this.applyOrgTreeTitles(R.clone(tree))
+        this.treeData = [rooted]
+        this.selectedKeys = ['root']
+        this.$emit('select', orgNodeToProjectTagFilter({}, this.tagConfigParams.tagFilterKey || 'project_tags'))
+      } catch (err) {
+        this.treeData = []
+        throw err
+      } finally {
+        this.loading = false
+      }
+    },
     async initTree (useOrgLevel) {
+      if (this.isOrganizationMode) {
+        await this.initOrganizationTree()
+        return
+      }
+      if (!this.tM) return
       const params = {
         limit: 0,
         scope: this.$store.getters.scope,
         ...(this.tagConfigParams.treeParams || {}),
-        // with_user_meta: true,
       }
       if (useOrgLevel) {
         try {
@@ -275,14 +440,17 @@ export default {
     },
     genProjectTagFilter (data) {
       const { tagFilterKey = 'project_tags' } = this.tagConfigParams
-      const ret = { tagFilterKey }
-      const { tags = [] } = data
-      ret[tagFilterKey] = tags
-      return ret
+      return orgNodeToProjectTagFilter(data, tagFilterKey)
     },
     handleTreeNodeSelect (keys, event) {
       if (keys.length) {
         const { dataRef } = event.node
+        // 根节点不过滤
+        if (dataRef && (dataRef.id === 'root' || dataRef.key === 'root')) {
+          this.$emit('select', this.genProjectTagFilter({}))
+          this.$emit('update:item', dataRef)
+          return
+        }
         this.$emit('select', this.genProjectTagFilter(dataRef))
         this.$emit('update:item', dataRef)
       } else {
@@ -304,28 +472,79 @@ export default {
 <style lang="less" scoped>
 .tree-wrapper {
   border: 1px solid #f1f1f1;
-  position: relative;
+  background: #fff;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  &.resizing {
+    user-select: none;
+  }
+}
+
+.org-resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 2;
+  background: transparent;
 }
 
 .tree-wrapper-content {
-  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.tree-toolbar {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.tree-toolbar-btn {
+  flex-shrink: 0;
+}
+
+.tree-toolbar-search {
+  flex: 1;
+  min-width: 0;
+}
+
+.tree-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 4px;
 }
 
 .search-box {
-    width: 100%;
-    height: 32px;
-    position: relative;
-    .search {
-      position: absolute;
-      left: 10px;
-      top:0;
-      right: 10px;
-      width: calc(100% - 20px);
-    }
+  width: 100%;
+  height: 32px;
+  position: relative;
+  .search {
+    position: absolute;
+    left: 10px;
+    top: 0;
+    right: 10px;
+    width: calc(100% - 20px);
   }
+}
+
 .ant-tree-switcher {
   display: none !important;
 }
+
 .loading {
   position: absolute;
   width: 100%;
@@ -338,11 +557,7 @@ export default {
   padding-top: 30px;
   background: rgba(255, 255, 255, 0.5);
 }
-.tree-wrapper-header{
-  border-bottom: 1px solid #f1f1f1;
-  padding: 11.5px;
-  min-width: 200px;
-}
+
 .tag-title-budge {
   font-size: 12px;
   box-sizing: border-box;
@@ -350,7 +565,8 @@ export default {
   color: #999;
   margin-right: 5px;
 }
-.tree-node-title:hover{
+
+.tree-node-title:hover {
   color: var(--antd-wave-shadow-color);
   .tag-title-budge {
     color: var(--antd-wave-shadow-color);
