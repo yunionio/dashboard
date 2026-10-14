@@ -10,6 +10,7 @@ import { SERVER_TYPE } from '@Compute/constants'
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
+import { getIpAddrColumn, getIp6AddrColumn, getNetworkIdColumn } from '@Compute/views/networks/utils/columns'
 
 export default {
   name: 'NetworkListForBaremetalSidepage',
@@ -45,10 +46,13 @@ export default {
             return data.seq
           },
         },
-        getCopyWithContentTableColumn({ field: 'network', title: this.$t('compute.text_384'), sortable: true }),
+        // getCopyWithContentTableColumn({ field: 'network', title: this.$t('compute.text_384'), sortable: true }),
         getCopyWithContentTableColumn({ field: 'mac_addr', title: this.$t('compute.text_385'), sortable: true }),
-        getCopyWithContentTableColumn({ field: 'ip_addr', title: this.$t('compute.text_386'), sortable: true }),
-        getCopyWithContentTableColumn({ field: 'driver', title: this.$t('compute.text_378') }),
+        // getCopyWithContentTableColumn({ field: 'ip_addr', title: this.$t('compute.text_386'), sortable: true }),
+        getIpAddrColumn(),
+        getIp6AddrColumn(),
+        // getCopyWithContentTableColumn({ field: 'driver', title: this.$t('compute.text_378') }),
+        getNetworkIdColumn({ vm: this }),
       ],
       singleActions: [
         {
@@ -81,6 +85,15 @@ export default {
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenNetworkDetail (id) {
+      this.initSidePageTab('network-detail')
+      this.sidePageTriggerHandle(this, 'NetworkSidePage', {
+        id,
+        resource: 'networks',
+      })
+    },
   },
 }
 </script>
