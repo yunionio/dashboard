@@ -7,6 +7,9 @@
 <script>
 import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
+import {
+  getSharingModeColumn,
+} from '@Compute/views/gpu/utils/columns'
 
 const DEVICE_MAP = {
   '10de': 'nvidia',
@@ -34,6 +37,15 @@ export default {
   computed: {
     columns () {
       return [
+        {
+          field: 'addr',
+          title: 'PCI ADDR',
+          width: 100,
+          showOverflow: 'ellipsis',
+          formatter: function ({ row }) {
+            return row.addr || '-'
+          },
+        },
         {
           field: 'dev_type',
           title: this.$t('compute.text_481'),
@@ -63,6 +75,18 @@ export default {
           field: 'host',
           title: this.$t('compute.isolated_device_located_baremetal'),
         },
+        {
+          field: 'numa_node',
+          title: 'NUMA',
+          width: 80,
+          formatter: function ({ row }) {
+            if (row.numa_node >= 0) {
+              return row.numa_node
+            }
+            return '-'
+          },
+        },
+        getSharingModeColumn(),
       ]
     },
   },
