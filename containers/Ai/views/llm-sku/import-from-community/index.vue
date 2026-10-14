@@ -83,7 +83,7 @@
 
 <script>
 import marked from 'marked'
-import { createEmptyDeviceRow, deviceRowNeedsVendor, getPodPciModelTypes, isValidDeviceRows, resolveSharingMode } from '@Ai/utils/deviceFormUtils'
+import { createEmptyDeviceRow, deviceRowNeedsVendor, getPodPciModelTypes, isMultiCardMthreadsHamiRow, isOffBucketMthreadsHamiMemory, isValidDeviceRows, resolveSharingMode } from '@Ai/utils/deviceFormUtils'
 import CommunityImageGrid from '@Ai/sections/community-images/components/CommunityImageGrid.vue'
 import LlmGpuDevicesEditor from '@Ai/sections/LlmGpuDevicesEditor.vue'
 import { parseLlmRoute, getLlmSkuTypeFilter } from '@Ai/utils/llmRouteContext'
@@ -161,6 +161,14 @@ export default {
             const pciModelTypes = this.podPciModels
             const requireHamiMemoryMb = !!this.needsGpuSelection
             if (!isValidDeviceRows(value, { requireHamiMemoryMb, pciModelTypes })) {
+              if (Array.isArray(value) && value.some(row => isMultiCardMthreadsHamiRow(row, pciModelTypes))) {
+                callback(new Error(this.$t('aice.devices.mthreads_sgpu_single_card')))
+                return
+              }
+              if (Array.isArray(value) && value.some(row => isOffBucketMthreadsHamiMemory(row, pciModelTypes))) {
+                callback(new Error(this.$t('compute.pci.memory_request.mthreads_sgpu_bucket')))
+                return
+              }
               if (requireHamiMemoryMb && Array.isArray(value) && value.some(row => String(row?.model || '').trim() && resolveSharingMode(row.sharing_mode) === 'HAMI' && !(parseInt(row.memory_mb, 10) > 0))) {
                 callback(new Error(this.$t('aice.devices.memory_mb.required')))
                 return
