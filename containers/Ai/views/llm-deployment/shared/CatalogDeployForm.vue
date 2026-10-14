@@ -53,7 +53,7 @@ import LlmImageSelect from '@Ai/sections/LlmImageSelect'
 import LlmGpuDevicesEditor from '@Ai/sections/LlmGpuDevicesEditor'
 import NameRepeated from '@/sections/NameRepeated'
 import { getParamsForType } from '@Ai/views/llm-sku/constants/llmTypeConfig'
-import { isValidDeviceRows, deviceRowNeedsVendor } from '@Ai/utils/deviceFormUtils'
+import { isValidDeviceRows, deviceRowNeedsVendor, isMultiCardMthreadsHamiRow, isOffBucketMthreadsHamiMemory } from '@Ai/utils/deviceFormUtils'
 
 export default {
   name: 'CatalogDeployForm',
@@ -87,6 +87,14 @@ export default {
           validator: (rule, value, callback) => {
             const pciModelTypes = this.podPciModels
             if (!isValidDeviceRows(value, { allowEmpty: false, pciModelTypes })) {
+              if (Array.isArray(value) && value.some(row => isMultiCardMthreadsHamiRow(row, pciModelTypes))) {
+                callback(new Error(this.$t('aice.devices.mthreads_sgpu_single_card')))
+                return
+              }
+              if (Array.isArray(value) && value.some(row => isOffBucketMthreadsHamiMemory(row, pciModelTypes))) {
+                callback(new Error(this.$t('compute.pci.memory_request.mthreads_sgpu_bucket')))
+                return
+              }
               if (Array.isArray(value) && value.some(row => deviceRowNeedsVendor(row, pciModelTypes))) {
                 callback(new Error(this.$t('aice.devices.vendor.required')))
                 return

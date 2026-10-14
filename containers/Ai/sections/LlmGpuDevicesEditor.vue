@@ -32,21 +32,32 @@
       <a-input-number
         :value="row.count"
         :min="1"
-        :max="maxCount"
+        :max="isRowMthreadsHami(row) ? 1 : maxCount"
         :precision="0"
         class="llm-gpu-devices-editor__count"
         @change="val => onCountChange(index, val)" />
       <span class="llm-gpu-devices-editor__unit">{{ $t('aice.devices.count_unit') }}</span>
       <template v-if="row.sharing_mode === 'HAMI'">
-        <a-input-number
-          :value="row.memory_mb"
-          :min="1"
-          :step="1024"
-          :precision="0"
-          class="llm-gpu-devices-editor__memory"
-          :placeholder="memoryMbPlaceholder"
+        <base-select
+          v-if="isRowMthreadsHami(row)"
+          :value="mthreadsMemoryValue(row)"
+          :options="mthreadsMemoryOptionsForRow(row)"
+          :filterable="false"
+          :min-width="'160px'"
+          :select-props="mthreadsMemorySelectProps"
+          class="llm-gpu-devices-editor__memory-select"
           @change="val => onMemoryMbChange(index, val)" />
-        <span class="llm-gpu-devices-editor__unit">MB</span>
+        <template v-else>
+          <a-input-number
+            :value="row.memory_mb"
+            :min="1"
+            :step="1024"
+            :precision="0"
+            class="llm-gpu-devices-editor__memory"
+            :placeholder="memoryMbPlaceholder"
+            @change="val => onMemoryMbChange(index, val)" />
+          <span class="llm-gpu-devices-editor__unit">MB</span>
+        </template>
       </template>
       <a-button
         v-if="canRemoveRow"
@@ -61,6 +72,16 @@
       class="text-color-help llm-gpu-devices-editor__help">
       {{ memoryMbHelp }}
     </div>
+    <div
+      v-if="hasMthreadsHamiRow"
+      class="text-color-help llm-gpu-devices-editor__help">
+      {{ $t('compute.pci.memory_request.mthreads_sgpu_hint') }}
+    </div>
+    <div
+      v-if="hasMthreadsHamiRow"
+      class="text-color-help llm-gpu-devices-editor__help">
+      {{ $t('aice.devices.mthreads_sgpu_single_card') }}
+    </div>
     <a-button type="link" icon="plus" class="pl-0" @click="addRow">
       {{ $t('aice.devices.add') }}
     </a-button>
@@ -69,6 +90,7 @@
 
 <script>
 import { uuid } from '@/utils/utils'
+import { mthreadsSgpuMemoryOptions, normalizeMthreadsSgpuMemory } from '@Compute/constants'
 import {
   createEmptyDeviceRow,
   normalizeDeviceRows,
@@ -80,6 +102,8 @@ import {
   resolveVendorForModel,
   getPodPciModelTypes,
   shouldShowVendorSelect,
+  isMthreadsHamiDeviceRow,
+  mthreadsHamiMemoryMaxMb,
 } from '@Ai/utils/deviceFormUtils'
 
 const SHARING_MODE_I18N = {
@@ -173,6 +197,15 @@ export default {
         ? this.$t('aice.devices.memory_mb.help_required')
         : this.$t('aice.devices.memory_mb.help')
     },
+    hasMthreadsHamiRow () {
+      return this.innerRows.some(row => this.isRowMthreadsHami(row))
+    },
+    mthreadsMemorySelectProps () {
+      return {
+        placeholder: this.$t('compute.pci.memory_request.mthreads_sgpu_placeholder'),
+        allowClear: !this.requireHamiMemoryMb,
+      }
+    },
     innerRows () {
       return this.resolveRows(this.value)
     },
@@ -196,10 +229,14 @@ export default {
         }
         this.maybeAutoFillVendors(rows)
         this.maybeCoerceSharingModes(rows)
+        this.maybeClearOffBucketMemory(rows)
+        this.maybeClampMthreadsCount(rows)
       },
     },
     podPciModels () {
       this.maybeAutoFillVendors(this.innerRows)
+      this.maybeClearOffBucketMemory(this.innerRows)
+      this.maybeClampMthreadsCount(this.innerRows)
     },
   },
   methods: {
@@ -362,15 +399,66 @@ export default {
       this.emitRows(rows)
     },
     onCountChange (index, count) {
-      const rows = this.innerRows.map((row, i) => (
-        i === index ? { ...row, count: count ?? 1 } : { ...row }
-      ))
+      const rows = this.innerRows.map((row, i) => {
+        if (i !== index) return { ...row }
+        let nextCount = count ?? 1
+        if (this.isRowMthreadsHami(row) && Number(nextCount) > 1) nextCount = 1
+        return { ...row, count: nextCount }
+      })
       this.emitRows(rows)
+    },
+    isRowMthreadsHami (row) {
+      return isMthreadsHamiDeviceRow(row, this.podPciModels)
+    },
+    mthreadsMemoryOptionsForRow (row) {
+      return mthreadsSgpuMemoryOptions(mthreadsHamiMemoryMaxMb(row, this.podPciModels))
+    },
+    mthreadsMemoryValue (row) {
+      return normalizeMthreadsSgpuMemory(row?.memory_mb, mthreadsHamiMemoryMaxMb(row, this.podPciModels))
+    },
+    maybeClearOffBucketMemory (rows) {
+      if (!Array.isArray(rows) || rows.length === 0) return
+      let changed = false
+      const next = rows.map((row) => {
+        if (!this.isRowMthreadsHami(row)) return row
+        const normalized = this.mthreadsMemoryValue(row)
+        const raw = parseInt(row?.memory_mb, 10)
+        const current = raw > 0 ? raw : undefined
+        if (current === normalized) return row
+        changed = true
+        const copy = { ...row }
+        if (normalized) {
+          copy.memory_mb = normalized
+        } else {
+          delete copy.memory_mb
+        }
+        return copy
+      })
+      if (changed) this.emitRows(next)
+    },
+    maybeClampMthreadsCount (rows) {
+      if (!Array.isArray(rows) || rows.length === 0) return
+      let changed = false
+      const next = rows.map((row) => {
+        if (!this.isRowMthreadsHami(row) || Number(row.count) <= 1) return row
+        changed = true
+        return { ...row, count: 1 }
+      })
+      if (changed) this.emitRows(next)
     },
     onMemoryMbChange (index, memoryMb) {
       const rows = this.innerRows.map((row, i) => {
         if (i !== index) return { ...row }
         const next = { ...row }
+        if (this.isRowMthreadsHami(row)) {
+          const normalized = normalizeMthreadsSgpuMemory(memoryMb, mthreadsHamiMemoryMaxMb(row, this.podPciModels))
+          if (normalized) {
+            next.memory_mb = normalized
+          } else {
+            delete next.memory_mb
+          }
+          return next
+        }
         const n = parseInt(memoryMb, 10)
         if (n > 0) {
           next.memory_mb = n
@@ -429,6 +517,10 @@ export default {
 }
 .llm-gpu-devices-editor__memory {
   width: 120px;
+}
+.llm-gpu-devices-editor__memory-select {
+  width: 160px;
+  flex-shrink: 0;
 }
 .llm-gpu-devices-editor__unit {
   color: rgba(0, 0, 0, 0.45);

@@ -172,4 +172,13 @@ export const POD_MONITOR = [
     transfer: 1,
     metric: metricItems['pod_gpu.mem_util'].key,
   },
+  {
+    name: 'pod_gpu',
+    label: i18n.t('compute.metric.gpu_field.utilization_gpu'),
+    seleteItem: 'gpu_util',
+    fromItem: 'pod_gpu',
+    unit: '%',
+    transfer: 1,
+    metric: metricItems['pod_gpu.gpu_util'].key,
+  },
 ]
