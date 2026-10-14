@@ -444,6 +444,7 @@
   "aice.devices.memory_mb.required": "VRAM (MiB) is required for HAMi when model VRAM cannot be estimated",
   "aice.devices.memory_mb.help": "When sharing mode is HAMI, optionally set per-GPU VRAM (MiB). Leave empty to use the estimate from mounted models.",
   "aice.devices.memory_mb.help_required": "VRAM cannot be estimated from models in this scenario. When using HAMi, per-GPU VRAM (MiB) is required.",
+  "aice.devices.mthreads_sgpu_single_card": "Moore Threads does not support multi-GPU slicing yet. An sGPU task can use only one card. Use exclusive whole cards for multiple GPUs.",
   "aice.vram_claim_mb": "VRAM Claim",
   "aice.vram_claim_mb.help": "Total GPU memory (MiB) estimated from mounted model weights. Read-only.",
   "aice.model_name": "Model Name",

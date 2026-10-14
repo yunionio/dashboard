@@ -62,8 +62,17 @@
           </a-form-item>
           <a-form-item
             v-if="showGroupMemoryRequest"
-            :label="$t('compute.pci.memory_request')">
+            :label="$t('compute.pci.memory_request')"
+            :extra="showGroupMthreadsMemory ? $t('compute.pci.memory_request.mthreads_sgpu_hint') : undefined">
+            <base-select
+              v-if="showGroupMthreadsMemory"
+              v-decorator="decorators.memoryRequest"
+              :options="groupMthreadsMemoryOptions"
+              :filterable="false"
+              :select-props="{ placeholder: $t('compute.pci.memory_request.mthreads_sgpu_placeholder'), allowClear: false }"
+              @change="onGroupMemoryRequestChange" />
             <a-tooltip
+              v-else
               :title="groupMemoryRangeTooltip"
               placement="top"
               :get-popup-container="getTooltipContainer">
@@ -79,8 +88,10 @@
                 @unitChange="onGroupMemoryUnitChange" />
             </a-tooltip>
           </a-form-item>
-          <a-form-item :label="$t('compute.text_294')" :extra="$t('compute.text_1175')">
-            <a-input-number :min="1" v-decorator="decorators.number" />
+          <a-form-item
+            :label="$t('compute.text_294')"
+            :extra="showGroupMthreadsMemory ? $t('compute.pci.mthreads_sgpu_single_card') : $t('compute.text_1175')">
+            <a-input-number :min="1" :max="groupDeviceCountMax" v-decorator="decorators.number" />
           </a-form-item>
         </template>
         <!-- 单机：直接以列表为准 -->
@@ -140,7 +151,15 @@
                   v-if="isRowHamiSharingMode(k)"
                   class="mb-0 pci-memory-item">
                   <fixed-label-filter :label="$t('compute.pci.memory_request')">
+                    <base-select
+                      v-if="isRowMthreadsHami(k)"
+                      v-decorator="decorators.memoryRequestItem(k)"
+                      :options="getRowMthreadsMemoryOptions(k)"
+                      :filterable="false"
+                      :select-props="{ placeholder: $t('compute.pci.memory_request.mthreads_sgpu_placeholder'), allowClear: false }"
+                      @change="(val) => onRowMemoryRequestChange(val, k)" />
                     <a-tooltip
+                      v-else
                       :title="getRowMemoryRangeTooltip(k)"
                       placement="top"
                       :get-popup-container="getTooltipContainer">
@@ -156,6 +175,12 @@
                         @unitChange="(unit) => onRowMemoryUnitChange(k, unit)" />
                     </a-tooltip>
                   </fixed-label-filter>
+                  <div v-if="isRowMthreadsHami(k)" class="text-color-help pci-memory-hint">
+                    {{ $t('compute.pci.memory_request.mthreads_sgpu_hint') }}
+                  </div>
+                  <div v-if="isRowMthreadsHami(k)" class="text-color-help pci-memory-hint">
+                    {{ $t('compute.pci.mthreads_sgpu_single_card') }}
+                  </div>
                 </a-form-item>
               </div>
               <a-button
@@ -166,8 +191,12 @@
                 @click="removeDeviceRow(k)" />
             </div>
             <div class="pci-device-add d-flex align-items-center">
-              <a-button type="primary" shape="circle" icon="plus" size="small" @click="addDeviceRow" />
-              <a-button type="link" @click="addDeviceRow">{{ $t('compute.pci.add_transparent_device') }}</a-button>
+              <a-tooltip :title="mthreadsHamiRowLocked ? $t('compute.pci.mthreads_sgpu_single_card') : ''">
+                <span>
+                  <a-button type="primary" shape="circle" icon="plus" size="small" :disabled="mthreadsHamiRowLocked" @click="addDeviceRow" />
+                </span>
+              </a-tooltip>
+              <a-button type="link" :disabled="mthreadsHamiRowLocked" @click="addDeviceRow">{{ $t('compute.pci.add_transparent_device') }}</a-button>
             </div>
           </a-form-item>
         </template>
@@ -192,6 +221,9 @@ import {
   formatIsolatedDeviceSelectLabel,
   getGpuTypeSelectOptions,
   resolveGpuTypeBySharingMode,
+  isMthreadsVendor,
+  mthreadsSgpuMemoryOptions,
+  normalizeMthreadsSgpuMemory,
 } from '@Compute/constants'
 import {
   getIpsTableColumn,
@@ -390,6 +422,18 @@ export default {
     },
     showGroupMemoryRequest () {
       return this.selectedGroupDevice?.sharing_mode === 'HAMI'
+    },
+    showGroupMthreadsMemory () {
+      return this.showGroupMemoryRequest && isMthreadsVendor(this.selectedGroupDevice?.vendor)
+    },
+    groupDeviceCountMax () {
+      return this.showGroupMthreadsMemory ? 1 : undefined
+    },
+    mthreadsHamiRowLocked () {
+      return this.deviceKeys.some(key => this.isRowMthreadsHami(key))
+    },
+    groupMthreadsMemoryOptions () {
+      return mthreadsSgpuMemoryOptions(this.groupMemorySizeMb)
     },
     groupMemorySizeMb () {
       return this.getDeviceMemorySizeMb(this.selectedGroupDevice)
@@ -682,6 +726,16 @@ export default {
       const boundRecord = this.guestIsolatedDevices.find(item => this.getGuestIsolatedDeviceId(item) === id)
       return boundRecord?.sharing_mode === 'HAMI' || this.getDeviceByKey(key)?.sharing_mode === 'HAMI'
     },
+    isRowMthreadsHami (key) {
+      if (!this.isRowHamiSharingMode(key)) return false
+      const id = this.getFieldByKey(this.form.fd, 'device', key)
+      const boundRecord = this.guestIsolatedDevices.find(item => this.getGuestIsolatedDeviceId(item) === id)
+      const vendor = this.getDeviceByKey(key)?.vendor || boundRecord?.vendor
+      return isMthreadsVendor(vendor)
+    },
+    getRowMthreadsMemoryOptions (key) {
+      return mthreadsSgpuMemoryOptions(this.getRowMemorySizeMb(key))
+    },
     getRowGpuTypeOptions (key) {
       const id = this.getFieldByKey(this.form.fd, 'device', key)
       const boundRecord = this.guestIsolatedDevices.find(item => this.getGuestIsolatedDeviceId(item) === id)
@@ -720,6 +774,16 @@ export default {
         return
       }
       const maxMb = key === undefined ? this.groupMemorySizeMb : this.getRowMemorySizeMb(key)
+      const mthreads = key === undefined ? this.showGroupMthreadsMemory : this.isRowMthreadsHami(key)
+      if (mthreads) {
+        const allowed = mthreadsSgpuMemoryOptions(maxMb).some(item => item.key === num)
+        if (!allowed) {
+          callback(new Error(this.$t('compute.pci.memory_request.mthreads_sgpu_bucket')))
+          return
+        }
+        callback()
+        return
+      }
       if (maxMb && num > maxMb) {
         callback(new Error(this.getMemoryRangeText(maxMb, key === undefined ? this.groupMemoryUnit : (this.memoryUnits[key] || 'GB'))))
         return
@@ -734,18 +798,29 @@ export default {
       if (num < 1) return 1
       return Math.round(num)
     },
+    nextMemoryRequest (val, maxMb, mthreads) {
+      if (mthreads) return normalizeMthreadsSgpuMemory(val, maxMb)
+      return this.clampMemoryRequest(val, maxMb)
+    },
+    writeMemoryRequest (field, next) {
+      if (next === undefined) {
+        this.form.fc.setFields({ [field]: { value: undefined } })
+        this.$delete(this.form.fd, field)
+        return
+      }
+      this.form.fc.setFieldsValue({ [field]: next })
+      this.$set(this.form.fd, field, next)
+    },
     onGroupMemoryRequestChange (val) {
-      const next = this.clampMemoryRequest(val, this.groupMemorySizeMb)
-      this.form.fc.setFieldsValue({ memory_request: next })
-      this.$set(this.form.fd, 'memory_request', next)
+      const next = this.nextMemoryRequest(val, this.groupMemorySizeMb, this.showGroupMthreadsMemory)
+      this.writeMemoryRequest('memory_request', next)
     },
     onGroupMemoryUnitChange (unit) {
       this.groupMemoryUnit = unit
     },
     onRowMemoryRequestChange (val, key) {
-      const next = this.clampMemoryRequest(val, this.getRowMemorySizeMb(key))
-      this.form.fc.setFieldsValue({ [`memory_request[${key}]`]: next })
-      this.$set(this.form.fd, `memory_request[${key}]`, next)
+      const next = this.nextMemoryRequest(val, this.getRowMemorySizeMb(key), this.isRowMthreadsHami(key))
+      this.writeMemoryRequest(`memory_request[${key}]`, next)
     },
     onRowMemoryUnitChange (key, unit) {
       this.$set(this.memoryUnits, key, unit)
@@ -759,15 +834,16 @@ export default {
         this.form.fc.setFieldsValue({ gpu_type: nextGpuType })
         this.$set(this.form.fd, 'gpu_type', nextGpuType)
       }
+      if (this.showGroupMthreadsMemory && Number(this.form.fd.number) > 1) {
+        this.form.fc.setFieldsValue({ number: 1 })
+        this.$set(this.form.fd, 'number', 1)
+      }
       if (!this.showGroupMemoryRequest) {
         this.$delete(this.form.fd, 'memory_request')
       } else {
         const current = this.form.fd.memory_request
-        const next = this.clampMemoryRequest(current, this.groupMemorySizeMb)
-        if (current !== next) {
-          this.form.fc.setFieldsValue({ memory_request: next })
-          this.$set(this.form.fd, 'memory_request', next)
-        }
+        const next = this.nextMemoryRequest(current, this.groupMemorySizeMb, this.showGroupMthreadsMemory)
+        if (current !== next) this.writeMemoryRequest('memory_request', next)
       }
     },
     onRowDeviceChange (val, key) {
@@ -782,8 +858,17 @@ export default {
           return
         }
       }
-      this.$set(this.form.fd, `device[${key}]`, val)
       const device = this.gpuOpt.find(o => o.id === val)
+      if (device && isMthreadsVendor(device.vendor) && device.sharing_mode === 'HAMI') {
+        const other = this.deviceKeys.some(k => k !== key && this.isRowMthreadsHami(k))
+        if (other) {
+          this.$message.warning(this.$t('compute.pci.mthreads_sgpu_single_card'))
+          this.form.fc.setFieldsValue({ [`device[${key}]`]: undefined })
+          this.$delete(this.form.fd, `device[${key}]`)
+          return
+        }
+      }
+      this.$set(this.form.fd, `device[${key}]`, val)
       if (device?.dev_type === 'GPU') {
         const gpuType = resolveGpuTypeBySharingMode(
           this.getFieldByKey(this.form.fd, 'gpu_type', key) || GPU_TYPE_OPTION_MAP.HPC.value,
@@ -799,15 +884,14 @@ export default {
       if (device?.sharing_mode !== 'HAMI') {
         this.$delete(this.form.fd, `memory_request[${key}]`)
       } else {
+        const field = `memory_request[${key}]`
         const current = this.getFieldByKey(this.form.fd, 'memory_request', key)
-        const next = this.clampMemoryRequest(current, this.getDeviceMemorySizeMb(device))
-        if (current !== next) {
-          this.form.fc.setFieldsValue({ [`memory_request[${key}]`]: next })
-          this.$set(this.form.fd, `memory_request[${key}]`, next)
-        }
+        const next = this.nextMemoryRequest(current, this.getDeviceMemorySizeMb(device), isMthreadsVendor(device?.vendor))
+        if (current !== next) this.writeMemoryRequest(field, next)
       }
     },
     addDeviceRow () {
+      if (this.mthreadsHamiRowLocked) return
       const nextKey = ++this.deviceRowId
       this.deviceKeys = this.deviceKeys.concat(nextKey)
     },
@@ -1169,6 +1253,11 @@ export default {
   flex-wrap: wrap;
   gap: 8px;
   align-items: flex-start;
+}
+.pci-memory-hint {
+  max-width: 420px;
+  margin-top: 4px;
+  line-height: 1.4;
 }
 .pci-memory-item {
   display: flex;
