@@ -19,8 +19,17 @@
         <a-form-item
           v-if="showMemoryRequest"
           :label="$t('compute.pci.memory_request')"
+          :extra="showMthreadsMemory ? `${$t('compute.pci.memory_request.mthreads_sgpu_hint')} ${$t('compute.pci.mthreads_sgpu_single_card')}` : undefined"
           v-bind="formItemLayout">
+          <base-select
+            v-if="showMthreadsMemory"
+            v-decorator="decorators.memoryRequest"
+            :options="mthreadsMemoryOptions"
+            :filterable="false"
+            :select-props="{ placeholder: $t('compute.pci.memory_request.mthreads_sgpu_placeholder'), allowClear: false }"
+            @change="onMemoryRequestChange" />
           <a-tooltip
+            v-else
             :title="memoryRangeTooltip"
             placement="top"
             :get-popup-container="getTooltipContainer">
@@ -53,6 +62,9 @@ import {
   GPU_TYPE_OPTION_MAP,
   getGpuTypeSelectOptions,
   resolveGpuTypeBySharingMode,
+  isMthreadsVendor,
+  mthreadsSgpuMemoryOptions,
+  normalizeMthreadsSgpuMemory,
 } from '@Compute/constants'
 import DiskSizeInput from '@/sections/DiskSizeInput'
 import DialogMixin from '@/mixins/dialog'
@@ -161,6 +173,12 @@ export default {
     showMemoryRequest () {
       return this.currentDevice.sharing_mode === 'HAMI'
     },
+    showMthreadsMemory () {
+      return this.showMemoryRequest && isMthreadsVendor(this.currentDevice.vendor)
+    },
+    mthreadsMemoryOptions () {
+      return mthreadsSgpuMemoryOptions(this.memorySizeMb)
+    },
     memorySizeMb () {
       return this.currentDevice.memory_size_mb || this.currentDevice.memory_size || undefined
     },
@@ -202,6 +220,15 @@ export default {
         callback(new Error(this.$t('compute.pci.memory_request.invalid')))
         return
       }
+      if (this.showMthreadsMemory) {
+        const allowed = this.mthreadsMemoryOptions.some(item => item.key === num)
+        if (!allowed) {
+          callback(new Error(this.$t('compute.pci.memory_request.mthreads_sgpu_bucket')))
+          return
+        }
+        callback()
+        return
+      }
       if (this.memorySizeMb && num > this.memorySizeMb) {
         callback(new Error(this.getMemoryRangeText(this.memorySizeMb, this.memoryUnit || 'GB')))
         return
@@ -217,7 +244,14 @@ export default {
       return Math.round(num)
     },
     onMemoryRequestChange (val) {
-      const next = this.clampMemoryRequest(val)
+      const next = this.showMthreadsMemory
+        ? normalizeMthreadsSgpuMemory(val, this.memorySizeMb)
+        : this.clampMemoryRequest(val)
+      if (next === undefined) {
+        this.form.fc.setFields({ memory_request: { value: undefined } })
+        this.$delete(this.form.fd, 'memory_request')
+        return
+      }
       this.form.fc.setFieldsValue({ memory_request: next })
       this.$set(this.form.fd, 'memory_request', next)
     },

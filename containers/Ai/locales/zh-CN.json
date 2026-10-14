@@ -451,6 +451,7 @@
   "aice.devices.memory_mb.required": "无法估算模型显存时，使用 HAMi 必须填写每卡显存（MiB）",
   "aice.devices.memory_mb.help": "共享模式为 HAMI 时可选手动填写每卡显存（MiB）；留空则使用挂载模型估算的显存",
   "aice.devices.memory_mb.help_required": "当前场景无法从模型估算显存，使用 HAMi 时必须填写每卡显存（MiB）",
+  "aice.devices.mthreads_sgpu_single_card": "摩尔线程暂不支持多卡切片，sGPU 只能分配 1 张卡；多卡请使用独占整卡。",
   "aice.vram_claim_mb": "显存占用",
   "aice.vram_claim_mb.help": "由挂载模型权重估算的 GPU 显存总量（MiB），只读展示。",
   "aice.model_name": "模型名称",

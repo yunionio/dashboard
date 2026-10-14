@@ -443,6 +443,7 @@
   "aice.devices.memory_mb.required": "モデルの VRAM を推定できない場合、HAMi 利用時は GPU あたりの VRAM（MiB）が必須です",
   "aice.devices.memory_mb.help": "共有モードが HAMI の場合、GPU あたりの VRAM（MiB）を任意指定できます。空欄の場合はマウントモデルから推定します。",
   "aice.devices.memory_mb.help_required": "このシナリオではモデルから VRAM を推定できません。HAMi 利用時は GPU あたりの VRAM（MiB）が必須です。",
+  "aice.devices.mthreads_sgpu_single_card": "Moore Threads は複数 GPU のスライスに未対応です。sGPU は 1 枚のみ割り当てできます。複数枚は専有のカード全体を使用してください。",
   "aice.vram_claim_mb": "VRAM 要求量",
   "aice.vram_claim_mb.help": "マウントされたモデルの重みから推定した GPU メモリ合計（MiB）。読み取り専用。",
   "aice.model_name": "モデル名",
