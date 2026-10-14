@@ -505,6 +505,8 @@ import {
   expandRowsToDevices,
   getPodPciModelTypes,
   isValidDeviceRows,
+  isOffBucketMthreadsHamiMemory,
+  isMultiCardMthreadsHamiRow,
   resolveSharingMode,
   DESKTOP_SHARING_MODE_VALUES,
   DESKTOP_DEFAULT_SHARING_MODE,
@@ -998,6 +1000,14 @@ export default {
                   const requireHamiMemoryMb = !!this.requireHamiMemoryMb
                   const pciModelTypes = this.podPciModels
                   if (!isValidDeviceRows(value, { allowEmpty: !required, requireHamiMemoryMb, pciModelTypes })) {
+                    if (Array.isArray(value) && value.some(row => isMultiCardMthreadsHamiRow(row, pciModelTypes))) {
+                      callback(new Error(this.$t('aice.devices.mthreads_sgpu_single_card')))
+                      return
+                    }
+                    if (Array.isArray(value) && value.some(row => isOffBucketMthreadsHamiMemory(row, pciModelTypes))) {
+                      callback(new Error(this.$t('compute.pci.memory_request.mthreads_sgpu_bucket')))
+                      return
+                    }
                     if (requireHamiMemoryMb && Array.isArray(value) && value.some(row => String(row?.model || '').trim() && resolveSharingMode(row.sharing_mode) === 'HAMI' && !(parseInt(row.memory_mb, 10) > 0))) {
                       callback(new Error(this.$t('aice.devices.memory_mb.required')))
                       return
