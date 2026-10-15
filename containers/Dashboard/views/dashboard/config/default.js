@@ -98,10 +98,86 @@ export default {
     }, {
       layout: {
         component: 'Ring',
-        h: 5,
+        h: 6,
         w: 20,
         x: 0,
         y: 12,
+      },
+      params: {
+        all_usage_key: 'hosts.cpu.virtual',
+        all_usage_label: i18n.t('dashboard.virtual_total'),
+        chart_type: 'liquidfill',
+        color: 'default',
+        name: i18n.t('dashboard.text_135'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.un_allocated'),
+        usage_key: 'all.servers.cpu',
+        usage_label: i18n.t('dashboard.allocated'),
+      },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 6,
+        w: 20,
+        x: 20,
+        y: 12,
+      },
+      params: {
+        all_usage_key: 'hosts.memory.virtual',
+        all_usage_label: i18n.t('dashboard.virtual_total'),
+        chart_type: 'liquidfill',
+        color: 'default',
+        name: i18n.t('dashboard.text_132'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.un_allocated'),
+        usage_key: 'all.servers.memory',
+        usage_label: i18n.t('dashboard.allocated'),
+      },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 6,
+        w: 20,
+        x: 40,
+        y: 12,
+      },
+      params: {
+        all_usage_key: 'storages.virtual',
+        all_usage_label: i18n.t('dashboard.virtual_total'),
+        chart_type: 'liquidfill',
+        color: 'default',
+        name: i18n.t('dashboard.text_128'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.un_allocated'),
+        usage_key: 'all.servers.disk',
+        usage_label: i18n.t('dashboard.allocated'),
+      },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 6,
+        w: 20,
+        x: 60,
+        y: 12,
+      },
+      params: {
+        all_usage_key: 'isolated_devices',
+        all_usage_label: i18n.t('dashboard.virtual_total'),
+        chart_type: 'liquidfill',
+        color: 'default',
+        name: i18n.t('dashboard.text_129'),
+        regionAccountType: 'region',
+        un_usage_label: i18n.t('dashboard.un_allocated'),
+        usage_key: 'all.servers.isolated_devices',
+        usage_label: i18n.t('dashboard.allocated'),
+      },
+    }, {
+      layout: {
+        component: 'Ring',
+        h: 5,
+        w: 20,
+        x: 0,
+        y: 18,
       },
       params: {
         all_usage_key: 'all.servers',
@@ -118,7 +194,7 @@ export default {
         h: 5,
         w: 20,
         x: 20,
-        y: 12,
+        y: 18,
       },
       params: {
         all_usage_key: 'all.disks.count',
@@ -135,7 +211,7 @@ export default {
         h: 5,
         w: 20,
         x: 40,
-        y: 12,
+        y: 18,
       },
       params: {
         all_usage_key: 'all.ports',
@@ -152,7 +228,7 @@ export default {
         h: 5,
         w: 20,
         x: 60,
-        y: 12,
+        y: 18,
       },
       params: {
         all_usage_key: 'all.eip.floating_ip',
@@ -169,7 +245,7 @@ export default {
         h: 8,
         w: 20,
         x: 0,
-        y: 17,
+        y: 23,
       },
       params: {
         brand: '',
@@ -187,7 +263,7 @@ export default {
         h: 8,
         w: 20,
         x: 20,
-        y: 17,
+        y: 23,
       },
       params: {
         brand: '',
@@ -205,7 +281,7 @@ export default {
         h: 8,
         w: 20,
         x: 40,
-        y: 17,
+        y: 23,
       },
       params: {
         brand: '',
@@ -223,7 +299,7 @@ export default {
         h: 8,
         w: 20,
         x: 60,
-        y: 17,
+        y: 23,
       },
       params: {
         limit: 5,
@@ -235,7 +311,7 @@ export default {
         h: 12,
         w: 20,
         x: 0,
-        y: 25,
+        y: 31,
       },
       params: {
         field: 'cpu',
@@ -249,7 +325,7 @@ export default {
         h: 12,
         w: 20,
         x: 20,
-        y: 25,
+        y: 31,
       },
       params: {
         field: 'memory',
@@ -263,7 +339,7 @@ export default {
         h: 12,
         w: 20,
         x: 40,
-        y: 25,
+        y: 31,
       },
       params: {
         field: 'storage',
@@ -277,7 +353,7 @@ export default {
         h: 12,
         w: 20,
         x: 60,
-        y: 25,
+        y: 31,
       },
       params: {
         field: 'eip',
@@ -291,7 +367,7 @@ export default {
         h: 12,
         w: 20,
         x: 0,
-        y: 37,
+        y: 43,
       },
       params: {
         field: 'port',
@@ -305,7 +381,7 @@ export default {
         h: 12,
         w: 20,
         x: 20,
-        y: 37,
+        y: 43,
       },
       params: {
         field: 'isolated_device',
@@ -319,7 +395,7 @@ export default {
         h: 12,
         w: 20,
         x: 40,
-        y: 37,
+        y: 43,
       },
       params: {
         field: 'image',
@@ -333,7 +409,7 @@ export default {
         h: 12,
         w: 20,
         x: 60,
-        y: 37,
+        y: 43,
       },
       params: {
         field: 'snapshot',

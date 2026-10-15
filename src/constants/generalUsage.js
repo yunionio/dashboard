@@ -7,14 +7,15 @@ export const usageMap = {
   cpu: {
     field: {
       used: {
-        system: obj => (obj['all.servers.cpu'] || 0) + (obj['all.containers.cpu'] || 0),
-        domain: obj => (obj['domain.servers.cpu'] || 0) + (obj['domain.containers.cpu'] || 0),
-        project: obj => (obj['servers.cpu'] || 0) + (obj['containers.cpu'] || 0),
+        // 数组供面板「使用量指标」下拉可选；getUsageData 会对非 total 的数组求和
+        system: ['all.servers.cpu', 'all.containers.cpu'],
+        domain: ['domain.servers.cpu', 'domain.containers.cpu'],
+        project: ['servers.cpu', 'containers.cpu'],
       },
       running: {
-        system: obj => (obj['all.running_servers.cpu'] || 0) + (obj['all.running_containers.cpu'] || 0),
-        domain: obj => (obj['domain.running_servers.cpu'] || 0) + (obj['domain.running_containers.cpu'] || 0),
-        project: obj => (obj['running_servers.cpu'] || 0) + (obj['running_containers.cpu'] || 0),
+        system: ['all.running_servers.cpu', 'all.running_containers.cpu'],
+        domain: ['domain.running_servers.cpu', 'domain.running_containers.cpu'],
+        project: ['running_servers.cpu', 'running_containers.cpu'],
       },
       total: {
         system: ['hosts.cpu', 'hosts.cpu.virtual'],
@@ -26,14 +27,14 @@ export const usageMap = {
   memory: {
     field: {
       used: {
-        system: obj => (obj['all.servers.memory'] || 0) + (obj['all.containers.memory'] || 0),
-        domain: obj => (obj['domain.servers.memory'] || 0) + (obj['domain.containers.memory'] || 0),
-        project: obj => (obj['servers.memory'] || 0) + (obj['containers.memory'] || 0),
+        system: ['all.servers.memory', 'all.containers.memory'],
+        domain: ['domain.servers.memory', 'domain.containers.memory'],
+        project: ['servers.memory', 'containers.memory'],
       },
       running: {
-        system: obj => (obj['all.running_servers.memory'] || 0) + (obj['all.running_containers.memory'] || 0),
-        domain: obj => (obj['domain.running_servers.memory'] || 0) + (obj['domain.running_containers.memory'] || 0),
-        project: obj => (obj['running_servers.memory'] || 0) + (obj['running_containers.memory'] || 0),
+        system: ['all.running_servers.memory', 'all.running_containers.memory'],
+        domain: ['domain.running_servers.memory', 'domain.running_containers.memory'],
+        project: ['running_servers.memory', 'running_containers.memory'],
       },
       total: {
         system: ['hosts.memory', 'hosts.memory.virtual'],
@@ -48,6 +49,12 @@ export const usageMap = {
         system: 'all.disks',
         domain: 'domain.disks',
         project: 'disks',
+      },
+      // 与 used 并列，供 storages.virtual 下可选 all.servers.disk（二者不可简单相加）
+      servers_disk: {
+        system: 'all.servers.disk',
+        domain: 'domain.servers.disk',
+        project: 'servers.disk',
       },
       total: {
         system: ['storages', 'storages.virtual'],
@@ -475,14 +482,21 @@ export const getUsageData = (F, resData, dataMap, scope = 'project', scale = 102
         data[scopeKey].formatValue = val
       }
     } else if (R.is(Array, field)) {
-      field.map(usageKey => {
-        data[scopeKey].value = resData[usageKey]
-        if (UNITS.includes(fieldObj.unit)) {
-          data[scopeKey].formatValue = sizestr(resData[usageKey], fieldObj.unit, scale)
-        } else {
-          data[scopeKey].formatValue = resData[usageKey]
-        }
-      })
+      // total 数组表示可选的总量指标（取最后一项用于概览展示）
+      // used/running 等数组表示可选项，概览展示时求和
+      let val
+      if (scopeKey === 'total') {
+        const usageKey = field[field.length - 1]
+        val = resData[usageKey]
+      } else {
+        val = field.reduce((acc, usageKey) => acc + (resData[usageKey] || 0), 0)
+      }
+      data[scopeKey].value = val
+      if (UNITS.includes(fieldObj.unit)) {
+        data[scopeKey].formatValue = sizestr(val, fieldObj.unit, scale)
+      } else {
+        data[scopeKey].formatValue = val
+      }
     } else {
       data[scopeKey].value = resData[field]
       if (UNITS.includes(fieldObj.unit)) {
