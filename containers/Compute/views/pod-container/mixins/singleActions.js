@@ -5,11 +5,7 @@ export default {
         label: this.$t('compute.repo.terminal'),
         action: async (obj) => {
           const connectRes = await this.fetchConnectUrl(obj)
-          this.openWebConsole({
-            ...connectRes,
-            // instance_name 用后端 connect_params 完整值（如 guest/container），勿用短名覆盖
-            extra_param_str: '&resource=containers',
-          })
+          this.openWebConsole(connectRes)
         },
         meta: (obj) => {
           const ret = { validate: true }
@@ -125,7 +121,11 @@ export default {
           container_id: obj.id,
         },
       })
-      return Promise.resolve(data)
+      return Promise.resolve({
+        ...data,
+        // instance_name 用后端 connect_params 完整值（如 guest/container），勿用短名覆盖
+        extra_param_str: '&resource=containers',
+      })
     },
   },
 }

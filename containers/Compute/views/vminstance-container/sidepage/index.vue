@@ -78,7 +78,6 @@ export default {
       { label: this.$t('compute.text_608'), key: 'monitor' },
       // { label: this.$t('compute.text_1301'), key: 'alert' },
       { label: this.$t('table.title.task'), key: 'task-drawer' },
-      // { label: this.$t('compute.repo.terminal'), key: 'terminal' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
     ]
     return {
