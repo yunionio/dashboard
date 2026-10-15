@@ -130,6 +130,11 @@
         <a-input class="w-100" v-decorator="decorators.un_usage_label" />
       </a-form-item>
     </a-form-item>
+    <a-form-item :label="$t('dashboard.all_usage_metric_name')" class="mb-0" v-if="decorators.all_usage_label">
+      <a-form-item :wrapperCol="{ span: 24 }">
+        <a-input class="w-100" v-decorator="decorators.all_usage_label" />
+      </a-form-item>
+    </a-form-item>
   </div>
 </template>
 
