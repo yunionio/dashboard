@@ -20,11 +20,7 @@ const getSingleActions = function () {
             label: item.name,
             action: async () => {
               const connectRes = await this.fetchConnectUrl(item.id)
-              this.openWebConsole({
-                ...connectRes,
-                // instance_name 用后端 connect_params 完整值（如 guest/container），勿用短名覆盖
-                extra_param_str: '&resource=containers',
-              })
+              this.openWebConsole(connectRes)
             },
           }
         })
