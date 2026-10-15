@@ -187,30 +187,26 @@ export default {
       },
       getOsArch({ field: 'cpu_architecture' }),
       {
-        field: 'cpu_usage',
+        field: 'cpu_usage_percent',
         title: this.$t('compute.text_563'),
         minWidth: 100,
         sortable: true,
-        // sortBy: 'order_by_cpu_commit',
         slots: {
           default: ({ row }) => {
-            const { cpu_count = 0, cpu_used = 0 } = getHostSpecInfo(row)
-            const title = `${this.$t('common_407')}: ${Math.round(cpu_used)}\n${this.$t('common_234')}: ${Math.round(cpu_count)}`
-            return [<UsedPercent used={cpu_used} total={cpu_count} title={title} usedFormatter={(val) => val > 0 ? (Math.max(Math.round(val), 1)) : Math.round(val)} totalFormatter={(val) => val > 0 ? (Math.max(Math.round(val), 1)) : Math.round(val)} />]
-          },
-          header: ({ column }) => {
+            const cpu_count = row.cpu_count || 0
+            const percent = Number(row.cpu_usage_percent) || 0
             return [
-              <span>
-                <span>{column.title}</span>
-                <a-tooltip class="ml-1" title={this.$t('compute.order_by_used_percent')}><a-icon type="question-circle" style="color: #aaa;" /></a-tooltip>
-              </span>,
+              <div>
+                <div style="font-size:12px;line-height:16px">{this.$t('common_234')}: {cpu_count}</div>
+                <UsedPercent used={percent} total={100} hiddenUsed={true} hiddenTotal={true} />
+              </div>,
             ]
           },
         },
         formatter: ({ row }) => {
-          const { cpu_count = 0, cpu_used = 0 } = getHostSpecInfo(row)
-          const title = `${this.$t('common_407')}: ${Math.round(cpu_used)}, ${this.$t('common_234')}: ${Math.round(cpu_count)}`
-          return title
+          const cpu_count = row.cpu_count || 0
+          const percent = Math.round(Number(row.cpu_usage_percent) || 0)
+          return `${this.$t('common_234')}: ${cpu_count}, ${percent}%`
         },
       },
       {

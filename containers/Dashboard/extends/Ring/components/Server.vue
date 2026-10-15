@@ -48,7 +48,7 @@
           </div>
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
-            <div :class="`label-unit ${jumpParams.allPath ? 'label-jump' : ''}`" @click="goJump('all')">{{ $t('dashboard.text_181') }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><icon type="help" /></a-tooltip></div>
+            <div :class="`label-unit ${jumpParams.allPath ? 'label-jump' : ''}`" @click="goJump('all')">{{ allUseLabel }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><icon type="help" /></a-tooltip></div>
             <div class="flex-number mr-1 ml-1 text-right">{{isResDeny ? '-' : allUsage.usage}}</div>
             <div class="label-unit">{{allUsage.unit}}</div>
           </div>
@@ -125,6 +125,7 @@ export default {
     const initialColorValue = ((this.params && this.params.type !== 'k8s') && this.params.color) || 'default'
     const initialUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_label && this.params.usage_label.length > 0) ? this.params.usage_label : this.$t('dashboard.text_33')
     const initialUnUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.un_usage_label && this.params.un_usage_label.length > 0) ? this.params.un_usage_label : this.$t('dashboard.text_34')
+    const initialAllUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.all_usage_label && this.params.all_usage_label.length > 0) ? this.params.all_usage_label : this.$t('dashboard.text_181')
     const initialChartTypeValue = ((this.params && this.params.type !== 'k8s') && this.params.chart_type) || 'liquidfill'
     return {
       data: {},
@@ -140,6 +141,7 @@ export default {
           usage_key: initialUsageKeyValue,
           usage_label: initialUsageLabelValue,
           un_usage_label: initialUnUsageLabelValue,
+          all_usage_label: initialAllUsageLabelValue,
           color: initialColorValue,
           chart_type: initialChartTypeValue,
         },
@@ -223,6 +225,15 @@ export default {
             initialValue: initialUnUsageLabelValue,
             rules: [
               { required: true, message: this.$t('dashboard.un_usage_label_title') },
+            ],
+          },
+        ],
+        all_usage_label: [
+          'all_usage_label',
+          {
+            initialValue: initialAllUsageLabelValue,
+            rules: [
+              { required: true, message: this.$t('dashboard.all_usage_label_title') },
             ],
           },
         ],
@@ -434,6 +445,15 @@ export default {
         return this.params.un_usage_label || this.$t('dashboard.text_34')
       }
       return this.$t('dashboard.text_34')
+    },
+    allUseLabel () {
+      if (this.params && this.params.all_usage_label) {
+        return this.params.all_usage_label
+      }
+      if (this.form && this.form.fd && this.form.fd.all_usage_label) {
+        return this.form.fd.all_usage_label
+      }
+      return this.$t('dashboard.text_181')
     },
     isResDeny () {
       const usage_key = this.params?.all_usage_key || this.form.fd?.all_usage_key || ''
