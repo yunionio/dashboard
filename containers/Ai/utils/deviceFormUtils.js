@@ -3,6 +3,10 @@
  * API: devices: [{ model, sharing_mode, dev_type, vendor?, memory_mb? }] — one entry per card claim.
  * Form: [{ model, count, sharing_mode, vendor?, memory_mb? }] — model with quantity and sharing mode.
  */
+import {
+  isMthreadsVendor,
+  mthreadsSgpuMemoryOptions,
+} from '@Compute/constants'
 
 export const DEFAULT_SHARING_MODE = 'HAMI'
 export const DEFAULT_DEV_TYPE = 'GPU'
@@ -23,6 +27,8 @@ const LEGACY_DEV_TYPE_TO_SHARING = {
   HYGON_DCU_HAMI: 'HAMI',
   ASCEND_NPU: 'EXCLUSIVE',
   ASCEND_NPU_HAMI: 'HAMI',
+  MTHREADS_GPU: 'EXCLUSIVE',
+  MTHREADS_GPU_HAMI: 'HAMI',
 }
 
 const LEGACY_DEV_TYPE_TO_VENDOR = {
@@ -34,6 +40,8 @@ const LEGACY_DEV_TYPE_TO_VENDOR = {
   HYGON_DCU_HAMI: 'HYGON',
   ASCEND_NPU: 'ASCEND',
   ASCEND_NPU_HAMI: 'ASCEND',
+  MTHREADS_GPU: 'MTHREADS',
+  MTHREADS_GPU_HAMI: 'MTHREADS',
 }
 
 /** Legacy container device types that normalize to NPU (not GPU). */
@@ -49,6 +57,7 @@ const PCI_VENDOR_ID_TO_NAME = {
   '1d94': 'HYGON',
   '1ec6': 'VASTAITECH',
   '19e5': 'ASCEND',
+  '1ed5': 'MTHREADS',
 }
 
 function isPodPciModelItem (item) {
@@ -323,6 +332,50 @@ export function formatDevicesDisplay (devices, { fallbackMemoryMb } = {}) {
   }).join(', ')
 }
 
+export function resolveDeviceRowVendor (row, pciModelTypes = []) {
+  const direct = normalizeVendor(row?.vendor)
+  if (direct) return direct
+  const model = String(row?.model || '').trim()
+  if (!model) return undefined
+  return resolveVendorForModel(model, pciModelTypes, {
+    sharingMode: resolveSharingMode(row?.sharing_mode),
+  })
+}
+
+export function isMthreadsHamiDeviceRow (row, pciModelTypes = []) {
+  if (resolveSharingMode(row?.sharing_mode) !== 'HAMI') return false
+  return isMthreadsVendor(resolveDeviceRowVendor(row, pciModelTypes))
+}
+
+export function mthreadsHamiMemoryMaxMb (row, pciModelTypes = []) {
+  if (!isMthreadsHamiDeviceRow(row, pciModelTypes)) return undefined
+  const model = String(row?.model || '').trim()
+  const vendor = resolveDeviceRowVendor(row, pciModelTypes)
+  let max = 0
+  pciModelTypes.forEach((item) => {
+    if (!isPodPciModelItem(item)) return
+    if (model && item?.model !== model) return
+    if (resolvePciModelSharingMode(item) !== 'HAMI') return
+    const itemVendor = resolvePciModelVendor(item)
+    if (vendor && itemVendor && itemVendor.toUpperCase() !== String(vendor).toUpperCase()) return
+    const size = Number(item?.dev_memory_size || item?.memory_size || item?.memory_size_mb)
+    if (size > max) max = size
+  })
+  return max > 0 ? max : undefined
+}
+
+export function isMultiCardMthreadsHamiRow (row, pciModelTypes = []) {
+  return isMthreadsHamiDeviceRow(row, pciModelTypes) && Number(row?.count) > 1
+}
+
+export function isOffBucketMthreadsHamiMemory (row, pciModelTypes = []) {
+  if (!isMthreadsHamiDeviceRow(row, pciModelTypes)) return false
+  const memoryMb = normalizeMemoryMb(row?.memory_mb)
+  if (!memoryMb) return false
+  const allowed = mthreadsSgpuMemoryOptions(mthreadsHamiMemoryMaxMb(row, pciModelTypes))
+  return !allowed.some(item => item.key === memoryMb)
+}
+
 export function isValidDeviceRows (rows, { allowEmpty = false, requireHamiMemoryMb = false, pciModelTypes = [], requireVendor = false } = {}) {
   if (!Array.isArray(rows) || rows.length === 0) return allowEmpty
   const withModel = rows.filter(row => String(row?.model || '').trim())
@@ -334,10 +387,21 @@ export function isValidDeviceRows (rows, { allowEmpty = false, requireHamiMemory
       return false
     }
   }
+  if (withModel.some(row => isOffBucketMthreadsHamiMemory(row, pciModelTypes))) {
+    return false
+  }
+  if (withModel.some(row => isMultiCardMthreadsHamiRow(row, pciModelTypes))) {
+    return false
+  }
   if (requireHamiMemoryMb) {
     return withModel.every((row) => {
       if (resolveSharingMode(row.sharing_mode) !== 'HAMI') return true
-      return normalizeMemoryMb(row.memory_mb) > 0
+      const memoryMb = normalizeMemoryMb(row.memory_mb)
+      if (!(memoryMb > 0)) return false
+      if (isMthreadsHamiDeviceRow(row, pciModelTypes)) {
+        return !isOffBucketMthreadsHamiMemory(row, pciModelTypes)
+      }
+      return true
     })
   }
   return true
