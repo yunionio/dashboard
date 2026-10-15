@@ -111,6 +111,7 @@ export default {
       const cpuAllocated = f(usage['all.servers.cpu']) + f(usage['all.containers.cpu'])
       const cpuRunning = f(usage['all.running_servers.cpu']) + f(usage['all.running_containers.cpu'])
       const cpuVirtual = f(usage['hosts.cpu.virtual'])
+      const cpuPhysical = f(usage.cpu)
       const memAllocated = f(usage['all.servers.memory']) + f(usage['all.containers.memory'])
       const memRunning = f(usage['all.running_servers.memory']) + f(usage['all.running_containers.memory'])
       const memVirtual = f(usage['hosts.memory.virtual'])
@@ -195,6 +196,10 @@ export default {
         {
           title: this.$t('compute.text_563'),
           percent: this.progressListPercent[0],
+          msg: {
+            totalLabel: this.$t('compute.actual_total'),
+            total: cpuPhysical,
+          },
         },
         {
           title: this.$t('compute.text_564'),
