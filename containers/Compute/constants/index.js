@@ -1854,6 +1854,14 @@ export function matchPciDevice (item, devType) {
   return item.dev_type === devType
 }
 
+export {
+  MTHREADS_SGPU_MEMORY_BUCKETS_MIB,
+  isMthreadsVendor,
+  isMthreadsSgpuMemoryBucket,
+  mthreadsSgpuMemoryOptions,
+  normalizeMthreadsSgpuMemory,
+} from './mthreadsSgpu'
+
 export function hasVgaGpuInPciForm (formFd) {
   const devTypeKeys = Object.keys(formFd).filter(key => key.startsWith('pciDevType['))
   return devTypeKeys.some(key => {
