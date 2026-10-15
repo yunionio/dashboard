@@ -24,7 +24,11 @@ export default {
           container_id: containerId,
         },
       })
-      return Promise.resolve(data)
+      return Promise.resolve({
+        ...data,
+        // instance_name 用后端 connect_params 完整值（如 guest/container），勿用短名覆盖
+        extra_param_str: '&resource=containers',
+      })
     },
   },
 }
