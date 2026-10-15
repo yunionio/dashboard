@@ -116,6 +116,7 @@ export const metricItems = {
   'pod_process.process_count': { key: 'pod_process.process_count', label: i18n.t('compute.container.monitor.pod_process_process_count'), unit: 'count' },
   'pod_process.fd_count': { key: 'pod_process.fd_count', label: i18n.t('compute.container.monitor.pod_process_fd_count'), unit: 'count' },
   'pod_gpu.mem_util': { key: 'pod_gpu.mem_util', label: i18n.t('compute.container.monitor.pod_gpu_mem_util'), unit: '%' },
+  'pod_gpu.gpu_util': { key: 'pod_gpu.gpu_util', label: i18n.t('compute.metric.gpu_field.utilization_gpu'), unit: '%' },
 }
 
 export const TIME_CN = {
