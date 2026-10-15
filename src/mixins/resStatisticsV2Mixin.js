@@ -129,15 +129,22 @@ export default {
           case 'volume_size_mb':
             tableOverviewIndexs.push({ key: this.$t('common_237') + this.$t('common_234'), value: sizestr(resData[v], 'M', 1024), order: 6 })
             break
-          // host
-          case 'cpu_used':
-            if (resData.hasOwnProperty('cpu_total')) {
-              tableOverviewIndexs.push({ key: this.$t('common.cpu_used_total'), value: `${resData[v]}/${resData.cpu_total}`, order: 7 })
+          // host：概览：[CPU] 物理总量 62 · 已分配/虚拟 14/514；[内存] 已使用/物理 65G/118G · 已分配/虚拟 30G/107G
+          case 'cpu_total': {
+            let value = `${this.$t('compute.actual_total')} ${resData[v]}`
+            if (resData.hasOwnProperty('cpu_allocated') && resData.hasOwnProperty('cpu_virtual')) {
+              value += ` · ${this.$t('common.allocated_virtual')} ${resData.cpu_allocated}/${resData.cpu_virtual}`
             }
+            tableOverviewIndexs.push({ key: 'CPU', value, order: 7, tag: true })
             break
+          }
           case 'memory_used':
             if (resData.hasOwnProperty('memory_total')) {
-              tableOverviewIndexs.push({ key: this.$t('common.memory_used_total'), value: `${sizestr(resData[v], 'M', 1024)}/${sizestr(resData.memory_total, 'M', 1024)}`, order: 8 })
+              let value = `${this.$t('common.used_physical')} ${sizestr(resData[v], 'M', 1024)}/${sizestr(resData.memory_total, 'M', 1024)}`
+              if (resData.hasOwnProperty('memory_allocated') && resData.hasOwnProperty('memory_virtual')) {
+                value += ` · ${this.$t('common.allocated_virtual')} ${sizestr(resData.memory_allocated, 'M', 1024)}/${sizestr(resData.memory_virtual, 'M', 1024)}`
+              }
+              tableOverviewIndexs.push({ key: this.$t('compute.text_369'), value, order: 8, tag: true })
             }
             break
         }
