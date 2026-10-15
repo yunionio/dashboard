@@ -40,8 +40,16 @@
               :total="tablePage.total"
               @page-change="handlePageChange">
               <template v-if="!loading && showTableOverviewIndexs" v-slot:left>
-                <div class="table-overview">
-                  {{ $t('common.table.overview') }}：{{ tableOverview }}
+                <div class="table-overview table-overview-content">
+                  <span>{{ $t('common.table.overview') }}：</span>
+                  <template v-for="(item, idx) in tableOverviewIndexs">
+                    <span :key="idx" class="table-overview-item">
+                      <span v-if="idx > 0" class="table-overview-sep">{{ overviewSeparator }}</span>
+                      <a-tag v-if="item.tag" class="table-overview-tag">{{ item.key }}</a-tag>
+                      <span v-else>{{ item.key }}: </span>
+                      <span>{{ item.value }}</span>
+                    </span>
+                  </template>
                 </div>
               </template>
             </vxe-pager>
@@ -263,13 +271,8 @@ export default {
     showTableOverviewIndexs () {
       return this.tableOverviewIndexs?.length > 0
     },
-    tableOverview () {
-      if (this.showTableOverviewIndexs) {
-        return this.tableOverviewIndexs.map(item => {
-          return `${item.key}: ${item.value}`
-        }).join('、')
-      }
-      return []
+    overviewSeparator () {
+      return this.tableOverviewIndexs?.some(item => item.tag) ? '；' : '、'
     },
   },
   watch: {
@@ -632,5 +635,24 @@ export default {
   transform: translateY(-50%);
   z-index: 10;
   font-size: 14px;
+}
+.table-overview-content {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.table-overview-item {
+  display: inline-flex;
+  align-items: center;
+}
+.table-overview-sep {
+  margin: 0 4px;
+}
+.table-overview-tag {
+  margin-right: 4px;
+  line-height: 18px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 12px;
 }
 </style>
