@@ -104,7 +104,7 @@ export default {
               ret.validate = false
               return ret
             }
-            const canCancel = this.list.selectedItems.every(item => item.status === 'running' || item.status === 'queued')
+            const canCancel = this.list.selectedItems.every(item => ['init', 'queued', 'running'].includes(item.status))
             if (!canCancel) {
               ret.validate = false
               ret.tooltip = this.$t('cloudenv.billtask_cannot_cancel')
