@@ -437,6 +437,7 @@
   "k8s.repo.credential": "Credential",
   "k8s.repo.credential.bindled": "Bindled",
   "k8s.repo.credential.none": "None",
+  "k8s.repo.credential.update": "Change password",
   "k8s.repo.image.custom.placeholder": "Enter image address, e.g. nginx:latest",
   "k8s.repo.image.name": "Image name",
   "k8s.repo.image.tag": "Image version",
