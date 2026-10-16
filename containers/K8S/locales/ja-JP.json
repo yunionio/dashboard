@@ -437,6 +437,7 @@
   "k8s.repo.credential": "認証情報",
   "k8s.repo.credential.bindled": "バインド済み",
   "k8s.repo.credential.none": "なし",
+  "k8s.repo.credential.update": "パスワードを変更",
   "k8s.repo.image.custom.placeholder": "イメージアドレスを入力してください、例: nginx:latest",
   "k8s.repo.image.name": "イメージ名",
   "k8s.repo.image.tag": "イメージ バージョン",
