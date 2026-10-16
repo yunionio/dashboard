@@ -437,6 +437,7 @@
   "k8s.repo.credential": "凭证",
   "k8s.repo.credential.bindled": "已绑定",
   "k8s.repo.credential.none": "无",
+  "k8s.repo.credential.update": "修改密码",
   "k8s.repo.image.custom.placeholder": "请输入镜像地址，例如: nginx:latest",
   "k8s.repo.image.name": "镜像名称",
   "k8s.repo.image.tag": "镜像版本",
