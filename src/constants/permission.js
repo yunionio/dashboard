@@ -38,6 +38,7 @@ export const PERMISSION = {
   container_registries_update: ['image', 'container_registries', 'update'],
   container_registries_delete: ['image', 'container_registries', 'delete'],
   container_registries_perform_import_from_kubeserver: ['image', 'container_registries', 'perform', 'import-from-kubeserver'],
+  container_registries_perform_update_credential: ['image', 'container_registries', 'perform', 'update-credential'],
   container_images_list: ['image', 'container_images', 'list'],
   container_images_get: ['image', 'container_images', 'get'],
   container_images_create: ['image', 'container_images', 'create'],
