@@ -4,7 +4,7 @@
     <div slot="body">
       <a-form-model ref="form" :model="form" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 18 }">
         <a-form-model-item :label="$t('common.name')" prop="name">
-          <a-input v-model="form.name" :placeholder="$t('common.tips.input', [$t('common.name')])" :disabled="type === 'edit'" />
+          <a-input v-model="form.name" :placeholder="$t('common.tips.input', [$t('common.name')])" />
         </a-form-model-item>
         <a-form-model-item :label="$t('aice.llm_type')" prop="llm_type">
           <a-radio-group
