@@ -15,7 +15,7 @@ export default {
         },
         meta: (obj) => {
           const ret = { validate: true }
-          const canCancel = obj.status === 'init' || obj.status === 'queued'
+          const canCancel = ['init', 'queued', 'running'].includes(obj.status)
           if (!canCancel) {
             ret.validate = false
             ret.tooltip = this.$t('cloudenv.billtask_cannot_cancel')
