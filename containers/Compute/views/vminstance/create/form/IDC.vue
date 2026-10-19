@@ -258,7 +258,7 @@
             :decorator="decorators.bios"
             :form="form"
             :uefi="uefi"
-            :isArm="isArm"
+            :isArm="isArm || isRiscv64"
             :showDefault="true"
             :form-draft-key="vmDraftFields.bios" />
         </a-form-item>
@@ -284,7 +284,7 @@
             ref="machineRef"
             :decorator="getMachineDecorator()"
             :form="form"
-            :isArm="isArm"
+            :isArm="isArm || isRiscv64"
             :showDefault="true"
             :form-draft-key="vmDraftFields.machine" />
         </a-form-item>
@@ -870,8 +870,11 @@ export default {
     uefi (val) {
       this.setBios(val)
     },
-    isArm (val, oldV) {
-      this.setBios(val)
+    isArm (val) {
+      this.setBios(val || this.isRiscv64)
+    },
+    isRiscv64 (val) {
+      this.setBios(val || this.isArm)
     },
     isShowAgent (val) {
       this.$nextTick(() => {
@@ -1088,6 +1091,8 @@ export default {
             canUseOsArch = HOST_CPU_ARCHS.x86.key
           } else if (os_arch.indexOf('aarch') !== -1) {
             canUseOsArch = HOST_CPU_ARCHS.arm.key
+          } else if (os_arch.indexOf('riscv') !== -1) {
+            canUseOsArch = HOST_CPU_ARCHS.riscv64.key
           }
           if (!canUseOsArch) return
           this.form.fc.setFieldsValue({ os_arch: canUseOsArch })
@@ -1096,7 +1101,7 @@ export default {
     },
     getMachineDecorator () {
       let initValue = ''
-      if (this.isArm) {
+      if (this.isArm || this.isRiscv64) {
         initValue = 'virt'
       }
       return [
