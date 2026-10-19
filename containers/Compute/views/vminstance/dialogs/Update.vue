@@ -26,7 +26,7 @@
             </a-radio-group>
           </a-form-item> -->
           <a-form-item :label="$t('compute.text_1155')">
-            <bios :decorator="decorators.bios" :isArm="isArm" />
+            <bios :decorator="decorators.bios" :isArm="isArmOrRiscv64" />
           </a-form-item>
           <a-form-item :label="$t('compute.vdi_protocol')">
             <vdi :decorator="decorators.vdi" @change="handleVdiChange" />
@@ -35,7 +35,7 @@
             <vga :decorator="decorators.vga" :vdi="vdi" :form="form" />
           </a-form-item>
           <a-form-item :label="$t('compute.machine')">
-            <machine :decorator="decorators.machine" :isArm="isArm" />
+            <machine :decorator="decorators.machine" :isArm="isArmOrRiscv64" />
           </a-form-item>
           <a-form-item v-if="isKvm" :label="$t('compute.usb_kbd')">
             <a-switch v-decorator="decorators.disable_usb_kbd" />
@@ -173,8 +173,9 @@ export default {
     isKvm () {
       return this.params.data.length >= 1 && this.params.data[0].hypervisor === 'kvm'
     },
-    isArm () {
-      return this.params.data.length >= 1 && (this.params.data[0].os_arch === 'arm' || this.params.data[0].os_arch === 'aarch64')
+    isArmOrRiscv64 () {
+      const osArch = this.params.data.length >= 1 ? this.params.data[0].os_arch : ''
+      return osArch === 'arm' || osArch === 'aarch64' || osArch === 'riscv64'
     },
     canAdminUpdate () {
       return hasPermission({ key: 'server_update', resourceData: this.params.data[0] }) && this.$store.getters.isAdminMode
@@ -229,11 +230,11 @@ export default {
         }
         if (this.isKvm) {
           // updateObj.boot_order = data.boot_order
-          updateObj.bios = data.bios || (this.isArm ? 'UEFI' : 'BIOS')
+          updateObj.bios = data.bios || (this.isArmOrRiscv64 ? 'UEFI' : 'BIOS')
           updateObj.vdi = data.vdi ? data.vdi : 'vnc'
           updateObj.vga = data.vga ? data.vga : 'std'
           this.vdi = updateObj.vdi
-          updateObj.machine = data.machine ? data.machine : (this.isArm ? 'virt' : 'pc')
+          updateObj.machine = data.machine ? data.machine : (this.isArmOrRiscv64 ? 'virt' : 'pc')
           // updateObj.is_daemon = data.is_daemon
           this.is_daemon = data.is_daemon
         }
