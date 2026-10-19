@@ -71,7 +71,7 @@
               v-for="(item, index) in biosOptions"
               :value="item.value"
               :key="index"
-              :disabled="isArm && item.value==='BIOS'">{{item.text}}</a-radio-button>
+              :disabled="(isArm || isRiscv64) && item.value==='BIOS'">{{item.text}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item :label="$t('compute.vdi_protocol')">
@@ -107,7 +107,7 @@ import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import OsArch from '@/sections/OsArch'
-import { HOST_CPU_ARCHS } from '@/constants/compute'
+import { HOST_CPU_ARCHS, resolveOsArchKey, isOsArch } from '@/constants/compute'
 
 export default {
   name: 'ImageEditAttributesDialog',
@@ -119,7 +119,7 @@ export default {
     const data = this.params.data[0]
     let os_arch = data.os_arch || HOST_CPU_ARCHS.x86.key
     if (data.properties && data.properties.os_arch) {
-      os_arch = data.properties.os_arch.includes('x86') ? HOST_CPU_ARCHS.x86.key : HOST_CPU_ARCHS.arm.key
+      os_arch = resolveOsArchKey(data.properties.os_arch) || HOST_CPU_ARCHS.x86.key
     }
     let bios = 'BIOS'
     const { properties = {} } = data
@@ -131,9 +131,11 @@ export default {
     } else if (uefi_support !== 'true') {
       bios = 'BIOS'
     }
-    const isArm = (os_arch === HOST_CPU_ARCHS.arm.key)
+    const isArm = isOsArch(os_arch, 'arm')
+    const isRiscv64 = isOsArch(os_arch, 'riscv64')
     return {
       isArm: isArm,
+      isRiscv64: isRiscv64,
       loading: false,
       form: {
         fc: this.$form.createForm(this),
@@ -375,10 +377,13 @@ export default {
       })
     },
     osArchChangeHandle (e) {
-      this.isArm = (e === HOST_CPU_ARCHS.arm.key)
-      this.$nextTick(() => {
-        this.form.fc.setFieldsValue({ bios: 'UEFI' })
-      })
+      this.isArm = isOsArch(e, 'arm')
+      this.isRiscv64 = isOsArch(e, 'riscv64')
+      if (this.isArm || this.isRiscv64) {
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ bios: 'UEFI' })
+        })
+      }
     },
     osTypeChangeHandle (e) {
       const v = e.target.value
