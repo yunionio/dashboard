@@ -4,6 +4,8 @@
     :data="data"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    :is-edit-name="!isContainerImage"
+    :is-edit-desc="!isContainerImage"
     resource="credentials" />
 </template>
 
@@ -94,6 +96,11 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    isContainerImage () {
+      return this.data?.type === 'container_image'
+    },
   },
   methods: {
     toggleBlobKey (key) {
