@@ -104,13 +104,14 @@ export default {
   },
   methods: {
     getParam () {
+      // 用查询参数过滤类型/用户，避免与列表 id filter 的 filter= 冲突
       const ret = {
         ...this.getParams,
-        'filter.0': `type.equals(${this.type})`,
+        type: this.type,
       }
       if (this.$store.getters.scope === 'project') {
         const uid = this.$store.getters.userInfo?.id
-        if (uid) ret['filter.1'] = `user_id.equals(${uid})`
+        if (uid) ret.user_id = uid
       }
       return ret
     },
