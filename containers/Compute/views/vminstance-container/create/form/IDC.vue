@@ -766,6 +766,8 @@ export default {
             canUseOsArch = HOST_CPU_ARCHS.x86.key
           } else if (os_arch.indexOf('aarch') !== -1) {
             canUseOsArch = HOST_CPU_ARCHS.arm.key
+          } else if (os_arch.indexOf('riscv') !== -1) {
+            canUseOsArch = HOST_CPU_ARCHS.riscv64.key
           }
           if (!canUseOsArch) return
           this.form.fc.setFieldsValue({ os_arch: canUseOsArch })
@@ -774,7 +776,7 @@ export default {
     },
     getMachineDecorator () {
       let initValue = 'pc'
-      if (this.isArm) {
+      if (this.isArm || this.isRiscv64) {
         initValue = 'virt'
       }
       return [
