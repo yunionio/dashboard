@@ -618,7 +618,7 @@ export default {
         } else if (this.selectedItem.os_arch.includes('arm') || this.selectedItem.os_arch.includes('aarch64')) {
           params.cpu_arch = HOST_CPU_ARCHS.arm.key
         } else if (this.selectedItem.os_arch.includes('riscv')) {
-          params.cpu_arch = HOST_CPU_ARCHS.riscv64.key
+          params.cpu_arch = 'riscv'
         }
       }
       return params
