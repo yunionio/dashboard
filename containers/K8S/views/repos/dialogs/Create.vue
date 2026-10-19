@@ -80,7 +80,7 @@ export default {
           'username',
           {
             rules: [
-              { required: false, message: this.$t('common.tips.input', [this.$t('k8s.text_54')]) },
+              { validator: this.validateUsernamePasswordPair },
             ],
           },
         ],
@@ -88,7 +88,7 @@ export default {
           'password',
           {
             rules: [
-              { required: false, message: this.$t('common.tips.input', [this.$t('k8s.text_56')]) },
+              { validator: this.validateUsernamePasswordPair },
             ],
           },
         ],
@@ -99,6 +99,12 @@ export default {
             Object.keys(values).forEach((key) => {
               this.$set(this.form.fd, key, values[key])
             })
+            // 账密成对校验：改一侧时联动校验另一侧
+            if ('username' in values || 'password' in values) {
+              this.$nextTick(() => {
+                this.form.fc.validateFields(['username', 'password'], { force: true }).catch(() => {})
+              })
+            }
           },
         }),
         fd: {},
@@ -119,6 +125,17 @@ export default {
     },
   },
   methods: {
+    validateUsernamePasswordPair (rule, value, callback) {
+      const username = (this.form.fc.getFieldValue('username') || '').trim()
+      const password = this.form.fc.getFieldValue('password') || ''
+      const hasUsername = !!username
+      const hasPassword = !!password
+      if ((hasUsername && !hasPassword) || (!hasUsername && hasPassword)) {
+        const missing = hasUsername ? this.$t('k8s.text_56') : this.$t('k8s.text_54')
+        return callback(new Error(this.$t('common.tips.input', [missing])))
+      }
+      return callback()
+    },
     async handleConfirm () {
       this.loading = true
       try {
