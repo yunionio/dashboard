@@ -1,5 +1,5 @@
 const INFERENCE_LLM_TYPES = ['vllm', 'sglang', 'ollama']
-const APP_LLM_TYPES = ['dify', 'openclaw', 'comfyui', 'hermes-agent']
+const APP_LLM_TYPES = ['hermes-agent', 'openclaw', 'comfyui', 'dify']
 const DESKTOP_LLM_TYPES = ['desktop']
 
 /**
