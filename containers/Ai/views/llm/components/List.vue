@@ -126,13 +126,13 @@ export default {
       return this.$t('aice.llm_type.llm')
     },
     llmTypeFilterOptions () {
-      let opts = LLM_TYPE_OPTIONS
-      if (this.isDesktopType) {
-        opts = opts.filter(opt => opt.id === 'desktop')
-      } else if (this.isApplyType) {
-        opts = opts.filter(opt => !['vllm', 'ollama', 'sglang', 'desktop'].includes(opt.id))
+      let opts
+      if (this.isDesktopType || this.isApplyType) {
+        opts = this.llmRouteCtx.llmTypes
+          .map(id => LLM_TYPE_OPTIONS.find(opt => opt.id === id))
+          .filter(Boolean)
       } else {
-        opts = opts.filter(opt => ['vllm', 'ollama', 'sglang'].includes(opt.id))
+        opts = LLM_TYPE_OPTIONS.filter(opt => ['vllm', 'ollama', 'sglang'].includes(opt.id))
       }
       return opts.map(opt => ({ key: opt.id, label: this.$t(opt.name) }))
     },

@@ -23,6 +23,42 @@ export const getImageLabelTableColumn = () => {
   }
 }
 
+export const getImageSourceTableColumn = () => {
+  return {
+    field: 'image_source',
+    title: i18n.t('aice.llm_image.image_source'),
+    width: 120,
+    formatter: ({ row }) => {
+      if (row.image_source === 'container_image' || row.container_image_id) {
+        return i18n.t('dictionary.container_image')
+      }
+      return i18n.t('aice.llm_image.image_source.manual')
+    },
+  }
+}
+
+export const getContainerImageTableColumn = ({ vm = {} } = {}) => {
+  return {
+    field: 'container_image_id',
+    title: i18n.t('dictionary.container_image'),
+    minWidth: 160,
+    slots: {
+      default: ({ row }, h) => {
+        const id = row.container_image_id
+        if (!id) return '-'
+        const text = row.container_image || `${row.image_name || ''}:${row.image_label || ''}` || id
+        return [
+          <side-page-trigger permission="container_images_get" name="ContainerImageSidePage" id={id} vm={vm}>{text}</side-page-trigger>,
+        ]
+      },
+    },
+    formatter: ({ row }) => {
+      if (!row.container_image_id) return '-'
+      return row.container_image || `${row.image_name || ''}:${row.image_label || ''}` || row.container_image_id
+    },
+  }
+}
+
 export const getAppNameTableColumn = () => {
   return {
     field: 'app_name',

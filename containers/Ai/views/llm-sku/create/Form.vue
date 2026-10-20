@@ -589,10 +589,10 @@ export default {
       ? { ...getDefaultSkuSpecForType('vllm'), memory: 8192 }
       : null
     let llmTypeOptions
-    if (isDesktopType) {
-      llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => opt.id === 'desktop')
-    } else if (isApplyType) {
-      llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => !['vllm', 'ollama', 'sglang', 'desktop'].includes(opt.id))
+    if (isDesktopType || isApplyType) {
+      llmTypeOptions = llmRouteCtx.llmTypes
+        .map(id => LLM_TYPE_OPTIONS.find(opt => opt.id === id))
+        .filter(Boolean)
     } else if (isLocalPathImportInit || this.catalogTypeSelectable) {
       llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => ['vllm', 'sglang'].includes(opt.id))
     } else {
@@ -620,7 +620,7 @@ export default {
       preferred_model: rowPreferredModel,
       host_paths: hostPaths = [],
     } = data
-    const defaultLlmTypeForInit = catalogLlmTypeInit || (llmTypeOptions[0] && llmTypeOptions[0].id) || (isDesktopType ? 'desktop' : (isApplyType ? 'openclaw' : 'ollama'))
+    const defaultLlmTypeForInit = catalogLlmTypeInit || (llmTypeOptions[0] && llmTypeOptions[0].id) || (isDesktopType ? 'desktop' : (isApplyType ? 'hermes-agent' : 'ollama'))
     const initialLlmTypeForSpec = catalogLlmTypeInit || rowLlmType || defaultLlmTypeForInit
     const isInferenceInit = ['vllm', 'sglang', 'ollama'].includes(initialLlmTypeForSpec)
     const enableCgroupCpuInit = data.enable_cgroup_cpu == null ? !isInferenceInit : !!data.enable_cgroup_cpu
