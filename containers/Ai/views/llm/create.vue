@@ -592,14 +592,14 @@ export default {
     const isApplyType = llmRouteCtx.isApplyType
     const isDesktopType = llmRouteCtx.isDesktopType
     let llmTypeOptions
-    if (isDesktopType) {
-      llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => opt.id === 'desktop')
-    } else if (isApplyType) {
-      llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => !['vllm', 'ollama', 'sglang', 'desktop'].includes(opt.id))
+    if (isDesktopType || isApplyType) {
+      llmTypeOptions = llmRouteCtx.llmTypes
+        .map(id => LLM_TYPE_OPTIONS.find(opt => opt.id === id))
+        .filter(Boolean)
     } else {
       llmTypeOptions = LLM_TYPE_OPTIONS.filter(opt => ['vllm', 'ollama', 'sglang'].includes(opt.id))
     }
-    const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isDesktopType ? 'desktop' : (isApplyType ? 'openclaw' : 'ollama'))
+    const defaultLlmType = (llmTypeOptions[0] && llmTypeOptions[0].id) || (isDesktopType ? 'desktop' : (isApplyType ? 'hermes-agent' : 'ollama'))
     const llmTypeSelectLabel = isDesktopType
       ? this.$t('aice.llm_type')
       : (isApplyType ? this.$t('aice.llm_type.app') : this.$t('aice.llm_type.llm'))
