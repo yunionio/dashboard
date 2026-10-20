@@ -15,6 +15,8 @@ import {
 import {
   getImageNameTableColumn,
   getImageLabelTableColumn,
+  getImageSourceTableColumn,
+  getContainerImageTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -37,6 +39,8 @@ export default {
       ],
       baseInfo: [
         getOsArch(),
+        getImageSourceTableColumn(),
+        getContainerImageTableColumn({ vm: this }),
         getImageNameTableColumn(),
         getImageLabelTableColumn(),
       ],
