@@ -420,7 +420,7 @@ export const hasMeterService = function () {
   return false
 }
 
-export const billSupportBrands = ['aliyun', 'aws', 'azure', 'google', 'huawei', 'jdcloud', 'qcloud', 'volcengine', 'ksyun']
+export const billSupportBrands = ['aliyun', 'aws', 'azure', 'google', 'huawei', 'jdcloud', 'qcloud', 'volcengine', 'ksyun', 'oraclecloud']
 export const billPrivateSupportBrands = ['onestack', ...HYPERVISORS.filter(item => item.env === 'private').map(item => item.key)]
 
 export const billItems = billSupportBrands.map(key => `bill_${key}`)
