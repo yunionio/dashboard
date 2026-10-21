@@ -264,7 +264,7 @@ export default {
                 label: this.$t('cloudenv.text_108'),
                 permission: 'cloudaccounts_delete',
                 action: () => {
-                  const supportBillBrands = ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure', 'Qcloud', 'Ksyun']
+                  const supportBillBrands = ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure', 'Qcloud', 'Ksyun', 'OracleCloud']
                   const supportBill = this.list.selectedItems.some(item => {
                     return supportBillBrands.includes(item.brand)
                   })
