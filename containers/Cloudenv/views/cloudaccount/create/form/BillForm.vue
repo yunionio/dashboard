@@ -379,6 +379,10 @@ export default {
   },
   methods: {
     getDefaultBillingScope () {
+      // Oracle 无已有配置时默认「本平台纳管账号」
+      if (this.isOracle) {
+        return 'managed'
+      }
       if (!this.billingScopeDisabled) {
         return 'all'
       } else {
