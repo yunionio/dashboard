@@ -26,6 +26,7 @@ const rocky = require('./assets/rocky.png')
 const anolis = require('./assets/anolis.png')
 const opencloudos = require('./assets/opencloudos.png')
 const almalinux = require('./assets/almalinux.png')
+const openruyi = require('./assets/openruyi.svg')
 
 export default {
   name: 'ImageIcon',
@@ -156,6 +157,9 @@ export default {
             break
           case 'tencentos':
             curImg = tencent
+            break
+          case 'openruyi':
+            curImg = openruyi
             break
           default:
             break
