@@ -36,6 +36,7 @@ export default {
             action: 'cancel',
           },
         })
+        this.params.success && this.params.success()
         this.cancelDialog()
       } finally {
         this.loading = false

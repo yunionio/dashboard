@@ -13,7 +13,7 @@
 import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getStatusFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -46,6 +46,7 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.cloudaccountSyncTasks).flat(),
         filterOptions: {
+          name: getNameFilter(),
           status: getStatusFilter({ statusModule: 'cloudaccountSyncTasks' }),
           level: {
             label: this.$t('cloudenv.sync_task.level'),
@@ -118,6 +119,10 @@ export default {
       }
     },
     handleOpenSidepage (row) {
+      // L1/L2 打开子任务列表；L3 无子任务，进详情
+      const tab = row.level !== 'region'
+        ? 'cloudaccount-sync-task-children'
+        : 'cloudaccount-sync-task-detail'
       this.sidePageTriggerHandle(this, 'CloudaccountSyncTaskSidePage', {
         id: row.id,
         resource: 'cloudaccountsynctasks',
@@ -125,7 +130,9 @@ export default {
         getParams: this.getParam,
       }, {
         list: this.list,
+        tab,
       })
+      this.initSidePageTab(tab)
     },
   },
 }

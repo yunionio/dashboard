@@ -13,12 +13,13 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { getStatusFilter, getEnabledFilter, getTenantFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import CancelSyncMixin from '@Cloudenv/views/cloudaccountsynctasks/mixins/cancelSync'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'CloudproviderList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, CancelSyncMixin],
   props: {
     getParams: {
       type: [Function, Object],
