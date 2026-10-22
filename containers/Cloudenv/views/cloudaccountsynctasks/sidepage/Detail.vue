@@ -27,9 +27,9 @@ export default {
       required: true,
     },
   },
-  data () {
-    return {
-      baseInfo: [
+  computed: {
+    baseInfo () {
+      const infos = [
         {
           field: 'level',
           title: this.$t('cloudenv.sync_task.level'),
@@ -56,7 +56,10 @@ export default {
           field: 'cloudregion',
           title: this.$t('dictionary.cloudregion'),
         },
-        {
+      ]
+      // L3 region is leaf, no child progress
+      if (this.data.level !== 'region') {
+        infos.push({
           field: 'progress',
           title: this.$t('cloudenv.sync_task.progress'),
           formatter: ({ row }) => {
@@ -64,11 +67,9 @@ export default {
             const done = (row.child_done || 0) + (row.child_fail || 0) + (row.child_cancel || 0)
             return `${done}/${row.child_total}`
           },
-        },
-        {
-          field: 'expect_secs',
-          title: this.$t('cloudenv.sync_task.expect_secs'),
-        },
+        })
+      }
+      infos.push(
         getTimeTableColumn({ field: 'queued_at', title: this.$t('cloudenv.sync_task.queued_at') }),
         getTimeTableColumn({ field: 'started_at', title: this.$t('cloudenv.text_461') }),
         getTimeTableColumn({ field: 'ended_at', title: this.$t('cloudenv.text_462') }),
@@ -78,8 +79,9 @@ export default {
           start_field: 'started_at',
           end_field: 'ended_at',
         }),
-      ],
-    }
+      )
+      return infos
+    },
   },
 }
 </script>

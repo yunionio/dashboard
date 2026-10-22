@@ -45,7 +45,8 @@ export default {
         title: this.$t('cloudenv.sync_task.progress'),
         minWidth: 120,
         formatter: ({ row }) => {
-          if (!row.child_total) return '-'
+          // L3 region is leaf, no child progress
+          if (row.level === 'region' || !row.child_total) return '-'
           const done = (row.child_done || 0) + (row.child_fail || 0) + (row.child_cancel || 0)
           return `${done}/${row.child_total}`
         },

@@ -24,6 +24,7 @@ import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import { findPlatform } from '@/utils/common/hypervisor'
+import CancelSyncMixin from '@Cloudenv/views/cloudaccountsynctasks/mixins/cancelSync'
 import CloudaccountDetail from './Detail'
 import CloudaccountQuotaList from './QuotaList'
 import ColumnsMixin from '../mixins/columns'
@@ -39,7 +40,7 @@ export default {
     Usage,
     SamlProvider,
   },
-  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin, CancelSyncMixin],
   data () {
     return {
       data: {},
