@@ -218,6 +218,9 @@ export default {
       if (!ret && os_name.includes('anolis')) {
         ret = 'anolis'
       }
+      if (!ret && (os_name.includes('openruyi') || os_name.includes('ruyi'))) {
+        ret = 'openruyi'
+      }
       return ret || 'unknow'
     },
     fetchData () {
