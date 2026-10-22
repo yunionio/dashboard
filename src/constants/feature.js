@@ -327,6 +327,11 @@ const LicenseItems = [
     meta: meta('resource_managent', 'bill', true),
   },
   {
+    key: 'bill_oraclecloud',
+    origin_key: 'oraclecloud',
+    meta: meta('resource_managent', 'bill', true),
+  },
+  {
     key: 'bill_kubernetes',
     origin_key: 'k8s',
     meta: meta('resource_managent', 'bill', false),
