@@ -128,6 +128,21 @@
           </a-radio-group>
         </a-form-item>
       </template>
+      <template v-if="isOracle">
+        <a-form-item :label="$t('cloudenv.billing_scope')">
+          <div slot="extra">
+            <div>{{ $t('cloudenv.billing_scope.extra') }}</div>
+            <div>{{ $t('cloudenv.billing_scope.extra_note') }}</div>
+          </div>
+          <a-radio-group v-decorator="decorators.billing_scope">
+            <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
+            <a-radio-button
+              value="all"
+              key="all"
+              :disabled="billingScopeDisabled">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+      </template>
       <a-form-item :label="$t('cloudenv.text_210')" :extra="$t('cloudenv.text_211')">
         <a-switch v-decorator="decorators.sync_info" />
       </a-form-item>
@@ -249,6 +264,9 @@ export default {
     },
     isKsyun () {
       return this.provider === HYPERVISORS_MAP.ksyun.provider
+    },
+    isOracle () {
+      return this.provider === HYPERVISORS_MAP.oracle.provider
     },
     useBillingBucket () {
       const supportProviders = [
@@ -394,6 +412,7 @@ export default {
         HYPERVISORS_MAP.qcloud.provider,
         HYPERVISORS_MAP.azure.provider,
         HYPERVISORS_MAP.ksyun.provider,
+        HYPERVISORS_MAP.oracle.provider,
       ]
       return !supportProviders.includes(this.provider)
     },
