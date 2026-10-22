@@ -307,7 +307,8 @@ export default {
         // 确保 max-height 至少有一个合理的最小值，避免为 0 导致表格高度很低
         const minHeight = 400 // 最小高度 400px
         ret['max-height'] = this.vxeGridHeight > minHeight ? this.vxeGridHeight : minHeight
-        ret['scroll-x'] = { gt: 1 }
+        // 不开横向虚拟化：列高不一致时横向滚动会只按可见列算行高，导致行高跳动
+        ret['scroll-x'] = { enabled: false }
         ret['scroll-y'] = { gt: 1 }
       }
       // 非虚拟滚动模式不设置 height，让表格自然高度展示
