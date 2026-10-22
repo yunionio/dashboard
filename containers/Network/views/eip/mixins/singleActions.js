@@ -1,7 +1,7 @@
 import { typeClouds } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 
-const supportChangeBandwidth = ['huawei', 'baidu', 'aliyun', 'ucloud', 'qcloud', 'ctyun']
+const supportChangeBandwidth = ['onecloud', 'huawei', 'baidu', 'aliyun', 'ucloud', 'qcloud', 'ctyun']
 
 export default {
   created () {
@@ -25,9 +25,10 @@ export default {
           }
           const { brand } = obj
           if (brand && !supportChangeBandwidth.includes(brand.toLowerCase())) {
+            const brandInfo = typeClouds.getBrandlowcase()[brand.toLowerCase()]
             return {
               validate: false,
-              tooltip: i18n.t('network.text_223', [typeClouds.getHosttype()[brand.toLowerCase()].label]),
+              tooltip: i18n.t('network.text_223', [brandInfo?.label || brand]),
             }
           }
           return {
