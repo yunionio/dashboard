@@ -1226,6 +1226,13 @@
       "cancel": "キャンセル",
       "blocking_cancel": "取消（封入済）"
     },
+    "cloudaccountSyncTasks": {
+      "queued": "実行待ち",
+      "running": "同期中",
+      "fail": "失敗",
+      "done": "完了",
+      "cancel": "キャンセル済"
+    },
     "k8s_repo": {
       "init": "正常"
     },
