@@ -601,6 +601,11 @@ export default {
     info: ['cancel', 'blocking_cancel'],
     danger: ['fail'],
   },
+  cloudaccountSyncTasks: {
+    success: ['done'],
+    info: ['cancel', 'queued'],
+    danger: ['fail'],
+  },
   k8s_repo: {
     success: ['init'],
   },
