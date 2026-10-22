@@ -140,4 +140,8 @@ export const CUSTOME_IMG = {
     label: 'TenecnetOS Server',
     url: 'tencentos',
   },
+  openruyi: {
+    label: 'openRuyi',
+    url: 'openruyi',
+  },
 }
