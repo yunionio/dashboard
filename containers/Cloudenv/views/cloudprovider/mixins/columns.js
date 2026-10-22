@@ -54,40 +54,35 @@ export default {
         width: 80,
         slots: {
           default: ({ row }) => {
-            if (row.sync_status !== 'idle') { // 表示正在同步中
-              return [
-                <status status={ row.sync_status } statusModule='cloudaccountSyncStatus' />,
-              ]
-            } else {
-              const time = this.$moment(row.last_sync)
-              if (time) {
-                return time.fromNow()
-              } else {
-                return '-'
-              }
-            }
-          },
-        },
-        formatter: ({ row }) => {
-          if (row.sync_status !== 'idle') { // 表示正在同步中
-            return row.sync_status
-          } else {
+            // 同步时间始终展示时间，不展示「同步中」
             const time = this.$moment(row.last_sync)
             if (time) {
               return time.fromNow()
-            } else {
-              return '-'
             }
+            return '-'
+          },
+        },
+        formatter: ({ row }) => {
+          const time = this.$moment(row.last_sync)
+          if (time) {
+            return time.fromNow()
           }
+          return '-'
         },
       },
       getLastSyncCostTableColumn(),
-      getStatusTableColumn({
+      {
         field: 'sync_status',
         title: i18n.t('cloudenv.text_354'),
         minWidth: 100,
-        statusModule: 'cloudaccountSyncStatus',
-      }),
+        slots: {
+          default: ({ row }) => {
+            return [
+              <status status={ row.sync_status } statusModule='cloudaccountSyncStatus' />,
+            ]
+          },
+        },
+      },
       getCopyWithContentTableColumn({
         field: 'project_domain',
         title: i18n.t('cloudenv.text_355', [i18n.t('dictionary.domain')]),
