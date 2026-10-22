@@ -77,7 +77,7 @@ export default {
   },
   created () {
     this.singleActions = [
-      // 同步云账号
+      // 同步云账号（空闲时）
       {
         label: i18n.t('cloudenv.sync_account'),
         permission: 'cloudaccounts_perform_sync',
@@ -95,15 +95,19 @@ export default {
             },
           })
         },
+        meta: (obj) => this.syncPolicy(obj),
+        hidden: (obj) => obj.sync_status !== 'idle',
+      },
+      // 同步中：取消整账号同步任务
+      {
+        label: i18n.t('cloudenv.sync_task.cancel_sync'),
+        permission: 'cloudaccountsynctasks_perform_cancel',
+        action: (obj) => this.handleCancelAccountSync(obj),
         meta: (obj) => {
-          if (obj.sync_status !== 'idle') {
-            return {
-              validate: false,
-              tooltip: this.$t('cloudenv.syncing_account_disable_action'),
-            }
-          }
-          return this.syncPolicy(obj)
+          const ownerDomain = this.isAdminMode || obj.domain_id === this.userInfo.projectDomainId
+          return { validate: !!ownerDomain }
         },
+        hidden: (obj) => obj.sync_status === 'idle',
       },
       {
         label: i18n.t('common.more'),
