@@ -32,6 +32,7 @@
       <auto-sync :fc="form.fc" :form-layout="formLayout" :cloneData="cloneData" />
       <read-only :cloneData="cloneData" />
       <share-mode :fd="form.fd" :cloneData="cloneData" />
+      <skip-duplicate-account-check :cloneData="cloneData" />
     </a-form>
   </div>
 </template>
@@ -41,6 +42,7 @@ import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
 import ReadOnly from '@Cloudenv/views/cloudaccount/components/ReadOnly'
+import SkipDuplicateAccountCheck from '@Cloudenv/views/cloudaccount/components/SkipDuplicateAccountCheck'
 import UploadPemFile from '@Cloudenv/views/cloudaccount/components/UploadPemFile'
 import { keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
@@ -57,6 +59,7 @@ export default {
     ProxySetting,
     ShareMode,
     ReadOnly,
+    SkipDuplicateAccountCheck,
   },
   mixins: [createMixin],
   data () {
