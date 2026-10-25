@@ -287,6 +287,8 @@ export default {
     async fetchDataCallback () {
       try {
         if (!this.data.data) return
+        if (!this.data.data.metadata) return
+        if (!this.data.data.metadata.monitor_agent_status) return
         const { data: { data = [] } } = await new this.$Manager('scriptapplyrecords').list({ params: { server_id: this.data.data.id, details: false, limit: 1 } })
         if (data[0]) {
           this.agent_status = data[0].status
