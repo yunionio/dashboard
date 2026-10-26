@@ -1558,6 +1558,11 @@ export const PERMISSION = {
   scriptapplyrecords_create: ['devtool', 'scriptapplyrecords', 'create'],
   scriptapplyrecords_delete: ['devtool', 'scriptapplyrecords', 'delete'],
   scriptapplyrecords_perform_ansible_log: ['devtool', 'scriptapplyrecords', 'perform', 'ansible-log'],
+  editionswitches_list: ['devtool', 'editionswitches', 'list'],
+  editionswitches_get: ['devtool', 'editionswitches', 'get'],
+  editionswitches_get_sshable: ['devtool', 'editionswitches', 'get', 'sshable'],
+  editionswitches_perform_switch: ['devtool', 'editionswitches', 'perform', 'switch'],
+  editionswitches_get_ansible_log: ['devtool', 'editionswitches', 'get', 'ansible-log'],
 
   metadatas_perform_tag_value_pairs: ['compute', 'metadatas', 'perform', 'tag-value-pairs'],
 
