@@ -28,6 +28,7 @@
             <img style="max-width:250px;min-width: 100px" src="@/assets/contact.png" />
           </div>
         </div>
+        <switch-edition />
       </div>
     </a-card>
   </div>
@@ -35,10 +36,12 @@
 
 <script>
 import setting from '@/config/setting'
+import SwitchEdition from '@/sections/SwitchEdition'
 
 export default {
   name: 'Licenses',
-  props: {
+  components: {
+    SwitchEdition,
   },
   data () {
     return {
