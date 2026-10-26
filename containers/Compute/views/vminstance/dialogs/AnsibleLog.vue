@@ -1,7 +1,7 @@
 <template>
   <base-dialog @cancel="cancelDialog" width="1000px">
     <div slot="header">{{ $t('compute.vminstance.monitor.install_agent.view_log') }}</div>
-    <div class="clearfix codemirror-h-100" slot="body">
+    <div class="clearfix ansible-log-body" slot="body">
       <code-mirror v-model="showData" :options="cmOptions" ref="codeMirrorRef" />
       <div
         class="float-right"
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import 'codemirror/theme/3024-day.css'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -60,10 +61,12 @@ export default {
   },
   watch: {
     showData () {
-      this.$nextTick(() => {
-        this.$refs.codeMirrorRef && this.$refs.codeMirrorRef.refresh()
-      })
+      this.refreshEditor()
     },
+  },
+  mounted () {
+    // 弹窗动画结束后再 refresh，避免 gutter 宽度算成 0，行首被行号挡住
+    this.refreshEditor(300)
   },
   created () {
     this.fetchLog()
@@ -72,6 +75,18 @@ export default {
     this.clearTimer()
   },
   methods: {
+    refreshEditor (delay = 0) {
+      this.$nextTick(() => {
+        const run = () => {
+          this.$refs.codeMirrorRef && this.$refs.codeMirrorRef.refresh()
+        }
+        if (delay > 0) {
+          setTimeout(run, delay)
+        } else {
+          run()
+        }
+      })
+    },
     clearTimer () {
       if (this.timer) {
         clearTimeout(this.timer)
@@ -113,3 +128,21 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.ansible-log-body {
+  ::v-deep .CodeMirror {
+    height: 400px !important;
+    font-family: Consolas, Monaco, monospace;
+  }
+  /* ant-design 的 pre { overflow: auto } 可能裁切行首字符 */
+  ::v-deep pre.CodeMirror-line,
+  ::v-deep pre.CodeMirror-line-like {
+    overflow: visible !important;
+  }
+  ::v-deep .CodeMirror-gutters {
+    background-color: #f7f7f7;
+    border-right: 1px solid #ddd;
+  }
+}
+</style>

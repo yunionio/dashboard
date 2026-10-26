@@ -270,6 +270,8 @@ body {
 
 .CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like {
   font-family: consolas !important;
+  // 覆盖 ant-design `pre { overflow: auto }`，避免行首字符被裁切
+  overflow: visible !important;
 }
 
 .oc-select-dropdown {
