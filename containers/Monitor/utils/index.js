@@ -27,6 +27,20 @@ export const getChartTooltipLabel = (serieItem, gorupBy, measurement) => {
   return '-'
 }
 
+/**
+ * 生成监控面板名称：label 已包含指标（如「可用内存率(agent_mem.available_percent)」）时不再重复拼接
+ * @param {String} label 面板名称
+ * @param {String} metric 指标，格式为 measurement.field
+ * @param {String} measurement 测量项
+ * @param {String} field 字段
+ */
+export const buildPanelName = (label, metric, measurement, field) => {
+  const base = label || ''
+  const target = metric || (measurement && field ? `${measurement}.${field}` : '')
+  if (!target) return base
+  return base.includes(target) ? base : `${base}(${target})`
+}
+
 // 添加缺失的时间点
 export const addMissingSeries = (series = [], chartQueryData, moment) => {
   if (series.length && series.some(item => item.points && item.points.length)) {
