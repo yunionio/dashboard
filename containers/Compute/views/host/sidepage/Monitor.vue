@@ -28,6 +28,8 @@
 
 <script>
 import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
+import { buildPanelName } from '@Monitor/utils'
+import { MONITOR_TEMPLATE_HOST, resolveMonitorTemplatePanels } from '@Monitor/utils/monitorTemplate'
 import { buildGpuMonitorOpts, getGpuVendorKeysFromDevices } from '@Compute/constants/gpuMonitor'
 import WindowsMixin from '@/mixins/windows'
 import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS, NIC_RSRC_MON_OPTS, RADEONTOP_OPTS, VASMI_OPTS } from '../constants'
@@ -70,7 +72,16 @@ export default {
     isolatedDeviceTypes () {
       return Object.keys(this.host.isolated_device_type_count || {})
     },
+    // 策略定义中配置的宿主机监控模板，对全部宿主机生效
+    templateMonitorConstants () {
+      return resolveMonitorTemplatePanels(this.$store.getters.scopedPolicy, {
+        category: MONITOR_TEMPLATE_HOST,
+      })
+    },
     monitorConstants () {
+      if (this.templateMonitorConstants.length) {
+        return this.templateMonitorConstants
+      }
       if (this.forceKvm) {
         return [...KVM_MONITOR_OPTS]
       }
@@ -95,7 +106,7 @@ export default {
     localPanels () {
       return this.monitorConstants.map(item => {
         return {
-          panel_name: `${item.label}${item.metric ? `(${item.metric})` : `(${item.fromItem}.${item.seleteItem})`}`,
+          panel_name: buildPanelName(item.label, item.metric, item.fromItem, item.seleteItem),
           constants: item,
           queryData: this.genQueryData(item),
         }
@@ -107,7 +118,7 @@ export default {
     gpuLocalPanels () {
       return this.gpuMonitorConstants.map(item => {
         return {
-          panel_name: `${item.label}${item.metric ? `(${item.metric})` : `(${item.fromItem}.${item.seleteItem})`}`,
+          panel_name: buildPanelName(item.label, item.metric, item.fromItem, item.seleteItem),
           constants: item,
           queryData: this.genQueryData(item),
         }
@@ -125,12 +136,19 @@ export default {
     },
   },
   created () {
+    this.fetchMonitorTemplates()
     this.$bus.$on('VmMonitorTypeChange', (tab) => {
       this.$refs.dashboardCards && this.$refs.dashboardCards.initMonitorConfig()
       this.$refs.gpuDashboardCards && this.$refs.gpuDashboardCards.initMonitorConfig()
     })
   },
   methods: {
+    fetchMonitorTemplates () {
+      // 监控模板在策略定义中配置，绑定的范围内全部宿主机生效
+      return this.$store.dispatch('scopedPolicy/get', {
+        category: [MONITOR_TEMPLATE_HOST],
+      })
+    },
     async fetchGpuIsolatedDevices () {
       if (!this.hostId) return
       this.gpuLoading = true

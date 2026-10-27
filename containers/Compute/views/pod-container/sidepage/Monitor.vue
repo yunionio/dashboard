@@ -6,6 +6,8 @@
 
 <script>
 import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
+import { buildPanelName } from '@Monitor/utils'
+import { MONITOR_TEMPLATE_CONTAINER, resolveMonitorTemplatePanels } from '@Monitor/utils/monitorTemplate'
 import WindowsMixin from '@/mixins/windows'
 import { CONTAINER_MONITOR } from '../constants'
 
@@ -24,7 +26,6 @@ export default {
   data () {
     return {
       currentMonitorType: 'basic',
-      monitorConstants: CONTAINER_MONITOR,
       extraTags: [{
         key: 'container_name',
         operator: '=',
@@ -33,17 +34,33 @@ export default {
     }
   },
   computed: {
+    // 策略定义中配置的容器监控模板，对容器主机内的全部容器生效
+    monitorConstants () {
+      const panels = resolveMonitorTemplatePanels(this.$store.getters.scopedPolicy, {
+        category: MONITOR_TEMPLATE_CONTAINER,
+      })
+      return panels.length ? panels : CONTAINER_MONITOR
+    },
     localPanels () {
       return this.monitorConstants.map(item => {
         return {
-          panel_name: `${item.label}${item.metric ? `(${item.metric})` : `(${item.fromItem}.${item.seleteItem})`}`,
+          panel_name: buildPanelName(item.label, item.metric, item.fromItem, item.seleteItem),
           constants: item,
           queryData: this.genQueryData(item),
         }
       })
     },
   },
+  created () {
+    this.fetchMonitorTemplates()
+  },
   methods: {
+    fetchMonitorTemplates () {
+      // 监控模板在策略定义中配置，绑定的范围内全部容器生效
+      return this.$store.dispatch('scopedPolicy/get', {
+        category: [MONITOR_TEMPLATE_CONTAINER],
+      })
+    },
     genQueryData (val) {
       const opt = val
       val.extraTags = this.extraTags

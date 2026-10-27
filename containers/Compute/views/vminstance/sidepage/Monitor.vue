@@ -20,6 +20,7 @@
             :isPageDestroyed="isPageDestroyed" />
           <agent-monitor
             :data="server"
+            :constants="agentMonitorConstants"
             :currentMonitorType="currentMonitorType"
             idKey="vm_id"
             monitorType="agent"
@@ -35,7 +36,11 @@ import _ from 'lodash'
 import BaseMonitor from '@Compute/sections/monitor/BaseMonitor'
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
 import AgentGpuMonitor from '@Compute/sections/monitor/AgentGpuMonitor.vue'
-import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR, SANGFOR_MONITOR } from '@Compute/views/vminstance/constants'
+import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR, SANGFOR_MONITOR, AGENT_MONITOR } from '@Compute/views/vminstance/constants'
+import {
+  MONITOR_TEMPLATE_VMINSTANCE,
+  resolveMonitorTemplatePanels,
+} from '@Monitor/utils/monitorTemplate'
 import { HYPERVISORS_MAP } from '@/constants'
 import WindowsMixin from '@/mixins/windows'
 import InstallAgentFormVisible from '../../vminstance/components/InstallAgentFormVisible'
@@ -101,7 +106,26 @@ export default {
       const base = this.hypervisor === HYPERVISORS_MAP.kvm.key ? ['agent', 'basic'] : ['basic', 'agent']
       return this.showGpuTab ? [...base, 'gpu'] : base
     },
+    // 策略定义中配置的虚拟机监控模板，对全部虚拟机生效
+    templateMonitorConstants () {
+      return resolveMonitorTemplatePanels(this.$store.getters.scopedPolicy, {
+        category: MONITOR_TEMPLATE_VMINSTANCE,
+        monitorType: 'basic',
+      })
+    },
+    templateAgentMonitorConstants () {
+      return resolveMonitorTemplatePanels(this.$store.getters.scopedPolicy, {
+        category: MONITOR_TEMPLATE_VMINSTANCE,
+        monitorType: 'agent',
+      })
+    },
+    agentMonitorConstants () {
+      return this.templateAgentMonitorConstants.length ? this.templateAgentMonitorConstants : AGENT_MONITOR
+    },
     monitorConstants () {
+      if (this.templateMonitorConstants.length) {
+        return this.templateMonitorConstants
+      }
       if (this.hypervisor === HYPERVISORS_MAP.esxi.key) {
         return VMWARE_MONITOR
       } else if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
@@ -153,8 +177,15 @@ export default {
   },
   created () {
     this.fetchResource()
+    this.fetchMonitorTemplates()
   },
   methods: {
+    fetchMonitorTemplates () {
+      // 监控模板在策略定义中配置并分配（绑定的范围内全部虚拟机生效）
+      return this.$store.dispatch('scopedPolicy/get', {
+        category: [MONITOR_TEMPLATE_VMINSTANCE],
+      })
+    },
     async fetchResource () {
       if (this.needFetchResource) {
         try {
