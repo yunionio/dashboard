@@ -9,6 +9,7 @@
           <a-tab-pane key="agent-basic" :tab="$t('compute.monitor.agent')">
             <agent-monitor
               :data="serverData"
+              :constants="agentMonitorConstants"
               idKey="vm_id"
               v-if="true" />
           </a-tab-pane>
@@ -31,6 +32,8 @@
 
 <script>
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
+import { MONITOR_TEMPLATE_BAREMETAL, resolveMonitorTemplatePanels } from '@Monitor/utils/monitorTemplate'
+import { AGENT_MONITOR } from '@Compute/views/vminstance/constants'
 import AgentTemperatureMonitor from '@Compute/sections/monitor/AgentTemperatureMonitor.vue'
 import AgentGpuMonitor from '@Compute/sections/monitor/AgentGpuMonitor.vue'
 import WindowsMixin from '@/mixins/windows'
@@ -59,6 +62,17 @@ export default {
     }
   },
   computed: {
+    // 策略定义中配置的裸金属监控模板，对全部裸金属生效（物理机复用裸金属监控，同样生效）
+    templateMonitorConstants () {
+      return resolveMonitorTemplatePanels(this.$store.getters.scopedPolicy, {
+        category: MONITOR_TEMPLATE_BAREMETAL,
+        // 裸金属只有 Agent 监控
+        monitorType: 'agent',
+      })
+    },
+    agentMonitorConstants () {
+      return this.templateMonitorConstants.length ? this.templateMonitorConstants : AGENT_MONITOR
+    },
     hideInstallAgentForm () {
       return this.guest_id && this.guest_id !== ''
     },
@@ -99,7 +113,16 @@ export default {
       immediate: true,
     },
   },
+  created () {
+    this.fetchMonitorTemplates()
+  },
   methods: {
+    fetchMonitorTemplates () {
+      // 监控模板在策略定义中配置，绑定的范围内全部裸金属生效
+      return this.$store.dispatch('scopedPolicy/get', {
+        category: [MONITOR_TEMPLATE_BAREMETAL],
+      })
+    },
     handleTabChange (tab) {
     },
     async fetchServerData () {
