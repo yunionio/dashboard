@@ -284,7 +284,7 @@ export default {
 }
 .uplot-chart-tooltip {
   position: absolute;
-  z-index: 1000;
+  z-index: 2;
   pointer-events: none;
   background: rgba(50, 50, 50, 0.9);
   color: #fff;
@@ -325,7 +325,7 @@ export default {
   width: 100%;
   height: 100%;
   min-height: 300px;
-  z-index: 1001;
+  z-index: 1;
   background: #fff;
   display: flex;
   align-items: center;
