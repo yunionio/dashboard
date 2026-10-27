@@ -40,6 +40,7 @@ import BaseMonitor from '@Compute/sections/monitor/BaseMonitor'
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
 import InstallAgentFormVisible from '@Compute/views/vminstance/components/InstallAgentFormVisible'
 import { HYPERVISORS_MAP } from '@/constants'
+import { MONITOR_TEMPLATE_HOST, resolveMonitorTemplatePanels } from '@Monitor/utils/monitorTemplate'
 import WindowsMixin from '@/mixins/windows'
 import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR, AGENT_MONITOR, HOST_AGENT_MONITOR } from '../constants'
 
@@ -95,13 +96,27 @@ export default {
       if (this.resType === 'guest') {
         return AGENT_MONITOR
       }
-      return HOST_AGENT_MONITOR
+      // 宿主机监控优先使用策略定义中配置的宿主机监控模板
+      const panels = resolveMonitorTemplatePanels(this.$store.getters.scopedPolicy, {
+        category: MONITOR_TEMPLATE_HOST,
+      })
+      return panels.length ? panels : HOST_AGENT_MONITOR
     },
     installData () {
       return Object.assign({}, R.clone(this.data), { id: this.data.res_id })
     },
   },
+  created () {
+    this.fetchMonitorTemplates()
+  },
   methods: {
+    fetchMonitorTemplates () {
+      // 只有宿主机需要拉取宿主机监控模板
+      if (this.resType === 'guest') return Promise.resolve()
+      return this.$store.dispatch('scopedPolicy/get', {
+        category: [MONITOR_TEMPLATE_HOST],
+      })
+    },
     handleTabChange (tab) {
       this.currentMonitorType = tab
     },
