@@ -16,6 +16,7 @@
 import * as R from 'ramda'
 import { LB_MONITOR_OPTS } from '@Network/constants/lb'
 import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
+import { buildPanelName } from '@Monitor/utils'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
 
@@ -57,7 +58,7 @@ export default {
     localPanels () {
       return this.monitorConstants.map(item => {
         return {
-          panel_name: `${item.label}${item.metric ? `(${item.metric})` : `(${item.fromItem}.${item.seleteItem})`}`,
+          panel_name: buildPanelName(item.label, item.metric, item.fromItem, item.seleteItem),
           constants: item,
           queryData: this.genQueryData(item),
         }

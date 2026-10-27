@@ -1,7 +1,7 @@
 <template>
   <overview-card-layout :card_style="`${card_stype} ${showMonitor ? '' : ''}`">
     <template #header>
-      <div v-if="!readOnly">
+      <div v-if="!readOnly && !hideHeader">
         <a-row type="flex" style="padding: 12px;border-bottom: 1px solid #e8e8e8">
           <a-col class="d-flex" style="flex: 1 1 auto">
             <!-- 折叠 -->
@@ -96,6 +96,11 @@ export default {
     updated_at: {
       type: String,
     },
+    // 隐藏卡片头部（由父级自定义头部时使用）
+    hideHeader: {
+      type: Boolean,
+      default: false,
+    },
     dashboard_id: {
       type: String,
     },
@@ -187,11 +192,18 @@ export default {
     }
   },
   computed: {
+    // 本地面板的展示名称：label 已含 (measurement.field) 时不重复拼接
+    localPanelLabel () {
+      const { label, metric } = (this.panel && this.panel.constants) || {}
+      if (!label) return ''
+      if (!metric) return label
+      return label.includes(metric) ? label : `${label}(${metric})`
+    },
     description () {
       if (this.useLocalPanels) {
-        const { selectItem, unit, metric, label } = this.panel.constants
+        const { selectItem, unit } = this.panel.constants
         return {
-          display_name: `${label}${metric ? `(${metric})` : ''}`,
+          display_name: this.localPanelLabel,
           name: selectItem,
           unit: unit,
         }
@@ -209,9 +221,9 @@ export default {
       const detail = _.get(this.panel, 'common_alert_metric_details[0]')
       if (!detail) {
         if (this.useLocalPanels) {
-          const { fromItem, seleteItem, unit, metric, label } = this.panel.constants
+          const { fromItem, seleteItem, unit } = this.panel.constants
           return {
-            label: `${label}${metric ? `(${metric})` : ''}`,
+            label: this.localPanelLabel,
             measurement: fromItem,
             field: seleteItem,
             format: unit,
