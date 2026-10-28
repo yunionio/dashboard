@@ -36,6 +36,7 @@
 </template>
 
 <script>
+/** 关机弹窗：此弹窗用于虚拟机、裸金属、容器主机等资源关机，支持批量操作，修改时需注意三方资源对关机操作的支持情况 */
 import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -48,10 +49,12 @@ export default {
   name: 'VmShutDownDialog',
   mixins: [DialogMixin, WindowsMixin, WorkflowMixin],
   data () {
-    const { type, formData = {}, forceLocked = false } = this.params
+    const { type, formData = {}, forceLocked = false, hideAdvancedOptions = false } = this.params
     return {
       loading: false,
       forceLocked,
+      // 裸金属、容器主机等资源不支持关机停止付费和强制关机，隐藏这些高级选项
+      hideAdvancedOptions,
       action: type === 'modifyWorkflow' ? this.$t('common.modify_workflow') + `(${this.$t('compute.text_273')})` : this.$t('compute.text_273'),
       form: {
         fc: this.$form.createForm(this),
@@ -106,6 +109,7 @@ export default {
     // 腾讯云、阿里云、火山云、金山云的按量付费机器，关机可停止付费
     // 腾讯云、阿里云包年包月机器，关机停止付费会转为按量付费机器
     canStopPaying () {
+      if (this.hideAdvancedOptions) return false
       return this.dataList.length && this.dataList.every(item => {
         return ['qcloud', 'aliyun', 'ksyun'].includes(item.brand.toLocaleLowerCase()) || (['volcengine'].includes(item.brand.toLocaleLowerCase()) && item.billing_type === 'postpaid')
       })
@@ -119,6 +123,7 @@ export default {
       })
     },
     isSupportForce () {
+      if (this.hideAdvancedOptions) return false
       return this.dataList.length && this.dataList.every(item => {
         return [
           HYPERVISORS_MAP.kvm.hypervisor,
@@ -163,7 +168,7 @@ export default {
       if (this.form.fd.stopPaying) {
         data.stop_charging = true
       }
-      const ids = this.dataList.map(item => item.id)
+      const ids = this.dataList.filter(item => item.status !== 'ready').map(item => item.id)
       return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: 'ready',
@@ -207,7 +212,7 @@ export default {
       this.form.fd.stopPaying = checked
     },
     async handleShutDownByWorkflowSubmit () {
-      const ids = this.dataList.map(item => item.id)
+      const ids = this.dataList.filter(item => item.status !== 'ready').map(item => item.id)
       const values = await this.form.fc.validateFields()
       const params = {
         stop_charging: this.form.fd.stopPaying,
