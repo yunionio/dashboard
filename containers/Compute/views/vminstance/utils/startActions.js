@@ -59,7 +59,7 @@ function getDefaultBatchStartAction (vm) {
         if (!unenableCloudCheck.validate) return unenableCloudCheck
       }
       ret = vm.$isValidateResourceLock(vm.list.selectedItems, () => {
-        ret.validate = vm.list.selectedItems.every(item => item.status === 'ready')
+        ret.validate = vm.list.selectedItems.some(item => item.status === 'ready') && vm.list.selectedItems.every(item => item.status === 'ready' || item.status === 'running')
         return ret
       })
       return ret
