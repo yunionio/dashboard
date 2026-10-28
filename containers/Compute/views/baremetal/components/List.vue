@@ -117,13 +117,12 @@ export default {
           label: this.$t('compute.text_272'),
           permission: 'server_perform_start',
           action: () => {
-            const ids = this.list.selectedItems.map(item => item.id)
-            this.onManager('batchPerformAction', {
-              steadyStatus: 'running',
-              id: ids,
-              managerArgs: {
-                action: 'start',
-              },
+            this.createDialog('VmStartDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+              name: this.$t('compute.text_92'),
+              hideAdvancedOptions: true,
             })
           },
           meta: () => {
@@ -134,7 +133,7 @@ export default {
             ret.validate = this.list.selectedItems.length > 0
             if (!ret.validate) return ret
             ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
-              ret.validate = this.list.selectedItems.every(item => item.status === 'ready')
+              ret.validate = this.list.selectedItems.some(item => item.status === 'ready') && this.list.selectedItems.every(item => ['ready', 'running'].includes(item.status))
               return ret
             })
             return ret
@@ -148,6 +147,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
+              hideAdvancedOptions: true,
             })
           },
           meta: () => {
@@ -158,7 +158,7 @@ export default {
             ret.validate = this.list.selectedItems.length > 0
             if (!ret.validate) return ret
             ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
-              ret.validate = this.list.selectedItems.every(item => item.status === 'running')
+              ret.validate = this.list.selectedItems.some(item => item.status === 'running') && this.list.selectedItems.every(item => ['running', 'ready'].includes(item.status))
               return ret
             })
             return ret
