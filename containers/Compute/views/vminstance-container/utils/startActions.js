@@ -2,6 +2,8 @@
  * 容器主机开机桥接（Compute 同步目录）
  * 优先加载 scope/utils/serverStartActions.js 的容器自定义开机；缺失则回退原逻辑
  */
+import i18n from '@/locales'
+
 function loadScopeStartModule () {
   try {
     const ctx = require.context('../../../../../scope', true, /[/\\]utils[/\\]serverStartActions\.js$/)
@@ -18,12 +20,12 @@ function getDefaultStartAction (vm, obj) {
     label: vm.$t('compute.text_272'),
     permission: 'server_perform_start',
     action: () => {
-      vm.onManager('performAction', {
-        steadyStatus: 'running',
-        id: obj.id,
-        managerArgs: {
-          action: 'start',
-        },
+      vm.createDialog('VmStartDialog', {
+        data: [obj],
+        columns: vm.columns,
+        onManager: vm.onManager,
+        name: i18n.t('compute.vminstance-container'),
+        hideAdvancedOptions: true,
       })
     },
     meta: () => {
@@ -40,13 +42,12 @@ function getDefaultBatchStartAction (vm) {
     label: vm.$t('compute.text_272'),
     permission: 'server_perform_start',
     action: () => {
-      const ids = vm.list.selectedItems.map(item => item.id)
-      vm.list.onManager('batchPerformAction', {
-        steadyStatus: 'running',
-        id: ids,
-        managerArgs: {
-          action: 'start',
-        },
+      vm.createDialog('VmStartDialog', {
+        data: vm.list.selectedItems,
+        columns: vm.columns,
+        onManager: vm.onManager,
+        name: i18n.t('compute.vminstance-container'),
+        hideAdvancedOptions: true,
       })
     },
     meta: () => {
@@ -55,7 +56,7 @@ function getDefaultBatchStartAction (vm) {
         ret.validate = false
         return ret
       }
-      const isStatusOk = vm.list.selectedItems.every(item => ['ready'].includes(item.status))
+      const isStatusOk = vm.list.selectedItems.some(item => ['ready'].includes(item.status)) && vm.list.selectedItems.every(item => ['ready', 'running'].includes(item.status))
       if (!isStatusOk) {
         ret.validate = false
         return ret
