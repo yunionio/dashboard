@@ -2,6 +2,7 @@
  * 裸金属开机桥接（Compute 同步目录）
  * 优先加载 scope 自定义开机预检；缺失则回退原逻辑
  */
+import i18n from '@/locales'
 import { commonUnabled } from '../../vminstance/utils'
 
 function loadScopeStartModule () {
@@ -20,12 +21,13 @@ function getDefaultStartAction (objList, obj, manager, isHostServer) {
     label: objList.$t('compute.text_272'),
     permission: 'server_perform_start',
     action: () => {
-      manager('performAction', {
-        steadyStatus: 'running',
-        id: isHostServer ? obj.server_id : obj.id,
-        managerArgs: {
-          action: 'start',
-        },
+      objList.createDialog('VmStartDialog', {
+        data: [obj],
+        columns: objList.columns,
+        onManager: manager,
+        isHostServer,
+        name: i18n.t('compute.text_92'),
+        hideAdvancedOptions: true,
       })
     },
     meta: () => {
@@ -42,13 +44,12 @@ function getDefaultBatchStartAction (vm) {
     label: vm.$t('compute.text_272'),
     permission: 'server_perform_start',
     action: () => {
-      const ids = vm.list.selectedItems.map(item => item.id)
-      vm.onManager('batchPerformAction', {
-        steadyStatus: 'running',
-        id: ids,
-        managerArgs: {
-          action: 'start',
-        },
+      vm.createDialog('VmStartDialog', {
+        data: vm.list.selectedItems,
+        columns: vm.columns,
+        onManager: vm.onManager,
+        name: i18n.t('compute.text_92'),
+        hideAdvancedOptions: true,
       })
     },
     meta: () => {
