@@ -27,6 +27,73 @@ export const getChartTooltipLabel = (serieItem, gorupBy, measurement) => {
   return '-'
 }
 
+// 可作为资源展示名的标签，按优先级排列
+export const SERIES_NAME_TAGS = [
+  'vm_name', 'name', 'oss_name', 'redis_name', 'rds_name', 'storage_name',
+  'host', 'hostname',
+]
+
+/** 判断聚合字段值是否是无意义的 ID */
+const isIdValue = (field, value) => {
+  if (!value) return true
+  if (/(^|_)id$/.test(field || '')) return true
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(String(value))
+}
+
+const pickReadableTag = (tags = {}) => {
+  const key = SERIES_NAME_TAGS.find(k => tags[k])
+  return key ? String(tags[key]) : ''
+}
+
+const parseRawName = (rawName) => {
+  if (!rawName || rawName === 'unknown-0-value' || String(rawName).startsWith('{')) return ''
+  return String(rawName).replace(/^unknown-0-/, '')
+}
+
+/**
+ * 单条 series 的展示名，图表 tooltip、热力图行名、表格与导出统一使用
+ * 优先级：聚合字段值 > 资源名类标签 > raw_name > 原始标签串
+ */
+export const getSeriesDisplayName = (item = {}, groupBy) => {
+  const tags = item.tags || {}
+  const fields = (groupBy || []).map(g => g && g.params && g.params[0]).filter(Boolean)
+  if (fields.length) {
+    const parts = []
+    fields.forEach(field => {
+      const value = tags[field]
+      if (!value) return
+      // 聚合字段是 ID 时，用资源可读名替代，避免展示 UUID
+      const name = isIdValue(field, value) ? pickReadableTag(tags) : String(value)
+      if (name && !parts.includes(name)) parts.push(name)
+    })
+    if (parts.length) return parts.join(' / ')
+  }
+  return pickReadableTag(tags) ||
+    parseRawName(item.raw_name) ||
+    getChartTooltipLabel(item, groupBy) ||
+    ''
+}
+
+/**
+ * 批量生成展示名，并对同名系列追加区分信息（品牌 / 区域或序号），保证图表与导出可区分
+ */
+export const buildSeriesDisplayNames = (series = [], groupBy) => {
+  const used = {}
+  return series.map((item, index) => {
+    const name = getSeriesDisplayName(item, groupBy) || `series-${index + 1}`
+    if (!used[name]) {
+      used[name] = 1
+      return name
+    }
+    used[name] += 1
+    const tags = item.tags || {}
+    const extra = [tags.brand, tags.cloudregion].filter(Boolean).join(' / ')
+    const next = extra ? `${name} (${extra})` : `${name} #${used[name]}`
+    used[next] = 1
+    return next
+  })
+}
+
 /**
  * 生成监控面板名称：label 已包含指标（如「可用内存率(agent_mem.available_percent)」）时不再重复拼接
  * @param {String} label 面板名称
