@@ -241,12 +241,13 @@ export function hostServerActions (manager, obj, objList, isHostServer) {
       label: i18n.t('compute.text_272'),
       permission: 'server_perform_start',
       action: () => {
-        manager('performAction', {
-          steadyStatus: 'running',
-          id: isHostServer ? obj.server_id : obj.id,
-          managerArgs: {
-            action: 'start',
-          },
+        objList.createDialog('VmStartDialog', {
+          data: [obj],
+          columns: objList.columns,
+          onManager: manager,
+          isHostServer: isHostServer,
+          name: i18n.t('compute.text_92'),
+          hideAdvancedOptions: true,
         })
       },
       meta: () => {
@@ -264,6 +265,8 @@ export function hostServerActions (manager, obj, objList, isHostServer) {
           columns: objList.columns,
           onManager: manager,
           isHostServer: isHostServer,
+          name: i18n.t('compute.text_92'),
+          hideAdvancedOptions: true,
         })
       },
       meta: () => {
