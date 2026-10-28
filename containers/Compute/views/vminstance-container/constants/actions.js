@@ -72,6 +72,7 @@ const getSingleActions = function () {
                     columns: this.columns,
                     onManager: this.onManager,
                     name: i18n.t('compute.vminstance-container'),
+                    hideAdvancedOptions: true,
                   })
                 },
                 meta: () => {
