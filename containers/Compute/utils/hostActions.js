@@ -247,6 +247,8 @@ export function hostServerActions (manager, obj, objList, isHostServer) {
           columns: objList.columns,
           onManager: manager,
           isHostServer: isHostServer,
+          name: i18n.t('compute.text_92'),
+          hideAdvancedOptions: true,
         })
       },
       meta: () => {
