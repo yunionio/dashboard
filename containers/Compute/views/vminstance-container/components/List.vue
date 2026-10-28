@@ -179,6 +179,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
+              hideAdvancedOptions: true,
             })
           },
           meta: () => {
@@ -187,7 +188,7 @@ export default {
               ret.validate = false
               return ret
             }
-            const isStatusOk = this.list.selectedItems.every(item => ['running'].includes(item.status))
+            const isStatusOk = this.list.selectedItems.some(item => ['running'].includes(item.status)) && this.list.selectedItems.every(item => ['running', 'ready'].includes(item.status))
             if (!isStatusOk) {
               ret.validate = false
               return ret
