@@ -81,7 +81,7 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import XLSX from 'xlsx'
 import { metric_zh, tableColumnMaps } from '@Monitor/constants'
-import { getChartTooltipLabel } from '@Monitor/utils'
+import { buildSeriesDisplayNames, getChartTooltipLabel } from '@Monitor/utils'
 import { CHART_TYPE_HEATMAP, CHART_TYPE_LINE, DEFAULT_CHART_TYPES } from '@Monitor/utils/chartTypes'
 import { ColorHash } from '@/utils/colorHash'
 import { transformUnit } from '@/utils/utils'
@@ -225,27 +225,11 @@ export default {
       return this.$t('common.name')
     },
     fixedSeries () {
-      if (this.series.length) {
-        const cols = this.series[0].columns.filter(col => col !== 'time')
-        if (cols.length > 1) {
-          const series = []
-          cols.forEach((col, idx) => {
-            this.series.forEach(item => {
-              const seriesItem = {
-                columns: [col, 'time'],
-                name: col,
-                raw_name: col,
-                points: item.points.map(point => [point[idx], point[point.length - 1]]),
-              }
-              series.push(seriesItem)
-            })
-          })
-          return series
-        } else {
-          return this.series
-        }
-      }
-      return this.series
+      return this.splitSeries(this.series)
+    },
+    // 图表 tooltip、热力图行名、导出统一使用的系列展示名
+    seriesDisplayNames () {
+      return buildSeriesDisplayNames(this.fixedSeries, this.groupBy)
     },
     groupBy () {
       const groupBy = _.get(this.metricInfo, 'model.group_by')
@@ -634,7 +618,7 @@ export default {
       this.fixedSeries.forEach((item, i) => {
         const color = (this.colors && this.colors[i]) || this.colorHash.hex(`${i * 1000}`)
         if (this.highlights.some(item => item.index === i)) {
-          const label = getChartTooltipLabel(item)
+          const label = this.seriesDisplayNames[i] || getChartTooltipLabel(item)
           ret.series.push({ label, width: 1, stroke: color, spanGaps: true, unit, color, points: { show: true, size: 3 } })
         }
       })
@@ -688,6 +672,27 @@ export default {
     this.colorHash = null
   },
   methods: {
+    // 将含多个分组字段的 series 拆分为「单值 + 时间」的结构，便于图表渲染和导出
+    splitSeries (series = []) {
+      if (!series.length) return series
+      const cols = (series[0].columns || []).filter(col => col !== 'time')
+      if (cols.length > 1) {
+        const ret = []
+        cols.forEach((col, idx) => {
+          series.forEach(item => {
+            ret.push({
+              columns: [col, 'time'],
+              name: col,
+              raw_name: col,
+              tags: item.tags,
+              points: item.points.map(point => [point[idx], point[point.length - 1]]),
+            })
+          })
+        })
+        return ret
+      }
+      return series
+    },
     // 检查数据是否都是整数
     isAllIntegers (uChartData) {
       if (!uChartData || uChartData.length <= 1) {
@@ -1079,28 +1084,152 @@ export default {
         // 导出全量
         this.$emit('exportTable', total)
       } else {
-        this.exportData(this.tableData)
+        this.exportData(this.tableData, this.fixedSeries)
       }
     },
     exportFullData (series, reducedResult) {
       const tableData = this.getTableData(series, reducedResult)
-      this.exportData(tableData)
+      this.exportData(tableData, this.splitSeries(series))
     },
-    exportData (data) {
-      const columns = this.columns.filter(item => item.field !== 'color')
-      const list = [[...columns.map(item => item.title)]]
-      data.forEach(item => {
-        const row = []
-        columns.forEach(col => {
-          row.push(col.formatter ? col.formatter({ row: item, cellValue: item[col.field] }) : item[col.field])
-        })
-        list.push(row)
+    // 指标单位，用于原始值 sheet 的表头
+    getMetricUnit () {
+      let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit') || ''
+      unit = String(unit).trim()
+      if (['', 'NULL', 'count'].includes(unit)) return ''
+      return unit
+    },
+    // 与图表 tooltip 保持一致的值格式化（如 2%、3.23 Gbps）
+    formatMetricValue (value) {
+      if (_.isNil(value)) return ''
+      let unit = _.get(this.description, 'description.unit') || _.get(this.description, 'unit') || ''
+      if (unit === 'NULL' || unit === 'count') {
+        unit = ''
+      }
+      if (unit === 'ms') { // 时间类型取整，与坐标轴 / tooltip 一致
+        unit = 'intms'
+      }
+      if (!unit) return value
+      return transformUnit(value, unit, 1000, '0.0000').text
+    },
+    // 构建监控数据 sheet：前置列与表格一致（资源信息列），后接各时间点
+    // 准备导出的公共数据：资源信息列、时间轴、每行的标签与指标值
+    getMetricSheetContext (series = [], tableData = []) {
+      const list = this.splitSeries(series)
+      if (!list.length) return null
+      const rows = tableData && tableData.length ? tableData : this.getTableData(list, this.reducedResult)
+      // 跟随表格列：去掉颜色列；详情列单独取出，导出时放在最后一列
+      const allColumns = (this.columns || []).filter(col => col.field !== 'color')
+      const detailColumn = allColumns.find(col => col.field === 'raw_name')
+      const labelColumns = allColumns.filter(col => col.field !== 'raw_name')
+      const useSeriesName = !labelColumns.length
+      const names = useSeriesName ? buildSeriesDisplayNames(list, this.groupBy) : []
+      const timeSet = new Set()
+      list.forEach(item => {
+        (item.points || []).forEach(point => timeSet.add(point[point.length - 1]))
       })
-      const filename = `${this.title || 'monitor table'}.xlsx`
-      const ws_name = 'Sheet1'
-      const wb = XLSX.utils.book_new()
+      const times = Array.from(timeSet).sort((a, b) => a - b)
+      if (!times.length) return null
+      const rowsData = list.map((item, index) => {
+        const row = rows[index] || {}
+        const labels = useSeriesName
+          ? [names[index]]
+          : labelColumns.map(col => {
+            const cellValue = _.isNil(row[col.field]) ? '' : row[col.field]
+            return col.formatter ? col.formatter({ row, cellValue }) : cellValue
+          })
+        let detail = ''
+        if (detailColumn) {
+          const detailValue = _.isNil(row[detailColumn.field]) ? '' : row[detailColumn.field]
+          detail = detailColumn.formatter
+            ? detailColumn.formatter({ row, cellValue: detailValue })
+            : detailValue
+        }
+        const metrics = {}
+        const points = item.points || []
+        points.forEach(point => {
+          metrics[point[point.length - 1]] = point[0]
+        })
+        return { labels, detail, metrics }
+      })
+      return { labelColumns, detailColumn, useSeriesName, times, rowsData }
+    },
+    getMetricSheetHeader (ctx, timeLabels, withDetail = false) {
+      const header = ctx.useSeriesName
+        ? [this.$t('monitor.export_metric_resource'), ...timeLabels]
+        : [...ctx.labelColumns.map(col => col.title), ...timeLabels]
+      if (withDetail && ctx.detailColumn) {
+        header.push(ctx.detailColumn.title)
+      }
+      return header
+    },
+    // 构建监控数据 sheet：前置列与表格一致（资源信息列），后接各时间点，值按图表 tooltip 格式化
+    buildMetricSheetData (series = [], tableData = []) {
+      const ctx = this.getMetricSheetContext(series, tableData)
+      if (!ctx) return []
+      const timeLabels = ctx.times.map(t => this.$moment(t).format(this.timeFormatStr))
+      const result = [this.getMetricSheetHeader(ctx, timeLabels)]
+      ctx.rowsData.forEach(row => {
+        result.push([...row.labels, ...ctx.times.map(t => this.formatMetricValue(row.metrics[t]))])
+      })
+      return result
+    },
+    // 构建原始监控数据 sheet：值为原始数字、单位标注在表头，便于正常排序；详情列放最后
+    buildRawMetricSheetData (series = [], tableData = []) {
+      const ctx = this.getMetricSheetContext(series, tableData)
+      if (!ctx) return []
+      const unit = this.getMetricUnit()
+      const timeLabels = ctx.times.map(t => {
+        const label = this.$moment(t).format(this.timeFormatStr)
+        return unit ? `${label} (${unit})` : label
+      })
+      const hasDetail = !!ctx.detailColumn
+      const result = [this.getMetricSheetHeader(ctx, timeLabels, hasDetail)]
+      ctx.rowsData.forEach(row => {
+        const values = ctx.times.map(t => {
+          const val = row.metrics[t]
+          if (_.isNil(val) || val === '') return null // 空单元格，排序时始终在末尾
+          const num = Number(val)
+          return Number.isNaN(num) ? val : num // 必须写数字，文本无法正确排序
+        })
+        const cells = [...row.labels, ...values]
+        if (hasDetail) cells.push(row.detail)
+        result.push(cells)
+      })
+      return result
+    },
+    appendSheet (wb, list, name) {
       const ws = XLSX.utils.aoa_to_sheet(list)
-      XLSX.utils.book_append_sheet(wb, ws, ws_name)
+      // 声明首行为表头，避免排序时把表头一起排进数据
+      ws['!autofilter'] = {
+        ref: XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: list.length - 1, c: list[0].length - 1 } }),
+      }
+      // 原始数值位数较长，设置列宽避免显示成 ####
+      ws['!cols'] = list[0].map((_, i) => ({ wch: i < 3 ? 18 : 22 }))
+      XLSX.utils.book_append_sheet(wb, ws, name)
+    },
+    exportData (data, series = this.fixedSeries) {
+      // 监控数据 sheet：资源信息列 + 各时间点（值按 tooltip 格式化）
+      let list = this.buildMetricSheetData(series, data)
+      if (list.length <= 1) {
+        // 无监控数据时，兜底导出资源信息
+        const columns = this.columns.filter(item => item.field !== 'color')
+        list = [[...columns.map(item => item.title)]]
+        data.forEach(item => {
+          const row = []
+          columns.forEach(col => {
+            row.push(col.formatter ? col.formatter({ row: item, cellValue: item[col.field] }) : item[col.field])
+          })
+          list.push(row)
+        })
+      }
+      const wb = XLSX.utils.book_new()
+      this.appendSheet(wb, list, this.$t('monitor.export_metric_sheet'))
+      // 原始监控数据（原始值 + 表头单位，可正常排序）
+      const rawList = this.buildRawMetricSheetData(series, data)
+      if (rawList.length > 1) {
+        this.appendSheet(wb, rawList, this.$t('monitor.export_metric_raw_sheet'))
+      }
+      const filename = `${this.title || 'monitor table'}-${this.$moment().format('YYYYMMDD-HHmm')}.xlsx`
       XLSX.writeFile(wb, filename)
     },
     toggleShowTableLegend () {
