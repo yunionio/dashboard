@@ -28,7 +28,7 @@ import 'echarts/lib/chart/heatmap'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/grid'
 import 'echarts/lib/component/title'
-import { getChartTooltipLabel } from '@Monitor/utils'
+import { buildSeriesDisplayNames } from '@Monitor/utils'
 import EChart from '@/components/EChart'
 import i18n from '@/locales'
 import { uuid } from '@/utils/utils'
@@ -170,9 +170,6 @@ export default {
     }
   },
   computed: {
-    groupByFields () {
-      return (this.groupBy || []).map(item => _.get(item, 'params[0]')).filter(Boolean)
-    },
     chartStyle () {
       const rowCount = Math.max(this.yLabels.length, 1)
       // 每格至少 20px 高：行数多时拉高整图，不压缩格子
@@ -183,30 +180,12 @@ export default {
       }
     },
     seriesRows () {
-      const groupByFields = this.groupByFields
-      return (this.series || []).map((item, index) => {
-        const tags = item.tags || {}
-        let name = ''
-        // 与表格一致：有 groupBy 时按聚合字段取值展示
-        if (groupByFields.length) {
-          name = groupByFields.map(field => tags[field] || '-').join(' / ')
-        } else {
-          const rawName = item.raw_name || ''
-          const usableRawName = rawName &&
-            rawName !== 'unknown-0-value' &&
-            !String(rawName).startsWith('{')
-            ? rawName.replace(/^unknown-0-/, '')
-            : ''
-          name = tags.vm_name || tags.name || tags.host || tags.hostname ||
-            usableRawName ||
-            getChartTooltipLabel(item) ||
-            `series-${index + 1}`
-        }
-        return {
-          name: String(name),
-          points: item.points || [],
-        }
-      })
+      // 与折线图 tooltip、表格导出共用同一套命名规则
+      const names = buildSeriesDisplayNames(this.series || [], this.groupBy)
+      return (this.series || []).map((item, index) => ({
+        name: names[index],
+        points: item.points || [],
+      }))
     },
     timeList () {
       if (!this.seriesRows.length) return []
