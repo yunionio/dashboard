@@ -71,7 +71,7 @@ import _ from 'lodash'
 import * as R from 'ramda'
 import { metric_zh, tableColumnMaps } from '@Monitor/constants'
 import MonitorLine from '@Monitor/sections/MonitorLine'
-import { addMissingSeries } from '@Monitor/utils'
+import { addMissingSeries, MONITOR_TIME_LAST_MONTH, parseMonitorTimeRange } from '@Monitor/utils'
 import { CHART_TYPE_LINE, isPercentUnit, parseChartTypesFromPanel } from '@Monitor/utils/chartTypes'
 import WindowsMixin from '@/mixins/windows'
 import DialogMixin from '@/mixins/dialog'
@@ -320,6 +320,10 @@ export default {
           params.from = this.customTime.from
           params.to = this.customTime.to
         }
+      } else if (this.time === MONITOR_TIME_LAST_MONTH) { // 上个月为前端伪值，换算成相对当前时间的小时数
+        const { from, to } = parseMonitorTimeRange(this.time, this.$moment)
+        params.from = from
+        params.to = to
       } else {
         params.from = this.time
         if (!this.isTemplate) {
