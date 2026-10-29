@@ -108,6 +108,33 @@ export const buildPanelName = (label, metric, measurement, field) => {
   return base.includes(target) ? base : `${base}(${target})`
 }
 
+// 监控时间选择中的「上个月」只是前端伪值，unifiedmonitors 只接受相对时间（如 1h、now-1h）
+export const MONITOR_TIME_LAST_MONTH = 'last_month'
+
+/**
+ * 将监控时间选择值换算为 unifiedmonitors 可识别的时间参数
+ * @param {String} time 时间选择值，如 '1h'、'last_month'
+ * @param {Function} moment moment 实例工厂（this.$moment），仅在 last_month 时需要
+ * @returns {{ from: String, to: String }} to 为空表示查询到当前时刻
+ */
+export const parseMonitorTimeRange = (time, moment) => {
+  if (time !== MONITOR_TIME_LAST_MONTH) return { from: time }
+  const now = moment()
+  const start = now.clone().subtract(1, 'month').startOf('month') // 上个月 1 号 0 点
+  const end = now.clone().subtract(1, 'month').endOf('month') // 上个月最后一天最后一刻
+  return {
+    from: `${Math.floor(now.diff(start, 'hours', true))}h`,
+    to: `${Math.floor(now.diff(end, 'hours', true))}h`,
+  }
+}
+
+// 监控时间选择值对应的小时数，用于计算取值间隔；「上个月」按实际跨度计算
+export const getMonitorTimeHours = (time, moment) => {
+  const { from, to } = parseMonitorTimeRange(time, moment)
+  const toHours = v => Number(String(v || '').replace(/\D+/g, '')) || 0
+  return toHours(from) - toHours(to)
+}
+
 // 添加缺失的时间点
 export const addMissingSeries = (series = [], chartQueryData, moment) => {
   if (series.length && series.some(item => item.points && item.points.length)) {
