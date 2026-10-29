@@ -134,7 +134,9 @@ export default {
     data: {
       handler (val) {
         const next = this.resolveAgentInstallStatus(val)
-        if (this.agent_install_status === 'installing' && next === 'install') return
+        // A reinstall keeps the previous install metadata. While this attempt is
+        // still applying, that metadata must not flip the form back to installed.
+        if (this.agent_install_status === 'installing' && val && val.agent_status === 'applying' && next !== 'installing') return
         this.agent_install_status = next
       },
     },
@@ -151,7 +153,7 @@ export default {
       deep: true,
     },
     'data.metadata.telegraf_deployed' (val, oldval) {
-      if (val === 'true') {
+      if (val === 'true' && this.data.agent_status !== 'applying') {
         this.agent_install_status = 'installed'
         this.$emit('onInstall', { status: 'succeed' })
       }
@@ -160,15 +162,14 @@ export default {
   methods: {
     resolveAgentInstallStatus (data) {
       if (!data) return 'install'
+      // The latest attempt wins over metadata left by a previous install.
+      if (data.agent_status === 'applying') return 'installing'
+      if (data.agent_status === 'failed') return 'install_failed'
+      if (data.agent_status === 'succeed') return 'installed'
       const deploy = _.get(data, ['metadata', 'telegraf_deployed'])
       const monitorAgent = _.get(data, ['metadata', 'sys:monitor_agent']) || _.get(data, ['metadata', '__monitor_agent'])
       const deployed = deploy === true || deploy === 'true'
       if (deployed || monitorAgent) return 'installed'
-      if (Object.prototype.hasOwnProperty.call(data, 'agent_status')) {
-        if (data.agent_status === 'succeed') return 'installed'
-        if (data.agent_status === 'applying') return 'installing'
-        if (data.agent_status === 'failed') return 'install_failed'
-      }
       return 'install'
     },
     async handleInstallAgent (e) {
