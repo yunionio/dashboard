@@ -153,7 +153,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['permission']),
+    ...mapGetters(['permission', 'userInfo']),
     usage () {
       const usage = (this.data && this.data[this.form.fd.usage_key]) || 0
       const ret = {
@@ -215,7 +215,11 @@ export default {
       if (!path) return false
       const target = routes.filter(item => item.path === path)
       if (target.length && target[0].meta?.hidden) {
-        return target[0].meta.hidden()
+        const { hidden } = target[0].meta
+        if (typeof hidden === 'function') {
+          return hidden(this.userInfo, target[0])
+        }
+        return hidden
       }
       return false
     },
