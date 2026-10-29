@@ -110,9 +110,9 @@ export default {
   },
   created () {
     this.$bus.$on('agentStatusQuery', (val) => {
-      if (this.agent_status === 'failed') {
-        this.agent_status = 'applying'
-      }
+      this.agent_status = 'applying'
+      this.agent_fail_reason = ''
+      this.agent_fail_code = ''
       this.handleInstallTask({
         script_apply_id: val,
       })
