@@ -50,8 +50,8 @@
       </a-form-item>
       <auto-sync :fc="form.fc" :form-layout="formLayout" :cloneData="cloneData" />
       <read-only :cloneData="cloneData" />
-      <skip-duplicate-account-check :cloneData="cloneData" />
       <share-mode :fd="form.fd" :cloneData="cloneData" />
+      <skip-duplicate-account-check :cloneData="cloneData" />
       <!-- <a-form-item :label="$t('cloudenv.text_242')">
         <a-input v-decorator="decorators.balanceKey" type="textarea" rows="4" />
       </a-form-item> -->
