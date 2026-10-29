@@ -201,8 +201,8 @@ export default {
         resource: 'servers',
         steadyStatus: Object.values(expectStatus.server).flat(),
       }, {
-        list: this.list,
         tab: 'baremetal-detail',
+        cancel: () => this.list.refresh(),
       })
     },
   },
