@@ -35,6 +35,7 @@ import get from 'lodash/get'
 import echarts from 'echarts'
 import MonitorLine from '@Monitor/sections/MonitorLine'
 import { MONITOR_MAX_POINTERS, metric_zh } from '@Monitor/constants'
+import { getMonitorTimeHours, parseMonitorTimeRange } from '@Monitor/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { getRequestT } from '@/utils/utils'
@@ -142,7 +143,8 @@ export default {
           params.to = this.customTime.to
         }
       } else {
-        params.from = this.time
+        // 「上个月」会换算成相对当前时间的小时数
+        Object.assign(params, parseMonitorTimeRange(this.time, this.$moment))
       }
       return params
     },
@@ -171,7 +173,7 @@ export default {
       if (this.time === 'custom') {
         diffHour = this.customTime.from.replace(noNumberReg, '') - this.customTime.to.replace(noNumberReg, '')
       } else {
-        diffHour = this.time.replace(noNumberReg, '')
+        diffHour = getMonitorTimeHours(this.time, this.$moment)
       }
       const diff = diffHour * 60 // 变分钟
       this.timeGroup = `${diff / MONITOR_MAX_POINTERS}m`

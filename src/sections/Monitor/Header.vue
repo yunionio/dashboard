@@ -280,7 +280,6 @@ export default {
     },
     timeChange (val) {
       const time = val.target.value
-      console.log('time', time)
       if (time === 'all') {
         this.$emit('update:time', 'all')
         return
