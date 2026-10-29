@@ -79,6 +79,7 @@ import echarts from 'echarts'
 import MonitorForms from '@Monitor/sections/ExplorerForm'
 import MonitorLine from '@Monitor/sections/MonitorLine'
 import { buildChartTypesMessage, DEFAULT_CHART_TYPES } from '@Monitor/utils/chartTypes'
+import { parseMonitorTimeRange } from '@Monitor/utils'
 import { getSignature } from '@/utils/crypto'
 import { getRequestT, uuid } from '@/utils/utils'
 import MonitorHeader from '@/sections/Monitor/Header'
@@ -137,7 +138,8 @@ export default {
           params.to = this.customTime.to
         }
       } else {
-        params.from = this.time
+        // 「上个月」会换算成相对当前时间的小时数
+        Object.assign(params, parseMonitorTimeRange(this.time, this.$moment))
       }
       return params
     },
