@@ -98,15 +98,20 @@ export default {
             tooltip = i18n.t('cloudenv.text_357')
             validate = false
           }
-          if (obj.sync_status !== 'idle') {
-            tooltip = i18n.t('cloudenv.text_313')
-            validate = false
-          }
           return {
             tooltip,
             validate,
           }
         },
+        hidden: obj => obj.sync_status !== 'idle',
+      },
+      // 同步中：取消订阅同步任务
+      {
+        label: i18n.t('cloudenv.sync_task.cancel_sync'),
+        permission: 'cloudaccountsynctasks_perform_cancel',
+        action: obj => this.handleCancelProviderSync(obj),
+        meta: obj => ({ validate: ownerDomain(obj) }),
+        hidden: obj => obj.sync_status === 'idle',
       },
       {
         label: i18n.t('cloudenv.text_311'),
