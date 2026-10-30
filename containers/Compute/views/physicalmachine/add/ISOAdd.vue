@@ -34,9 +34,6 @@
         :decorators="decorators"
         download-url="/v1/downloads/BatchHostISORegister" />
     </template>
-    <a-form-item :wrapper-col="offsetWrapperCol">
-      <a-checkbox v-decorator="decorators.no_prepare">{{$t('compute.text_780')}}</a-checkbox>
-    </a-form-item>
   </div>
 </template>
 
