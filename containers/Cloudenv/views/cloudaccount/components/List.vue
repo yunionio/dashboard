@@ -22,6 +22,7 @@ import ResTemplateListMixin from '@/mixins/resTemplateList'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { isCE } from '@/utils/utils'
+import CancelSyncMixin from '@Cloudenv/views/cloudaccountsynctasks/mixins/cancelSync'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -29,7 +30,7 @@ const providerMap = typeClouds.getProviderlowcase()
 
 export default {
   name: 'CloudaccountList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResTemplateListMixin, CancelSyncMixin],
   props: {
     id: String,
     getParams: {

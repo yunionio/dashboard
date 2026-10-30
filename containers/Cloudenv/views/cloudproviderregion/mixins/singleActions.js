@@ -38,7 +38,6 @@ export default {
           })
         },
         meta: obj => {
-          const isIdle = obj.sync_status === 'idle'
           if (obj.enable_auto_sync && obj.cloudprovider_sync_status !== 'idle') {
             return {
               validate: false,
@@ -46,10 +45,18 @@ export default {
             }
           }
           return {
-            validate: isIdle,
-            tooltip: !isIdle && i18n.t('cloudenv.text_368', [this.$t('status.cloudaccountSyncStatus')[obj.sync_status]]),
+            validate: true,
           }
         },
+        hidden: obj => obj.sync_status !== 'idle',
+      },
+      // 同步中：取消区域同步任务
+      {
+        label: i18n.t('cloudenv.sync_task.cancel_sync'),
+        permission: 'cloudaccountsynctasks_perform_cancel',
+        action: obj => this.handleCancelProviderRegionSync(obj),
+        meta: obj => ({ validate: ownerDomain(obj) }),
+        hidden: obj => obj.sync_status === 'idle',
       },
       {
         label: i18n.t('cloudenv.text_463'),
