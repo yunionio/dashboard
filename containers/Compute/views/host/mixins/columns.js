@@ -400,21 +400,26 @@ export default {
       {
         field: 'manufacture',
         title: i18n.t('compute.text_847'),
-        width: 70,
+        // 单元格内容宽 = 列宽 - 左右各 10px 内边距，需容纳最宽的品牌 logo
+        width: 96,
         slots: {
           default: ({ row }) => {
             if (row.sys_info && row.sys_info.oem_name) {
-              const oem_name = row.sys_info.oem_name.replaceAll(' ', '_')
+              const oem_name = row.sys_info.oem_name.replaceAll(' ', '_').toLowerCase()
               const icons = {
                 dell: { height: '25px' },
                 hp: { height: '25px' },
                 hpe: { height: '30px' },
                 inspur: { height: '50px' },
-                lenovo: { height: '10px' },
+                lenovo: { height: '14px' },
                 supermicro: { height: '30px' },
                 huawei: { height: '30px' },
                 red_hat: { height: '30px' },
-                ieit_systems: { height: '30px' },
+                ieit_systems: { height: '19px' },
+                xfusion: { height: '10px' },
+                h3c: { height: '18px' },
+                zte: { height: '18px' },
+                qemu: { height: '22px' },
               }
               const arr = Object.keys(icons)
               if (!arr.includes(oem_name)) {
@@ -423,7 +428,7 @@ export default {
               const imgSrc = require(`../../physicalmachine/assets/${oem_name}.svg`)
               return [
                 <a-tooltip title={ row.sys_info.oem_name }>
-                  <img src={ imgSrc } style={ icons[oem_name] } />
+                  <img src={ imgSrc } style={{ maxWidth: '100%', ...icons[oem_name] }} />
                 </a-tooltip>,
               ]
             }
