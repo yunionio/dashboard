@@ -137,27 +137,33 @@ export default {
       {
         field: 'manufacture',
         title: i18n.t('compute.text_847'),
-        width: 70,
+        // 单元格内容宽 = 列宽 - 左右各 10px 内边距，需容纳最宽的品牌 logo
+        width: 96,
         slots: {
           default: ({ row }) => {
             if (row.sys_info && row.sys_info.oem_name) {
+              const oem_name = row.sys_info.oem_name.replaceAll(' ', '_').toLowerCase()
               const icons = {
                 dell: { height: '25px' },
                 hp: { height: '25px' },
                 hpe: { height: '30px' },
                 inspur: { height: '50px' },
-                lenovo: { height: '10px' },
+                lenovo: { height: '14px' },
                 supermicro: { height: '30px' },
                 huawei: { height: '30px' },
+                xfusion: { height: '10px' },
+                h3c: { height: '18px' },
+                zte: { height: '18px' },
+                qemu: { height: '22px' },
               }
               const arr = Object.keys(icons)
-              if (!arr.includes(row.sys_info.oem_name)) {
+              if (!arr.includes(oem_name)) {
                 return row.sys_info.oem_name
               }
-              const imgSrc = require(`../assets/${row.sys_info.oem_name}.svg`)
+              const imgSrc = require(`../assets/${oem_name}.svg`)
               return [
                 <a-tooltip title={ row.sys_info.oem_name }>
-                  <img src={ imgSrc } style={ icons[row.sys_info.oem_name] } />
+                  <img src={ imgSrc } style={{ maxWidth: '100%', ...icons[oem_name] }} />
                 </a-tooltip>,
               ]
             }
@@ -201,6 +207,7 @@ export default {
         resource: 'servers',
         steadyStatus: Object.values(expectStatus.server).flat(),
       }, {
+        // 不能传物理机列表（hosts manager），否则侧边页内的操作会请求 hosts 接口
         tab: 'baremetal-detail',
         cancel: () => this.list.refresh(),
       })
