@@ -40,6 +40,7 @@ import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import { findPlatform } from '@/utils/common/hypervisor'
+import CancelSyncMixin from '@Cloudenv/views/cloudaccountsynctasks/mixins/cancelSync'
 import HostList from './Host'
 import CloudaccountDetail from './Detail'
 import ScheduledtasksList from './Schedule'
@@ -60,7 +61,7 @@ export default {
     SamluserList,
     ScheduledtasksList,
   },
-  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin, CancelSyncMixin],
   computed: {
     detailTabs () {
       const data = this.detailData

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-tabs default-active-key="res-sync" @change="handleTabChange">
+    <a-tabs default-active-key="account-sync-task" @change="handleTabChange">
       <a-tab-pane v-for="item in tabs" :key="item.key" :tab="item.label" />
     </a-tabs>
     <div class="mt-2">
@@ -10,7 +10,7 @@
           :id="id"
           :resId="resId"
           :data="data"
-          :getParams="getParams"
+          :getParams="syncTaskGetParams"
           :accountData="data" />
       </keep-alive>
     </div>
@@ -20,6 +20,7 @@
 
 <script>
 import BillTask from '@Cloudenv/views/billtasks/components/List'
+import AccountSyncTask from '@Cloudenv/views/cloudaccountsynctasks/components/List'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { hasMeterService } from '@/utils/auth'
@@ -30,6 +31,7 @@ export default {
   components: {
     ResSync,
     BillTask,
+    AccountSyncTask,
   },
   mixins: [WindowsMixin, ListMixin],
   props: {
@@ -40,18 +42,28 @@ export default {
   },
   data () {
     return {
-      currentTab: 'res-sync',
+      currentTab: 'account-sync-task',
     }
   },
   computed: {
     tabs () {
       const tabs = [
+        { key: 'account-sync-task', label: this.$t('cloudenv.account_sync_tasks') },
         { key: 'res-sync', label: this.$t('cloudenv.res_sync') },
       ]
       if (hasMeterService()) {
         tabs.push({ key: 'bill-task', label: this.$t('cloudenv.bill_tasks') })
       }
       return tabs
+    },
+    syncTaskGetParams () {
+      if (this.currentTab === 'account-sync-task') {
+        return {
+          cloudaccount_id: this.resId || (this.data && this.data.id),
+          account_level: true,
+        }
+      }
+      return this.getParams
     },
   },
   methods: {
