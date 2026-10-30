@@ -18,17 +18,12 @@ export default {
         title: i18n.t('cloudenv.text_103'),
         slots: {
           default: ({ row }) => {
-            if (row.sync_status !== 'idle') { // 表示正在同步中
-              return [
-                <status status={ row.sync_status } statusModule='cloudaccountSyncStatus' />,
-              ]
-            } else {
-              let time
-              if (row.last_sync) {
-                time = this.$moment(row.last_sync)
-              }
-              return time ? time.fromNow() : '-'
+            // 同步时间始终展示时间，不展示「同步中」
+            let time
+            if (row.last_sync) {
+              time = this.$moment(row.last_sync)
             }
+            return time ? time.fromNow() : '-'
           },
         },
       },
@@ -37,11 +32,6 @@ export default {
         title: i18n.t('cloudenv.last.sync.end.at'),
         slots: {
           default: ({ row }) => {
-            if (row.sync_status !== 'idle') { // 表示正在同步中
-              return [
-                <status status={ row.sync_status } statusModule='cloudaccountSyncStatus' />,
-              ]
-            }
             const time = this.$moment(row.last_sync_end_at)
             if (time) {
               return time.fromNow()
