@@ -24,6 +24,7 @@
     </page-body>
     <page-footer>
       <template v-slot:right>
+        <a-checkbox v-if="showNoPrepare" :checked="noPrepare" class="mr-3" @change="handleNoPrepareChange">{{$t('compute.text_780')}}</a-checkbox>
         <a-button type="primary" :loading="adding" @click="handleAdd" v-if="!isScriptAdd">{{$t('compute.text_162')}}</a-button>
         <a-button class="ml-2" @click="handleBack">{{$t('compute.text_135')}}</a-button>
       </template>
@@ -62,6 +63,8 @@ export default {
     const projectDomainInitialValue = this.$store.getters.userInfo.projectDomainId
     return {
       adding: false,
+      // 只注册不引导（默认勾选）
+      noPrepare: true,
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -204,12 +207,6 @@ export default {
             ],
           },
         ],
-        no_prepare: [
-          'no_prepare',
-          {
-            valuePropName: 'checked',
-          },
-        ],
         no_bmc: [
           'no_bmc',
           {
@@ -260,6 +257,10 @@ export default {
     },
     isPxeFileAdd () {
       return this.form.fd.type === 'pxeAdd' && this.form.fd.mode === 'file'
+    },
+    // “只注册不引导”仅 ISO、PXE 安装方式支持
+    showNoPrepare () {
+      return ['isoAdd', 'pxeAdd'].includes(this.form.fd.type)
     },
   },
   watch: {
@@ -363,7 +364,7 @@ export default {
         ipmi_username: this.form.fd.ipmi_username,
         ipmi_password: this.form.fd.ipmi_password,
         enable_pxe_boot: false,
-        no_prepare: this.form.fd.no_prepare || false,
+        no_prepare: this.noPrepare,
         __meta__: this.form.fd.__meta__,
       }
       if (this.form.fd.project_domain && this.isAdminMode) {
@@ -386,7 +387,7 @@ export default {
       const fd = new FormData()
       fd.append('action', 'BatchHostRegister')
       fd.append('hosts', new Blob([this.form.fd.file.file], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
-      fd.append('no_prepare', this.form.fd.no_prepare || false)
+      fd.append('no_prepare', this.noPrepare)
       if (this.form.fd.project_domain && this.isAdminMode) {
         fd.append('project_domain', this.form.fd.project_domain)
       }
@@ -406,7 +407,7 @@ export default {
         ipmi_username: this.form.fd.ipmi_username,
         ipmi_password: this.form.fd.ipmi_password,
         enable_pxe_boot: true,
-        no_prepare: this.form.fd.no_prepare || false,
+        no_prepare: this.noPrepare,
         access_mac: this.form.fd.access_mac,
         __meta__: this.form.fd.__meta__,
       }
@@ -430,7 +431,7 @@ export default {
       const fd = new FormData()
       fd.append('action', 'BatchHostRegister')
       fd.append('hosts', new Blob([this.form.fd.file.file], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
-      fd.append('no_prepare', this.form.fd.no_prepare || false)
+      fd.append('no_prepare', this.noPrepare)
       if (this.form.fd.project_domain && this.isAdminMode) {
         fd.append('project_domain', this.form.fd.project_domain)
       }
@@ -528,9 +529,13 @@ export default {
       }
       return callback()
     },
+    handleNoPrepareChange (e) {
+      this.noPrepare = e.target.checked
+    },
     handleTypeChange (e) {
       const project_domain = this.form.fc.getFieldValue('project_domain')
       this.form.fc.resetFields()
+      this.noPrepare = true
       this.$nextTick(() => {
         this.form.fc.getFieldDecorator('mode', { preserve: true })
         this.form.fc.getFieldDecorator('project_domain', { preserve: true })
