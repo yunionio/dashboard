@@ -179,6 +179,22 @@ export default {
             ],
           },
         ],
+        ipmi_port: [
+          'ipmi_port',
+          {
+            rules: [
+              { validator: this.validateOptionalPort },
+            ],
+          },
+        ],
+        ipmi_redfish_port: [
+          'ipmi_redfish_port',
+          {
+            rules: [
+              { validator: this.validateOptionalPort },
+            ],
+          },
+        ],
         net: [
           'net',
           {
@@ -310,6 +326,9 @@ export default {
         no_probe: true,
         no_bmc: this.form.fd.no_bmc,
       }
+      if (!this.form.fd.no_bmc) {
+        this.applyIpmiPorts(data)
+      }
       if (this.form.fd.project_domain && this.isAdminMode) {
         data.project_domain = this.form.fd.project_domain
       }
@@ -367,6 +386,7 @@ export default {
         no_prepare: this.noPrepare,
         __meta__: this.form.fd.__meta__,
       }
+      this.applyIpmiPorts(data)
       if (this.form.fd.project_domain && this.isAdminMode) {
         data.project_domain = this.form.fd.project_domain
       }
@@ -411,6 +431,7 @@ export default {
         access_mac: this.form.fd.access_mac,
         __meta__: this.form.fd.__meta__,
       }
+      this.applyIpmiPorts(data)
       if (this.form.fd.project_domain && this.isAdminMode) {
         data.project_domain = this.form.fd.project_domain
       }
@@ -443,12 +464,18 @@ export default {
       })
     },
     async checkMac (values) {
+      const data = {
+        ip: values.ipmi_ip_addr,
+        username: values.ipmi_username,
+        password: values.ipmi_password,
+      }
+      const ipmiPort = this.normalizePort(values.ipmi_port)
+      const redfishPort = this.normalizePort(values.ipmi_redfish_port)
+      if (ipmiPort) data.ipmi_port = ipmiPort
+      // 校验接口字段是 redfish_port，注册接口字段是 ipmi_redfish_port
+      if (redfishPort) data.redfish_port = redfishPort
       const res = await this.hvm.create({
-        data: {
-          ip: values.ipmi_ip_addr,
-          username: values.ipmi_username,
-          password: values.ipmi_password,
-        },
+        data,
       })
       if (res.data?.is_redfish_supported || (!res.data?.is_redfish_supported && values.access_mac)) {
         return Promise.resolve()
@@ -492,6 +519,25 @@ export default {
       } finally {
         this.adding = false
       }
+    },
+    normalizePort (value) {
+      if (value === undefined || value === null || value === '') return undefined
+      const port = Number(value)
+      if (!Number.isInteger(port) || port < 1 || port > 65535) return undefined
+      return port
+    },
+    applyIpmiPorts (data) {
+      const ipmiPort = this.normalizePort(this.form.fc.getFieldValue('ipmi_port'))
+      const redfishPort = this.normalizePort(this.form.fc.getFieldValue('ipmi_redfish_port'))
+      if (ipmiPort) data.ipmi_port = ipmiPort
+      if (redfishPort) data.ipmi_redfish_port = redfishPort
+    },
+    validateOptionalPort (rule, value, callback) {
+      if (value === undefined || value === null || value === '') return callback()
+      if (!this.normalizePort(value)) {
+        return callback(new Error(this.$t('compute.ipmi_port_invalid')))
+      }
+      return callback()
     },
     validateIpAddr (rule, value, callback) {
       if (value) {
