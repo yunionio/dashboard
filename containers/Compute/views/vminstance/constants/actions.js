@@ -1,6 +1,7 @@
 import qs from 'qs'
 import { SERVER_TYPE, SMART_SSH_FORM_DECORATORS } from '@Compute/constants'
 import { isServerNetworkTagMode } from '@Compute/utils/secgroupDisplay'
+import { getServerSshPort } from '@Compute/utils/webconsole'
 import VncInfoFetcher from '@Compute/sections/VncInfoFetcher'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
@@ -126,15 +127,19 @@ const getSingleActions = function (ctx) {
             }
 
             const openWebconsole = async (prms, id) => {
+              const reqData = {
+                id,
+                ip: ipAddr,
+                ...prms,
+                type: 'server',
+              }
+              if (!reqData.port) {
+                reqData.port = await getServerSshPort(new this.$Manager('servers'), id, 22)
+              }
               const params = {
                 id: 'ssh',
                 action: id,
-                data: {
-                  id,
-                  ip: ipAddr,
-                  ...prms,
-                  type: 'server',
-                },
+                data: reqData,
               }
               this.webconsoleManager.performAction(params).then(({ data }) => {
                 const connectParams = qs.parse(data.connect_params)
@@ -176,7 +181,7 @@ const getSingleActions = function (ctx) {
                   }
                   const sshConnectHandle = () => {
                     const success = () => {
-                      openWebconsole({ port: 22 }, obj.id)
+                      openWebconsole({}, obj.id)
                     }
                     if (this.enableMFA) {
                       this.createDialog('SecretVertifyDialog', {
@@ -221,18 +226,25 @@ const getSingleActions = function (ctx) {
                   decorators: SMART_SSH_FORM_DECORATORS,
                 })
               }
-              const handleRdpConnect = (obj, prms = {}) => {
+              const handleRdpConnect = async (obj, prms = {}) => {
                 const width = window.innerWidth
                 const height = window.innerHeight - 37
+                const reqData = {
+                  host: ipAddr,
+                  width,
+                  height,
+                  ...prms,
+                }
+                if (!reqData.port) {
+                  const port = await getServerSshPort(new this.$Manager('servers'), obj.id)
+                  if (port) {
+                    reqData.port = port
+                  }
+                }
                 const params = {
                   id: 'server-rdp',
                   action: obj.id,
-                  data: {
-                    host: ipAddr,
-                    width,
-                    height,
-                    ...prms,
-                  },
+                  data: reqData,
                 }
                 this.webconsoleManager.performAction(params).then(({ data }) => {
                   const connectParams = qs.parse(data.connect_params)
