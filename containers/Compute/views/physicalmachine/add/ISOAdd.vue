@@ -27,6 +27,7 @@
         <tag
           v-decorator="decorators.__meta__" />
       </a-form-item>
+      <ipmi-advanced :decorators="decorators" />
     </template>
     <template v-if="isFile">
       <file-select
@@ -42,6 +43,7 @@ import Tag from '@/sections/Tag'
 import ModeSelect from '../components/ModeSelect'
 import FileSelect from '../components/FileSelect'
 import NetSelect from '../components/NetSelect'
+import IpmiAdvanced from './IpmiAdvanced'
 export default {
   name: 'PhysicalmachineISOAdd',
   components: {
@@ -49,6 +51,7 @@ export default {
     FileSelect,
     NetSelect,
     Tag,
+    IpmiAdvanced,
   },
   props: {
     offsetWrapperCol: {

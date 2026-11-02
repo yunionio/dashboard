@@ -2184,5 +2184,10 @@
   "compute.not_allow_reason.out_of_resource": "Out of resource",
   "compute.not_allow_reason.out_of_quota": "Out of quota",
   "compute.isolated_device_located_baremetal": "Located Baremetal",
-  "compute.server_package.fake_create_from_bm_import": "Fake create from baremetal"
+  "compute.server_package.fake_create_from_bm_import": "Fake create from baremetal",
+  "compute.ipmi_port": "IPMI port",
+  "compute.ipmi_redfish_port": "Redfish port",
+  "compute.ipmi_port_extra": "Optional. Defaults to port 623 when left empty",
+  "compute.ipmi_redfish_port_extra": "Optional. Defaults to port 443 when left empty",
+  "compute.ipmi_port_invalid": "Port must be an integer between 1 and 65535"
 }
