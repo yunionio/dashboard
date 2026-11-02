@@ -2188,5 +2188,10 @@
   "compute.not_allow_reason.out_of_resource": "空闲资源不足",
   "compute.not_allow_reason.out_of_quota": "配额不足",
   "compute.isolated_device_located_baremetal": "所在裸金属",
-  "compute.server_package.fake_create_from_bm_import": "从托管物理机新建"
+  "compute.server_package.fake_create_from_bm_import": "从托管物理机新建",
+  "compute.ipmi_port": "IPMI端口",
+  "compute.ipmi_redfish_port": "Redfish端口",
+  "compute.ipmi_port_extra": "可选，为空时使用默认端口 623",
+  "compute.ipmi_redfish_port_extra": "可选，为空时使用默认端口 443",
+  "compute.ipmi_port_invalid": "端口需为 1-65535 之间的整数"
 }
