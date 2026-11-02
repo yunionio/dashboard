@@ -6,7 +6,7 @@ import expectStatus from '@/constants/expectStatus'
 import i18n from '@/locales'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, validateRescueMode } from '../../vminstance/utils'
-import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
+import { solWebConsole, jnlpConsole, getServerSshPort } from '../../../utils/webconsole'
 import { hostServerActions } from '../../../utils/hostActions'
 import { getRenewAction } from '../utils/renewActions'
 import { getAutoRenewAction } from '../utils/autoRenewActions'
@@ -39,14 +39,21 @@ export default {
           if (this.isAdminMode) {
             ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole, this.createDialog))
           }
-          const openWebConsole = (params) => {
-            this.webconsoleManager.performAction(params).then(({ data }) => {
+          const openWebConsole = async (params) => {
+            let reqParams = params
+            if (!params.data?.port) {
+              const port = await getServerSshPort(new this.$Manager('servers'), params.action, 22)
+              if (port) {
+                reqParams = { ...params, data: { ...params.data, port } }
+              }
+            }
+            this.webconsoleManager.performAction(reqParams).then(({ data }) => {
               const connectParams = qs.parse(data.connect_params)
               // 验证账号密码
               if (connectParams.is_need_login === 'true') {
                 this.createDialog('SshAuthDialog', {
                   manager: this.webconsoleManager,
-                  params,
+                  params: reqParams,
                   errorMsg: connectParams.login_error_message,
                   data: { name: obj.name, ip: params.data?.ip, id: obj.id, resource: 'servers' },
                   success: (data) => {

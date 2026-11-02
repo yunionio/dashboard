@@ -35,6 +35,21 @@ export function solWebConsole (manager, host, onData, createDialog) {
   }
 }
 
+// 获取 server 的 ssh 端口（接口返回 { port: 0 } 表示未配置），RDP 复用该端口
+export async function getServerSshPort (manager, id, fallback) {
+  if (!manager || !id) return fallback
+  try {
+    const { data } = await manager.getSpecific({ id, spec: 'sshport' })
+    const port = Number(data?.port)
+    if (port > 0 && port <= 65535) {
+      return port
+    }
+  } catch (e) {
+    // 接口不可用时忽略，使用默认端口
+  }
+  return fallback
+}
+
 export function jnlpConsole (manager, host, createDialog) {
   return {
     label: i18n.t('compute.text_351'),
