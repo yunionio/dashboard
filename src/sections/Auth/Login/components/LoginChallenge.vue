@@ -89,13 +89,14 @@
       <a-form-model-item class="mb-0">
         <a-button type="primary" html-type="submit" :loading="submiting" block>{{ $t('auth.login.submit') }}</a-button>
       </a-form-model-item>
-      <!-- 额外操作 -->
+      <!-- 额外操作：左（选择账号等）/ 右（忘记密码等）同一行 -->
       <a-form-model-item class="mb-0">
         <div class="d-flex justify-content-between login-link">
           <div class="flex-shrink-1 flex-grow-1 text-left">
             <template v-if="hasLoggedUsers">
               <a class="week-link-button" @click="goChooser">{{ $t('auth.chooser') }}</a>
             </template>
+            <slot name="actions-left" />
           </div>
           <div class="flex-shrink-1 flex-grow-1 text-right">
             <template v-if="showDomainChooser && showUsernameInput && !loginDomain">
@@ -104,15 +105,6 @@
                 <edit-form slot="content" :width="450" :formRules="domainInputRules" :defaultValue="loginDomain" :label="$t('common.login_domain')" @submit="submitLoginDomain" @cancel="showSetDomainPopover = false" />
               </a-popover>
             </template>
-          </div>
-        </div>
-      </a-form-model-item>
-      <a-form-model-item class="mb-0">
-        <div class="d-flex justify-content-between login-link">
-          <div class="flex-shrink-1 flex-grow-1 text-left">
-            <slot name="actions-left" />
-          </div>
-          <div class="flex-shrink-1 flex-grow-1 text-right">
             <slot name="actions-right" />
           </div>
         </div>
