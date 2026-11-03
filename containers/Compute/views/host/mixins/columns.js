@@ -420,6 +420,7 @@ export default {
                 h3c: { height: '18px' },
                 zte: { height: '18px' },
                 qemu: { height: '22px' },
+                sugon: { height: '20px' },
               }
               const arr = Object.keys(icons)
               if (!arr.includes(oem_name)) {
