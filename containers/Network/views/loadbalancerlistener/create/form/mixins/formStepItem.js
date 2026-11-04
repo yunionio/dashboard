@@ -149,6 +149,7 @@ export default {
       this.createDialog('LoadbalancerbackendgroupsCreateDialog', {
         title: i18n.t('network.text_434'),
         loadbalancer: this.lbDetail.id,
+        lbData: this.lbDetail,
         onManager: this.onManager,
         refresh: async () => {
           const vnode = this.$refs.backendgroupsRef
