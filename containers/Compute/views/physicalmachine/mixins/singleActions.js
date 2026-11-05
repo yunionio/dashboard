@@ -6,6 +6,7 @@ import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions
 import i18n from '@/locales'
 import { canIpmiProbe } from '../utils/status'
 import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
+import { hostNoIpmiTip } from '../../../utils/ipmi'
 // import { Base64 } from 'js-base64'
 export default {
   destroyed () {
@@ -31,7 +32,12 @@ export default {
         actions: obj => {
           const ret = []
           if (obj.host_type === 'baremetal') {
-            ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole, this.createDialog))
+            const solAction = solWebConsole(this.webconsoleManager, obj, this.openWebConsole, this.createDialog)
+            // ipmi_ip 时禁用
+            ret.push({
+              ...solAction,
+              meta: () => hostNoIpmiTip(obj) || solAction.meta(),
+            })
           }
           let ips = (obj.server_ips || '').split(',').filter(item => !!item)
           if (obj.access_ip) {
@@ -141,15 +147,24 @@ export default {
               },
             })
           })
-          ret.push({ ...jnlpConsole(new this.$Manager('hosts', 'v2'), obj, this.createDialog), permission: 'server_get_jnlp' })
+          // 无 ipmi_ip 时禁用
+          const jnlpAction = { ...jnlpConsole(new this.$Manager('hosts', 'v2'), obj, this.createDialog), permission: 'server_get_jnlp' }
+          ret.push({
+            ...jnlpAction,
+            meta: () => hostNoIpmiTip(obj) || { validate: true },
+          })
           return ret
         },
       },
       {
         label: i18n.t('compute.text_352'),
         actions: (obj) => {
+          const noIpmi = hostNoIpmiTip(obj)
           return [
-            ...getEnabledSwitchActions(Object.assign({}, this, { resource: 'physicalmachine' }), obj, ['hosts_perform_enable', 'hosts_perform_disable'], { resourceName: this.$t('dictionary.physicalmachine') }),
+            ...getEnabledSwitchActions(Object.assign({}, this, { resource: 'physicalmachine' }), obj, ['hosts_perform_enable', 'hosts_perform_disable'], { resourceName: this.$t('dictionary.physicalmachine') }).map(item => ({
+              ...item,
+              meta: (rowItem) => noIpmi || item.meta(rowItem),
+            })),
             {
               label: i18n.t('compute.text_541'),
               permission: 'hosts_perform_set_schedtag',
@@ -160,6 +175,7 @@ export default {
                   name: this.$t('dictionary.physicalmachine'),
                 })
               },
+              meta: () => noIpmi || { validate: true },
             },
             {
               label: i18n.t('compute.perform_sync_status'),
@@ -174,6 +190,7 @@ export default {
                 })
               },
               meta: () => {
+                if (noIpmi) return noIpmi
                 if (obj.status === 'ready') {
                   return {
                     validate: false,
@@ -235,6 +252,13 @@ export default {
                 })
               },
               meta: () => {
+                if (noIpmi) return noIpmi
+                if (obj.is_import) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.tooltip.check_fake_baremetal_server'),
+                  }
+                }
                 if (!obj.is_baremetal) {
                   return {
                     validate: false,
@@ -283,6 +307,7 @@ export default {
                 })
               },
               meta: () => {
+                if (noIpmi) return noIpmi
                 if (!obj.is_baremetal) {
                   return {
                     validate: false,
@@ -333,7 +358,7 @@ export default {
                   },
                 })
               },
-              meta: () => ({ validate: canIpmiProbe(obj) }),
+              meta: () => noIpmi || { validate: canIpmiProbe(obj) },
             },
             {
               label: i18n.t('compute.host_prepare'),
@@ -347,7 +372,7 @@ export default {
                   },
                 })
               },
-              meta: () => ({ validate: obj.can_prepare }),
+              meta: () => noIpmi || { validate: obj.can_prepare },
             },
             {
               label: i18n.t('compute.text_272'),
@@ -362,6 +387,7 @@ export default {
                 })
               },
               meta: () => {
+                if (noIpmi) return noIpmi
                 if (obj.server_id && obj.host_type === 'baremetal') {
                   return {
                     validate: false,
@@ -385,6 +411,7 @@ export default {
                 })
               },
               meta: () => {
+                if (noIpmi) return noIpmi
                 if (!obj.is_baremetal) {
                   return {
                     validate: false,
@@ -418,6 +445,7 @@ export default {
                 })
               },
               meta: () => {
+                if (noIpmi) return noIpmi
                 if (obj.server) {
                   return {
                     validate: false,
@@ -462,6 +490,7 @@ export default {
                 })
               },
               meta: () => {
+                if (noIpmi) return noIpmi
                 if (obj.server) {
                   return {
                     validate: false,
@@ -507,6 +536,7 @@ export default {
                 })
               },
               meta: () => {
+                if (noIpmi) return noIpmi
                 return {
                   validate: this.$getDeleteResult(obj).validate,
                   tooltip: this.$getDeleteResult(obj).validate ? '' : i18n.t('compute.text_854'),
