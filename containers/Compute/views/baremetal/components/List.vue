@@ -33,6 +33,7 @@ import { getBatchRenewAction } from '../utils/renewActions'
 import { getBatchAutoRenewAction } from '../utils/autoRenewActions'
 import { getBatchDeleteAction } from '../utils/deleteActions'
 import { cloudEnabled, cloudUnabledTip, commonEnabled, validateRescueMode } from '../../vminstance/utils'
+import { baremetalsNoIpmiTip } from '../../../utils/ipmi'
 
 export default {
   name: 'BaremetalList',
@@ -147,6 +148,9 @@ export default {
             })
           },
           meta: () => {
+            // 选中项中有 托管物理机分配且不含 ipmi 信息 的裸金属时禁用
+            const noIpmi = baremetalsNoIpmiTip(this.list.selectedItems)
+            if (noIpmi) return noIpmi
             let ret = {
               validate: true,
               tooltip: null,
@@ -173,6 +177,9 @@ export default {
             })
           },
           meta: () => {
+            // 选中项中有 托管物理机分配且不含 ipmi 信息 的裸金属时禁用
+            const noIpmi = baremetalsNoIpmiTip(this.list.selectedItems)
+            if (noIpmi) return noIpmi
             let ret = {
               validate: true,
               tooltip: null,
@@ -269,6 +276,12 @@ export default {
                       action: 'syncstatus',
                     },
                   })
+                },
+                meta: () => {
+                  // 选中项中有 托管物理机分配且不含 ipmi 信息 的裸金属时禁用
+                  const noIpmi = baremetalsNoIpmiTip(this.list.selectedItems)
+                  if (noIpmi) return noIpmi
+                  return { validate: true }
                 },
                 hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_syncstatus'),
               },

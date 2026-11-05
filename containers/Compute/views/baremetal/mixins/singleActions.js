@@ -11,6 +11,7 @@ import { hostServerActions } from '../../../utils/hostActions'
 import { getRenewAction } from '../utils/renewActions'
 import { getAutoRenewAction } from '../utils/autoRenewActions'
 import { getDeleteAction } from '../utils/deleteActions'
+import { baremetalNoIpmiTip, baremetalFakeTip } from '../../../utils/ipmi'
 // import { Base64 } from 'js-base64'
 export default {
   computed: {
@@ -217,14 +218,12 @@ export default {
                     })
                   },
                   meta: () => {
+                    // 托管物理机分配的裸金属禁用重装系统，无 ipmi 时提示 no ipmi
+                    const fakeTip = baremetalFakeTip(obj)
+                    if (fakeTip) return fakeTip
                     const ret = {
                       validate: true,
                       tooltip: null,
-                    }
-                    if (obj.metadata.is_fake_baremetal_server === 'true') {
-                      ret.tooltip = i18n.t('compute.tooltip.check_fake_baremetal_server')
-                      ret.validate = false
-                      return ret
                     }
                     if (obj.status !== 'ready' && obj.status !== 'admin') {
                       ret.tooltip = i18n.t('compute.text_358')
@@ -249,6 +248,10 @@ export default {
                         action: 'syncstatus',
                       },
                     })
+                  },
+                  meta: () => {
+                    // 托管物理机分配的裸金属，且不含 ipmi 信息时禁用
+                    return baremetalNoIpmiTip(obj) || { validate: true }
                   },
                   hidden: () => this.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_syncstatus'),
                 },
