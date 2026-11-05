@@ -65,7 +65,7 @@
       </template>
       <!-- 确定按钮 -->
       <a-form-model-item class="mb-0">
-        <a-button :disabled="!allowSubmit" type="primary" html-type="submit" :loading="submiting" block>{{ $t('auth.login.submit') }}</a-button>
+        <a-button :disabled="!allowSubmit" type="primary" html-type="submit" :loading="submiting" block>{{ submitButtonText }}</a-button>
       </a-form-model-item>
     </a-form-model>
   </div>
@@ -91,6 +91,10 @@ export default {
     hiddenDomainSelect: {
       type: Boolean,
       default: false,
+    },
+    submitText: {
+      type: String,
+      default: '',
     },
   },
   data () {
@@ -156,6 +160,9 @@ export default {
       regions: state => state.regions,
       loggedUsers: state => state.loggedUsers,
     }),
+    submitButtonText () {
+      return this.submitText || this.$t('auth.login.submit')
+    },
     isForgetLoginUser () {
       return this.regions.is_forget_login_user
     },
