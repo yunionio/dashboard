@@ -1876,6 +1876,7 @@
   "compute.tooltip.check_status_transfer": "ステータスが「実行中」、「パワーオフ」の仮想マシンを選択します。",
   "compute.tooltip.check_ready_status_transfer": "シャットダウン状態の仮想マシンを選択します",
   "compute.tooltip.check_fake_baremetal_server": "この操作は、管理されたマシンではサポートされていません",
+  "compute.no_ipmi_tooltip": "No IPMI",
   "compute.storage.check_status.account_health_status": "Alibaba Cloud アカウントのヘルスステータスが異常である",
   "compute.storage.check_status.account_status": "アリババアカウントのステータスが異常です",
   "compute.storage.check_status.host_status": "ホスト サービスまたはステータスの例外",
