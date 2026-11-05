@@ -29,6 +29,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { canIpmiProbe } from '../utils/status'
 import { hostCommonActions } from '../../../utils/hostActions'
+import { hostsNoIpmiTip } from '../../../utils/ipmi'
 
 export default {
   name: 'PhysicalmachineList',
@@ -140,6 +141,8 @@ export default {
   },
   computed: {
     groupActions () {
+      // 选中项中有无 ipmi_ip 的物理机时
+      const noIpmi = hostsNoIpmiTip(this.list.selectedItems)
       return [
         {
           label: this.$t('compute.text_822'),
@@ -160,7 +163,10 @@ export default {
             }
           },
         },
-        ...getEnabledSwitchActions(this, undefined, ['hosts_perform_enable', 'hosts_perform_disable']),
+        ...getEnabledSwitchActions(this, undefined, ['hosts_perform_enable', 'hosts_perform_disable']).map(item => ({
+          ...item,
+          meta: (rowItem) => noIpmi || item.meta(rowItem),
+        })),
         {
           label: this.$t('compute.text_275'),
           actions: (obj) => {
@@ -186,6 +192,7 @@ export default {
                   this.list.batchPerformAction('ipmi-probe', null, this.list.steadyStatus)
                 },
                 meta: () => {
+                  if (noIpmi) return noIpmi
                   if (this.list.selectedItems.length <= 0) {
                     return {
                       validate: false,
@@ -211,6 +218,7 @@ export default {
                   this.list.batchPerformAction('prepare', null, this.list.steadyStatus)
                 },
                 meta: () => {
+                  if (noIpmi) return noIpmi
                   if (this.list.selectedItems.length <= 0) {
                     return {
                       validate: false,
@@ -239,9 +247,9 @@ export default {
                     name: this.$t('dictionary.physicalmachine'),
                   })
                 },
-                meta: () => ({
+                meta: () => noIpmi || {
                   validate: this.list.selectedItems.length,
-                }),
+                },
               },
               {
                 label: this.$t('compute.text_283'),
@@ -257,7 +265,7 @@ export default {
                     mode: 'add',
                   })
                 },
-                meta: () => this.$isOwner(this.list.selectedItems),
+                meta: () => noIpmi || this.$isOwner(this.list.selectedItems),
               },
               {
                 label: this.$t('compute.perform_delete'),
@@ -271,10 +279,10 @@ export default {
                     onManager: this.onManager,
                   })
                 },
-                meta: () => ({
+                meta: () => noIpmi || {
                   validate: this.$getDeleteResult(this.list.selectedItems).validate,
                   tooltip: this.$getDeleteResult(this.list.selectedItems).validate ? '' : this.$t('compute.text_826'),
-                }),
+                },
               },
             ]
           },
