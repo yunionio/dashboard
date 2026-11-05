@@ -600,7 +600,14 @@ export default {
           {},
         ],
         tooltip: {
+          // 仅展示当前时间点有真实数据的系列，缺失数据不补 0
+          hideEmptyValues: true,
+          // 全部系列均无数据时，仍展示时间点并提示无数据
+          emptyText: this.$t('monitor.no_data'),
           valueFormatter: (value, unit) => {
+            if (value === null || value === undefined || value === '' || Number.isNaN(value)) {
+              return ''
+            }
             if (unit === 'NULL' || unit === 'count') {
               unit = ''
             }
