@@ -4,6 +4,7 @@
  */
 import i18n from '@/locales'
 import { commonUnabled } from '../../vminstance/utils'
+import { baremetalNoIpmiTip, baremetalsNoIpmiTip } from '../../../utils/ipmi'
 
 function loadScopeStartModule () {
   try {
@@ -31,7 +32,8 @@ function getDefaultStartAction (objList, obj, manager, isHostServer) {
       })
     },
     meta: () => {
-      return {
+      // 托管物理机分配的裸金属，且不含 ipmi 信息时禁用
+      return baremetalNoIpmiTip(obj) || {
         validate: obj.status === 'ready' && !commonUnabled(obj),
       }
     },
@@ -53,6 +55,9 @@ function getDefaultBatchStartAction (vm) {
       })
     },
     meta: () => {
+      // 选中项中有 托管物理机分配且不含 ipmi 信息 的裸金属时禁用
+      const noIpmi = baremetalsNoIpmiTip(vm.list.selectedItems)
+      if (noIpmi) return noIpmi
       let ret = {
         validate: true,
         tooltip: null,
