@@ -882,6 +882,21 @@ export const transformUnit = (value, originUnit = '', base = 1000, numerifyForma
         obj.text += `${b}ps`
       }
     }
+  } else if (/^[KMGTPEZY]?(pps|iops|cps)$/i.test(unit)) {
+    // 每秒计数类单位（如网络收发包数 pps）：按 1000 进制缩进为 K/M/G 等前缀，缩短展示长度
+    const counterMatch = unit.match(/^([KMGTPEZY]?)(pps|iops|cps)$/i)
+    const originPrefix = counterMatch[1].toUpperCase()
+    const suffix = counterMatch[2].toLowerCase()
+    const scaled = String(sizestr(value, originPrefix || 'B', 1000))
+    const scaledMatch = scaled.match(/^(\d+\.?\d*)([A-Z]?)$/)
+    const prefix = scaledMatch && scaledMatch[2] && scaledMatch[2] !== 'B' ? scaledMatch[2] : ''
+    const scaledValue = scaledMatch ? parseFloat(scaledMatch[1]) : valueStr
+    const formattedValue = parseFloat(numerify(scaledValue, numerifyFormat))
+    obj = {
+      text: `${formattedValue} ${prefix}${suffix}`,
+      value: formattedValue,
+      unit: `${prefix}${suffix}`,
+    }
   } else if (unit === 'byte') {
     obj = splitUnit(sizestr(value, 'B', 1024))
     if (!obj.text.endsWith('B')) {
