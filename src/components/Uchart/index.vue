@@ -161,8 +161,9 @@ export default {
             const hideEmptyValues = !!that.options?.tooltip?.hideEmptyValues
             const hideWhenAllEmpty = !!that.options?.tooltip?.hideWhenAllEmpty
             const showTime = that.options?.tooltip?.showTime !== false
+            const emptyText = that.options?.tooltip?.emptyText
             const visibleData = hideEmptyValues
-              ? seriesData.filter(d => d.value !== null && d.value !== undefined && !Number.isNaN(d.value))
+              ? seriesData.filter(d => d.value !== null && d.value !== undefined && d.value !== '' && !Number.isNaN(d.value))
               : seriesData
             // 全部为空时不展示 tooltip
             if (hideWhenAllEmpty && visibleData.length === 0) {
@@ -190,6 +191,11 @@ export default {
               html += `<div class="uplot-tooltip-item"><span class="uplot-tooltip-dot" style="background-color:${escapeHTML(d.color)}"></span>${escapeHTML(shortLabel)}: ${escapeHTML(valueUnit)}</div>`
               textList.push(`${shortLabel}: ${valueUnit}`)
             })
+            // 当前时间点没有任何系列数据时，仅展示时间点和空数据提示
+            if (!visibleData.length && emptyText) {
+              html += `<div class="uplot-tooltip-item uplot-tooltip-empty">${escapeHTML(emptyText)}</div>`
+              textList.push(emptyText)
+            }
             html += '</div>'
             that.toolTipHtml = html
             if (x === -10 && y === -10) {
@@ -309,6 +315,9 @@ export default {
 }
 .uplot-chart-tooltip ::v-deep .uplot-tooltip-item:last-child {
   margin-bottom: 0;
+}
+.uplot-chart-tooltip ::v-deep .uplot-tooltip-empty {
+  opacity: 0.75;
 }
 .uplot-chart-tooltip ::v-deep .uplot-tooltip-dot {
   width: 22px;
