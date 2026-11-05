@@ -1,6 +1,7 @@
 import i18n from '@/locales'
 import { commonUnabled } from '../views/vminstance/utils'
 import { getStartAction as getBaremetalStartAction } from '../views/baremetal/utils/startActions'
+import { hostsNoIpmiTip, baremetalNoIpmiTip } from './ipmi'
 export function hostCommonActions (hostList) {
   return [
     {
@@ -10,6 +11,8 @@ export function hostCommonActions (hostList) {
         hostList.list.batchPerformAction('start', null, hostList.list.steadyStatus)
       },
       meta: () => {
+        const noIpmi = hostsNoIpmiTip(hostList.list.selectedItems)
+        if (noIpmi) return noIpmi
         if (hostList.list.selectedItems.length <= 0) {
           return {
             validate: false,
@@ -48,6 +51,8 @@ export function hostCommonActions (hostList) {
         hostList.list.batchPerformAction('stop', null, hostList.list.steadyStatus)
       },
       meta: () => {
+        const noIpmi = hostsNoIpmiTip(hostList.list.selectedItems)
+        if (noIpmi) return noIpmi
         if (hostList.list.selectedItems.length <= 0) {
           return {
             validate: false,
@@ -86,6 +91,8 @@ export function hostCommonActions (hostList) {
         hostList.list.batchPerformAction('reset', null, hostList.list.steadyStatus)
       },
       meta: () => {
+        const noIpmi = hostsNoIpmiTip(hostList.list.selectedItems)
+        if (noIpmi) return noIpmi
         if (hostList.list.selectedItems.length <= 0) {
           return {
             validate: false,
@@ -124,6 +131,8 @@ export function hostCommonActions (hostList) {
         hostList.list.batchPerformAction('maintenance', null, hostList.list.steadyStatus)
       },
       meta: () => {
+        const noIpmi = hostsNoIpmiTip(hostList.list.selectedItems)
+        if (noIpmi) return noIpmi
         if (hostList.list.selectedItems.length <= 0) {
           return {
             validate: false,
@@ -169,6 +178,8 @@ export function hostCommonActions (hostList) {
         hostList.list.batchPerformAction('unmaintenance', null, hostList.list.steadyStatus)
       },
       meta: () => {
+        const noIpmi = hostsNoIpmiTip(hostList.list.selectedItems)
+        if (noIpmi) return noIpmi
         if (hostList.list.selectedItems.length <= 0) {
           return {
             validate: false,
@@ -214,6 +225,8 @@ export function hostCommonActions (hostList) {
         hostList.list.batchPerformAction('syncstatus', null, hostList.list.steadyStatus)
       },
       meta: () => {
+        const noIpmi = hostsNoIpmiTip(hostList.list.selectedItems)
+        if (noIpmi) return noIpmi
         if (hostList.list.selectedItems.length <= 0) {
           return {
             validate: false,
@@ -252,7 +265,8 @@ export function hostServerActions (manager, obj, objList, isHostServer) {
         })
       },
       meta: () => {
-        return {
+        // 托管物理机分配的裸金属，且不含 ipmi 信息时禁用
+        return baremetalNoIpmiTip(obj) || {
           validate: obj.status === 'running' && !commonUnabled(obj),
         }
       },
@@ -270,7 +284,8 @@ export function hostServerActions (manager, obj, objList, isHostServer) {
         })
       },
       meta: () => {
-        return {
+        // 托管物理机分配的裸金属，且不含 ipmi 信息时禁用
+        return baremetalNoIpmiTip(obj) || {
           validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
         }
       },
