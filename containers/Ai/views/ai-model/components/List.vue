@@ -29,12 +29,6 @@ export default {
       }),
       groupActions: [
         {
-          label: this.$t('common.create'),
-          permission: 'ai_models_create',
-          action: () => this.$router.push({ name: 'AiModelCreate' }),
-          meta: () => ({ buttonType: 'primary', validate: true }),
-        },
-        {
           label: this.$t('common.batchAction'),
           actions: () => [
             ...getAiproxyBatchEnabledActions(this, 'ai_models', this.$t('aice.aiproxy.model')),
