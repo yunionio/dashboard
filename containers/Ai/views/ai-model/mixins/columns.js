@@ -19,6 +19,20 @@ export default {
       getEnabledTableColumn(),
       getAiProviderLinkColumn(this),
       { field: 'model_key', title: this.$t('aice.aiproxy.model_key'), minWidth: 140 },
+      {
+        field: 'context_window',
+        title: this.$t('aice.aiproxy.context_window'),
+        minWidth: 120,
+        formatter: ({ row }) => row.context_window || '-',
+      },
+      {
+        field: 'input_modalities',
+        title: this.$t('aice.aiproxy.capability_vision'),
+        minWidth: 100,
+        formatter: ({ row }) => (Array.isArray(row.input_modalities) && row.input_modalities.includes('image')
+          ? this.$t('status.enabled.true')
+          : this.$t('status.enabled.false')),
+      },
       getProjectTableColumn(),
       getTimeTableColumn(),
     ]

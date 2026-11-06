@@ -45,19 +45,6 @@ export default {
       }),
       groupActions: [
         {
-          label: this.$t('common.create'),
-          permission: 'ai_models_create',
-          action: () => {
-            this.createDialog('AiModelFormDialog', {
-              type: 'create',
-              ai_provider_id: this.data.id,
-              onManager: this.onManager,
-              refresh: () => this.list.fetchData(),
-            })
-          },
-          meta: () => ({ buttonType: 'primary', validate: true }),
-        },
-        {
           label: this.$t('aice.aiproxy.set_models'),
           permission: 'ai_providers_perform_set_models',
           action: () => {
@@ -66,7 +53,7 @@ export default {
               refresh: () => this.list.fetchData(),
             })
           },
-          meta: () => ({ validate: true }),
+          meta: () => ({ buttonType: 'primary', validate: true }),
         },
         {
           label: this.$t('common.batchAction'),
@@ -104,6 +91,20 @@ export default {
         }),
         getEnabledTableColumn(),
         { field: 'model_key', title: this.$t('aice.aiproxy.model_key'), minWidth: 140 },
+        {
+          field: 'context_window',
+          title: this.$t('aice.aiproxy.context_window'),
+          minWidth: 120,
+          formatter: ({ row }) => row.context_window || '-',
+        },
+        {
+          field: 'input_modalities',
+          title: this.$t('aice.aiproxy.capability_vision'),
+          minWidth: 100,
+          formatter: ({ row }) => (Array.isArray(row.input_modalities) && row.input_modalities.includes('image')
+            ? this.$t('status.enabled.true')
+            : this.$t('status.enabled.false')),
+        },
       ]
       if (shouldShowAiModelVisualColumn(this.data)) {
         cols.push(getAiModelVisualTableColumn(this))
