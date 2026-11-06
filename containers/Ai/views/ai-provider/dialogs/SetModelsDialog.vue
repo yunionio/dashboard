@@ -1,8 +1,8 @@
 <template>
-  <base-dialog :width="720" @cancel="cancelDialog">
+  <base-dialog :width="880" @cancel="cancelDialog">
     <div slot="header">{{ $t('aice.aiproxy.set_models') }}</div>
     <div slot="body">
-      <a-form-model :label-col="{ span: 5 }" :wrapper-col="{ span: 17 }">
+      <a-form-model :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
         <a-form-model-item :label="$t('common.name')">
           <span>{{ provider.name }}</span>
         </a-form-model-item>
@@ -19,18 +19,18 @@
             :placeholder="$t('common.search')"
             class="mb-2" />
           <div class="provider-model-list">
-            <a-checkbox-group v-model="selectedModelKeys" class="d-flex flex-column">
-              <a-checkbox
-                v-for="opt in filteredModelOptions"
-                :key="opt.value"
-                :value="opt.value"
-                class="mb-1">
-                {{ opt.label }}
-              </a-checkbox>
-            </a-checkbox-group>
-          </div>
-          <div v-if="!filteredModelOptions.length" class="text-secondary mt-1">
-            {{ $t('common.noData') }}
+            <a-table
+              v-if="filteredModelRows.length"
+              size="small"
+              :pagination="false"
+              :row-key="row => row.model_key"
+              :columns="modelColumns"
+              :data-source="filteredModelRows"
+              :row-selection="rowSelection"
+              :scroll="{ y: 280 }" />
+            <div v-else class="provider-model-list-empty">
+              {{ emptyModelListText }}
+            </div>
           </div>
           <a-alert
             v-if="modelsSource === 'catalog'"
@@ -61,6 +61,13 @@ import TestButton from '@/sections/TestButton'
 import AiproxyProviderLabel from '@Ai/components/AiproxyProviderLabel'
 import { fetchProviderModelKeyOptions } from '@Ai/utils/aiModelNames'
 
+function defaultMeta (model = {}) {
+  return {
+    context_window: model.context_window > 0 ? model.context_window : undefined,
+    vision: false,
+  }
+}
+
 export default {
   name: 'AiProviderSetModelsDialog',
   components: { AiproxyProviderLabel, TestButton },
@@ -70,8 +77,9 @@ export default {
       loading: false,
       connectivityTested: false,
       modelsSource: '',
-      availableModelKeys: [],
+      availableModels: [],
       selectedModelKeys: [],
+      modelMeta: {},
       importedModelKeys: [],
       modelSearch: '',
     }
@@ -83,11 +91,71 @@ export default {
     importedModelKeySet () {
       return new Set(this.importedModelKeys.map(key => String(key).toLowerCase()))
     },
-    filteredModelOptions () {
+    filteredModelRows () {
       const q = String(this.modelSearch || '').trim().toLowerCase()
-      return this.availableModelKeys
-        .filter(key => !q || String(key).toLowerCase().includes(q))
-        .map(key => ({ value: key, label: key }))
+      return this.availableModels
+        .filter(item => !q || String(item.model_key).toLowerCase().includes(q))
+        .map(item => ({
+          model_key: item.model_key,
+          ...(this.modelMeta[item.model_key] || defaultMeta(item)),
+        }))
+    },
+    modelColumns () {
+      return [
+        {
+          title: this.$t('aice.aiproxy.model_key'),
+          dataIndex: 'model_key',
+          key: 'model_key',
+          ellipsis: true,
+        },
+        {
+          title: this.$t('aice.aiproxy.context_window'),
+          key: 'context_window',
+          width: 160,
+          customRender: (text, row) => {
+            return (
+              <a-input-number
+                value={this.modelMeta[row.model_key]?.context_window}
+                min={0}
+                step={1024}
+                style="width: 100%"
+                onChange={val => this.updateModelMeta(row.model_key, 'context_window', val)}
+              />
+            )
+          },
+        },
+        {
+          title: this.$t('aice.aiproxy.capability_vision'),
+          key: 'vision',
+          width: 100,
+          align: 'center',
+          customRender: (text, row) => {
+            return (
+              <a-checkbox
+                checked={!!this.modelMeta[row.model_key]?.vision}
+                onChange={e => this.updateModelMeta(row.model_key, 'vision', e.target.checked)}
+              />
+            )
+          },
+        },
+      ]
+    },
+    rowSelection () {
+      return {
+        selectedRowKeys: this.selectedModelKeys,
+        onChange: keys => {
+          this.selectedModelKeys = keys
+        },
+      }
+    },
+    emptyModelListText () {
+      if (String(this.modelSearch || '').trim() && this.availableModels.length) {
+        return this.$t('aice.aiproxy.set_models_search_empty')
+      }
+      if (this.importedModelKeys.length) {
+        return this.$t('aice.aiproxy.set_models_all_imported')
+      }
+      return this.$t('aice.aiproxy.set_models_none')
     },
     confirmDisabled () {
       return !this.connectivityTested || this.selectedModelKeys.length < 1
@@ -100,18 +168,43 @@ export default {
     providerManager () {
       return new this.$Manager('ai_providers')
     },
+    updateModelMeta (modelKey, field, value) {
+      const prev = this.modelMeta[modelKey] || defaultMeta()
+      this.$set(this.modelMeta, modelKey, {
+        ...prev,
+        [field]: value,
+      })
+    },
     async loadImportedModelKeys () {
       const options = await fetchProviderModelKeyOptions(this.provider.id, { vm: this })
       this.importedModelKeys = (options || []).map(item => String(item.value || '').trim()).filter(Boolean)
     },
-    excludeImportedKeys (keys) {
-      return (keys || []).filter(key => !this.importedModelKeySet.has(String(key).toLowerCase()))
+    excludeImportedModels (models) {
+      return (models || []).filter(item => {
+        const key = String(item?.model_key || '').trim()
+        return key && !this.importedModelKeySet.has(key.toLowerCase())
+      })
     },
     applyConnectivityTestResult (data, preserveSelection = false) {
-      const models = Array.isArray(data?.models) ? data.models : []
-      const keys = this.excludeImportedKeys(models.map(item => item?.model_key).filter(Boolean))
+      const models = this.excludeImportedModels(Array.isArray(data?.models) ? data.models : [])
       this.modelsSource = data?.models_source || ''
-      this.availableModelKeys = keys
+      this.availableModels = models.map(item => ({
+        model_key: String(item.model_key).trim(),
+        context_window: item.context_window > 0 ? item.context_window : undefined,
+      }))
+      const nextMeta = { ...this.modelMeta }
+      this.availableModels.forEach(item => {
+        if (!nextMeta[item.model_key]) {
+          nextMeta[item.model_key] = defaultMeta(item)
+        } else if (!nextMeta[item.model_key].context_window && item.context_window) {
+          nextMeta[item.model_key] = {
+            ...nextMeta[item.model_key],
+            context_window: item.context_window,
+          }
+        }
+      })
+      this.modelMeta = nextMeta
+      const keys = this.availableModels.map(item => item.model_key)
       if (preserveSelection && this.selectedModelKeys.length) {
         const kept = this.selectedModelKeys.filter(key => keys.includes(key))
         this.selectedModelKeys = kept.length ? kept : [...keys]
@@ -119,6 +212,17 @@ export default {
         this.selectedModelKeys = [...keys]
       }
       this.connectivityTested = true
+    },
+    buildSetModelsPayload () {
+      return {
+        models: this.selectedModelKeys.map(key => {
+          const meta = this.modelMeta[key] || defaultMeta()
+          const item = { model_key: key }
+          if (meta.context_window > 0) item.context_window = meta.context_window
+          if (meta.vision) item.input_modalities = ['text', 'image']
+          return item
+        }),
+      }
     },
     async probeConnectivity ({ preserveSelection = false } = {}) {
       await this.loadImportedModelKeys()
@@ -132,7 +236,7 @@ export default {
     },
     async testPost () {
       await this.probeConnectivity()
-      const count = this.availableModelKeys.length
+      const count = this.availableModels.length
       const description = this.modelsSource === 'catalog'
         ? this.$t('aice.aiproxy.connectivity_models_catalog_found', [count])
         : this.$t('aice.aiproxy.connectivity_models_found', [count])
@@ -152,7 +256,7 @@ export default {
         await this.providerManager().performAction({
           id: this.provider.id,
           action: 'set-models',
-          data: { model_keys: this.selectedModelKeys },
+          data: this.buildSetModelsPayload(),
         })
         this.cancelDialog()
         this.params.refresh && this.params.refresh()
@@ -167,19 +271,15 @@ export default {
 <style scoped>
 .provider-model-list {
   width: 100%;
-  max-height: 240px;
-  overflow-y: auto;
   border: 1px solid #f0f0f0;
   border-radius: 4px;
-  padding: 8px 12px;
+  overflow: hidden;
 }
 
-.provider-model-list ::v-deep .ant-checkbox-wrapper {
-  display: block;
-  margin-left: 0;
-}
-
-.provider-model-list ::v-deep .ant-checkbox-wrapper + .ant-checkbox-wrapper {
-  margin-left: 0;
+.provider-model-list-empty {
+  color: rgba(0, 0, 0, 0.45);
+  text-align: center;
+  padding: 24px 8px;
+  line-height: 1.5;
 }
 </style>

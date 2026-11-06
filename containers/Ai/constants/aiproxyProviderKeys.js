@@ -56,6 +56,7 @@ export function filterAiproxyProviderKeys (query, vm) {
     if (id.includes(q)) return true
     const display = vm ? String(getAiproxyProviderKeyDisplayName(vm, key)).toLowerCase() : ''
     if (display && display.includes(q)) return true
+    if ((q.includes('deepseek') || q.includes('深度求索')) && id === 'deepseek') return true
     if ((q.includes('moonshot') || q.includes('kimi')) && id === 'moonshot') return true
     if ((q.includes('zhipu') || q.includes('智谱') || q.includes('glm') || q.includes('z.ai') || q.includes('zai')) && id === 'zhipu') return true
     return false
