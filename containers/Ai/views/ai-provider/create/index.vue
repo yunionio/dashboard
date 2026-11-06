@@ -51,18 +51,18 @@
             :placeholder="$t('common.search')"
             class="mb-2" />
           <div class="provider-model-list">
-            <a-checkbox-group v-model="selectedModelKeys" class="d-flex flex-column">
-              <a-checkbox
-                v-for="opt in filteredModelOptions"
-                :key="opt.value"
-                :value="opt.value"
-                class="mb-1">
-                {{ opt.label }}
-              </a-checkbox>
-            </a-checkbox-group>
-          </div>
-          <div v-if="!filteredModelOptions.length" class="text-secondary mt-1">
-            {{ $t('common.noData') }}
+            <a-table
+              v-if="filteredModelRows.length"
+              size="small"
+              :pagination="false"
+              :row-key="row => row.model_key"
+              :columns="modelColumns"
+              :data-source="filteredModelRows"
+              :row-selection="rowSelection"
+              :scroll="{ y: 280 }" />
+            <div v-else class="provider-model-list-empty">
+              {{ emptyModelListText }}
+            </div>
           </div>
           <a-alert
             v-if="modelsSource === 'catalog'"
@@ -117,8 +117,9 @@ export default {
       loading: false,
       connectivityTested: false,
       modelsSource: '',
-      availableModelKeys: [],
+      availableModels: [],
       selectedModelKeys: [],
+      modelMeta: {},
       modelSearch: '',
       form: {
         provider_type: PROVIDER_TYPE_BUILTIN,
@@ -197,11 +198,64 @@ export default {
       if (this.isBuiltin && !this.showBuiltinProviderConfig) return true
       return false
     },
-    filteredModelOptions () {
+    filteredModelRows () {
       const q = String(this.modelSearch || '').trim().toLowerCase()
-      return this.availableModelKeys
-        .filter(key => !q || String(key).toLowerCase().includes(q))
-        .map(key => ({ value: key, label: key }))
+      return this.availableModels
+        .filter(item => !q || String(item.model_key).toLowerCase().includes(q))
+        .map(item => ({
+          model_key: item.model_key,
+          ...(this.modelMeta[item.model_key] || { context_window: item.context_window, vision: false }),
+        }))
+    },
+    modelColumns () {
+      return [
+        {
+          title: this.$t('aice.aiproxy.model_key'),
+          dataIndex: 'model_key',
+          key: 'model_key',
+          ellipsis: true,
+        },
+        {
+          title: this.$t('aice.aiproxy.context_window'),
+          key: 'context_window',
+          width: 160,
+          customRender: (text, row) => (
+            <a-input-number
+              value={this.modelMeta[row.model_key]?.context_window}
+              min={0}
+              step={1024}
+              style="width: 100%"
+              onChange={val => this.updateModelMeta(row.model_key, 'context_window', val)}
+            />
+          ),
+        },
+        {
+          title: this.$t('aice.aiproxy.capability_vision'),
+          key: 'vision',
+          width: 100,
+          align: 'center',
+          customRender: (text, row) => (
+            <a-checkbox
+              checked={!!this.modelMeta[row.model_key]?.vision}
+              onChange={e => this.updateModelMeta(row.model_key, 'vision', e.target.checked)}
+            />
+          ),
+        },
+      ]
+    },
+    rowSelection () {
+      return {
+        selectedRowKeys: this.selectedModelKeys,
+        onChange: keys => {
+          this.selectedModelKeys = keys
+        },
+      }
+    },
+    emptyModelListText () {
+      if (String(this.modelSearch || '').trim() && this.availableModels.length) {
+        return this.$t('aice.aiproxy.set_models_search_empty')
+      }
+      return this.$t('aice.aiproxy.set_models_none')
     },
     createDisabled () {
       return !this.connectivityTested || this.selectedModelKeys.length < 1
@@ -249,15 +303,40 @@ export default {
     resetConnectivityState () {
       this.connectivityTested = false
       this.modelsSource = ''
-      this.availableModelKeys = []
+      this.availableModels = []
       this.selectedModelKeys = []
+      this.modelMeta = {}
       this.modelSearch = ''
+    },
+    updateModelMeta (modelKey, field, value) {
+      const prev = this.modelMeta[modelKey] || { context_window: undefined, vision: false }
+      this.$set(this.modelMeta, modelKey, {
+        ...prev,
+        [field]: value,
+      })
     },
     applyConnectivityTestResult (data, preserveSelection = false) {
       const models = Array.isArray(data?.models) ? data.models : []
-      const keys = models.map(item => item?.model_key).filter(Boolean)
       this.modelsSource = data?.models_source || ''
-      this.availableModelKeys = keys
+      this.availableModels = models
+        .map(item => ({
+          model_key: String(item?.model_key || '').trim(),
+          context_window: item?.context_window > 0 ? item.context_window : undefined,
+        }))
+        .filter(item => item.model_key)
+      const nextMeta = { ...this.modelMeta }
+      this.availableModels.forEach(item => {
+        if (!nextMeta[item.model_key]) {
+          nextMeta[item.model_key] = { context_window: item.context_window, vision: false }
+        } else if (!nextMeta[item.model_key].context_window && item.context_window) {
+          nextMeta[item.model_key] = {
+            ...nextMeta[item.model_key],
+            context_window: item.context_window,
+          }
+        }
+      })
+      this.modelMeta = nextMeta
+      const keys = this.availableModels.map(item => item.model_key)
       if (preserveSelection && this.selectedModelKeys.length) {
         const kept = this.selectedModelKeys.filter(key => keys.includes(key))
         this.selectedModelKeys = kept.length ? kept : [...keys]
@@ -265,6 +344,15 @@ export default {
         this.selectedModelKeys = [...keys]
       }
       this.connectivityTested = true
+    },
+    buildCreateModelsPayload () {
+      return this.selectedModelKeys.map(key => {
+        const meta = this.modelMeta[key] || {}
+        const item = { model_key: key }
+        if (meta.context_window > 0) item.context_window = meta.context_window
+        if (meta.vision) item.input_modalities = ['text', 'image']
+        return item
+      })
     },
     handleCancel () {
       this.$router.push('/ai-provider')
@@ -331,9 +419,9 @@ export default {
       return data
     },
     async testPost () {
-      const data = await this.probeConnectivity()
-      const count = Array.isArray(data?.models) ? data.models.length : 0
-      const description = data?.models_source === 'catalog'
+      await this.probeConnectivity()
+      const count = this.availableModels.length
+      const description = this.modelsSource === 'catalog'
         ? this.$t('aice.aiproxy.connectivity_models_catalog_found', [count])
         : this.$t('aice.aiproxy.connectivity_models_found', [count])
       this.$notification.success({
@@ -362,7 +450,7 @@ export default {
             generate_name: this.form.generate_name,
             provider_key: this.effectiveProviderKey,
             secret: this.form.api_key,
-            model_keys: this.selectedModelKeys,
+            models: this.buildCreateModelsPayload(),
             config: Object.keys(config).length ? config : undefined,
           },
         })
@@ -378,19 +466,15 @@ export default {
 <style scoped>
 .provider-model-list {
   width: 100%;
-  max-height: 240px;
-  overflow-y: auto;
   border: 1px solid #f0f0f0;
   border-radius: 4px;
-  padding: 8px 12px;
+  overflow: hidden;
 }
 
-.provider-model-list ::v-deep .ant-checkbox-wrapper {
-  display: block;
-  margin-left: 0;
-}
-
-.provider-model-list ::v-deep .ant-checkbox-wrapper + .ant-checkbox-wrapper {
-  margin-left: 0;
+.provider-model-list-empty {
+  color: rgba(0, 0, 0, 0.45);
+  text-align: center;
+  padding: 24px 8px;
+  line-height: 1.5;
 }
 </style>
