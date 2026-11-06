@@ -11,7 +11,6 @@ export default {
             permission: 'ai_models_update',
             action: () => {
               this.createDialog('AiModelFormDialog', {
-                type: 'edit',
                 data: [obj],
                 onManager: this.onManager,
                 refresh: this.refresh,

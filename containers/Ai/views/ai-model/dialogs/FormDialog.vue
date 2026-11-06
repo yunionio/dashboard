@@ -1,22 +1,16 @@
 <template>
   <base-dialog :width="760" @cancel="cancelDialog">
-    <div slot="header">{{ params.type === 'edit' ? $t('table.action.modify') : $t('common.create') }}</div>
+    <div slot="header">{{ $t('table.action.modify') }}</div>
     <div slot="body">
       <a-form-model ref="form" :model="form" :rules="rules" :label-col="{ span: 5 }" :wrapper-col="{ span: 17 }">
-        <a-form-model-item v-if="params.type !== 'edit'" :label="$t('common.name')" prop="generate_name">
-          <a-input v-model="form.generate_name" />
-        </a-form-model-item>
-        <a-form-model-item v-if="!fixedProviderId" :label="$t('aice.aiproxy.ai_provider_id')" prop="ai_provider_id">
-          <base-select
-            v-model="form.ai_provider_id"
-            resource="ai_providers"
-            :params="aiproxySelectParams('ai_providers')"
-            filterable
-            version="v2"
-            :select-props="{ placeholder: $t('common.tips.select', [$t('aice.aiproxy.provider')]) }" />
-        </a-form-model-item>
         <a-form-model-item :label="$t('aice.aiproxy.model_key')" prop="model_key">
           <a-input v-model="form.model_key" />
+        </a-form-model-item>
+        <a-form-model-item :label="$t('aice.aiproxy.context_window')">
+          <a-input-number v-model="form.context_window" :min="0" :step="1024" style="width: 100%" />
+        </a-form-model-item>
+        <a-form-model-item :label="$t('aice.aiproxy.capability_vision')">
+          <a-switch v-model="form.native_vision" />
         </a-form-model-item>
         <a-divider orientation="left">{{ $t('aice.aiproxy.visual') }}</a-divider>
         <a-form-model-item :label="$t('aice.aiproxy.visual_enabled')">
@@ -67,7 +61,9 @@ import { fetchProviderModelKeyOptions } from '@Ai/utils/aiModelNames'
 
 function visualFromData (data = {}) {
   const visual = data.config?.extensions?.visual || {}
+  const modalities = data.input_modalities || data.config?.input_modalities || []
   return {
+    native_vision: Array.isArray(modalities) && modalities.includes('image'),
     visual_enabled: !!visual.enabled,
     visual_provider_id: data.visual_provider_id || '',
     visual_model_key: data.visual_model_key || '',
@@ -80,21 +76,17 @@ export default {
   name: 'AiModelFormDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const data = this.params.type === 'edit' ? (this.params.data[0] || {}) : {}
-    const fixedProviderId = this.params.ai_provider_id || ''
+    const data = this.params.data[0] || {}
     return {
       loading: false,
-      fixedProviderId,
       visualModelKeyOptions: [],
       form: {
-        generate_name: '',
-        ai_provider_id: data.ai_provider_id || fixedProviderId,
+        ai_provider_id: data.ai_provider_id || '',
         model_key: data.model_key || '',
+        context_window: data.context_window || undefined,
         ...visualFromData(data),
       },
       rules: {
-        generate_name: this.params.type === 'edit' ? [] : [{ required: true, validator: this.$validate('resourceName') }],
-        ai_provider_id: [{ required: true, message: this.$t('common.tips.select', [this.$t('aice.aiproxy.provider')]) }],
         model_key: [{ required: true, message: this.$t('common.tips.input', [this.$t('aice.aiproxy.model_key')]) }],
         visual_provider_id: [{ required: true, message: this.$t('common.tips.select', [this.$t('aice.aiproxy.visual_provider_id')]) }],
         visual_model_key: [{ required: true, message: this.$t('common.tips.select', [this.$t('aice.aiproxy.visual_model_key')]) }],
@@ -138,14 +130,22 @@ export default {
       const visual = { enabled: !!this.form.visual_enabled }
       if (this.form.max_rounds > 0) visual.max_rounds = this.form.max_rounds
       if (this.form.max_tokens > 0) visual.max_tokens = this.form.max_tokens
+      const config = { extensions: { visual } }
+      if (this.form.native_vision) {
+        config.input_modalities = ['text', 'image']
+      }
       const data = {
         ai_provider_id: this.form.ai_provider_id,
         model_key: this.form.model_key,
-        config: { extensions: { visual } },
+        config,
+        context_window: this.form.context_window > 0 ? this.form.context_window : 0,
       }
       if (this.form.visual_enabled) {
         data.visual_provider_id = this.form.visual_provider_id
         data.visual_model_key = this.form.visual_model_key
+      } else {
+        data.visual_provider_id = ''
+        data.visual_model_key = ''
       }
       return data
     },
@@ -153,13 +153,10 @@ export default {
       await validateModelForm(this.$refs.form)
       this.loading = true
       try {
-        const data = this.buildPayload()
-        if (this.params.type === 'edit') {
-          await this.params.onManager('update', { id: this.params.data[0].id, managerArgs: { data } })
-        } else {
-          data.generate_name = this.form.generate_name
-          await this.params.onManager('create', { managerArgs: { data } })
-        }
+        await this.params.onManager('update', {
+          id: this.params.data[0].id,
+          managerArgs: { data: this.buildPayload() },
+        })
         this.cancelDialog()
         this.params.refresh && this.params.refresh()
       } finally {

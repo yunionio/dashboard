@@ -27,6 +27,16 @@ export default {
         }),
         { field: 'model_key', title: this.$t('aice.aiproxy.model_key') },
         {
+          field: 'context_window',
+          title: this.$t('aice.aiproxy.context_window'),
+          formatter: ({ row }) => row.context_window || '-',
+        },
+        {
+          field: 'input_modalities',
+          title: this.$t('aice.aiproxy.input_modalities'),
+          formatter: ({ row }) => (Array.isArray(row.input_modalities) && row.input_modalities.length ? row.input_modalities.join(', ') : '-'),
+        },
+        {
           field: 'visual_enabled',
           title: this.$t('aice.aiproxy.visual_enabled'),
           formatter: () => (this.visualConfig.enabled ? this.$t('status.enabled.true') : this.$t('status.enabled.false')),
