@@ -1,6 +1,6 @@
 <template>
-  <a-row :gutter="16" class="stat-cards-row">
-    <a-col :span="4" v-for="card in cards" :key="card.key">
+  <div class="stat-cards-row">
+    <div class="stat-card-col" v-for="card in cards" :key="card.key">
       <div class="stat-card" :class="{ 'is-loading': loading }">
         <div class="stat-card-label">{{ card.label }}</div>
         <div class="stat-card-value">
@@ -9,8 +9,8 @@
         </div>
         <div class="stat-card-sub">{{ card.sub || '\u00A0' }}</div>
       </div>
-    </a-col>
-  </a-row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -37,14 +37,18 @@ export default {
     },
     cards () {
       const { request_count = 0, success_count = 0, failure_count = 0, token_count = 0, input_tokens = 0, output_tokens = 0 } = this.usage
-      const { rpm = 0, tpm = 0, avg_latency_ms = null } = this.summary
+      const { rpm = 0, tpm = 0, avg_latency_ms = null, cache_rate = 0, cached_tokens = 0 } = this.summary
       const total = request_count || 1
       const successRate = total > 0 ? ((success_count / total) * 100).toFixed(1) + '%' : '-'
+      const cacheRate = cache_rate != null
+        ? (((cache_rate <= 1 ? cache_rate * 100 : cache_rate)).toFixed(1) + '%')
+        : '-'
       return [
         { key: 'request_count', label: this.$t('aice.aiproxy.usage.request_count'), value: numerify(request_count), sub: `${this.$t('aice.aiproxy.usage.success')} ${numerify(success_count)}, ${this.$t('aice.aiproxy.usage.failed')} ${numerify(failure_count)}` },
         { key: 'success_rate', label: this.$t('aice.aiproxy.usage.request_success_rate'), value: successRate },
         { key: 'avg_latency', label: this.$t('aice.aiproxy.usage.avg_latency'), value: avg_latency_ms != null ? this.formatDuration(avg_latency_ms) : '-' },
         { key: 'token_count', label: this.$t('aice.aiproxy.usage.token_count'), value: numerify(token_count), sub: `Input: ${numerify(input_tokens)}, Output: ${numerify(output_tokens)}` },
+        { key: 'cache_rate', label: this.$t('aice.aiproxy.usage.cache_hit_rate'), value: cacheRate, sub: `${this.$t('aice.aiproxy.usage.cached_tokens')} ${numerify(cached_tokens)}` },
         { key: 'rpm', label: this.$t('aice.aiproxy.usage.rpm'), value: numerify(rpm) },
         { key: 'tpm', label: this.$t('aice.aiproxy.usage.tpm'), value: numerify(tpm) },
       ]
@@ -63,6 +67,15 @@ export default {
 
 <style lang="less" scoped>
 .stat-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -8px;
+}
+.stat-card-col {
+  flex: 1 1 140px;
+  min-width: 140px;
+  max-width: 100%;
+  padding: 0 8px;
   margin-bottom: 0;
 }
 .stat-card {
