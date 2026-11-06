@@ -1,5 +1,21 @@
 <template>
   <div>
+    <!-- 区块 A：缓存命中 -->
+    <div class="monitor-overview-chart mb-3">
+      <div class="header">
+        <div class="title-wrapper">
+          <div class="title">{{ $t('aice.aiproxy.usage.cache_hit') }}</div>
+        </div>
+      </div>
+      <div class="latency-cards" v-if="!loading">
+        <div class="latency-card" v-for="item in cacheItems" :key="item.key">
+          <div class="latency-label">{{ item.label }}</div>
+          <div class="latency-value">{{ item.value }}</div>
+        </div>
+      </div>
+      <a-spin v-else />
+    </div>
+
     <!-- 区块 B：延迟诊断 -->
     <div class="monitor-overview-chart mb-3">
       <div class="header">
@@ -204,6 +220,18 @@ export default {
         { key: 'max', label: this.$t('aice.aiproxy.usage.max_latency'), value: d.max_latency_ms != null ? this.formatDuration(d.max_latency_ms) : '-' },
         { key: 'p50', label: this.$t('aice.aiproxy.usage.p50'), value: d.p50_latency_ms != null ? this.formatDuration(d.p50_latency_ms) : '-' },
         { key: 'p95', label: this.$t('aice.aiproxy.usage.p95'), value: d.p95_latency_ms != null ? this.formatDuration(d.p95_latency_ms) : '-' },
+      ]
+    },
+    cacheItems () {
+      const s = this.data.summary || {}
+      const rate = s.cache_rate
+      const rateText = rate != null && rate > 0
+        ? ((rate <= 1 ? rate * 100 : rate).toFixed(1) + '%')
+        : (rate === 0 ? '0%' : '-')
+      return [
+        { key: 'cache_rate', label: this.$t('aice.aiproxy.usage.cache_hit_rate'), value: rateText },
+        { key: 'cached_tokens', label: this.$t('aice.aiproxy.usage.cached_tokens'), value: s.cached_tokens != null ? s.cached_tokens : 0 },
+        { key: 'input_tokens', label: this.$t('aice.aiproxy.usage.input_tokens'), value: s.input_tokens != null ? s.input_tokens : 0 },
       ]
     },
   },
