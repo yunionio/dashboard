@@ -147,6 +147,7 @@
           <a-menu-item key="toClouduser" v-if="showClouduser && showMenuMap.clouduser"><a-icon class="mr-2 ml-2" type="cloud-upload" />{{ $t('scope.cloudid') }}</a-menu-item>
           <a-menu-item key="toCredentials" v-if="showMenuMap.credential"><icon class="mr-2 ml-2" type="access-credentials" />{{ $t('common_631') }}</a-menu-item>
           <a-menu-item key="handleUpdatePassword" v-if="showMenuMap['change-password']"><a-icon class="mr-2 ml-2" type="usergroup-delete" />{{ $t('scope.text_5') }}</a-menu-item>
+          <a-menu-item key="toNewVersion"><a-icon class="mr-2 ml-2" type="swap" />新版尝鲜</a-menu-item>
           <a-menu-item key="logout"><a-icon class="mr-2 ml-2" type="logout" />{{ $t('scope.text_6') }}</a-menu-item>
         </a-menu>
       </a-dropdown>
@@ -167,6 +168,7 @@ import MorePopover from '@/sections/Navbar/components/MorePopover'
 import WindowsMixin from '@/mixins/windows'
 import { hasSetupKey, featureMenuHiddenCheck } from '@/utils/auth'
 import { genReferRouteQuery } from '@/utils/utils'
+import { buildNewVersionUrl } from '@/config/switchVersion'
 
 export default {
   name: 'Navbar',
@@ -338,6 +340,8 @@ export default {
         this.$router.push('/clouduser')
       } else if (item.key === 'toCredentials') {
         this.$router.push('/credentials')
+      } else if (item.key === 'toNewVersion') {
+        window.location.href = buildNewVersionUrl(this.$route.fullPath)
       }
     },
     projectChange (id, scope) {
