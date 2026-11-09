@@ -26,6 +26,7 @@ import _ from 'lodash'
 import * as R from 'ramda'
 import { numerify } from '@/filters'
 import { escapeHTML } from '@/utils/utils'
+import { parseMonitorIntervalToMs } from '@/utils/monitorTimeGroup'
 import MonitorHeader from './Header'
 import MonitorList from './List'
 
@@ -120,6 +121,8 @@ export default {
       return { start, end }
     },
     timeGroupTime () {
+      const ms = parseMonitorIntervalToMs(this.timeGroup)
+      if (ms) return ms
       if (/^(\d{1,})m/.test(this.timeGroup)) {
         return Number(this.timeGroup.replace('m', '')) * 60 * 1000
       } else if (/^(\d{1,})h/.test(this.timeGroup)) {
