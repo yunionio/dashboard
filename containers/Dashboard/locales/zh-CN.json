@@ -27,6 +27,7 @@
   "dashboard.text_24": "类型",
   "dashboard.text_25": "主机资源",
   "dashboard.text_26": "容器资源",
+  "dashboard.system_resource": "系统资源",
   "dashboard.text_27": "各{0}{1}配额使用情况",
   "dashboard.text_28": "内存",
   "dashboard.text_29": "存储",
