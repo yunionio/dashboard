@@ -89,32 +89,32 @@
       <a-form-model-item class="mb-0">
         <a-button type="primary" html-type="submit" :loading="submiting" block>{{ $t('auth.login.submit') }}</a-button>
       </a-form-model-item>
-      <!-- 额外操作 -->
+      <!-- 额外操作：中文设置登录域与右侧同一行；其他语言第二行 -->
       <a-form-model-item class="mb-0">
         <div class="d-flex justify-content-between login-link">
           <div class="flex-shrink-1 flex-grow-1 text-left">
             <template v-if="hasLoggedUsers">
               <a class="week-link-button" @click="handleChooser">{{ $t('auth.chooser') }}</a>
             </template>
-          </div>
-          <div class="flex-shrink-1 flex-grow-1 text-right">
-            <template v-if="showDomainChooser && showUsernameInput && !loginDomain">
-              <a-popover v-model="showSetDomainPopover" :title="$t('auth.set.current.domain')" trigger="click">
-                <a class="week-link-button">{{ $t('common.switch_login_domain') }}</a>
-                <edit-form slot="content" :width="450" :formRules="domainInputRules" :defaultValue="loginDomain" :label="$t('common.login_domain')" @submit="submitLoginDomain" @cancel="showSetDomainPopover = false" />
-              </a-popover>
-            </template>
-          </div>
-        </div>
-      </a-form-model-item>
-      <a-form-model-item class="mb-0">
-        <div class="d-flex justify-content-between login-link">
-          <div class="flex-shrink-1 flex-grow-1 text-left">
             <slot name="actions-left" />
           </div>
           <div class="flex-shrink-1 flex-grow-1 text-right">
+            <template v-if="showLoginDomainSetup && loginDomainLinkInline">
+              <a-popover v-model="showSetDomainPopover" :title="$t('auth.set.current.domain')" trigger="click">
+                <a class="week-link-button login-domain-link">{{ $t('common.switch_login_domain') }}</a>
+                <edit-form slot="content" :width="450" :formRules="domainInputRules" :defaultValue="loginDomain" :label="$t('common.login_domain')" @submit="submitLoginDomain" @cancel="showSetDomainPopover = false" />
+              </a-popover>
+            </template>
             <slot name="actions-right" />
           </div>
+        </div>
+      </a-form-model-item>
+      <a-form-model-item v-if="showLoginDomainSetup && !loginDomainLinkInline" class="mb-0 login-domain-row">
+        <div class="d-flex justify-content-end login-link">
+          <a-popover v-model="showSetDomainPopover" :title="$t('auth.set.current.domain')" trigger="click">
+            <a class="week-link-button">{{ $t('common.switch_login_domain') }}</a>
+            <edit-form slot="content" :width="450" :formRules="domainInputRules" :defaultValue="loginDomain" :label="$t('common.login_domain')" @submit="submitLoginDomain" @cancel="showSetDomainPopover = false" />
+          </a-popover>
         </div>
       </a-form-model-item>
     </a-form-model>
@@ -240,6 +240,12 @@ export default {
     },
     showDomainChooser () {
       return !this.regions.return_full_domains
+    },
+    showLoginDomainSetup () {
+      return this.showDomainChooser && this.showUsernameInput && !this.loginDomain
+    },
+    loginDomainLinkInline () {
+      return /^zh/i.test(this.$i18n.locale || '')
     },
     firstNameWord () {
       const word = (this.params.displayname || this.params.username || '').split('')[0]
@@ -475,5 +481,12 @@ export default {
 }
 .login-link {
   line-height: 23px;
+}
+.login-domain-link {
+  margin-right: 12px;
+}
+.login-domain-row {
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 </style>
