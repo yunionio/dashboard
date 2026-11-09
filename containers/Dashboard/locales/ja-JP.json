@@ -27,6 +27,7 @@
   "dashboard.text_24": "種類",
   "dashboard.text_25": "ホスト・リソース",
   "dashboard.text_26": "コンテナー リソース",
+  "dashboard.system_resource": "システムリソース",
   "dashboard.text_27": "{0}{1}別のクォータ使用量",
   "dashboard.text_28": "記憶",
   "dashboard.text_29": "貯蔵",
