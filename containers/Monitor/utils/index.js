@@ -147,10 +147,12 @@ export const addMissingSeries = (series = [], chartQueryData, moment) => {
       const pointFrom = point[idx]
       const pointTo = item.points[item.points.length - 1][idx]
       let { from, to, interval } = chartQueryData
-      if (interval.includes('h')) {
-        interval = parseInt(interval.replace('h', '')) * 60 * 60 * 1000
+      if (interval.includes('d')) {
+        interval = parseInt(interval.replace('d', ''), 10) * 24 * 60 * 60 * 1000
+      } else if (interval.includes('h')) {
+        interval = parseInt(interval.replace('h', ''), 10) * 60 * 60 * 1000
       } else if (interval.includes('m')) {
-        interval = parseInt(interval.replace('m', '')) * 60 * 1000
+        interval = parseInt(interval.replace('m', ''), 10) * 60 * 1000
       } else if (interval.includes('s')) {
         interval = parseInt(interval.replace('s', '')) * 1000
       } else {
