@@ -24,15 +24,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { hasSetupKey } from '@/utils/auth'
 import Server from './components/Server'
 import K8s from './components/K8s'
+import Identity from './components/Identity'
 
 export default {
   name: 'NumberCard',
   components: {
     Server,
     K8s,
+    Identity,
   },
   props: {
     options: {
@@ -43,16 +46,8 @@ export default {
     edit: Boolean,
   },
   data () {
-    const typeOps = []
-    if (hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'bill'])) {
-      typeOps.push({ key: 'server', label: this.$t('dashboard.text_25') })
-    }
-    if (hasSetupKey(['k8s'])) {
-      typeOps.push({ key: 'k8s', label: this.$t('dashboard.text_26') })
-    }
     return {
       type: (this.params && this.params.type) || 'server',
-      typeOpts: typeOps,
       visible: false,
       formItemLayout: {
         wrapperCol: {
@@ -64,10 +59,34 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapGetters(['isAdminMode']),
+    typeOpts () {
+      const typeOps = []
+      if (hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'bill'])) {
+        typeOps.push({ key: 'server', label: this.$t('dashboard.text_25') })
+      }
+      if (hasSetupKey(['k8s'])) {
+        typeOps.push({ key: 'k8s', label: this.$t('dashboard.text_26') })
+      }
+      if (this.isAdminMode) {
+        typeOps.push({ key: 'identity', label: this.$t('dashboard.system_resource') })
+      }
+      return typeOps
+    },
+  },
   watch: {
     visible (v) {
       if (!v) { // 当关闭抽屉的时候重置type
         this.type = (this.params && this.params.type) || 'server'
+      }
+    },
+    typeOpts (opts) {
+      if (this.params?.type === 'identity' && !opts.find(item => item.key === 'identity')) {
+        return
+      }
+      if (!opts.find(item => item.key === this.type)) {
+        this.type = (opts[0] && opts[0].key) || 'server'
       }
     },
   },

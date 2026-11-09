@@ -11,6 +11,9 @@ import { DOCS_MAP } from '@/constants/docs'
 // nics 和 ports 的区别：ports是所有的IP，nics是被占用的IP，ports包含nics。nics和ports的单位都是个。
 // isOnlyAllPartKey: true 只能作为总量指标出现
 // belongAllPartKeys 所归属的总量指标
+export const USAGE_SOURCE_IMAGE = 'image-usage'
+export const USAGE_SOURCE_IDENTITY = 'identity-usage'
+export const IDENTITY_USAGE_KEYS = ['domains', 'groups', 'policies', 'projects', 'roles', 'users']
 export const USAGE_CONFIG = {
   'all.bucket_bytes': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
@@ -2431,6 +2434,7 @@ export const USAGE_CONFIG = {
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'all.img.total.size': {
+    usageSource: USAGE_SOURCE_IMAGE,
     formatter: val => sizestrWithUnit(val, 'B', 1000),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
@@ -2438,6 +2442,7 @@ export const USAGE_CONFIG = {
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'domain.img.total.size': {
+    usageSource: USAGE_SOURCE_IMAGE,
     formatter: val => sizestrWithUnit(val, 'B', 1000),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
@@ -2445,6 +2450,7 @@ export const USAGE_CONFIG = {
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'img.total.size': {
+    usageSource: USAGE_SOURCE_IMAGE,
     formatter: val => sizestrWithUnit(val, 'B', 1000),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
@@ -2452,6 +2458,7 @@ export const USAGE_CONFIG = {
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'all.iso.total.size': {
+    usageSource: USAGE_SOURCE_IMAGE,
     formatter: val => sizestrWithUnit(val, 'B', 1000),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
@@ -2459,6 +2466,7 @@ export const USAGE_CONFIG = {
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'domain.iso.total.size': {
+    usageSource: USAGE_SOURCE_IMAGE,
     formatter: val => sizestrWithUnit(val, 'B', 1000),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
@@ -2466,6 +2474,7 @@ export const USAGE_CONFIG = {
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'iso.total.size': {
+    usageSource: USAGE_SOURCE_IMAGE,
     formatter: val => sizestrWithUnit(val, 'B', 1000),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
@@ -2473,6 +2482,7 @@ export const USAGE_CONFIG = {
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'all.imgiso.total.size': {
+    usageSource: USAGE_SOURCE_IMAGE,
     formatter: val => sizestrWithUnit(val, 'B', 1000),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
@@ -2480,6 +2490,7 @@ export const USAGE_CONFIG = {
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'domain.imgiso.total.size': {
+    usageSource: USAGE_SOURCE_IMAGE,
     formatter: val => sizestrWithUnit(val, 'B', 1000),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
@@ -2487,10 +2498,47 @@ export const USAGE_CONFIG = {
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'imgiso.total.size': {
+    usageSource: USAGE_SOURCE_IMAGE,
     formatter: val => sizestrWithUnit(val, 'B', 1000),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.project.key,
+    clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
+  },
+  domains: {
+    usageSource: USAGE_SOURCE_IDENTITY,
+    unit: i18n.t('dashboard.text_1'),
+    scope: SCOPES_MAP.system.key,
+    clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
+  },
+  groups: {
+    usageSource: USAGE_SOURCE_IDENTITY,
+    unit: i18n.t('dashboard.text_1'),
+    scope: SCOPES_MAP.system.key,
+    clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
+  },
+  policies: {
+    usageSource: USAGE_SOURCE_IDENTITY,
+    unit: i18n.t('dashboard.text_1'),
+    scope: SCOPES_MAP.system.key,
+    clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
+  },
+  projects: {
+    usageSource: USAGE_SOURCE_IDENTITY,
+    unit: i18n.t('dashboard.text_1'),
+    scope: SCOPES_MAP.system.key,
+    clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
+  },
+  roles: {
+    usageSource: USAGE_SOURCE_IDENTITY,
+    unit: i18n.t('dashboard.text_1'),
+    scope: SCOPES_MAP.system.key,
+    clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
+  },
+  users: {
+    usageSource: USAGE_SOURCE_IDENTITY,
+    unit: i18n.t('dashboard.text_1'),
+    scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'all.servers.last_week': {
