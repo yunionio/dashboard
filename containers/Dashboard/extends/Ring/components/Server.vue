@@ -93,7 +93,8 @@ import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import QuotaConfig from '@Dashboard/sections/QuotaConfig'
 import { USAGE_CONFIG, getTargetRangeUsageKey } from '@Dashboard/constants'
-import { load } from '@Dashboard/utils/cache'
+import { fetchDashboardUsage } from '@Dashboard/utils/fetchUsage'
+import { collectUsageKeysForRequest } from '@Dashboard/utils/usageSource'
 import { getRequestT, sizestrWithUnit } from '@/utils/utils'
 import { hasPermission } from '@/utils/auth'
 import { numerify } from '@/filters'
@@ -576,17 +577,12 @@ export default {
             params.project_id = this.dataRangeParams?.project
           }
         }
-        const data = await load({
-          res: 'usages',
-          actionArgs: {
-            url: '/v2/rpc/usages/general-usage',
-            method: 'GET',
-            params,
-          },
-          useManager: false,
-          resPath: 'data',
-        })
-        this.data = data
+        const usageKeys = collectUsageKeysForRequest(
+          [this.form.fd.all_usage_key, this.form.fd.usage_key],
+          this.scope,
+          this.dataRangeParams?.scope,
+        )
+        this.data = await fetchDashboardUsage(params, usageKeys)
       } finally {
         this.loading = false
       }
