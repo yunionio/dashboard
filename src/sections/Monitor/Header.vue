@@ -50,6 +50,11 @@
 <script>
 import RefreshButton from '@/components/PageList/RefreshButton'
 import i18n from '@/locales'
+import {
+  buildCustomTimeGroupOpts,
+  getPresetTimeDurationMinutes,
+  pickRecommendedTimeGroupKey,
+} from '@/utils/monitorTimeGroup'
 import CustomDate from './CustomDate'
 
 export default {
@@ -223,17 +228,6 @@ export default {
       timer = setInterval(this.emitRefresh, this.refreshDuration * 1000)
     }
     return {
-      customTimeNumber: '5',
-      customTimeUnit: 'm',
-      customTimeGroupOpts: [
-        { key: '1m', label: this.$t('common_num_minutes', [1]) },
-        { key: '5m', label: this.$t('common_num_minutes', [5]) },
-        { key: '15m', label: this.$t('common_num_minutes', [15]) },
-        { key: '30m', label: this.$t('common_num_minutes', [30]) },
-        { key: '1h', label: this.$t('common_num_hours', [1]) },
-        { key: '6h', label: this.$t('common_num_hours', [6]) },
-        { key: '12h', label: this.$t('common_num_hours', [12]) },
-      ],
       // 时间间隔内，如何聚合数据，暂只支持 MEAN
       groupFuncOpts: [
         // { key: 'min', label: this.$t('common.min') },
@@ -252,29 +246,66 @@ export default {
     isCustom () {
       return this.time === 'custom'
     },
+    customTimeDurationMs () {
+      if (!this.isCustom || !this.customTime) return 0
+      const { from, to } = this.customTime
+      if (from == null || to == null) return 0
+      if (this.customTimeUseTimeStamp) {
+        return Math.abs(Number(to) - Number(from))
+      }
+      const parseOffsetHours = (v) => {
+        if (v === 'now') return 0
+        const matched = String(v).match(/^now(-?\d+)h$/)
+        return matched ? Number(matched[1]) : 0
+      }
+      return Math.abs(parseOffsetHours(from) - parseOffsetHours(to)) * 60 * 60 * 1000
+    },
+    timeGroupDurationMinutes () {
+      if (this.isCustom) {
+        return this.customTimeDurationMs / (60 * 1000)
+      }
+      return getPresetTimeDurationMinutes(this.time)
+    },
     timeGroupOpts () {
       if (this.isCustom) {
-        return this.customTimeGroupOpts
+        if (!this.customTimeDurationMs) return []
+        return buildCustomTimeGroupOpts(this.customTimeDurationMs)
       }
       if (this.timeOpts[this.time]) {
         return this.timeOpts[this.time].timeGroupOpts
-      } else {
-        return this.timeOpts[`${1}h`].timeGroupOpts
       }
+      return this.timeOpts[`${1}h`].timeGroupOpts
     },
   },
   watch: {
-    timeGroupOpts () {
-      const isExist = this.timeGroupOpts.find(val => val.key === this.timeGroup)
-      if (!isExist) {
-        this.$emit('update:timeGroup', this.timeGroupOpts[this.timeGroupOpts.length - 1].key)
-      }
+    timeGroupOpts: {
+      handler () {
+        this.syncTimeGroup()
+      },
+      immediate: true,
+    },
+    customTime: {
+      deep: true,
+      handler () {
+        this.$nextTick(() => this.syncTimeGroup())
+      },
+    },
+    time () {
+      this.$nextTick(() => this.syncTimeGroup())
     },
   },
   beforeDestroy () {
     this.cancelAutoRefresh()
   },
   methods: {
+    syncTimeGroup () {
+      const opts = this.timeGroupOpts
+      if (!opts || !opts.length) return
+      const next = pickRecommendedTimeGroupKey(opts, this.timeGroupDurationMinutes, this.timeGroup)
+      if (next && next !== this.timeGroup) {
+        this.$emit('update:timeGroup', next)
+      }
+    },
     refresh () {
       this.$emit('refresh')
     },
@@ -297,7 +328,7 @@ export default {
     timeGroupChange (val) {
       const isExist = this.timeGroupOpts.find(v => v.key === val)
       if (!isExist) {
-        val = this.timeGroupOpts[this.timeGroupOpts.length - 1].key
+        val = pickRecommendedTimeGroupKey(this.timeGroupOpts, this.timeGroupDurationMinutes, null)
       }
       this.$emit('update:timeGroup', val)
     },
