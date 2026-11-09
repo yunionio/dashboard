@@ -142,7 +142,7 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
-import { USAGE_CONFIG, getMetricDocs } from '@Dashboard/constants'
+import { USAGE_CONFIG, USAGE_SOURCE_IDENTITY, getMetricDocs } from '@Dashboard/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { usageMap } from '@/constants/generalUsage'
 import PairsTag from '@/sections/PairsTag'
@@ -567,6 +567,9 @@ export default {
     usages () {
       const ret = []
       for (const key in USAGE_CONFIG) {
+        if (USAGE_CONFIG[key].usageSource === USAGE_SOURCE_IDENTITY) {
+          continue
+        }
         if (USAGE_CONFIG[key].scope && USAGE_CONFIG[key].scope !== this.$store.getters.scope) {
           continue
         }
