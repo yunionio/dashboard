@@ -4,6 +4,11 @@
       <div class="dashboard-card-header">
         <div class="dashboard-card-header-left" @click.alt="showDebuggerInfo = !showDebuggerInfo">{{ form.fd.name || $t('dashboard.text_6') }}
           <a-icon class="ml-2" type="loading" v-if="loading" />
+          <span v-if="isUsageKeyDeny" class="ml-2">
+            <a-tooltip class="mr-2"><template slot="title">{{ $t('dashboard.usage_key_deny_tips') }}</template><icon type="help" /></a-tooltip>
+            <a-icon class="warning-color mr-1" type="warning" />
+            {{ $t('dashboard.usage_key_deny_tips_2') }}
+          </span>
           <a-tooltip v-if="isServersAnypool"><template slot="title">{{ $t('dashboard.server_tips') }}</template><icon type="help" /></a-tooltip>
         </div>
         <div class="dashboard-card-header-right">
@@ -15,8 +20,8 @@
         </div>
       </div>
       <div class="dashboard-card-body d-flex align-items-center justify-content-center">
-        <div class="d-flex">
-          <div class="number-card-number mr-1">{{ this.usage.usage }}</div>
+        <div class="d-flex align-items-baseline">
+          <div class="number-card-number mr-1">{{ isUsageKeyDeny ? '-' : this.usage.usage }}</div>
           <div class="number-card-unit">{{ this.usage.unit }}</div>
         </div>
       </div>
@@ -49,7 +54,8 @@ import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import QuotaConfig from '@Dashboard/sections/QuotaConfig'
 import { USAGE_CONFIG } from '@Dashboard/constants'
-import { load } from '@Dashboard/utils/cache'
+import { fetchDashboardUsage } from '@Dashboard/utils/fetchUsage'
+import { isIdentityUsageKey } from '@Dashboard/utils/usageSource'
 import { getRequestT } from '@/utils/utils'
 import { hasPermission } from '@/utils/auth'
 import routes from '@/router/routes'
@@ -153,7 +159,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['permission', 'userInfo']),
+    ...mapGetters(['permission', 'userInfo', 'isAdminMode']),
+    isUsageKeyDeny () {
+      return !this.isAdminMode && isIdentityUsageKey(this.form.fd.usage_key)
+    },
     usage () {
       const usage = (this.data && this.data[this.form.fd.usage_key]) || 0
       const ret = {
@@ -281,19 +290,11 @@ export default {
       return params
     },
     async fetchUsage () {
+      if (this.isUsageKeyDeny) return
       this.loading = true
       try {
         const params = this.genUsageParams()
-        const data = await load({
-          res: 'usages',
-          action: 'rpc',
-          actionArgs: {
-            methodname: 'getGeneralUsage',
-            params,
-          },
-          resPath: 'data',
-        })
-        this.data = data
+        this.data = await fetchDashboardUsage(params, [this.form.fd.usage_key])
       } finally {
         this.loading = false
       }
