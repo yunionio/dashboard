@@ -116,6 +116,8 @@ module.exports = {
       definitions[0]['process.env'].THEME = JSON.stringify(process.env.THEME)
       definitions[0]['process.env'].BRAND = process.env.BRAND
       definitions[0]['process.env'].PRODUCT = process.env.PRODUCT
+      definitions[0]['process.env'].VUE_APP_NEW_APP_URL = JSON.stringify(process.env.VUE_APP_NEW_APP_URL || '')
+      definitions[0]['process.env'].VUE_APP_NEW_VERSION_PREFIX = JSON.stringify(process.env.VUE_APP_NEW_VERSION_PREFIX || '/v2')
       return definitions
     })
 
