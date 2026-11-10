@@ -107,26 +107,82 @@ export default {
             {
               field: 'requests_per_second_mean',
               title: this.$t('aice.llm_benchmark.requests_per_second_mean'),
-              formatter: ({ row }) => {
-                if (row.requests_per_second_mean == null || row.requests_per_second_mean === '') return '-'
-                const val = Number(row.requests_per_second_mean)
-                if (Number.isNaN(val)) return row.requests_per_second_mean
-                return `${val.toFixed(2)}`
-              },
+              formatter: ({ row }) => this.formatMetric(row.requests_per_second_mean),
+            },
+            {
+              field: 'output_tokens_per_second_mean',
+              title: this.$t('aice.llm_benchmark.output_tokens_per_second_mean'),
+              formatter: ({ row }) => this.formatMetric(row.output_tokens_per_second_mean, 'tok/s'),
+            },
+            {
+              field: 'input_tokens_per_second_mean',
+              title: this.$t('aice.llm_benchmark.input_tokens_per_second_mean'),
+              formatter: ({ row }) => this.formatMetric(row.input_tokens_per_second_mean, 'tok/s'),
+            },
+            {
+              field: 'tokens_per_second_mean',
+              title: this.$t('aice.llm_benchmark.tokens_per_second_mean'),
+              formatter: ({ row }) => this.formatMetric(row.tokens_per_second_mean, 'tok/s'),
+            },
+            {
+              field: 'time_to_first_token_mean_ms',
+              title: this.$t('aice.llm_benchmark.time_to_first_token_mean_ms'),
+              formatter: ({ row }) => this.formatMetric(row.time_to_first_token_mean_ms, 'ms'),
+            },
+            {
+              field: 'time_to_first_token_p95_ms',
+              title: this.$t('aice.llm_benchmark.time_to_first_token_p95_ms'),
+              formatter: ({ row }) => this.formatMetric(row.time_to_first_token_p95_ms, 'ms'),
+            },
+            {
+              field: 'time_to_first_token_p99_ms',
+              title: this.$t('aice.llm_benchmark.time_to_first_token_p99_ms'),
+              formatter: ({ row }) => this.formatMetric(row.time_to_first_token_p99_ms, 'ms'),
+            },
+            {
+              field: 'inter_token_latency_mean_ms',
+              title: this.$t('aice.llm_benchmark.inter_token_latency_mean_ms'),
+              formatter: ({ row }) => this.formatMetric(row.inter_token_latency_mean_ms, 'ms'),
+            },
+            {
+              field: 'inter_token_latency_p95_ms',
+              title: this.$t('aice.llm_benchmark.inter_token_latency_p95_ms'),
+              formatter: ({ row }) => this.formatMetric(row.inter_token_latency_p95_ms, 'ms'),
+            },
+            {
+              field: 'inter_token_latency_p99_ms',
+              title: this.$t('aice.llm_benchmark.inter_token_latency_p99_ms'),
+              formatter: ({ row }) => this.formatMetric(row.inter_token_latency_p99_ms, 'ms'),
             },
             {
               field: 'request_latency_mean_sec',
               title: this.$t('aice.llm_benchmark.request_latency_mean_sec'),
-              formatter: ({ row }) => {
-                if (row.request_latency_mean_sec == null || row.request_latency_mean_sec === '') return '-'
-                const val = Number(row.request_latency_mean_sec)
-                if (Number.isNaN(val)) return row.request_latency_mean_sec
-                return `${val.toFixed(2)}s`
-              },
+              formatter: ({ row }) => this.formatMetric(row.request_latency_mean_sec, 's'),
+            },
+            {
+              field: 'request_latency_p95_sec',
+              title: this.$t('aice.llm_benchmark.request_latency_p95_sec'),
+              formatter: ({ row }) => this.formatMetric(row.request_latency_p95_sec, 's'),
+            },
+            {
+              field: 'request_latency_p99_sec',
+              title: this.$t('aice.llm_benchmark.request_latency_p99_sec'),
+              formatter: ({ row }) => this.formatMetric(row.request_latency_p99_sec, 's'),
+            },
+            {
+              field: 'request_concurrency_mean',
+              title: this.$t('aice.llm_benchmark.request_concurrency_mean'),
+              formatter: ({ row }) => this.formatMetric(row.request_concurrency_mean),
+            },
+            {
+              field: 'request_concurrency_max',
+              title: this.$t('aice.llm_benchmark.request_concurrency_max'),
+              formatter: ({ row }) => this.formatMetric(row.request_concurrency_max),
             },
             { field: 'request_total', title: this.$t('aice.llm_benchmark.request_total') },
             { field: 'request_successful', title: this.$t('aice.llm_benchmark.request_successful') },
             { field: 'request_errored', title: this.$t('aice.llm_benchmark.request_errored') },
+            { field: 'request_incomplete', title: this.$t('aice.llm_benchmark.request_incomplete') },
             {
               field: 'error_rate',
               title: this.$t('aice.llm_benchmark.error_rate'),
@@ -171,6 +227,12 @@ export default {
     },
   },
   methods: {
+    formatMetric (value, suffix) {
+      if (value == null || value === '') return '-'
+      const val = Number(value)
+      if (Number.isNaN(val)) return value
+      return suffix ? `${val.toFixed(2)} ${suffix}` : val.toFixed(2)
+    },
     formatErrorRate (val) {
       if (val == null || val === '') return '-'
       const num = Number(val)

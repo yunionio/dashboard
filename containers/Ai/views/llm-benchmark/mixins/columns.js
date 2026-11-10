@@ -5,6 +5,13 @@ import {
 import { BENCHMARK_TERMINAL_STATES } from '../constants'
 import { renderBenchmarkState } from '../utils/state'
 
+function formatMetric (value, suffix) {
+  if (value == null || value === '') return '-'
+  const val = Number(value)
+  if (Number.isNaN(val)) return value
+  return suffix ? `${val.toFixed(2)} ${suffix}` : val.toFixed(2)
+}
+
 export default {
   created () {
     this.columns = [
@@ -71,23 +78,49 @@ export default {
         field: 'requests_per_second_mean',
         title: this.$t('aice.llm_benchmark.requests_per_second_mean'),
         minWidth: 120,
-        formatter: ({ row }) => {
-          if (row.requests_per_second_mean == null || row.requests_per_second_mean === '') return '-'
-          const val = Number(row.requests_per_second_mean)
-          if (Number.isNaN(val)) return row.requests_per_second_mean
-          return `${val.toFixed(2)}`
-        },
+        formatter: ({ row }) => formatMetric(row.requests_per_second_mean),
+      },
+      {
+        field: 'output_tokens_per_second_mean',
+        title: this.$t('aice.llm_benchmark.output_tokens_per_second_mean'),
+        minWidth: 140,
+        formatter: ({ row }) => formatMetric(row.output_tokens_per_second_mean, 'tok/s'),
+      },
+      {
+        field: 'input_tokens_per_second_mean',
+        title: this.$t('aice.llm_benchmark.input_tokens_per_second_mean'),
+        minWidth: 140,
+        formatter: ({ row }) => formatMetric(row.input_tokens_per_second_mean, 'tok/s'),
+      },
+      {
+        field: 'tokens_per_second_mean',
+        title: this.$t('aice.llm_benchmark.tokens_per_second_mean'),
+        minWidth: 140,
+        formatter: ({ row }) => formatMetric(row.tokens_per_second_mean, 'tok/s'),
+      },
+      {
+        field: 'time_to_first_token_mean_ms',
+        title: this.$t('aice.llm_benchmark.time_to_first_token_mean_ms'),
+        minWidth: 140,
+        formatter: ({ row }) => formatMetric(row.time_to_first_token_mean_ms, 'ms'),
+      },
+      {
+        field: 'inter_token_latency_mean_ms',
+        title: this.$t('aice.llm_benchmark.inter_token_latency_mean_ms'),
+        minWidth: 120,
+        formatter: ({ row }) => formatMetric(row.inter_token_latency_mean_ms, 'ms'),
       },
       {
         field: 'request_latency_mean_sec',
         title: this.$t('aice.llm_benchmark.request_latency_mean_sec'),
-        minWidth: 130,
-        formatter: ({ row }) => {
-          if (row.request_latency_mean_sec == null || row.request_latency_mean_sec === '') return '-'
-          const val = Number(row.request_latency_mean_sec)
-          if (Number.isNaN(val)) return row.request_latency_mean_sec
-          return `${val.toFixed(2)}s`
-        },
+        minWidth: 140,
+        formatter: ({ row }) => formatMetric(row.request_latency_mean_sec, 's'),
+      },
+      {
+        field: 'request_concurrency_mean',
+        title: this.$t('aice.llm_benchmark.request_concurrency_mean'),
+        minWidth: 100,
+        formatter: ({ row }) => formatMetric(row.request_concurrency_mean),
       },
       getTimeTableColumn(),
     ]
