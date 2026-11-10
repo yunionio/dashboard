@@ -7,7 +7,7 @@ export const BENCHMARK_DEFAULTS = {
   request_format: '/v1/chat/completions',
   dataset_name: 'synthetic_text',
   request_rate: 1,
-  total_requests: 100,
+  total_requests: 10,
   max_duration_seconds: 600,
   max_errors: 10,
   dataset_input_tokens: 1024,
