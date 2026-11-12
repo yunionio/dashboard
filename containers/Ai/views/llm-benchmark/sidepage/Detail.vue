@@ -12,6 +12,20 @@ import WindowsMixin from '@/mixins/windows'
 import { renderBenchmarkState } from '../utils/state'
 import { downloadBenchmarkArtifact, fetchBenchmarkLog } from '../utils/artifacts'
 
+function formatTokenizerDownloadUrls (raw) {
+  if (!raw) return '-'
+  let urls = raw
+  if (typeof raw === 'string') {
+    try {
+      urls = JSON.parse(raw)
+    } catch (e) {
+      return raw
+    }
+  }
+  if (!Array.isArray(urls) || !urls.length) return '-'
+  return urls.join(', ')
+}
+
 export default {
   name: 'LlmBenchmarkDetail',
   mixins: [WindowsMixin],
@@ -47,10 +61,12 @@ export default {
         mode: 'text/plain',
         lineWrapping: true,
       },
+      runnerServerName: '',
     }
   },
   computed: {
     baseInfo () {
+      const runnerServerName = this.runnerServerName
       return [
         {
           field: 'state',
@@ -58,11 +74,6 @@ export default {
           slots: {
             default: ({ row }) => [renderBenchmarkState(this.$createElement, this, row.state)],
           },
-        },
-        {
-          field: 'state_message',
-          title: this.$t('aice.llm_benchmark.state_message'),
-          formatter: ({ row }) => row.state_message || '-',
         },
         {
           field: 'llm_deployment_id',
@@ -80,9 +91,32 @@ export default {
           formatter: ({ row }) => row.model || '-',
         },
         {
+          field: 'tokenizer',
+          title: this.$t('aice.llm_benchmark.tokenizer'),
+          formatter: ({ row }) => row.tokenizer || '-',
+        },
+        {
+          field: 'tokenizer_download_urls',
+          title: this.$t('aice.llm_benchmark.tokenizer_download_urls'),
+          formatter: ({ row }) => formatTokenizerDownloadUrls(row.tokenizer_download_urls),
+        },
+        {
           field: 'target_url',
           title: this.$t('aice.llm_benchmark.target_url'),
           formatter: ({ row }) => row.target_url || '-',
+        },
+        {
+          field: 'runner_server_id',
+          title: this.$t('aice.llm_benchmark.runner_server'),
+          slots: {
+            default: ({ row }) => {
+              if (!row.runner_server_id) return '-'
+              const label = runnerServerName || row.runner_server_id
+              return [
+                <side-page-trigger permission="servers_get" name="VmContainerInstanceSidePage" id={row.runner_server_id} vm={this}>{label}</side-page-trigger>,
+              ]
+            },
+          },
         },
       ]
     },
@@ -91,14 +125,20 @@ export default {
         {
           title: this.$t('aice.llm_benchmark.params'),
           items: [
-            { field: 'profile', title: this.$t('aice.llm_benchmark.profile') },
-            { field: 'request_rate', title: this.$t('aice.llm_benchmark.request_rate') },
+            { field: 'profile', title: this.$t('aice.llm_benchmark.profile'), formatter: ({ row }) => this.$t(`aice.llm_benchmark.profile.${row.profile}`) },
+            { field: 'request_rate', title: this.$t('aice.llm_benchmark.request_rate'), formatter: ({ row }) => this.formatMetric(row.request_rate) },
+            { field: 'warmup_requests', title: this.$t('aice.llm_benchmark.warmup_requests') },
             { field: 'total_requests', title: this.$t('aice.llm_benchmark.total_requests') },
             { field: 'max_duration_seconds', title: this.$t('aice.llm_benchmark.max_duration_seconds') },
             { field: 'max_errors', title: this.$t('aice.llm_benchmark.max_errors') },
             { field: 'dataset_name', title: this.$t('aice.llm_benchmark.dataset_name') },
             { field: 'dataset_input_tokens', title: this.$t('aice.llm_benchmark.dataset_input_tokens') },
             { field: 'dataset_output_tokens', title: this.$t('aice.llm_benchmark.dataset_output_tokens') },
+            {
+              field: 'keep_runner',
+              title: this.$t('aice.llm_benchmark.keep_runner'),
+              formatter: ({ row }) => row.keep_runner ? this.$t('common.true') : this.$t('common.false'),
+            },
           ],
         },
         {
@@ -226,7 +266,26 @@ export default {
       ]
     },
   },
+  watch: {
+    'data.runner_server_id': {
+      immediate: true,
+      handler (id) {
+        this.loadRunnerServerName(id)
+      },
+    },
+  },
   methods: {
+    async loadRunnerServerName (id) {
+      this.runnerServerName = ''
+      if (!id) return
+      try {
+        const { data } = await new this.$Manager('servers').get({ id })
+        if (this.data.runner_server_id !== id) return
+        this.runnerServerName = (data && data.name) || ''
+      } catch (e) {
+        this.runnerServerName = ''
+      }
+    },
     formatMetric (value, suffix) {
       if (value == null || value === '') return '-'
       const val = Number(value)

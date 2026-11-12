@@ -41,7 +41,8 @@ export default {
       {
         field: 'request_rate',
         title: this.$t('aice.llm_benchmark.request_rate'),
-        width: 100,
+        width: 110,
+        formatter: ({ row }) => formatMetric(row.request_rate),
       },
       {
         field: 'total_requests',
