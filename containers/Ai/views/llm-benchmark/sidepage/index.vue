@@ -18,7 +18,9 @@
     <component
       :is="params.windowData.currentTab"
       :res-id="data.id"
+      :id="listId"
       :data="detailData"
+      :getParams="getParams"
       :on-manager="onManager"
       :columns="columns" />
   </base-side-page>
@@ -40,8 +42,20 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('common_386'), key: 'detail' },
+        { label: this.$t('aice.event'), key: 'event-drawer' },
       ],
     }
+  },
+  computed: {
+    getParams () {
+      return null
+    },
+    listId () {
+      if (this.params.windowData.currentTab === 'event-drawer') {
+        return 'EventListForLlmBenchmarkSidePage'
+      }
+      return ''
+    },
   },
 }
 </script>
