@@ -1,9 +1,17 @@
-import { isBenchmarkRunning } from '../constants'
+import { isBenchmarkRunning, BENCHMARK_TERMINAL_STATES } from '../constants'
 import { downloadBenchmarkArtifact, fetchBenchmarkLog } from '../utils/artifacts'
 
 export default {
   created () {
     this.singleActions = [
+      {
+        label: this.$t('aice.llm_benchmark.retest'),
+        permission: 'llm_benchmarks_perform_retest',
+        action: obj => this.handleRetest(obj),
+        meta: obj => ({
+          validate: BENCHMARK_TERMINAL_STATES.includes(obj.state),
+        }),
+      },
       {
         label: this.$t('aice.llm_benchmark.stop'),
         permission: 'llm_benchmarks_perform_stop',
@@ -61,6 +69,14 @@ export default {
   methods: {
     handleStop (obj) {
       this.createDialog('LlmBenchmarkStopDialog', {
+        vm: this,
+        data: [obj],
+        columns: this.columns,
+        onManager: this.onManager,
+      })
+    },
+    handleRetest (obj) {
+      this.createDialog('LlmBenchmarkRetestDialog', {
         vm: this,
         data: [obj],
         columns: this.columns,
