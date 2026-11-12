@@ -40,6 +40,7 @@
 
 <script>
 import get from 'lodash/get'
+import 'codemirror/theme/3024-day.css'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import {
@@ -289,6 +290,14 @@ export default {
   },
 }
 </script>
+<style lang="less">
+.cm-s-3024-day span.cm-string,
+.cm-s-3024-day span.cm-property,
+.cm-s-3024-day span.cm-attribute,
+.cm-s-3024-day span.cm-variable {
+  color: #3a3432 !important;
+}
+</style>
 <style lang="less" scoped>
 .info-item {
   width: 50%;
