@@ -2861,7 +2861,12 @@
     "TIMING_SERVER": "Server with periodic usage patterns",
     "upgrade_prepaid": "Suggest upgrade to Prepaid SKU",
     "UPGRADE_PREPAID": "Convert to an annual and monthly package",
-    "DOWN_SIZE_BY_MEM": "Virtual machines with low memory usage"
+    "DOWN_SIZE_BY_MEM": "Virtual machines with low memory usage",
+    "SERVER_IDLE": "Low-utilization running servers",
+    "SERVER_STOPPED_LONG": "Long-stopped servers",
+    "RDS_IDLE": "Idle databases",
+    "REDIS_IDLE": "Idle elastic caches",
+    "BUCKET_MULTIPART_UNUSED": "Buckets with incomplete multipart uploads"
   },
   "suggestsySuggestion": {
     "EIP_UNUSED": "Release Unused EIP",
@@ -2884,7 +2889,12 @@
     "TIMING_SERVER": "-",
     "upgrade_prepaid": "Upgrade to Prepaid SKU",
     "UPGRADE_PREPAID": "Convert to an annual and monthly package",
-    "DOWN_SIZE_BY_MEM": "Virtual machines with low memory usage"
+    "DOWN_SIZE_BY_MEM": "Virtual machines with low memory usage",
+    "SERVER_IDLE": "Stop low-utilization running instances",
+    "SERVER_STOPPED_LONG": "Terminate long-stopped instances",
+    "RDS_IDLE": "Stop or release idle databases",
+    "REDIS_IDLE": "Stop or release idle caches",
+    "BUCKET_MULTIPART_UNUSED": "Clean up incomplete multipart uploads"
   },
   "idpDrivers": {
     "LDAP": [
