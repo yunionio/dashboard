@@ -2874,7 +2874,12 @@
     "TIMING_SERVER": "定期的な使用パターンを持つ仮想マシン",
     "upgrade_prepaid": "年間プランへの転換を推奨",
     "UPGRADE_PREPAID": "年玉月極コースに変更",
-    "DOWN_SIZE_BY_MEM": "メモリ使用率の低いVM"
+    "DOWN_SIZE_BY_MEM": "メモリ使用率の低いVM",
+    "SERVER_IDLE": "低利用率の稼働中仮想マシン",
+    "SERVER_STOPPED_LONG": "長期間停止中の仮想マシン",
+    "RDS_IDLE": "アイドル状態のデータベース",
+    "REDIS_IDLE": "アイドル状態のキャッシュ",
+    "BUCKET_MULTIPART_UNUSED": "未完了のマルチパートアップロードがあるバケット"
   },
   "suggestsySuggestion": {
     "EIP_UNUSED": "未使用の EIP の解放",
@@ -2897,7 +2902,12 @@
     "TIMING_SERVER": "-",
     "upgrade_prepaid": "年間プランに変換する",
     "UPGRADE_PREPAID": "年玉月極コースに変更",
-    "DOWN_SIZE_BY_MEM": "メモリ使用率の低いVM"
+    "DOWN_SIZE_BY_MEM": "メモリ使用率の低いVM",
+    "SERVER_IDLE": "低利用率の稼働インスタンスを停止",
+    "SERVER_STOPPED_LONG": "長期間停止中のインスタンスを終了",
+    "RDS_IDLE": "アイドル状態のデータベースを停止または解放",
+    "REDIS_IDLE": "アイドル状態のキャッシュを停止または解放",
+    "BUCKET_MULTIPART_UNUSED": "未完了のマルチパートアップロードを清理"
   },
   "idpDrivers": {
     "LDAP": [
