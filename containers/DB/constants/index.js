@@ -118,7 +118,7 @@ export const RDS_MONITOR_ALL_OPTS = [
     unit: '',
     selectType: 'last',
     transfer: 1,
-    supportBrands: ['huawei', 'hcso', 'hcs', 'aws', 'qcloud'],
+    supportBrands: ['huawei', 'hcso', 'hcs', 'aws', 'qcloud', 'aliyun', 'apsara'],
   },
   {
     name: 'active_count',
