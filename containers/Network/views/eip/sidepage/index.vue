@@ -33,12 +33,14 @@ import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 import EipDetail from './Detail'
+import Monitor from './Monitor'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 export default {
   name: 'EipSidePage',
   components: {
     EipDetail,
+    Monitor,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -46,6 +48,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('network.text_67'), key: 'eip-detail' },
+        { label: this.$t('network.text_520'), key: 'monitor' },
         { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],

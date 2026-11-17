@@ -1601,5 +1601,7 @@
   "network.dnszone.add_name_servers": "添加名称服务器",
   "network.dnszone.del_name_servers": "删除名称服务器",
   "network.cdn.certificate_verification_txt": "证书验证 TXT",
-  "network.cdn.hostname_verification_txt": "主机名预验证 TXT"
+  "network.cdn.hostname_verification_txt": "主机名预验证 TXT",
+  "network.eip.drop_speed_rx": "出方向限速丢包速率",
+  "network.monitor.not_support": "当前云平台暂不支持该资源监控"
 }

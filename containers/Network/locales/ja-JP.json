@@ -1594,5 +1594,7 @@
   "network.dnszone.add_name_servers": "ネームサーバーの追加",
   "network.dnszone.del_name_servers": "ネームサーバーの削除",
   "network.cdn.certificate_verification_txt": "証明書検証 TXT",
-  "network.cdn.hostname_verification_txt": "ホスト名検証 TXT"
+  "network.cdn.hostname_verification_txt": "ホスト名検証 TXT",
+  "network.eip.drop_speed_rx": "送信方向レート制限ドロップ速度",
+  "network.monitor.not_support": "このクラウドプロバイダーでは監視がサポートされていません"
 }
