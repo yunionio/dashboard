@@ -35,6 +35,7 @@ import Actions from '@/components/PageList/Actions'
 import NatDetail from './Detail'
 import Snat from './Snat'
 import Dnat from './Dnat'
+import Monitor from './Monitor'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 export default {
@@ -43,6 +44,7 @@ export default {
     NatDetail,
     Snat,
     Dnat,
+    Monitor,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -69,6 +71,7 @@ export default {
         detailTabs.push({ label: 'SNAT', key: 'snat' })
         detailTabs.push({ label: 'DNAT', key: 'dnat' })
       }
+      detailTabs.push({ label: this.$t('network.text_520'), key: 'monitor' })
       detailTabs.push({ label: this.$t('table.title.task'), key: 'task-drawer' })
       detailTabs.push({ label: this.$t('network.text_150'), key: 'event-drawer' })
       return detailTabs

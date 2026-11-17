@@ -1592,5 +1592,7 @@
   "network.dnszone.add_name_servers": "Add Name Servers",
   "network.dnszone.del_name_servers": "Delete Name Servers",
   "network.cdn.certificate_verification_txt": "Certificate Verification TXT",
-  "network.cdn.hostname_verification_txt": "Hostname Verification TXT"
+  "network.cdn.hostname_verification_txt": "Hostname Verification TXT",
+  "network.eip.drop_speed_rx": "Outbound rate-limit drop speed",
+  "network.monitor.not_support": "Monitoring is not supported for this cloud provider"
 }
