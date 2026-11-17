@@ -38,13 +38,7 @@ import { mapGetters } from 'vuex'
 import axios from 'axios'
 import WindowsMixin from '@/mixins/windows'
 import { isCE } from '@/utils/utils'
-const path = require('path')
-const imagesLogoFiles = require.context('@/assets/images/os-images', false, /.svg$/)
-const imagesLogos = []
-imagesLogoFiles.keys().forEach(key => {
-  const name = path.basename(key, '.svg') // 返回文件名 不含后缀名
-  imagesLogos.push(name)
-})
+import { getOsImage, imagesLogos, resolveOsLogoName } from '../utils/osImportLogo'
 
 const fileUrl = 'https://www.cloudpods.org/openimages.yaml'
 const attributes = ['distribution', 'os_name', 'os_arch', 'os_version', 'build', 'source', 'url']
@@ -209,19 +203,7 @@ export default {
       this.selectedImages = selected
     },
     getOsName (item) {
-      let ret = ''
-      const os_name = (item.distribution || '').toLowerCase()
-      ret = this.imagesLogos.includes(os_name) ? os_name : ''
-      if (!ret && os_name.includes('ubuntu')) {
-        ret = 'ubuntu'
-      }
-      if (!ret && os_name.includes('anolis')) {
-        ret = 'anolis'
-      }
-      if (!ret && (os_name.includes('openruyi') || os_name.includes('ruyi'))) {
-        ret = 'openruyi'
-      }
-      return ret || 'unknow'
+      return resolveOsLogoName(item.distribution || item.os_name || '')
     },
     fetchData () {
       this.list.loading = true
@@ -235,8 +217,7 @@ export default {
           if (item.build) {
             ret.data.name += `-${item.build}`
           }
-          const os_name = this.getOsName(item)
-          ret.data.os = require(`@/assets/images/os-images/${this.imagesLogos.includes(os_name) ? os_name : 'unknow'}.svg`) || ''
+          ret.data.os = getOsImage(this.getOsName(item))
           ret.data.source_type = this.isChinaDomain(item.url) ? ['all', 'cn'] : ['all', 'ov']
           return ret
         })
