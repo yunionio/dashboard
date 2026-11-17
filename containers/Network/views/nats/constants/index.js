@@ -1,6 +1,28 @@
-
 import validateForm from '@/utils/validate'
 import i18n from '@/locales'
+
+export const NAT_MONITOR_OPTS = [
+  {
+    name: 'net',
+    label: i18n.t('compute.text_524'),
+    seleteItem: 'bps_recv',
+    as: i18n.t('compute.text_524'),
+    fromItem: 'nat_net',
+    unit: 'bps',
+    transfer: 1024,
+    supportBrands: ['aliyun', 'apsara', 'huawei', 'hcso', 'hcs', 'aws', 'qcloud'],
+  },
+  {
+    name: 'net',
+    label: i18n.t('compute.text_525'),
+    seleteItem: 'bps_sent',
+    as: i18n.t('compute.text_525'),
+    fromItem: 'nat_net',
+    unit: 'bps',
+    transfer: 1024,
+    supportBrands: ['aliyun', 'apsara', 'huawei', 'hcso', 'hcs', 'aws', 'qcloud'],
+  },
+]
 
 export const BILL_TYPES_MAP = {
   postpaid: {
