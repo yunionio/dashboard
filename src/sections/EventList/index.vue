@@ -22,6 +22,7 @@ import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import { formatEventLogNotes } from '@/utils/common/eventLogNotes'
 
 export default {
   name: 'EventList',
@@ -364,12 +365,7 @@ export default {
   },
   methods: {
     getLogInfo (row) {
-      let text = ''
-      try {
-        text = JSON.stringify(JSON.parse(row.notes || '{}'), null, 4)
-      } catch (e) {
-        text = row.notes
-      }
+      const { text } = formatEventLogNotes(row.notes)
       return text
     },
     clickHandler (row) {
