@@ -41,7 +41,7 @@ import setting from '@/config/setting'
 import { fillBillSupportFeatures } from '@/utils/auth'
 import { isSAAS } from '@/utils/utils'
 
-const languageList = ['zh-CN', 'ja-JP', 'en']
+const languageList = ['zh-CN', 'ja-JP', 'en', 'es-ES']
 
 const languageItems = [
   {
@@ -83,6 +83,19 @@ const languageItems = [
       module: 'resource_managent',
     },
   },
+  {
+    key: 'es-ES',
+    label: 'Español',
+    value: 'es-ES',
+    checked: true,
+    disabled: false,
+    meta: {
+      group: 'language',
+      is_account: false,
+      is_feature: true,
+      module: 'resource_managent',
+    },
+  },
 ]
 
 const c = R.clone(originC)
@@ -94,7 +107,7 @@ if (isSAAS()) {
     value: 'language',
     key: 'group-language',
     checked: true,
-    selected: ['zh-CN', 'en', 'ja-JP'],
+    selected: ['zh-CN', 'en', 'ja-JP', 'es-ES'],
     items: [...languageItems],
   })
 }

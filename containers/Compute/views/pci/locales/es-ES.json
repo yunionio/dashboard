@@ -1,0 +1,23 @@
+{
+  "compute.pci.passthrough_device": "Dispositivo de passthrough",
+  "compute.pci.passthrough_device_type": "Tipo de dispositivo de passthrough",
+  "compute.pci.dev_type": "Tipo de dispositivo",
+  "compute.pci.dev_type.placeholder": "Introduce el tipo de dispositivo, p. ej. GPU, NPU, USB, etc.",
+  "compute.pci.model": "Modelo del dispositivo",
+  "compute.pci.model.placeholder": "Introduce el modelo del dispositivo",
+  "compute.pci.vendor_id": "VendorID del dispositivo",
+  "compute.pci.vendor_id.placeholder": "Introduce el VendorId del dispositivo",
+  "compute.pci.vendor_id.extra": "Referencia para obtener el parámetro VendorId del dispositivo",
+  "compute.pci.vendor_id.reg_error_msg": "Introduce 4 caracteres de letras minúsculas o números",
+  "compute.pci.device_id": "ID del dispositivo",
+  "compute.pci.device_id.placeholder": "Introduce el DeviceId",
+  "compute.pci.device_id.extra": "Referencia para obtener el parámetro DeviceId",
+  "compute.pci.device_id.reg_error_msg": "Introduce 4 caracteres de letras minúsculas o números",
+  "compute.pci.host": "Host",
+  "compute.pci.host.placeholder": "Selecciona un host",
+  "compute.pci.host.extra": "Al seleccionar el host, este informará automáticamente del dispositivo de passthrough correspondiente. Si no aparece ningún dispositivo, hay que reiniciar el servicio host para que surta efecto.",
+  "compute.pci.document": "Documentación",
+  "compute.pci.hot_pluggable": "Conexión en caliente",
+  "compute.pci.hot_pluggable.tips": "La compatibilidad de conexión en caliente del dispositivo de passthrough depende del propio dispositivo. Tras verificarla, puedes decidir si activarla o no.",
+  "compute.pci.disable_auto_detect": "Detección automática"
+}

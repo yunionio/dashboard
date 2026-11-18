@@ -18,6 +18,7 @@ import { mapGetters, mapState } from 'vuex'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import enUS from 'ant-design-vue/es/locale/en_US'
 import jaJP from 'ant-design-vue/es/locale/ja_JP'
+import esES from 'ant-design-vue/es/locale/es_ES'
 import DefaultLayout from '@scope/layouts/Default'
 import FullScreenLayout from '@/layouts/FullScreen'
 import DialogManager from '@/sections/DialogManager'
@@ -35,6 +36,7 @@ const antdLocales = {
   'zh-CN': zhCN,
   en: enUS,
   'ja-JP': jaJP,
+  'es-ES': esES,
 }
 
 export default {
@@ -89,6 +91,11 @@ export default {
           if (!R.isNil(val.ja) && !R.isEmpty(val.ja)) {
             i18n.mergeLocaleMessage('ja-JP', {
               dictionary: val.ja,
+            })
+          }
+          if (!R.isNil(val.es) && !R.isEmpty(val.es)) {
+            i18n.mergeLocaleMessage('es-ES', {
+              dictionary: val.es,
             })
           }
         }
