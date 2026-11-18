@@ -1,0 +1,20 @@
+{
+  "network.cdn.accelerated_domain": "Dominio acelerado",
+  "network.cdn.cloudprovider": "Especificar suscripción de nube",
+  "network.cdn.origin_types": "Protocolo de origen",
+  "network.cdn.origin": "Origen",
+  "network.cdn.area_require_message": "Selecciona una zona de aceleración",
+  "network.cdn.origin_require_message": "Introduce la dirección del sitio de origen",
+  "network.cdn.port_require_message": "Introduce el puerto",
+  "network.cdn.priority_require_message": "Introduce el peso",
+  "network.cdn.service_type_web": "CDN para archivos web pequeños",
+  "network.cdn.service_type_download": "CDN para descarga de archivos grandes",
+  "network.cdn.service_type_media": "CDN para audio y vídeo bajo demanda",
+  "network.cdn.service_type_hybrid": "Aceleración dinámica y estática ECDN",
+  "network.cdn.service_type_dynamic": "Aceleración dinámica ECDN",
+  "network.cdn.origin_type_domain": "Origen propio",
+  "network.cdn.origin_type_cos": "Origen COS",
+  "network.cdn.origin_protocol_follow": "Seguir protocolo",
+  "network.cdn.origin_repeat_validate": "¡La dirección IP del sitio de origen añadida está repetida!",
+  "network.cdn.priority_validate": "¡No se puede configurar el peso con un único sitio de origen!"
+}
