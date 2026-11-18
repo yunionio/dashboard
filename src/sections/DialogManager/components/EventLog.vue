@@ -8,10 +8,14 @@
           <div class="value">{{ item.formatter ? item.formatter({ row: currentData }) : currentData[item.field] }}</div>
         </div>
       </div>
-      <code-mirror v-model="showData" class="codemirror-h-100" :options="cmOptions" ref="codeMirrorRef" />
+      <code-mirror
+        v-model="showData"
+        class="codemirror-h-100 event-log-codemirror"
+        :options="cmOptions"
+        ref="codeMirrorRef" />
       <div
         class="float-right"
-        v-clipboard:copy="params.data"
+        v-clipboard:copy="showData"
         v-clipboard:success="copySuccess"
         v-clipboard:error="copyError">
         <a-icon class="primary-color" type="copy" />
@@ -46,11 +50,14 @@ import WindowsMixin from '@/mixins/windows'
 import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
+import { formatEventLogNotes } from '@/utils/common/eventLogNotes'
 
 export default {
   name: 'EventLogDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const notes = get(this.params, 'currentData.notes', this.params.data)
+    const { text, mode } = formatEventLogNotes(notes)
     return {
       cmOptions: {
         tabSize: 2,
@@ -60,11 +67,9 @@ export default {
         readOnly: true,
         theme: '3024-day',
         lineWrapping: true,
-        mode: 'application/json',
-        gutters: ['CodeMirror-lint-markers'],
-        lint: true,
+        mode,
       },
-      showData: this.params.data,
+      showData: text,
       currentData: this.params.currentData || {},
       columns: [
         {
@@ -165,7 +170,7 @@ export default {
     screenShotId () {
       if (this.currentData?.action === 'guest_panicked') {
         try {
-          const notes = JSON.parse(this.params.data)
+          const notes = JSON.parse(get(this.params, 'currentData.notes', this.params.data) || '{}')
           return notes.screen_dump_name || ''
         } catch (e) {
           return ''
@@ -242,7 +247,17 @@ export default {
       const index = this.currentIndex + (type === 'prev' ? -1 : 1)
       this.currentData = this.dataList[index]
       this.params.handleSelect(this.currentData)
-      this.showData = this.params.getShowData(this.currentData)
+      const { text, mode } = formatEventLogNotes(this.currentData.notes)
+      this.showData = this.params.getShowData ? this.params.getShowData(this.currentData) : text
+      this.setCodeMirrorMode(mode)
+    },
+    setCodeMirrorMode (mode) {
+      if (this.cmOptions.mode === mode) return
+      this.cmOptions.mode = mode
+      const cm = this.$refs.codeMirrorRef?.cminstance
+      if (cm) {
+        cm.setOption('mode', mode)
+      }
     },
     showLog () {
       this.createDialog('SchedulerLogDialog', {
@@ -291,11 +306,31 @@ export default {
 }
 </script>
 <style lang="less">
-.cm-s-3024-day span.cm-string,
-.cm-s-3024-day span.cm-property,
-.cm-s-3024-day span.cm-attribute,
-.cm-s-3024-day span.cm-variable {
-  color: #3a3432 !important;
+.event-log-codemirror {
+  .CodeMirror {
+    background: #f7f7f7;
+    color: #3a3432;
+  }
+  .cm-s-3024-day.CodeMirror,
+  .cm-s-3024-day .CodeMirror-gutters {
+    background: #f7f7f7;
+    border-right: 0;
+  }
+  .cm-s-3024-day span {
+    color: #3a3432 !important;
+    background: transparent !important;
+  }
+  .cm-s-3024-day span.cm-error,
+  .cm-s-3024-day span.cm-string {
+    color: #3a3432 !important;
+  }
+  .cm-s-3024-day span.cm-comment {
+    color: #6b6563 !important;
+  }
+  .cm-s-3024-day .CodeMirror-lint-line-error,
+  .cm-s-3024-day .CodeMirror-lint-line-warning {
+    background-color: transparent !important;
+  }
 }
 </style>
 <style lang="less" scoped>
