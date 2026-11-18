@@ -1,0 +1,10 @@
+{
+  "compute.image.merge_mirror": "Fusionar imágenes",
+  "compute.image.merge_mirror.action.tooltip": "Una sola imagen no admite esta operación; ¡selecciona dos o más imágenes e inténtalo de nuevo!",
+  "compute.image.merge_mirror.extra": "La nueva imagen generada por la fusión aparece en la lista de imágenes de máquina virtual, y la ubicación de las imágenes originales no cambia",
+  "compute.image.merge_mirror.placeholder": "Introduce el nombre de la imagen de máquina virtual fusionada",
+  "compute.image.merge_mirror.system_image.select_validate": "Las imágenes en formato ISO no admiten la fusión en imágenes de máquina virtual",
+  "compute.image.merge_mirror.order": "Orden de las imágenes",
+  "compute.image.merge_mirror.order_extra": "El orden de las imágenes corresponde al orden de los discos al crear la máquina: disco del sistema, disco de datos 1, disco de datos 2, disco de datos n. ¡Asegúrate de que el orden coincide con la situación real!",
+  "compute.standard_not_export": "La imagen pública no admite esta operación"
+}
