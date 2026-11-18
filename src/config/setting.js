@@ -3,7 +3,7 @@ import storage from '@/utils/storage'
 import { getLanguage } from '@/utils/common/cookie'
 
 const _l2MenuVisible = storage.get('__oc_l2_menu_visible__')
-const defaultBrand = { 'zh-CN': '内置虚拟化', en: 'Buiilt-in Virtualization', 'ja-JP': '内蔵バーチャライゼーション' }
+const defaultBrand = { 'zh-CN': '内置虚拟化', en: 'Buiilt-in Virtualization', 'ja-JP': '内蔵バーチャライゼーション', 'es-ES': 'Virtualización integrada' }
 
 export default {
   language: getLanguage(),
@@ -12,7 +12,7 @@ export default {
   brand: process.env.BRAND || defaultBrand,
   defaultBrand,
   oemDictionary: process.env.OEM_DICTIONARY || {},
-  product: process.env.PRODUCT || (process.env.VUE_APP_IS_PRIVATE ? { 'zh-CN': '云管平台', en: 'Cloud Management Platform', 'ja-JP': 'クラウド管理プラットフォーム' } : { 'zh-CN': 'Cloudpods', en: 'Cloudpods', 'ja-JP': 'Cloudpods' }),
+  product: process.env.PRODUCT || (process.env.VUE_APP_IS_PRIVATE ? { 'zh-CN': '云管平台', en: 'Cloud Management Platform', 'ja-JP': 'クラウド管理プラットフォーム', 'es-ES': 'Plataforma de gestión de nube' } : { 'zh-CN': 'Cloudpods', en: 'Cloudpods', 'ja-JP': 'Cloudpods', 'es-ES': 'Cloudpods' }),
   l2MenuVisible: !R.isNil(_l2MenuVisible) && !R.isNil(_l2MenuVisible) ? _l2MenuVisible : true,
   monitorAlertNotifyTriggerTime: process.env.VUE_APP_MONITOR_ALERT_NOTIFY_TRIGGER_TIME || 1000 * 60 * 60, // 默认值1小时
   oemVersion: process.env.OEM_VERSION || process.env.VUE_APP_OEM_VERSION || '',
