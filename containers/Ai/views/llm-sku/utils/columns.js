@@ -190,6 +190,7 @@ export const getDiskTableColumn = () => {
       volumes.forEach(v => {
         size += v.size_mb
       })
+      if (!size) return '-'
       return sizestr(size, 'M', 1024)
     },
   }
