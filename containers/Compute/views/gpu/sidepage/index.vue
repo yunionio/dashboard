@@ -10,7 +10,7 @@
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions v-if="!isProjectMode">
+    <template v-slot:actions v-if="showSidePageActions">
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
@@ -20,7 +20,8 @@
       :data="detailData"
       :on-manager="onManager"
       :gpu-columns="columns"
-      :getParams="getParams" />
+      :getParams="getParams"
+      v-bind="tabExtraProps" />
   </base-side-page>
 </template>
 
@@ -53,6 +54,16 @@ export default {
   },
   computed: {
     ...mapGetters(['isProjectMode']),
+    showSidePageActions () {
+      return !this.isProjectMode && !this.params.options?.hideActions
+    },
+    deviceHostType () {
+      return this.detailData.host_type || this.listRowData.host_type || ''
+    },
+    tabExtraProps () {
+      if (this.params.windowData.currentTab !== 'associated-instances') return {}
+      return { hostType: this.deviceHostType }
+    },
     getParams () {
       if (this.params.windowData.currentTab === 'servers-list') {
         return {

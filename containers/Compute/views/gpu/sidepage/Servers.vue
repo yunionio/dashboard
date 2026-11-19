@@ -2,9 +2,10 @@
   <page-list
     :list="list"
     :columns="columns"
-    :group-actions="groupActions"
-    :single-actions="singleActions"
-    :hide-rowselect="$store.getters.isProjectMode" />
+    :group-actions="listGroupActions"
+    :single-actions="listSingleActions"
+    :show-single-actions="!readonly"
+    :hide-rowselect="readonly || $store.getters.isProjectMode" />
 </template>
 
 <script>
@@ -42,11 +43,31 @@ export default {
       type: Array,
       required: true,
     },
+    hypervisor: {
+      type: String,
+      default: 'kvm',
+    },
+    sidePage: {
+      type: String,
+      default: 'VmInstanceSidePage',
+    },
+    sidePageTab: {
+      type: String,
+      default: 'vm-instance-detail',
+    },
+    listId: {
+      type: String,
+      default: 'ServersListForGpuSidePage',
+    },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
-        id: 'ServersListForGpuSidePage',
+        id: this.listId,
         resource: 'servers',
         getParams: this.getParam,
         filterOptions: {
@@ -68,7 +89,7 @@ export default {
           addBackup: true,
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.sidePageTriggerHandle(this, 'VmInstanceSidePage', { id: row.id, resource: 'servers' }) }>{ row.name }</side-page-trigger>
+              <side-page-trigger onTrigger={ () => this.openServerSidePage(row) }>{ row.name }</side-page-trigger>
             )
           },
         }),
@@ -256,6 +277,14 @@ export default {
       ],
     }
   },
+  computed: {
+    listGroupActions () {
+      return this.readonly ? [] : this.groupActions
+    },
+    listSingleActions () {
+      return this.readonly ? [] : this.singleActions
+    },
+  },
   watch: {
     'data.guest_id': {
       handler (val) {
@@ -264,10 +293,19 @@ export default {
     },
   },
   created () {
-    this.initSidePageTab('vm-instance-detail')
+    this.initSidePageTab(this.sidePageTab)
     this.list.fetchData()
   },
   methods: {
+    openServerSidePage (row) {
+      this.initSidePageTab(this.sidePageTab)
+      this.sidePageTriggerHandle(this, this.sidePage, {
+        id: row.id,
+        resource: 'servers',
+      }, {
+        tab: this.sidePageTab,
+      })
+    },
     refresh () {
       this.list.fetchData()
       this.$bus.$emit('gpu-sidepage-refresh')
@@ -275,7 +313,7 @@ export default {
     getParam () {
       return {
         isolated_device_id: this.data.id,
-        'filter.0': 'hypervisor.notin(baremetal,container,pod)',
+        'filter.0': `hypervisor.in(${this.hypervisor})`,
       }
     },
   },
