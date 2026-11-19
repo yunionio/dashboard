@@ -118,6 +118,27 @@ export default {
         },
       },
       {
+        field: 'gpu_arch',
+        title: i18n.t('compute.gpu.gpu_arch.title'),
+        width: 100,
+        showOverflow: 'ellipsis',
+        formatter: ({ row }) => row.gpu_arch || '-',
+      },
+      {
+        field: 'tdp_w',
+        title: i18n.t('compute.gpu.tdp_w.title'),
+        width: 100,
+        showOverflow: 'ellipsis',
+        formatter: ({ row }) => row.tdp_w || '-',
+      },
+      {
+        field: 'fp16_tflops',
+        title: i18n.t('compute.gpu.fp16_tflops.title'),
+        width: 100,
+        showOverflow: 'ellipsis',
+        formatter: ({ row }) => row.fp16_tflops || '-',
+      },
+      {
         field: 'addr',
         title: 'PCI ADDR',
         width: 100,
@@ -196,14 +217,17 @@ export default {
       },
       getCopyWithContentTableColumn({
         field: 'host',
-        title: i18n.t('compute.text_484'),
+        title: this.showBaremetalIsolatedDevices ? i18n.t('compute.text_112') : i18n.t('compute.text_484'),
         hideField: true,
         slotCallback: row => {
           if (this.isPreLoad && !(row.host && row.host_id)) return [<data-loading />]
           return row.host || row.host_id
         },
       }),
-      getReserveResourceColumn(),
+      {
+        ...getReserveResourceColumn(),
+        hidden: () => this.showBaremetalIsolatedDevices,
+      },
       getSharingModeColumn(),
       getMemorySizeColumn(),
       {
