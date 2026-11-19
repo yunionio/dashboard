@@ -56,6 +56,11 @@ export default {
           formatter: ({ row }) => row.vendor || '-',
         },
         {
+          field: 'vendor_device_id',
+          title: this.$t('compute.isolated_devices.vendor_device_id.title'),
+          formatter: ({ row }) => row.vendor_device_id || '-',
+        },
+        {
           field: 'model',
           title: this.$t('compute.text_482'),
           slots: {
@@ -70,6 +75,27 @@ export default {
               ]
             },
           },
+        },
+        {
+          field: 'gpu_arch',
+          title: this.$t('compute.gpu.gpu_arch.title'),
+          width: 100,
+          showOverflow: 'ellipsis',
+          formatter: ({ row }) => row.gpu_arch || '-',
+        },
+        {
+          field: 'tdp_w',
+          title: this.$t('compute.gpu.tdp_w.title'),
+          width: 100,
+          showOverflow: 'ellipsis',
+          formatter: ({ row }) => row.tdp_w || '-',
+        },
+        {
+          field: 'fp16_tflops',
+          title: this.$t('compute.gpu.fp16_tflops.title'),
+          width: 100,
+          showOverflow: 'ellipsis',
+          formatter: ({ row }) => row.fp16_tflops || '-',
         },
         {
           field: 'host',
