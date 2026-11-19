@@ -1,21 +1,44 @@
 <template>
-  <div>
-    <a-tabs :defaultActiveKey="currentComponent" @change="callback" :animated="false">
-      <template v-for="obj of tabs">
-        <a-tab-pane :tab="obj.label" :key="obj.key" />
-      </template>
-    </a-tabs>
-    <div class="mt-2">
-      <keep-alive>
-        <component :is="currentComponent" :getParams="getParams" :id="id" :data="data" :resId="resId" :gpu-columns="gpuColumns" />
-      </keep-alive>
-    </div>
-  </div>
+  <component
+    v-if="serverList"
+    :is="serverList.component"
+    :key="serverList.key"
+    :data="data"
+    :gpu-columns="gpuColumns"
+    v-bind="serverList.props" />
 </template>
 
 <script>
 import Server from './Servers'
 import VmContainer from './VmContainer'
+
+const SERVER_LISTS = {
+  hypervisor: {
+    component: 'Server',
+    key: 'kvm',
+    props: {
+      hypervisor: 'kvm',
+      sidePage: 'VmInstanceSidePage',
+      listId: 'ServersListForGpuSidePage',
+    },
+  },
+  container: {
+    component: 'VmContainer',
+    key: 'pod',
+    props: {},
+  },
+  baremetal: {
+    component: 'Server',
+    key: 'baremetal',
+    props: {
+      hypervisor: 'baremetal',
+      sidePage: 'BaremetalSidePage',
+      sidePageTab: 'baremetal-detail',
+      listId: 'BaremetalServersListForGpuSidePage',
+      readonly: true,
+    },
+  },
+}
 
 export default {
   name: 'AssociatedGpusIndex',
@@ -39,45 +62,15 @@ export default {
       type: Array,
       required: true,
     },
-  },
-  data () {
-    return {
-      currentComponent: 'Server',
-    }
+    hostType: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
-    id () {
-      switch (this.currentComponent) {
-        case 'Server':
-          return 'ServerForSecGroupSidePage'
-        case 'VmContainer':
-          return 'VmContainerForSecGroupSidePage'
-        default:
-          return 'DefaultSecGroupSidePage'
-      }
-    },
-    tabs () {
-      const ret = [
-        {
-          key: 'Server',
-          label: this.$t('dictionary.server'),
-        },
-        {
-          key: 'VmContainer',
-          label: this.$t('dictionary.server_container'),
-        },
-      ]
-      return ret
-    },
-  },
-  methods: {
-    callback (key) {
-      this.currentComponent = key
+    serverList () {
+      return SERVER_LISTS[this.hostType] || null
     },
   },
 }
 </script>
-
-<style>
-
-</style>
