@@ -14,6 +14,53 @@ import { DOCS_MAP } from '@/constants/docs'
 export const USAGE_SOURCE_IMAGE = 'image-usage'
 export const USAGE_SOURCE_IDENTITY = 'identity-usage'
 export const IDENTITY_USAGE_KEYS = ['domains', 'groups', 'policies', 'projects', 'roles', 'users']
+
+function acceleratorUsageConfig (kind) {
+  const base = {
+    scope: SCOPES_MAP.system.key,
+    clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
+    domain_usage_key: 'null',
+    project_usage_key: 'null',
+  }
+  if (kind === 'count') {
+    return { ...base, unit: i18n.t('dashboard.text_4') }
+  }
+  if (kind === 'memory') {
+    return {
+      ...base,
+      formatter: val => sizestrWithUnit(val, 'M', 1024),
+      canUseUserUnit: true,
+      userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
+    }
+  }
+  if (kind === 'tflops') {
+    return { ...base, unit: 'TFLOPS' }
+  }
+  return { ...base, unit: 'W' }
+}
+
+function acceleratorUsageEntries () {
+  const types = ['', 'kvm', 'pod', 'baremetal', 'unused']
+  const metrics = [
+    ['total', 'count'],
+    ['total.attached', 'count'],
+    ['fp16_tflops', 'tflops'],
+    ['memory_size', 'memory'],
+    ['tdp_w', 'tdp'],
+  ]
+  const entries = {}
+  types.forEach(type => {
+    metrics.forEach(([metric, kind]) => {
+      const key = type
+        ? `isolated_devices.accelerator.${type}.${metric}`
+        : `isolated_devices.accelerator.${metric}`
+      entries[key] = acceleratorUsageConfig(kind)
+    })
+  })
+  return entries
+}
+
 export const USAGE_CONFIG = {
   'all.bucket_bytes': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
@@ -1394,6 +1441,7 @@ export const USAGE_CONFIG = {
     domain_usage_key: 'domain.isolated_devices.used',
     project_usage_key: 'null',
   },
+  ...acceleratorUsageEntries(),
   networks: {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.project.key,
