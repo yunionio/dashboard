@@ -214,7 +214,7 @@ export default {
         return !hasPermission({ key: 'servers_list', permissionData: this.permission })
       } else if (usage_key.endsWith('hosts') || usage_key.endsWith('baremetals')) {
         return !hasPermission({ key: 'hosts_list', permissionData: this.permission })
-      } else if (usage_key.endsWith('isolated_devices')) {
+      } else if (usage_key.endsWith('isolated_devices') || usage_key.includes('isolated_devices.accelerator')) {
         return !hasPermission({ key: 'isolated_devices_list', permissionData: this.permission })
       }
       return false
@@ -322,6 +322,9 @@ export default {
     },
     getPageUrl () {
       const uk = this.params.usage_key
+      if (uk && uk.includes('isolated_devices.accelerator')) {
+        return '/gpu'
+      }
       if (uk && this.isPendingDeleteContainerUsageKey(uk)) {
         return '/serverrecovery'
       }
