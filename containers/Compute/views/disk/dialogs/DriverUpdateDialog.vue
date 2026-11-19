@@ -22,6 +22,9 @@
             </a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item :label="$t('compute.disk.high_performance_mode')" :extra="$t('compute.disk.high_performance_extra')">
+          <a-switch v-model="highPerformance" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -79,6 +82,7 @@ export default {
         ],
       },
       is_ssd: false,
+      highPerformance: false,
       formItemLayout: {
         wrapperCol: {
           span: 21,
@@ -166,6 +170,9 @@ export default {
             driver,
             cache_mode: current[0].cache_mode,
           })
+          const rawIo = current[0].num_iothreads
+          const numIo = rawIo === undefined || rawIo === null || rawIo === '' ? 0 : parseInt(rawIo, 10)
+          this.highPerformance = !Number.isNaN(numIo) && numIo > 0
           this.is_ssd = driver !== 'scsi' ? false : is_ssd
         }
       }
@@ -182,38 +189,44 @@ export default {
       })
     },
     async doUpdate (data) {
+      const actionData = {
+        disk_id: data.disk,
+        driver: data.driver,
+        cache_mode: data.cache_mode,
+      }
+      actionData.performance = data.performance
       await new this.$Manager('servers', 'v2').performAction({
         id: data.server,
         action: 'change-disk-driver',
-        data: {
-          disk_id: data.disk,
-          driver: data.driver,
-          cache_mode: data.cache_mode,
-        },
+        data: actionData,
       })
     },
     async handleConfirm () {
       this.loading = true
       try {
         const values = await this.validateForm()
-        this.loading = true
+        const guests = this.params.data[0].guests || []
+        const serverId = this.form.fd.guest_id || guests[0]?.id
         const params = {
           driver: values.driver,
-          server: this.form.fd.guest_id,
+          server: serverId,
           cache_mode: values.cache_mode,
+          performance: this.highPerformance ? 'high' : 'normal',
           is_ssd: this.is_ssd,
           disk: this.params.data[0].id,
         }
         if (!params.server || !params.disk) {
-          this.loading = false
           return
         }
-        this.doUpdate(params)
-        this.loading = false
+        await this.doUpdate(params)
         this.$message.success(this.$t('common.success'))
-        this.params.ok(this.params.data[0].id)
         this.cancelDialog()
+        if (this.params && typeof this.params.ok === 'function') {
+          this.params.ok(this.params.data[0].id)
+        }
       } catch (error) {
+        throw error
+      } finally {
         this.loading = false
       }
     },
