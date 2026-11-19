@@ -16,15 +16,23 @@ export const filterOptions = {
   llm_sku: {
     label: i18n.t('aice.llm_sku'),
   },
-  // 调度/访问策略未实现，暂不展示
-  // placement_strategy: {
-  //   label: i18n.t('aice.llm_deployment.placement_strategy'),
-  //   dropdown: true,
-  //   items: [
-  //     { label: 'Spread', key: 'spread' },
-  //     { label: 'Binpack', key: 'binpack' },
-  //   ],
-  // },
+  placement_strategy: {
+    label: i18n.t('aice.llm_deployment.placement_strategy'),
+    dropdown: true,
+    items: [
+      { label: i18n.t('aice.llm_deployment.placement_strategy.spread'), key: 'spread' },
+      { label: i18n.t('aice.llm_deployment.placement_strategy.binpack'), key: 'binpack' },
+    ],
+  },
+  distributed_inference: {
+    label: i18n.t('aice.llm_deployment.distributed_inference'),
+    dropdown: true,
+    items: [
+      { label: i18n.t('common.true'), key: 'true' },
+      { label: i18n.t('common.false'), key: 'false' },
+    ],
+  },
+  // 访问策略未实现，暂不展示
   // access_policy: {
   //   label: i18n.t('aice.llm_deployment.access_policy'),
   //   dropdown: true,

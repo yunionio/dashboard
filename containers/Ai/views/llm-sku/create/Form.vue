@@ -137,7 +137,7 @@
         </span>
         <template v-slot:extra>{{ $t('aice.enable_cgroup_extra') }}</template>
       </a-form-item>
-      <a-form-item :label="$t('aice.disk')">
+      <a-form-item :label="$t('aice.disk')" :extra="dataDiskOptional ? $t('aice.disk_optional_hint') : ''">
         <a-input-number
           v-decorator="decorators.volume_size"
           :min="10"
@@ -522,7 +522,7 @@ import DomainProject from '@/sections/DomainProject'
 import NameRepeated from '@/sections/NameRepeated'
 import { isRequired } from '@/utils/validate'
 import { uuid } from '@/utils/utils'
-import { dict } from '../constants/constant'
+import { dict, DISK_OPTIONAL_LLM_TYPES } from '../constants/constant'
 import { LLM_TYPE_OPTIONS, LLM_TYPE_FORM_CONFIG, getParamsForType, getDefaultPortMappingsForType, getDefaultSkuSpecForType } from '../constants/llmTypeConfig'
 
 const getInitVal = (list, key, property) => {
@@ -607,7 +607,8 @@ export default {
       llm_type: rowLlmType,
       cpu = localPathResourceDefaults?.cpu ?? catalogResourceDefaults?.cpu ?? 2,
       memory = localPathResourceDefaults?.memory ?? catalogResourceDefaults?.memory ?? 2048,
-      volume = { size: 10240, storage_type: 'local', template_id: undefined },
+      volume,
+      volumes = [],
       image_id,
       envs = [],
       llm_image_id,
@@ -620,6 +621,12 @@ export default {
       preferred_model: rowPreferredModel,
       host_paths: hostPaths = [],
     } = data
+    // The API returns volumes (plural); `volume` is kept as a legacy fallback.
+    // The data disk is optional, so an absent volume leaves the field empty.
+    const firstVolume = Array.isArray(volumes) && volumes.length > 0 ? volumes[0] : null
+    const volumeSizeInit = (firstVolume && firstVolume.size_mb != null)
+      ? Math.round(firstVolume.size_mb / 1024)
+      : (volume && volume.size != null ? Math.round(volume.size / 1024) : undefined)
     const defaultLlmTypeForInit = catalogLlmTypeInit || (llmTypeOptions[0] && llmTypeOptions[0].id) || (isDesktopType ? 'desktop' : (isApplyType ? 'hermes-agent' : 'ollama'))
     const initialLlmTypeForSpec = catalogLlmTypeInit || rowLlmType || defaultLlmTypeForInit
     const isInferenceInit = ['vllm', 'sglang', 'ollama'].includes(initialLlmTypeForSpec)
@@ -961,9 +968,21 @@ export default {
         volume_size: [
           'volume_size',
           {
-            initialValue: volume.size / 1024,
+            initialValue: volumeSizeInit,
             rules: [
-              { required: true, message: this.$t('common.tips.input', [this.$t('aice.disk')]) },
+              {
+                validator: (rule, value, callback) => {
+                  if (!this.isDataDiskRequired()) {
+                    callback()
+                    return
+                  }
+                  if (value == null || value === '' || Number(value) <= 0) {
+                    callback(new Error(this.$t('common.tips.input', [this.$t('aice.disk')])))
+                    return
+                  }
+                  callback()
+                },
+              },
             ],
           },
         ],
@@ -1199,6 +1218,9 @@ export default {
     isEditMode () {
       return this.mode === 'edit'
     },
+    dataDiskOptional () {
+      return !this.isDataDiskRequired()
+    },
     isCatalogMode () {
       return !!getCatalogSpecId(this.catalogSpec)
     },
@@ -1337,6 +1359,12 @@ export default {
     }
   },
   methods: {
+    // Desktop-like types keep their workspace on the data disk and still
+    // require one; inference types may be created without it.
+    isDataDiskRequired () {
+      const type = String(this.resolveCreateLlmType() || '').trim()
+      return !DISK_OPTIONAL_LLM_TYPES.includes(type)
+    },
     resolveCreateLlmType (values = {}) {
       if (this.isCatalogMode) {
         if (this.catalogTypeSelectable) {
@@ -1491,8 +1519,12 @@ export default {
       typeFieldKeys.forEach(key => {
         if (values[key] !== undefined) pickTypeValues[key] = values[key]
       })
-      const sizeMb = (volume_size ?? 10) * 1024
-      const volumes = [{ size_mb: sizeMb }]
+      // The data disk is optional. An empty value must send an explicit empty
+      // array on update so the backend clears the stored volume; omitting the
+      // field means "unchanged".
+      const hasVolume = volume_size != null && volume_size !== '' && Number(volume_size) > 0
+      const sizeMb = hasVolume ? Number(volume_size) * 1024 : 0
+      const volumes = hasVolume ? [{ size_mb: sizeMb }] : []
       const port_mappings = this.portMappings.map(item => ({
         protocol: protocol[item.key],
         container_port: container_port[item.key],
@@ -1540,7 +1572,9 @@ export default {
         enable_cgroup_cpu: !!enable_cgroup_cpu,
         enable_cgroup_memory: !!enable_cgroup_memory,
         volumes,
-        disk_size: sizeMb,
+      }
+      if (hasVolume) {
+        data.disk_size = sizeMb
       }
       if (port_mappings.length > 0) data.port_mappings = port_mappings
       if (host_paths.length > 0) data.host_paths = host_paths
