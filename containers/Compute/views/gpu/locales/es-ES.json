@@ -1,0 +1,13 @@
+{
+  "gpu.device_type": "Tipo de dispositivo",
+  "gpu.device_type.update": "Actualizar tipo de dispositivo",
+  "gpu.device_type.update.tooltip": "Selecciona el dispositivo de passthrough cuyo tipo quieres actualizar",
+  "gpu.device_type.update.validate": "El tipo de dispositivo actual no admite actualizaciones",
+  "gpu.device_type.gpu.tooltip": "Selecciona un dispositivo de passthrough de tipo GPU",
+  "gpu.device_type.message_1": "HPC: computación de alto rendimiento; se usa sobre todo en computación científica, análisis de datos, aprendizaje automático y otras tareas que requieren computación paralela a gran escala.",
+  "gpu.device_type.message_2": "VGA: Video Graphics Array; se usa para renderizar y mostrar gráficos.",
+  "gpu.device_type.message_3": "Cuando una tarjeta GPU de tipo VGA se pasa a la máquina virtual, deja de proporcionarse el dispositivo VGA emulado y hay que instalar de antemano el controlador de la tarjeta gráfica en la imagen.",
+  "gpu.device_type.tooltip.check_hpc_vga_gpu": "Solo los dispositivos de passthrough de tipo HPC y VGA admiten esta operación",
+  "gpu.device_type.framebuffer": "Memoria de vídeo",
+  "gpu.device_type.max_resolution": "Resolución"
+}

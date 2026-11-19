@@ -9,9 +9,11 @@ import { getLanguage } from '@/utils/common/cookie'
 import en from './en'
 import zhCN from './zh-CN'
 import jaJP from './ja-JP'
+import esES from './es-ES'
 import helpEN from './help-en'
 import helpZhCN from './help-zh-CN'
 import helpJaJP from './help-ja-JP'
+import helpEsES from './help-es-ES'
 
 Vue.use(VueI18n)
 
@@ -19,6 +21,7 @@ const messages = {
   en: Object.assign(en, helpEN, vxeTableEN, { brand: setting.brand.en }),
   'zh-CN': Object.assign(zhCN, helpZhCN, vxeTableCN, { brand: setting.brand['zh-CN'] }),
   'ja-JP': Object.assign(jaJP, helpJaJP, vxeTableJP, { brand: setting.brand['ja-JP'] }),
+  'es-ES': Object.assign(esES, helpEsES, vxeTableEN, { brand: setting.brand['es-ES'] }),
 }
 
 const moduleCtx = require.context('../../containers', true, /^((?![\\/]node_modules).)*.\/locales\/.*(json)$/)
@@ -66,6 +69,9 @@ i18n.setOriginDictionary = () => {
     i18n.mergeLocaleMessage('ja-JP', {
       originDictionary: R.clone(jaJP.dictionary),
     })
+    i18n.mergeLocaleMessage('es-ES', {
+      originDictionary: R.clone(esES.dictionary),
+    })
   }
 }
 
@@ -78,6 +84,8 @@ i18n.getOriginDictionaryI18n = (key, defaultValue) => {
     f = R.clone(zhCN.dictionary)
   } else if (l === 'ja-JP') {
     f = R.clone(jaJP.dictionary)
+  } else if (l === 'es-ES') {
+    f = R.clone(esES.dictionary)
   }
   return f[key] || defaultValue
 }
@@ -117,6 +125,8 @@ i18n.deepReplaceDictionary = () => {
     deepReplaceI18n(messages['zh-CN'])
   } else if (l === 'ja-JP') {
     deepReplaceI18n(messages['ja-JP'])
+  } else if (l === 'es-ES') {
+    deepReplaceI18n(messages['es-ES'])
   }
   i18n.setLocaleMessage(l, messages[l])
 }
@@ -129,6 +139,8 @@ i18n.getOemDictionaryI18n = (key, defaultValue) => {
     return (setting.oemDictionary && setting.oemDictionary['zh-CN'] && setting.oemDictionary['zh-CN'][key]) || defaultValue
   } else if (l === 'ja-JP') {
     return (setting.oemDictionary && setting.oemDictionary['ja-JP'] && setting.oemDictionary['ja-JP'][key]) || defaultValue
+  } else if (l === 'es-ES') {
+    return (setting.oemDictionary && setting.oemDictionary['es-ES'] && setting.oemDictionary['es-ES'][key]) || defaultValue
   }
   return defaultValue
 }
