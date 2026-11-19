@@ -1759,6 +1759,8 @@
   "compute.vnic": "仮想マシンの NIC",
   "compute.vm_mac": "仮想マシンの MAC アドレス",
   "compute.tap_service_delete_tip": "すでにイメージソースがあるトラフィックミラーは削除できません",
+  "compute.disk.high_performance_mode": "高性能モード",
+  "compute.disk.high_performance_extra": "高性能モードを有効にすると、追加の CPU リソースを消費します",
   "compute.num_queues": "キューの数",
   "compute.nics.sync_config_immediately": "変更後すぐに構成を同期する",
   "compute.nics.force_remove": "NICを強制的に削除する",
