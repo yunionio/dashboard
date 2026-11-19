@@ -57,6 +57,25 @@ export default {
   },
   created () {
     this.serverManager = new this.$Manager('servers')
+    this.columns = [
+      ...this.columns.slice(0, 2),
+      {
+        field: 'dist_role',
+        title: this.$t('aice.llm_deployment.dist_role'),
+        minWidth: 120,
+        formatter: ({ row }) => {
+          if (!row.dist_role) return this.$t('aice.llm_deployment.dist_role.single')
+          if (row.dist_role === 'leader') {
+            return this.$t('aice.llm_deployment.dist_role.leader', [row.dist_rank ?? 0, row.dist_nnodes || 1])
+          }
+          if (row.dist_role === 'follower') {
+            return this.$t('aice.llm_deployment.dist_role.follower', [row.dist_rank ?? 0, row.dist_nnodes || 1])
+          }
+          return row.dist_role
+        },
+      },
+      ...this.columns.slice(2),
+    ]
     this.list.fetchData()
   },
   methods: {

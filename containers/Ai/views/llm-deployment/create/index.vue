@@ -27,7 +27,7 @@
         <a-form-item
           v-if="showPreferHosts"
           :label="$t('aice.local_path_import.prefer_hosts')"
-          :extra="$t('aice.local_path_import.prefer_hosts_deploy_hint')">
+          :extra="isLocalPathSku ? $t('aice.local_path_import.prefer_hosts_deploy_hint') : $t('aice.llm_deployment.prefer_hosts_distributed_hint')">
           <base-select
             v-decorator="decorators.prefer_hosts"
             resource="hosts"
@@ -51,6 +51,63 @@
             defaultNetworkType="default"
             :hiddenAdd="true"
             :isDialog="true" />
+        </a-form-item>
+
+        <a-form-item :label="$t('aice.llm_deployment.distributed_inference')" :extra="distributedSwitchHint">
+          <a-switch
+            v-decorator="decorators.distributed_inference"
+            :disabled="distributedSwitchDisabled"
+            @change="handleDistributedChange" />
+        </a-form-item>
+
+        <a-form-item v-if="distributedOn" :label="$t('aice.llm_deployment.parallel_mode')" :extra="parallelModeHint">
+          <a-select v-decorator="decorators.parallel_mode" @change="handleParallelModeChange">
+            <a-select-option
+              v-for="opt in parallelModeOptions"
+              :key="opt.value"
+              :value="opt.value"
+              :disabled="opt.disabled"
+              :title="opt.disabled ? opt.disabledReason : opt.hint">
+              {{ opt.label }}
+              <span v-if="opt.disabled" class="text-color-help">({{ opt.disabledReason }})</span>
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+
+        <a-form-item v-if="distributedOn" :label="$t('aice.llm_deployment.placement_strategy')">
+          <a-select v-decorator="decorators.placement_strategy">
+            <a-select-option value="spread">{{ $t('aice.llm_deployment.placement_strategy.spread') }}</a-select-option>
+            <a-select-option value="binpack">{{ $t('aice.llm_deployment.placement_strategy.binpack') }}</a-select-option>
+          </a-select>
+        </a-form-item>
+
+        <a-form-item v-if="distributedOn" :label="$t('aice.llm_deployment.nnodes')" :extra="$t('aice.llm_deployment.nnodes_hint')">
+          <a-input-number
+            v-decorator="decorators.nnodes"
+            :min="2"
+            :precision="0"
+            :placeholder="$t('aice.llm_deployment.nnodes_auto')" />
+        </a-form-item>
+
+        <a-form-item v-if="pipelineParallelVisible" :label="$t('aice.llm_deployment.pipeline_parallel_size')" :extra="$t('aice.llm_deployment.pipeline_parallel_size_hint')">
+          <a-input-number
+            v-decorator="decorators.pipeline_parallel_size"
+            :min="1"
+            :precision="0"
+            :placeholder="$t('aice.llm_deployment.pipeline_parallel_size_auto')" />
+        </a-form-item>
+
+        <a-form-item v-if="distributedOn" class="mb-0">
+          <topology-preview-card
+            :sku-manager="skuManager"
+            :sku-id="form.fd.llm_sku_id"
+            :sku-detail="selectedSkuDetail"
+            :distributed-inference="distributedOn"
+            :parallel-mode="form.fd.parallel_mode"
+            :nnodes="form.fd.nnodes"
+            :pipeline-parallel-size="form.fd.pipeline_parallel_size"
+            :placement-strategy="form.fd.placement_strategy"
+            :prefer-hosts="form.fd.prefer_hosts" />
         </a-form-item>
       </a-form>
     </page-body>
@@ -79,10 +136,12 @@ import SideErrors from '@/sections/SideErrors'
 import { Manager } from '@/utils/manager'
 import { uuid } from '@/utils/utils'
 import validateForm from '@/utils/validate'
+import TopologyPreviewCard from '../components/TopologyPreviewCard'
+import { getParallelModeOptions, PARALLEL_MODES } from '../utils/topology'
 
 export default {
   name: 'LlmDeploymentCreate',
-  components: { LlmSkuSelect, ServerNetwork, NameRepeated, SideErrors },
+  components: { LlmSkuSelect, ServerNetwork, NameRepeated, SideErrors, TopologyPreviewCard },
   provide () {
     return {
       form: this.form,
@@ -130,6 +189,12 @@ export default {
                     callback()
                     return
                   }
+                  // local_path models require a host whitelist; for distributed
+                  // inference the list is an optional placement hint.
+                  if (!this.isLocalPathSku) {
+                    callback()
+                    return
+                  }
                   const hosts = normalizePreferHosts(value)
                   if (hosts.length === 0) {
                     callback(this.$t('aice.local_path_import.prefer_hosts_required'))
@@ -141,6 +206,18 @@ export default {
             ],
           },
         ],
+        distributed_inference: ['distributed_inference', {
+          valuePropName: 'checked',
+          initialValue: false,
+        }],
+        parallel_mode: ['parallel_mode', {
+          initialValue: PARALLEL_MODES.PP,
+        }],
+        placement_strategy: ['placement_strategy', {
+          initialValue: 'spread',
+        }],
+        nnodes: ['nnodes'],
+        pipeline_parallel_size: ['pipeline_parallel_size'],
         network: {
           networkType: ['networkType', { initialValue: NETWORK_OPTIONS_MAP.default.key }],
           networkConfig: {
@@ -180,8 +257,39 @@ export default {
     }
   },
   computed: {
-    showPreferHosts () {
+    isLocalPathSku () {
       return this.selectedSkuDetail?.source === 'local_path'
+    },
+    distributedOn () {
+      return !!this.form.fd.distributed_inference
+    },
+    distributedSupported () {
+      const llmType = this.selectedSkuDetail?.llm_type
+      return llmType === 'vllm' || llmType === 'sglang'
+    },
+    distributedSwitchDisabled () {
+      return !!this.selectedSkuDetail && !this.distributedSupported
+    },
+    distributedSwitchHint () {
+      if (this.distributedSwitchDisabled) {
+        return this.$t('aice.llm_deployment.distributed_inference_unsupported')
+      }
+      return this.$t('aice.llm_deployment.distributed_inference_hint')
+    },
+    parallelModeOptions () {
+      return getParallelModeOptions(this.selectedSkuDetail?.llm_type)
+    },
+    parallelModeHint () {
+      const mode = this.form.fd.parallel_mode || PARALLEL_MODES.PP
+      const opt = this.parallelModeOptions.find(o => o.value === mode)
+      return opt?.hint || ''
+    },
+    pipelineParallelVisible () {
+      const mode = this.form.fd.parallel_mode || PARALLEL_MODES.PP
+      return this.distributedOn && mode === PARALLEL_MODES.PP
+    },
+    showPreferHosts () {
+      return this.isLocalPathSku || this.distributedOn
     },
     localPathHostParams () {
       return {
@@ -236,6 +344,15 @@ export default {
       try {
         const { data } = await this.skuManager.get({ id: skuId })
         this.selectedSkuDetail = data
+        if (data?.llm_type !== 'vllm' && data?.llm_type !== 'sglang') {
+          // Reset a stale distributed flag and pipeline pin: the backend
+          // rejects them for other types.
+          this.form.fc.setFieldsValue({ distributed_inference: false, parallel_mode: PARALLEL_MODES.PP, nnodes: null, pipeline_parallel_size: null })
+          this.$set(this.form.fd, 'distributed_inference', false)
+          this.$set(this.form.fd, 'parallel_mode', PARALLEL_MODES.PP)
+          this.$set(this.form.fd, 'nnodes', null)
+          this.$set(this.form.fd, 'pipeline_parallel_size', null)
+        }
         if (data?.source === 'local_path') {
           const hosts = normalizePreferHosts(data.prefer_hosts)
           this.$nextTick(() => {
@@ -252,6 +369,24 @@ export default {
     handleSkuChange (skuId) {
       this.errors = {}
       this.loadSkuDetail(skuId)
+    },
+    // Distributed fields only apply while the switch is on; clear them when it
+    // is turned off so stale values are never submitted.
+    handleDistributedChange (checked) {
+      if (!checked) {
+        this.form.fc.setFieldsValue({ nnodes: null, parallel_mode: PARALLEL_MODES.PP, pipeline_parallel_size: null })
+        this.$set(this.form.fd, 'nnodes', null)
+        this.$set(this.form.fd, 'parallel_mode', PARALLEL_MODES.PP)
+        this.$set(this.form.fd, 'pipeline_parallel_size', null)
+      }
+    },
+    // Pipeline parallelism is only configurable in PP mode; drop a stale pin
+    // when the user switches to DP so it is never submitted.
+    handleParallelModeChange (mode) {
+      if (mode === PARALLEL_MODES.DP) {
+        this.form.fc.setFieldsValue({ pipeline_parallel_size: null })
+        this.$set(this.form.fd, 'pipeline_parallel_size', null)
+      }
     },
     applyFromSku (skuId) {
       this.$nextTick(() => {
@@ -287,17 +422,32 @@ export default {
       return [{ exit: false }]
     },
     buildPayload (values) {
+      const distributedInference = this.distributedSupported && !!values.distributed_inference
       const payload = {
         name: values.name,
         llm_sku_id: values.llm_sku_id,
         replicas: 1,
-        placement_strategy: 'spread',
+        placement_strategy: values.placement_strategy || 'spread',
         access_policy: 'authed',
-        auto_start: true,
+        distributed_inference: distributedInference,
         nets: this.genNetworks(values),
       }
+      if (distributedInference && values.nnodes != null && Number(values.nnodes) > 0) {
+        payload.nnodes = Number(values.nnodes)
+      }
+      const parallelMode = values.parallel_mode || PARALLEL_MODES.PP
+      // Pipeline parallelism is only configurable in PP mode; omit it for DP.
+      if (distributedInference && parallelMode === PARALLEL_MODES.PP && values.pipeline_parallel_size != null && Number(values.pipeline_parallel_size) > 0) {
+        payload.pipeline_parallel_size = Number(values.pipeline_parallel_size)
+      }
+      if (distributedInference && this.distributedSupported) {
+        payload.parallel_mode = parallelMode
+      }
       if (this.showPreferHosts) {
-        payload.prefer_hosts = normalizePreferHosts(values.prefer_hosts)
+        const preferHosts = normalizePreferHosts(values.prefer_hosts)
+        if (preferHosts.length > 0) {
+          payload.prefer_hosts = preferHosts
+        }
       }
       return payload
     },
@@ -309,12 +459,19 @@ export default {
         const values = await this.form.fc.validateFields()
         this.loading = true
         this.errors = {}
-        const { data: check } = await checkSkuSchedulable(this.skuManager, values.llm_sku_id)
+        const payload = this.buildPayload(values)
+        const { data: check } = await checkSkuSchedulable(this.skuManager, values.llm_sku_id, {
+          distributed_inference: !!payload.distributed_inference,
+          parallel_mode: payload.parallel_mode || 'pp',
+          prefer_hosts: payload.prefer_hosts || [],
+          placement_strategy: payload.placement_strategy,
+          nnodes: payload.nnodes || 0,
+          pipeline_parallel_size: payload.pipeline_parallel_size || 0,
+        })
         if (!check.schedulable) {
           this.errors = getSchedulableCheckErrors(check)
           return
         }
-        const payload = this.buildPayload(values)
         await this.manager.create({ data: payload })
         this.$message.success(this.$t('common.success'))
         this.$router.push({ name: 'LlmDeploymentList' })
