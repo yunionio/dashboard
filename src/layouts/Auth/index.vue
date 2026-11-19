@@ -24,6 +24,9 @@
                 <a-menu-item v-if="!languages.length || languages.includes('ja-JP')" key="ja-JP">
                   <span class="mr-2">日本語</span><a-icon v-show="language === 'ja-JP'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                 </a-menu-item>
+                <a-menu-item v-if="!languages.length || languages.includes('es-ES')" key="es-ES">
+                  <span class="mr-2">Español</span><a-icon v-show="language === 'es-ES'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                </a-menu-item>
               </a-menu>
             </a-dropdown>
           </div>
@@ -88,6 +91,8 @@ export default {
         return '简体中文'
       } else if (this.language === 'ja-JP') {
         return '日本語'
+      } else if (this.language === 'es-ES') {
+        return 'Español'
       } else {
         return 'English'
       }
