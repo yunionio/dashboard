@@ -275,7 +275,7 @@ export default {
     globalSettingSetupKeys () {
       const { globalSetting } = this.$store.state
       if (globalSetting && globalSetting.value) {
-        return globalSetting.value.setupKeys
+        return globalSetting.value.setupKeys || []
       }
       return []
     },
@@ -312,12 +312,13 @@ export default {
     },
     supportLanguages: {
       handler: function (val) {
-        this.setSupportLanguages(val)
+        const languages = val || []
+        this.setSupportLanguages(languages)
         // 强制语言时不根据 setupKeys / 浏览器语言改写
         if (getForcedLanguage()) return
-        if (val.length && !val.includes(this.language)) {
+        if (languages.length && !languages.includes(this.language)) {
           const navigatorL = navigator.language || navigator.userLanguage
-          setLanguage(val.includes(navigatorL) ? navigatorL : val[0])
+          setLanguage(languages.includes(navigatorL) ? navigatorL : languages[0])
           window.location.reload()
         }
       },
