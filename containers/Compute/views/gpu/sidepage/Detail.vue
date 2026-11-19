@@ -31,6 +31,69 @@ export default {
     },
   },
   data () {
+    const gpuExtraInfo = []
+    if (this.data.dev_type === 'GPU' || this.data.dev_type === 'NPU') {
+      gpuExtraInfo.push(
+        {
+          title: this.$t('compute.gpu.gpu_arch.title'),
+          field: 'gpu_arch',
+        },
+        {
+          title: this.$t('compute.gpu.gpu_chip.title'),
+          field: 'gpu_chip',
+        },
+        {
+          title: this.$t('compute.gpu.manage_tool.title'),
+          field: 'manage_tool',
+        },
+        {
+          title: this.$t('compute.gpu.vector_peak_precision.title'),
+          field: 'vector_peak_precision',
+        },
+        {
+          title: this.$t('compute.gpu.matrix_peak_precision.title'),
+          field: 'matrix_peak_precision',
+        },
+        {
+          title: this.$t('compute.gpu.fp16_tflops.title'),
+          field: 'fp16_tflops',
+        },
+        {
+          title: this.$t('compute.gpu.tdp_w.title'),
+          field: 'tdp_w',
+        },
+        {
+          title: this.$t('compute.gpu.memory_type.title'),
+          field: 'memory_type',
+        },
+        {
+          title: this.$t('compute.gpu.memory_bus_bit.title'),
+          field: 'memory_bus_bit',
+        },
+        {
+          title: this.$t('compute.gpu.bandwidth_gb_s.title'),
+          field: 'bandwidth_gb_s',
+        },
+        {
+          title: this.$t('compute.gpu.form_factor.title'),
+          field: 'form_factor',
+        },
+        {
+          title: this.$t('compute.gpu.interconnect.title'),
+          field: 'interconnect',
+        },
+        {
+          title: this.$t('compute.gpu.interconnect_bandwidth_gbs.title'),
+          field: 'interconnect_bandwidth_gb_s',
+          formatter: ({ row }) => {
+            if (row.interconnect) {
+              return row.interconnect_bandwidth_gb_s || '-'
+            }
+            return '-'
+          },
+        },
+      )
+    }
     return {
       baseInfo: [
         {
@@ -90,6 +153,7 @@ export default {
               field: 'addr',
               title: 'PCI_BUS_ID',
             },
+            ...gpuExtraInfo,
           ],
         },
       ],
