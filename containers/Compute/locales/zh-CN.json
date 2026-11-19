@@ -1759,6 +1759,8 @@
   "compute.vnic": "虚拟机网卡",
   "compute.vm_mac": "虚拟机mac地址",
   "compute.tap_service_delete_tip": "已有镜像源的流量镜像不允许删除",
+  "compute.disk.high_performance_mode": "高性能模式",
+  "compute.disk.high_performance_extra": "开启高性能模式会消耗额外 CPU 算力",
   "compute.num_queues": "队列数量",
   "compute.nics.sync_config_immediately": "变更后立即同步配置",
   "compute.nics.force_remove": "强制卸载网卡",
