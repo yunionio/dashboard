@@ -143,6 +143,9 @@
             <a-menu-item v-if="!supportLanguages.length || supportLanguages.includes('ja-JP')" key="5" @click="settingLanguageJP">
               <span class="mr-2" style="cursor: pointer">日本語</span><a-icon v-show="language === 'ja-JP'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
             </a-menu-item>
+            <a-menu-item v-if="!supportLanguages.length || supportLanguages.includes('es-ES')" key="6" @click="settingLanguageES">
+              <span class="mr-2" style="cursor: pointer">Español</span><a-icon v-show="language === 'es-ES'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+            </a-menu-item>
           </a-sub-menu>
           <a-menu-item key="toClouduser" v-if="showClouduser && showMenuMap.clouduser"><a-icon class="mr-2 ml-2" type="cloud-upload" />{{ $t('scope.cloudid') }}</a-menu-item>
           <a-menu-item key="toCredentials" v-if="showMenuMap.credential"><icon class="mr-2 ml-2" type="access-credentials" />{{ $t('common_631') }}</a-menu-item>
@@ -277,7 +280,7 @@ export default {
       return []
     },
     supportLanguages () {
-      const languages = this.globalSettingSetupKeys.filter(item => ['zh-CN', 'en', 'ja-JP'].includes(item))
+      const languages = this.globalSettingSetupKeys.filter(item => ['zh-CN', 'en', 'ja-JP', 'es-ES'].includes(item))
       return languages
     },
     showMenuMap () {
@@ -416,6 +419,10 @@ export default {
     settingLanguageJP () {
       if (getForcedLanguage()) return
       setLanguage('ja-JP')
+      window.location.reload()
+    },
+    settingLanguageES () {
+      setLanguage('es-ES')
       window.location.reload()
     },
     isSingleProject (projects, item) {
