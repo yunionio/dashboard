@@ -5,11 +5,12 @@
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
     :show-single-actions="showGpuSingleActions"
-    :hide-rowselect="isProjectMode"
+    :hide-rowselect="isProjectMode || showBaremetalIsolatedDevices"
     :show-page="!isTemplate"
     :group-actions="getFinalGroupActions(groupActions)"
     :single-actions="getFinalSingleActions(singleActions)"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :tableOverviewIndexs="gpuTableOverviewIndexs" />
 </template>
 
 <script>
@@ -17,6 +18,7 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 // import { isUpdatableGpuType } from '@Compute/constants'
 import { getNameFilter, getRegionFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { sizeToDesignatedUnit } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -39,6 +41,7 @@ export default {
     resId: String,
     probeHostDevices: Boolean,
     hiddenActionKeys: Array,
+    showBaremetalIsolatedDevices: Boolean,
   },
   data () {
     const filter = {}
@@ -56,6 +59,7 @@ export default {
         id: this.id,
         resource: this.gpuResource || 'isolated_devices',
         getParams: this.getParam,
+        genParamsCb: this.genBaremetalParams,
         filter,
         isTemplate: this.isTemplate,
         templateLimit: this.templateLimit,
@@ -90,8 +94,18 @@ export default {
             items: [
               { label: 'NVIDIA', key: 'NVIDIA' },
               { label: 'AMD', key: 'AMD' },
+              { label: 'ASCEND', key: 'ASCEND' },
               { label: 'HYGON', key: 'HYGON' },
+              { label: 'INTEL', key: 'INTEL' },
+              { label: 'KUNLUNXIN', key: 'KUNLUNXIN' },
+              { label: 'ILUVATAR', key: 'ILUVATAR' },
+              { label: 'MTHREADS', key: 'MTHREADS' },
+              { label: 'THEAD', key: 'THEAD' },
+              { label: 'META', key: 'META' },
               { label: 'VASTAITECH', key: 'VASTAITECH' },
+              { label: 'BIREN', key: 'BIREN' },
+              { label: 'CAMBRICON', key: 'CAMBRICON' },
+              { label: 'ENFLAME', key: 'ENFLAME' },
             ],
           },
           vendor_device_id: {
@@ -343,7 +357,33 @@ export default {
       }
     },
     showGpuSingleActions () {
-      return !this.isTemplate && !this.isProjectMode
+      return !this.isTemplate && !this.isProjectMode && !this.showBaremetalIsolatedDevices
+    },
+    gpuTableOverviewIndexs () {
+      const totals = this.list?.totals || {}
+      const items = []
+      if (totals.total_fp16_tflops !== undefined && totals.total_fp16_tflops !== null) {
+        items.push({
+          key: this.$t('compute.gpu.total_fp16_tflops'),
+          value: `${totals.total_fp16_tflops} TFLOPS`,
+          order: 1,
+        })
+      }
+      if (totals.total_mem_mb !== undefined && totals.total_mem_mb !== null) {
+        items.push({
+          key: this.$t('compute.gpu.total_mem'),
+          value: sizeToDesignatedUnit(totals.total_mem_mb, 'M', 'G', 1024),
+          order: 2,
+        })
+      }
+      if (totals.total_tdp_w !== undefined && totals.total_tdp_w !== null) {
+        items.push({
+          key: this.$t('compute.gpu.total_tdp_w'),
+          value: `${totals.total_tdp_w} W`,
+          order: 3,
+        })
+      }
+      return items
     },
   },
   created () {
@@ -362,12 +402,25 @@ export default {
   methods: {
     getParam () {
       const ret = {
-        show_baremetal_isolated_devices: false,
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         with_meta: true,
         details: true,
+        show_baremetal_isolated_devices: !!this.showBaremetalIsolatedDevices,
       }
       return ret
+    },
+    genBaremetalParams (params) {
+      if (!this.showBaremetalIsolatedDevices) return params
+      const existing = params.joint_filter
+      const jointFilters = existing ? (Array.isArray(existing) ? existing.slice() : [existing]) : []
+      const baremetalFilter = 'hosts.id(host_id).host_type.equals("baremetal")'
+      if (!jointFilters.includes(baremetalFilter)) {
+        jointFilters.push(baremetalFilter)
+      }
+      return {
+        ...params,
+        joint_filter: jointFilters,
+      }
     },
     handleOpenSidepage (row, tab) {
       this.initSidePageTab(tab)
@@ -376,6 +429,7 @@ export default {
         resource: 'isolated_devices',
         getParams: this.getParam,
         currentTab: 'servers-list',
+        hideActions: this.showBaremetalIsolatedDevices,
       }, {
         list: this.list,
       })
@@ -399,14 +453,14 @@ export default {
       }
     },
     getFinalGroupActions () {
-      if (this.isProjectMode) return []
+      if (this.isProjectMode || this.showBaremetalIsolatedDevices) return []
       if (this.hiddenActionKeys?.length > 0) {
         return this.groupActions.filter(o => !this.hiddenActionKeys.includes(o.key))
       }
       return this.groupActions
     },
     getFinalSingleActions () {
-      if (this.isProjectMode) return []
+      if (this.isProjectMode || this.showBaremetalIsolatedDevices) return []
       if (this.hiddenActionKeys?.length > 0) {
         return this.singleActions.filter(o => !this.hiddenActionKeys.includes(o.key))
       }

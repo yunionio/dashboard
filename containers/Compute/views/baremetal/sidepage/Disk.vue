@@ -60,6 +60,9 @@ export default {
           showOverflow: 'ellipsis',
           minWidth: 60,
           formatter: ({ row }) => {
+            if (row.disk_size === undefined || row.disk_size === null || row.disk_size === '' || row.disk_size <= 0) {
+              return '-'
+            }
             return sizestr(row.disk_size, 'M', 1024)
           },
         },
