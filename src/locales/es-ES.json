@@ -44,7 +44,7 @@
       "syncing": "Sincronizando",
       "sync_status": "Sincronizando",
       "idle": "Inactivo",
-      "error": "Error"
+      "error": "Error de sincronización"
     },
     "server": {
       "init": "Inicializando",
@@ -2180,7 +2180,32 @@
     "all.servers.last_week.aarch64.memory": "Capacidad de memoria de máquinas virtuales creadas la semana pasada (arm)",
     "all.servers.last_week.riscv64.memory": "Capacidad de memoria de máquinas virtuales creadas la semana pasada (riscv64)",
     "domain.servers.last_week": "Número de máquinas virtuales creadas la semana pasada en el dominio actual",
-    "servers.last_week": "Número de máquinas virtuales creadas la semana pasada en el proyecto actual"
+    "servers.last_week": "Número de máquinas virtuales creadas la semana pasada en el proyecto actual",
+    "isolated_devices.accelerator.total": "Total de tarjetas de cómputo",
+    "isolated_devices.accelerator.total.attached": "Tarjetas de cómputo asignadas",
+    "isolated_devices.accelerator.fp16_tflops": "Cómputo FP16 de tarjetas de cómputo",
+    "isolated_devices.accelerator.memory_size": "Capacidad de memoria de tarjetas de cómputo",
+    "isolated_devices.accelerator.tdp_w": "Potencia pico de tarjetas de cómputo",
+    "isolated_devices.accelerator.kvm.total": "Tarjetas de cómputo en máquinas virtuales",
+    "isolated_devices.accelerator.kvm.total.attached": "Tarjetas de cómputo vinculadas a máquinas virtuales",
+    "isolated_devices.accelerator.kvm.fp16_tflops": "Cómputo de tarjetas de cómputo en máquinas virtuales",
+    "isolated_devices.accelerator.kvm.memory_size": "Memoria de tarjetas de cómputo en máquinas virtuales",
+    "isolated_devices.accelerator.kvm.tdp_w": "Consumo de tarjetas de cómputo en máquinas virtuales",
+    "isolated_devices.accelerator.pod.total": "Tarjetas de cómputo en hosts de contenedores",
+    "isolated_devices.accelerator.pod.total.attached": "Tarjetas de cómputo vinculadas en hosts de contenedores",
+    "isolated_devices.accelerator.pod.fp16_tflops": "Cómputo de tarjetas en hosts de contenedores",
+    "isolated_devices.accelerator.pod.memory_size": "Memoria de tarjetas en hosts de contenedores",
+    "isolated_devices.accelerator.pod.tdp_w": "Consumo de tarjetas en hosts de contenedores",
+    "isolated_devices.accelerator.baremetal.total": "Tarjetas de cómputo en bare metal",
+    "isolated_devices.accelerator.baremetal.total.attached": "Tarjetas de cómputo vinculadas en bare metal",
+    "isolated_devices.accelerator.baremetal.fp16_tflops": "Cómputo de tarjetas en bare metal",
+    "isolated_devices.accelerator.baremetal.memory_size": "Memoria de tarjetas en bare metal",
+    "isolated_devices.accelerator.baremetal.tdp_w": "Consumo de tarjetas en bare metal",
+    "isolated_devices.accelerator.unused.total": "Tarjetas de cómputo inactivas",
+    "isolated_devices.accelerator.unused.total.attached": "Tarjetas de cómputo inactivas vinculadas",
+    "isolated_devices.accelerator.unused.fp16_tflops": "Cómputo de tarjetas inactivas",
+    "isolated_devices.accelerator.unused.memory_size": "Memoria de tarjetas inactivas",
+    "isolated_devices.accelerator.unused.tdp_w": "Consumo de tarjetas inactivas"
   },
   "k8s_usage": {
     "all.cluster.count": "Número de clústeres",
