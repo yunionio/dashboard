@@ -96,7 +96,7 @@ import WindowsMixin from '@/mixins/windows'
 import http from '@/utils/http'
 import { getProductName, hasPermission, hasServices } from '@/utils/auth'
 import { SHOW_SWITCH_VERSION } from '@/config/switchVersion'
-import editionSwitchStatusMixin from '@scope/views/licenses/editionSwitchStatusMixin'
+import editionSwitchStatusMixin from '@/mixins/editionSwitchStatusMixin'
 
 export default {
   name: 'UpdateLicenseDialog',
@@ -218,7 +218,7 @@ export default {
         this.currentEdition !== 'ce/support') {
         return
       }
-      this.openSwitchEditionDialog()
+      this.openSwitchEditionDialog({ switchRoute: 'downgrade' })
     },
     hanldeRemoveFile (file) {
       this.fileList = []

@@ -177,7 +177,7 @@ export default {
         this.scheduleEditionStatusPoll()
       }
     },
-    openSwitchEditionDialog () {
+    openSwitchEditionDialog ({ switchRoute = 'upgrade' } = {}) {
       if (!SHOW_SWITCH_VERSION) return
       this.stopEditionStatusPoll()
       const params = {
@@ -195,7 +195,7 @@ export default {
         params.initialLogRecord = { ...this.activeEditionSwitch }
       }
       this.createDialog('SwitchEditionDialog', {
-        switchRoute: 'upgrade',
+        switchRoute,
         ...params,
       })
     },
