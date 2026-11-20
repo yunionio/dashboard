@@ -146,19 +146,63 @@ export const usageMap = {
     },
     unit: i18n.t('common_62'),
   },
-  baremetal: {
+  baremetalHost: {
     field: {
-      used: {
-        system: 'all.servers',
-        domain: 'domain.servers',
-        project: 'servers',
-      },
       total: {
         system: 'baremetals',
         domain: 'domain.baremetals',
       },
     },
     unit: i18n.t('common_62'),
+  },
+  baremetalInstance: {
+    field: {
+      total: {
+        system: 'all.baremetals',
+        project: 'baremetals',
+      },
+      running: {
+        system: 'all.running_baremetals',
+        domain: 'domain.running_baremetals',
+        project: 'running_baremetals',
+      },
+      ready: {
+        system: 'all.ready_baremetals',
+        domain: 'domain.ready_baremetals',
+        project: 'ready_baremetals',
+      },
+      delete: {
+        system: 'all.pending_delete_baremetals',
+        domain: 'domain.pending_delete_baremetals',
+        project: 'pending_delete_baremetals',
+      },
+    },
+    unit: i18n.t('common_62'),
+  },
+  baremetalIsolatedDevice: {
+    field: {
+      running: {
+        system: 'all.running_baremetals.isolated_devices',
+        domain: 'domain.running_baremetals.isolated_devices',
+        project: 'running_baremetals.isolated_devices',
+      },
+      ready: {
+        system: 'all.ready_baremetals.isolated_devices',
+        domain: 'domain.ready_baremetals.isolated_devices',
+        project: 'ready_baremetals.isolated_devices',
+      },
+      delete: {
+        system: 'all.pending_delete_baremetals.isolated_devices',
+        domain: 'domain.pending_delete_baremetals.isolated_devices',
+        project: 'pending_delete_baremetals.isolated_devices',
+      },
+      total: {
+        system: 'all.baremetals.isolated_devices',
+        domain: 'domain.baremetals.isolated_devices',
+        project: 'baremetals.isolated_devices',
+      },
+    },
+    unit: i18n.t('common_63'),
   },
   isolatedDevice: {
     field: {
