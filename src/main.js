@@ -12,6 +12,7 @@ import { openWebConsole } from '@/utils/webconsole'
 import '@/utils/polyfill'
 import '@/config/appBuryPoint'
 import setting from '@/config/setting'
+import { SHOW_SWITCH_VERSION } from '@/config/switchVersion'
 import './config/vue.config'
 import './styles/less/index.less'
 import './styles/scss/index.scss'
@@ -39,6 +40,7 @@ Vue.prototype.$log = window.console.log
 Vue.prototype.$appConfig = {
   isPrivate: process.env.VUE_APP_IS_PRIVATE,
   webConsolePath: process.env.VUE_APP_WEB_CONSOLE_PATH,
+  showSwitchVersion: SHOW_SWITCH_VERSION,
 }
 Vue.prototype.$openWebConsole = openWebConsole
 
