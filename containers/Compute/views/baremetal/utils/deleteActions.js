@@ -4,7 +4,12 @@
  * 注意：不可静态 import @scope 下 GPU 专属文件，否则 dashboard 构建会报错
  */
 import i18n from '@/locales'
-import { baremetalFakeTip, baremetalsFakeTip } from '../../../utils/ipmi'
+import {
+  baremetalDeleteBlockedTipWhenCannotDelete,
+  baremetalDeleteRequestParams,
+  baremetalsDeleteMeta,
+  partitionBaremetalDeleteByOverride,
+} from '../../../utils/ipmi'
 
 function loadScopeDeleteModule () {
   try {
@@ -17,6 +22,22 @@ function loadScopeDeleteModule () {
 
 const scopeDelete = loadScopeDeleteModule()
 
+async function runBaremetalBatchDelete (vm, data) {
+  const { withOverride, withoutOverride } = partitionBaremetalDeleteByOverride(data)
+  if (withOverride.length) {
+    await vm.onManager('batchDelete', {
+      id: withOverride.map(item => item.id),
+      managerArgs: { params: { override_pending_delete: true } },
+    })
+  }
+  if (withoutOverride.length) {
+    await vm.onManager('batchDelete', {
+      id: withoutOverride.map(item => item.id),
+      managerArgs: { params: {} },
+    })
+  }
+}
+
 function getDefaultDeleteAction (vm, obj) {
   return {
     label: i18n.t('compute.perform_delete'),
@@ -28,15 +49,13 @@ function getDefaultDeleteAction (vm, obj) {
         columns: vm.columns,
         onManager: vm.onManager,
         title: i18n.t('compute.perform_delete'),
+        requestParams: baremetalDeleteRequestParams([obj]),
         success: () => {
           vm.destroySidePages && vm.destroySidePages()
         },
       })
     },
     meta: () => {
-      // 托管物理机分配的裸金属禁用删除，无 ipmi 时提示 no ipmi
-      const fakeTip = baremetalFakeTip(obj)
-      if (fakeTip) return fakeTip
       const ret = {
         validate: false,
         tooltip: null,
@@ -46,8 +65,7 @@ function getDefaultDeleteAction (vm, obj) {
         return ret
       }
       if (!obj.can_delete) {
-        ret.tooltip = i18n.t('compute.text_284')
-        return ret
+        return baremetalDeleteBlockedTipWhenCannotDelete(obj)
       }
       ret.validate = true
       return ret
@@ -61,29 +79,27 @@ function getDefaultBatchDeleteAction (vm) {
     label: vm.$t('compute.perform_delete'),
     permission: 'server_delete',
     action: () => {
+      const data = vm.list.selectedItems
       vm.createDialog('DeleteResDialog', {
         vm,
-        data: vm.list.selectedItems,
+        data,
         columns: vm.columns,
         onManager: vm.onManager,
         title: vm.$t('compute.perform_delete'),
+        ok: async () => {
+          await runBaremetalBatchDelete(vm, data)
+          vm.destroySidePages && vm.destroySidePages()
+        },
       })
     },
     meta: () => {
-      // 选中项中有 托管物理机分配 的裸金属时禁用删除
-      const fakeTip = baremetalsFakeTip(vm.list.selectedItems)
-      if (fakeTip) return fakeTip
-      // 与 dashboard 裸金属 List 批量删除原逻辑一致（注意：与单行不同，不判断 isAdminMode）
-      const ret = {
-        validate: true,
-        tooltip: null,
-      }
       if (vm.list.selectedItems.some(item => item.billing_type === 'prepaid')) {
-        ret.validate = false
-        ret.tooltip = vm.$t('compute.text_285')
-        return ret
+        return {
+          validate: false,
+          tooltip: vm.$t('compute.text_285'),
+        }
       }
-      return vm.$getDeleteResult(vm.list.selectedItems)
+      return baremetalsDeleteMeta(vm.list.selectedItems)
     },
     hidden: () => vm.$isScopedPolicyMenuHidden('baremetal_hidden_menus.server_perform_delete'),
   }
