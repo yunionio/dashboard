@@ -159,7 +159,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['permission', 'userInfo', 'isAdminMode']),
+    ...mapGetters(['permission', 'userInfo', 'isAdminMode', 'isProjectMode', 'isDomainMode']),
     isUsageKeyDeny () {
       return !this.isAdminMode && isIdentityUsageKey(this.form.fd.usage_key)
     },
@@ -208,6 +208,9 @@ export default {
     isResDeny () {
       const usage_key = this.params?.usage_key || ''
       if (this.isContainerHostUsageKey(usage_key)) {
+        return !hasPermission({ key: 'servers_list', permissionData: this.permission })
+      }
+      if (this.isBaremetalInstanceUsageKey(usage_key)) {
         return !hasPermission({ key: 'servers_list', permissionData: this.permission })
       }
       if (usage_key.endsWith('servers')) {
@@ -267,6 +270,32 @@ export default {
       if (!uk) return false
       const segs = uk.split('.')
       return segs.includes('containers') || segs.includes('running_containers') || segs.includes('ready_containers') || segs.includes('pending_delete_containers')
+    },
+    isProjectBaremetalUsageScope () {
+      if (this.isProjectMode) return true
+      if (this.isAdminMode && this.dataRangeParams?.scope === 'project') return true
+      if (this.isDomainMode && this.dataRangeParams?.scope === 'project') return true
+      return false
+    },
+    isBaremetalInstanceUsageKey (uk) {
+      if (!uk) return false
+      if (uk === 'domain.baremetals' || /^domain\.baremetals\./.test(uk)) {
+        return false
+      }
+      if (uk === 'baremetals' || /^baremetals\./.test(uk)) {
+        return this.isProjectBaremetalUsageScope()
+      }
+      const segs = uk.split('.')
+      return segs.includes('running_baremetals') ||
+        segs.includes('ready_baremetals') ||
+        segs.includes('pending_delete_baremetals') ||
+        uk.startsWith('all.baremetals') ||
+        uk.startsWith('all.running_baremetals') ||
+        uk.startsWith('all.ready_baremetals') ||
+        uk.startsWith('all.pending_delete_baremetals') ||
+        uk.startsWith('domain.running_baremetals') ||
+        uk.startsWith('domain.ready_baremetals') ||
+        uk.startsWith('domain.pending_delete_baremetals')
     },
     refresh () {
       return this.fetchUsage()
@@ -330,6 +359,12 @@ export default {
       }
       if (uk && this.isContainerHostUsageKey(uk)) {
         return '/vminstance-container'
+      }
+      if (uk && this.isBaremetalInstanceUsageKey(uk)) {
+        if (uk.split('.').includes('pending_delete_baremetals')) {
+          return '/serverrecovery'
+        }
+        return '/baremetal'
       }
       switch (this.params.usage_key) {
         case 'all.servers':
