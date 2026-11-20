@@ -171,7 +171,7 @@ import MorePopover from '@/sections/Navbar/components/MorePopover'
 import WindowsMixin from '@/mixins/windows'
 import { hasSetupKey, featureMenuHiddenCheck } from '@/utils/auth'
 import { genReferRouteQuery } from '@/utils/utils'
-import { buildNewVersionUrl } from '@/config/switchVersion'
+import { navigateToV2 } from '@/config/switchVersion'
 
 export default {
   name: 'Navbar',
@@ -345,7 +345,7 @@ export default {
       } else if (item.key === 'toCredentials') {
         this.$router.push('/credentials')
       } else if (item.key === 'toNewVersion') {
-        window.location.href = buildNewVersionUrl(this.$route.fullPath)
+        navigateToV2(this.$route.fullPath)
       }
     },
     projectChange (id, scope) {
