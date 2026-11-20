@@ -43,6 +43,73 @@ export const baremetalsNoIpmiTip = (servers = []) => {
   return null
 }
 
+// 托管裸金属允许删除时，删除请求需附带 override_pending_delete（单行默认删除用）
+export const baremetalDeleteRequestParams = (servers) => {
+  const items = Array.isArray(servers) ? servers : [servers]
+  if ((items || []).some(isFakeBaremetalServer)) {
+    return { override_pending_delete: true }
+  }
+  return {}
+}
+
+export const partitionBaremetalDeleteByOverride = (servers = []) => {
+  const withOverride = []
+  const withoutOverride = []
+  servers.forEach(server => {
+    if (isFakeBaremetalServer(server)) {
+      withOverride.push(server)
+    } else {
+      withoutOverride.push(server)
+    }
+  })
+  return { withOverride, withoutOverride }
+}
+
+const baremetalDeleteBlockedLabel = (item) => {
+  const name = String(item?.name || '').trim()
+  if (name) return name
+  return String(item?.id || '').trim()
+}
+
+const baremetalDeleteBlockedReason = (item) => {
+  return baremetalDeleteBlockedTipWhenCannotDelete(item).tooltip || ''
+}
+
+// 批量删除按钮 meta：与单行一致，仅 can_delete 为 false 时区分托管/no ipmi
+export const baremetalsDeleteMeta = (items = []) => {
+  const blocked = items.filter(item => !item?.can_delete)
+  if (!blocked.length) {
+    return { validate: true, tooltip: null }
+  }
+  const lines = blocked.map(item => {
+    const label = baremetalDeleteBlockedLabel(item)
+    const reason = baremetalDeleteBlockedReason(item)
+    if (label && reason) return `${label}: ${reason}`
+    if (label) return label
+    if (reason) return reason
+    return ''
+  }).filter(line => !!line)
+  return {
+    validate: false,
+    tooltip: lines.length > 0 ? lines.join('\n') : i18n.t('common_604'),
+  }
+}
+
+// 裸金属（单条）删除：仅在 can_delete 为 false 时区分托管/no ipmi；can_delete 为 true 时不拦截
+export const baremetalDeleteBlockedTipWhenCannotDelete = (server) => {
+  if (isFakeBaremetalServer(server)) {
+    if (isServerNoIpmi(server)) return noIpmiTip()
+    return {
+      validate: false,
+      tooltip: i18n.t('compute.tooltip.check_fake_baremetal_server'),
+    }
+  }
+  return {
+    validate: false,
+    tooltip: i18n.t('compute.text_284'),
+  }
+}
+
 // 裸金属（单条）：删除、重装系统，托管物理机分配的裸金属禁用；无 IPMI 时优先提示 no ipmi
 export const baremetalFakeTip = (server) => {
   if (!isFakeBaremetalServer(server)) return null
