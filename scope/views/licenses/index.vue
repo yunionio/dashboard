@@ -15,10 +15,10 @@
           <div class="flex-fill license-product-line">
             <span>{{ productName }}{{ version ? ` (${version})` : '' }}</span>
             <a-tag
-              v-if="showEditionTag"
+              v-if="showSwitchVersion && showEditionTag"
               class="license-edition-tag"
               :color="editionTagColor">{{ editionLabel(currentEdition) }}</a-tag>
-            <span v-if="editionSwitchInProgress" class="license-edition-switching text-color-help">
+            <span v-if="showSwitchVersion && editionSwitchInProgress" class="license-edition-switching text-color-help">
               <a-icon type="loading" class="mr-1" />
               {{ editionSwitchProgressLabel }}
             </span>
@@ -37,13 +37,14 @@
               </div>
               <p class="license-support-item__desc">{{ $t('scope.licenses.support_open_source_desc') }}</p>
             </div>
-            <div class="license-support-item">
+            <div v-if="showSwitchVersion" class="license-support-item">
               <div class="license-support-item__visual">
                 <img class="license-support-item__qr" :src="miniprogramQr" alt="" />
               </div>
               <p class="license-support-item__desc">{{ $t('scope.licenses.support_pay_per_use_desc') }}</p>
             </div>
             <div
+              v-if="showSwitchVersion"
               class="license-support-item"
               :class="{ 'license-support-item--upgrade': canSwitch }"
               role="button"
@@ -79,6 +80,7 @@ import setting from '@/config/setting'
 import http from '@/utils/http'
 import WindowsMixin from '@/mixins/windows'
 import { hasPermission, hasServices } from '@/utils/auth'
+import { SHOW_SWITCH_VERSION } from '@/config/switchVersion'
 import editionSwitchStatusMixin from './editionSwitchStatusMixin'
 
 export default {
@@ -95,7 +97,11 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode']),
+    showSwitchVersion () {
+      return SHOW_SWITCH_VERSION
+    },
     canSwitch () {
+      if (!SHOW_SWITCH_VERSION) return false
       return this.isAdminMode && hasServices('devtool') && hasPermission({ key: 'editionswitches_perform_switch' })
     },
     version () {
@@ -127,7 +133,9 @@ export default {
     },
   },
   mounted () {
-    this.fetchCurrentEdition()
+    if (SHOW_SWITCH_VERSION) {
+      this.fetchCurrentEdition()
+    }
   },
   methods: {
     editionLabel (edition) {
@@ -136,6 +144,7 @@ export default {
       return edition || this.$t('scope.edition_switch.unknown')
     },
     async fetchCurrentEdition () {
+      if (!SHOW_SWITCH_VERSION) return
       try {
         const ret = await http.get('/v1/infos/info')
         this.currentEdition = (ret.data && ret.data.edition) || ''

@@ -95,6 +95,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import http from '@/utils/http'
 import { getProductName, hasPermission, hasServices } from '@/utils/auth'
+import { SHOW_SWITCH_VERSION } from '@/config/switchVersion'
 import editionSwitchStatusMixin from '@scope/views/licenses/editionSwitchStatusMixin'
 
 export default {
@@ -135,6 +136,7 @@ export default {
       'isAdminMode',
     ]),
     canEditionSwitch () {
+      if (!SHOW_SWITCH_VERSION) return false
       return this.isAdminMode && hasServices('devtool') && hasPermission({ key: 'editionswitches_perform_switch' })
     },
     showEditionDowngradeBtn () {
@@ -149,6 +151,7 @@ export default {
       return getProductName((this.companyInfo && this.companyInfo.name) || this.$t('scope.text_135'))
     },
     showEditionProductRow () {
+      if (!SHOW_SWITCH_VERSION) return false
       return this.showEditionTag || this.editionSwitchInProgress || this.showEditionDowngradeBtn
     },
     showEditionTag () {
@@ -188,10 +191,13 @@ export default {
   },
   created () {
     this.getUpdateInfo()
-    this.fetchCurrentEdition()
+    if (SHOW_SWITCH_VERSION) {
+      this.fetchCurrentEdition()
+    }
   },
   methods: {
     async fetchCurrentEdition () {
+      if (!SHOW_SWITCH_VERSION) return
       try {
         const ret = await http.get('/v1/infos/info')
         this.currentEdition = (ret.data && ret.data.edition) || ''
