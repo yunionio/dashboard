@@ -116,6 +116,7 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { SHOW_SWITCH_VERSION } from '@/config/switchVersion'
 import http from '@/utils/http'
 
 const POLL_MS = 5000
@@ -233,6 +234,7 @@ export default {
     },
   },
   created () {
+    if (!SHOW_SWITCH_VERSION) return
     this.refreshCurrentEdition()
     this.detect()
     this.fetchHistory()
@@ -324,6 +326,7 @@ export default {
         : this.$t('scope.edition_switch.success_downgrade')
     },
     async refreshCurrentEdition () {
+      if (!SHOW_SWITCH_VERSION) return
       try {
         const ret = await http.get('/v1/infos/info', { params: { ...EDITION_SWITCH_POLL_HTTP_PARAMS } })
         const edition = (ret.data && ret.data.edition) || ''
@@ -334,6 +337,7 @@ export default {
       }
     },
     async detect () {
+      if (!SHOW_SWITCH_VERSION) return
       this.detecting = true
       this.probe = { host: '', sshable: false, reason: '', shell_cmd: '' }
       try {
@@ -393,6 +397,7 @@ export default {
       }
     },
     async fetchHistory () {
+      if (!SHOW_SWITCH_VERSION) return
       try {
         const ret = await new this.$Manager('editionswitches').list({
           params: {
