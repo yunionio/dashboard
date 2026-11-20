@@ -61,6 +61,111 @@ function acceleratorUsageEntries () {
   return entries
 }
 
+function baremetalInstanceCountConfig (scopeKey) {
+  return {
+    unit: i18n.t('dashboard.text_2'),
+    scope: scopeKey,
+    clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
+  }
+}
+
+function baremetalInstanceCpuConfig (scopeKey) {
+  return {
+    unit: i18n.t('dashboard.text_3'),
+    scope: scopeKey,
+    clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
+  }
+}
+
+function baremetalInstanceCapacityConfig (scopeKey) {
+  return {
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
+    scope: scopeKey,
+    clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
+  }
+}
+
+function baremetalInstanceIsolatedDevicesConfig (scopeKey) {
+  return {
+    unit: i18n.t('dashboard.text_4'),
+    scope: scopeKey,
+    clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
+  }
+}
+
+// 系统视图物理机资源池（API 字段 baremetals，与项目视图裸金属实例同名不同义）
+function physicalBaremetalPoolEntries () {
+  return {
+    baremetals: {
+      unit: i18n.t('dashboard.text_2'),
+      scope: SCOPES_MAP.system.key,
+      clouds: [CLOUD_ENVS.onpremise],
+      domain_usage_key: 'domain.baremetals',
+      project_usage_key: 'null',
+    },
+    'baremetals.cpu': {
+      unit: i18n.t('dashboard.text_3'),
+      scope: SCOPES_MAP.system.key,
+      clouds: [CLOUD_ENVS.onpremise],
+      domain_usage_key: 'domain.baremetals.cpu',
+      project_usage_key: 'null',
+    },
+    'baremetals.memory': {
+      formatter: val => sizestrWithUnit(val, 'M', 1024),
+      canUseUserUnit: true,
+      userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
+      scope: SCOPES_MAP.system.key,
+      clouds: [CLOUD_ENVS.onpremise],
+      domain_usage_key: 'domain.baremetals.memory',
+      project_usage_key: 'null',
+    },
+  }
+}
+
+// 裸金属实例用量（all.* / domain.* / 项目视图 baremetals*）
+function baremetalInstanceUsageEntries () {
+  const entries = {}
+  const groups = [
+    { base: 'baremetals', timeSuffix: true },
+    { base: 'running_baremetals', timeSuffix: false },
+    { base: 'ready_baremetals', timeSuffix: false },
+    { base: 'pending_delete_baremetals', timeSuffix: true },
+  ]
+  const scopes = [
+    { prefix: 'all', scope: SCOPES_MAP.system.key },
+    { prefix: 'domain', scope: SCOPES_MAP.domain.key },
+    { prefix: '', scope: SCOPES_MAP.project.key },
+  ]
+  scopes.forEach(({ prefix, scope }) => {
+    const keyPrefix = prefix ? `${prefix}.` : ''
+    groups.forEach(({ base, timeSuffix }) => {
+      // domain.baremetals 为物理机资源池，与裸金属实例指标分开展示（见 USAGE_CONFIG 内 domain.baremetals）
+      if (prefix === 'domain' && base === 'baremetals') {
+        return
+      }
+      const fullBase = `${keyPrefix}${base}`
+      entries[fullBase] = baremetalInstanceCountConfig(scope)
+      if (prefix === 'all' && base === 'baremetals') {
+        // domain.baremetals 为物理机资源，勿用 all.baremetals 自动映射到 domain.baremetals
+        entries[fullBase].domain_usage_key = 'null'
+        entries[fullBase].project_usage_key = 'baremetals'
+      }
+      entries[`${fullBase}.cpu`] = baremetalInstanceCpuConfig(scope)
+      entries[`${fullBase}.memory`] = baremetalInstanceCapacityConfig(scope)
+      entries[`${fullBase}.disk`] = baremetalInstanceCapacityConfig(scope)
+      entries[`${fullBase}.isolated_devices`] = baremetalInstanceIsolatedDevicesConfig(scope)
+      if (timeSuffix) {
+        entries[`${fullBase}.last_week`] = baremetalInstanceCountConfig(scope)
+        entries[`${fullBase}.last_month`] = baremetalInstanceCountConfig(scope)
+      }
+    })
+  })
+  return entries
+}
+
 export const USAGE_CONFIG = {
   'all.bucket_bytes': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
@@ -1230,29 +1335,6 @@ export const USAGE_CONFIG = {
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  baremetals: {
-    unit: i18n.t('dashboard.text_2'),
-    scope: SCOPES_MAP.system.key,
-    clouds: [CLOUD_ENVS.onpremise],
-    domain_usage_key: 'domain.baremetals',
-    project_usage_key: 'null',
-  },
-  'baremetals.cpu': {
-    unit: i18n.t('dashboard.text_3'),
-    scope: SCOPES_MAP.system.key,
-    clouds: [CLOUD_ENVS.onpremise],
-    domain_usage_key: 'domain.baremetals.cpu',
-    project_usage_key: 'null',
-  },
-  'baremetals.memory': {
-    formatter: val => sizestrWithUnit(val, 'M', 1024),
-    canUseUserUnit: true,
-    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
-    scope: SCOPES_MAP.system.key,
-    clouds: [CLOUD_ENVS.onpremise],
-    domain_usage_key: 'domain.baremetals.memory',
-    project_usage_key: 'null',
-  },
   bucket_bytes: {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
     canUseUserUnit: true,
@@ -1442,6 +1524,8 @@ export const USAGE_CONFIG = {
     project_usage_key: 'null',
   },
   ...acceleratorUsageEntries(),
+  ...baremetalInstanceUsageEntries(),
+  ...physicalBaremetalPoolEntries(),
   networks: {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.project.key,
@@ -1970,6 +2054,19 @@ export const USAGE_CONFIG = {
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
+  },
+  'domain.baremetals.disk': {
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
+    scope: SCOPES_MAP.domain.key,
+    clouds: [CLOUD_ENVS.onpremise],
+  },
+  'domain.baremetals.isolated_devices': {
+    unit: i18n.t('dashboard.text_4'),
+    scope: SCOPES_MAP.domain.key,
+    clouds: [CLOUD_ENVS.onpremise],
+    brands: [HYPERVISORS_MAP.zettakit.brand],
   },
   'domain.bucket_bytes': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
