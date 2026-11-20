@@ -159,7 +159,17 @@ export default {
         },
         {
           label: this.$t('scope.text_104'),
-          key: ['baremetals', 'domain.baremetals', 'baremetals'],
+          key: ['baremetals', 'domain.baremetals', '__skip__'],
+          required: false,
+        },
+        {
+          label: this.$t('usage')['all.baremetals'],
+          key: ['all.baremetals', 'domain.running_baremetals', 'baremetals'],
+          required: false,
+        },
+        {
+          label: this.$t('usage')['all.running_baremetals'],
+          key: ['all.running_baremetals', 'domain.running_baremetals', 'running_baremetals'],
           required: false,
         },
         {
@@ -273,6 +283,9 @@ export default {
           }
           if (this.isProjectMode || (this.isAdminMode && this.dataRangeParams?.scope === 'project') || (this.isDomainMode && this.dataRangeParams?.scope === 'project')) {
             key = item.key[2]
+          }
+          if (key === '__skip__') {
+            return
           }
           if (item.required || (data.hasOwnProperty(key) && data[key])) {
             xData.push(item.label)
