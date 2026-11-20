@@ -81,7 +81,7 @@ import http from '@/utils/http'
 import WindowsMixin from '@/mixins/windows'
 import { hasPermission, hasServices } from '@/utils/auth'
 import { SHOW_SWITCH_VERSION } from '@/config/switchVersion'
-import editionSwitchStatusMixin from './editionSwitchStatusMixin'
+import editionSwitchStatusMixin from '@/mixins/editionSwitchStatusMixin'
 
 export default {
   name: 'Licenses',
