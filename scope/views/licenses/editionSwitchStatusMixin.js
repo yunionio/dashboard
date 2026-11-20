@@ -1,3 +1,5 @@
+import { SHOW_SWITCH_VERSION } from '@/config/switchVersion'
+
 const EDITION_SWITCH_POLL_MS = 5000
 const ACTIVE_EDITION_SWITCH_STATUSES = ['init', 'running']
 const EDITION_SWITCH_POLL_IGNORE_HTTP = [502, 503, 504]
@@ -26,6 +28,7 @@ export default {
         : this.$t('scope.edition_switch.status_running_downgrade')
     },
     editionSwitchPollEnabled () {
+      if (!SHOW_SWITCH_VERSION) return false
       if (typeof this.canSwitch === 'boolean' && this.canSwitch) return true
       if (typeof this.canEditionSwitch === 'boolean' && this.canEditionSwitch) return true
       return false
@@ -33,13 +36,18 @@ export default {
   },
   watch: {
     editionSwitchPollEnabled (enabled) {
-      if (enabled) {
-        this.refreshActiveEditionSwitch()
+      if (!enabled) {
+        this.activeEditionSwitch = null
+        this.stopEditionStatusPoll()
+        return
       }
+      this.refreshActiveEditionSwitch()
     },
   },
   mounted () {
-    this.refreshActiveEditionSwitch()
+    if (SHOW_SWITCH_VERSION) {
+      this.refreshActiveEditionSwitch()
+    }
   },
   beforeDestroy () {
     this.stopEditionStatusPoll()
@@ -52,6 +60,7 @@ export default {
       }
     },
     scheduleEditionStatusPoll () {
+      if (!SHOW_SWITCH_VERSION) return
       this.stopEditionStatusPoll()
       if (!this.editionSwitchInProgress || this.switchEditionDialogOpen) return
       this.editionStatusPollTimer = setTimeout(() => {
@@ -72,6 +81,7 @@ export default {
       return ACTIVE_EDITION_SWITCH_STATUSES.includes((status || '').toLowerCase())
     },
     async discoverActiveEditionSwitch () {
+      if (!SHOW_SWITCH_VERSION) return { record: null, rows: [] }
       const ret = await new this.$Manager('editionswitches').list({
         params: {
           limit: 5,
@@ -89,6 +99,7 @@ export default {
       }
     },
     async fetchEditionSwitchById (id) {
+      if (!SHOW_SWITCH_VERSION) return null
       const ret = await new this.$Manager('editionswitches').get({
         id,
         params: { ...EDITION_SWITCH_POLL_HTTP_PARAMS },
@@ -96,6 +107,11 @@ export default {
       return this.normalizeEditionSwitchRecord(ret.data)
     },
     async refreshActiveEditionSwitch () {
+      if (!SHOW_SWITCH_VERSION) {
+        this.activeEditionSwitch = null
+        this.stopEditionStatusPoll()
+        return
+      }
       if (!this.editionSwitchPollEnabled) {
         this.activeEditionSwitch = null
         this.stopEditionStatusPoll()
@@ -147,6 +163,7 @@ export default {
       }, 1500)
     },
     handleEditionSwitchStarted (record) {
+      if (!SHOW_SWITCH_VERSION) return
       const normalized = this.normalizeEditionSwitchRecord(record)
       if (!normalized) {
         this.refreshActiveEditionSwitch()
@@ -161,6 +178,7 @@ export default {
       }
     },
     openSwitchEditionDialog () {
+      if (!SHOW_SWITCH_VERSION) return
       this.stopEditionStatusPoll()
       const params = {
         onClosed: () => {

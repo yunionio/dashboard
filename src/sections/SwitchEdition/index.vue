@@ -83,6 +83,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import http from '@/utils/http'
+import { SHOW_SWITCH_VERSION } from '@/config/switchVersion'
 import { hasPermission, hasServices } from '@/utils/auth'
 
 const POLL_MS = 5000
@@ -125,6 +126,7 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode']),
     canSwitch () {
+      if (!SHOW_SWITCH_VERSION) return false
       return this.isAdminMode && hasServices('devtool') && hasPermission({ key: 'editionswitches_perform_switch' })
     },
     canSubmit () {
@@ -158,6 +160,7 @@ export default {
       return edition || this.$t('scope.edition_switch.unknown')
     },
     open () {
+      if (!SHOW_SWITCH_VERSION) return
       this.visible = true
       if (!this.pollTimer) {
         this.edition = undefined
@@ -172,6 +175,7 @@ export default {
       this.visible = false
     },
     async fetchCurrent () {
+      if (!SHOW_SWITCH_VERSION) return
       try {
         const ret = await http.get('/v1/infos/info')
         this.currentEdition = (ret.data && ret.data.edition) || ''
@@ -180,6 +184,7 @@ export default {
       }
     },
     async detect () {
+      if (!SHOW_SWITCH_VERSION) return
       this.detecting = true
       this.probe = { host: '', sshable: false, reason: '', shell_cmd: '' }
       try {
@@ -294,6 +299,7 @@ export default {
       }
     },
     async fetchHistory () {
+      if (!SHOW_SWITCH_VERSION) return
       try {
         const ret = await new this.$Manager('editionswitches').list({
           params: { limit: 5, order_by: 'created_at', order: 'desc' },
