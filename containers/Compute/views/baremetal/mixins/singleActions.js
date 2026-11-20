@@ -38,7 +38,11 @@ export default {
         actions: obj => {
           let ret = []
           if (this.isAdminMode) {
-            ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole, this.createDialog))
+            const solAction = solWebConsole(this.webconsoleManager, obj, this.openWebConsole, this.createDialog)
+            ret.push({
+              ...solAction,
+              meta: () => baremetalNoIpmiTip(obj) || solAction.meta(),
+            })
           }
           const openWebConsole = async (params) => {
             let reqParams = params
@@ -182,7 +186,11 @@ export default {
           ips = ips.length ? mapIpActions(ips, 'IP SSH') : []
           ret = ret.concat(eips).concat(ips)
           if (this.isAdminMode) {
-            ret.push({ ...jnlpConsole(new this.$Manager('servers', 'v2'), obj, this.createDialog), permission: 'server_get_jnlp' })
+            const jnlpAction = { ...jnlpConsole(new this.$Manager('servers', 'v2'), obj, this.createDialog), permission: 'server_get_jnlp' }
+            ret.push({
+              ...jnlpAction,
+              meta: () => baremetalNoIpmiTip(obj) || { validate: true },
+            })
           }
           return ret
         },
