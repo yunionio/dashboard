@@ -303,7 +303,7 @@
   "compute.text_281": "Sin montar",
   "compute.perform_sync_status": "Estado de sincronización",
   "compute.text_283": "Editar etiqueta",
-  "compute.text_284": "Haz clic en [Editar] para quitar la protección contra eliminación e inténtalo de nuevo",
+  "compute.text_284": "Configure la protección contra eliminación en [Desactivado] e inténtelo de nuevo",
   "compute.text_285": "Esta operación no se admite en máquinas con suscripción mensual o anual",
   "compute.text_286": "Coste estimado:",
   "compute.text_288": "Enviar ticket",
