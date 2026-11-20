@@ -1,4 +1,5 @@
 import i18n from '@/locales'
+import { getDeleteResult } from '@/utils/error'
 
 const isTrue = val => val === true || val === 'true'
 
@@ -19,6 +20,9 @@ export const isFakeBaremetalServer = (server = {}) => {
 
 // 裸金属是否没有 IPMI 信息
 export const isServerNoIpmi = (server = {}) => isTrue(server.host_no_ipmi)
+
+// 裸金属是否开启删除保护
+export const isServerDeleteProtectionOn = (server = {}) => isTrue(server.disable_delete)
 
 // 物理机（单条）：无 ipmi_ip 时返回禁用结果，否则返回 null
 export const hostNoIpmiTip = (host) => {
@@ -95,7 +99,7 @@ export const baremetalsDeleteMeta = (items = []) => {
   }
 }
 
-// 裸金属（单条）删除：仅在 can_delete 为 false 时区分托管/no ipmi；can_delete 为 true 时不拦截
+// 裸金属（单条）删除：can_delete 为 false 时，删除保护 → 专用文案；其余用 delete_fail_reason
 export const baremetalDeleteBlockedTipWhenCannotDelete = (server) => {
   if (isFakeBaremetalServer(server)) {
     if (isServerNoIpmi(server)) return noIpmiTip()
@@ -104,10 +108,14 @@ export const baremetalDeleteBlockedTipWhenCannotDelete = (server) => {
       tooltip: i18n.t('compute.tooltip.check_fake_baremetal_server'),
     }
   }
-  return {
-    validate: false,
-    tooltip: i18n.t('compute.text_284'),
+  if (isServerDeleteProtectionOn(server)) {
+    return {
+      validate: false,
+      tooltip: i18n.t('compute.text_284'),
+    }
   }
+  const { validate, tooltip } = getDeleteResult(server)
+  return { validate, tooltip }
 }
 
 // 裸金属（单条）：删除、重装系统，托管物理机分配的裸金属禁用；无 IPMI 时优先提示 no ipmi
