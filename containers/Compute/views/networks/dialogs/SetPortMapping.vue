@@ -188,6 +188,15 @@ export default {
      * 设置端口映射是异步任务（先由宿主机分配/设置 host_port 回写，再同步配置），
      * 立即刷新网卡列表可能拿不到新分配的 host_port，故等虚机状态回到稳定态后再刷新
      */
+    refreshNetworkList () {
+      const { listRefresh, refresh } = this.params
+      if (typeof listRefresh === 'function') {
+        return listRefresh()
+      }
+      if (typeof refresh === 'function') {
+        return refresh()
+      }
+    },
     async waitGuestSteadyStatus () {
       const manager = new this.$Manager('servers')
       const steadyStatuses = Object.values(expectStatus.server).flat()
@@ -217,7 +226,7 @@ export default {
         const values = await this.form.fc.validateFields()
         await this.doSetPortMappingSubmit(values)
         this.loading = false
-        this.waitGuestSteadyStatus().then(() => this.params.refresh())
+        this.waitGuestSteadyStatus().then(() => this.refreshNetworkList())
         this.$bus.$emit('VMInstanceListSingleRefresh', [this.params.resId, Object.values(expectStatus.server).flat()])
         this.$message.success(this.$t('compute.text_423'))
         this.cancelDialog()

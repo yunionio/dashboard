@@ -66,7 +66,8 @@ export default {
                   resId: this.resId,
                   data: [obj],
                   columns: this.columns,
-                  refresh: this.refresh,
+                  refresh: () => this.refresh(),
+                  listRefresh: () => this.list && this.list.refresh(),
                 })
               },
               meta: (obj) => {
