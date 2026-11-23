@@ -41,11 +41,11 @@
         <a-form-item v-show="imgHidden" :label="$t('compute.text_267')">
           <div>{{ imgHidden.text }}</div>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_308')" v-if="!isZStack" class="mb-0">
-          <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
-        </a-form-item>
         <a-form-item v-if="isShowAgent" :label="$t('compute.agent.label')" :extra="$t('compute.agent.extra')">
           <a-checkbox v-decorator="decorators.deploy_telegraf">{{ $t('compute.agent.install.plugin') }}</a-checkbox>
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_308')" v-if="!isZStack" class="mb-0">
+          <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_1220')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
@@ -127,8 +127,14 @@ export default {
       return this.userInfo.enable_mfa && this.auth.auth.system_totp_on
     },
     type () {
+      if (this.hypervisor === HYPERVISORS_MAP.baremetal.key) {
+        return 'baremetal'
+      }
       const brand = this.params.data[0].brand
-      return findPlatform(brand)
+      const platform = findPlatform(brand)
+      if (platform) return platform
+      const byHypervisor = findPlatform(this.hypervisor, 'hypervisor')
+      return byHypervisor || 'idc'
     },
     osSelectTypes () {
       if (HYPERVISORS_MAP.ctyun.key === this.params.data[0].hypervisor) {
@@ -162,6 +168,16 @@ export default {
       return ''
     },
     image () {
+      if (this.hypervisor === HYPERVISORS_MAP.baremetal.key) {
+        return {
+          status: 'active',
+          details: true,
+          limit: 0,
+          'filter.0': 'disk_format.notin(iso,tgz)',
+          scope: this.$store.getters.scope,
+          is_standard: true,
+        }
+      }
       const params = {
         limit: 0,
         details: true,
@@ -377,7 +393,13 @@ export default {
     },
     isShowAgent () {
       const { os } = this.form.fd
-      if (![HYPERVISORS_MAP.kvm.key, HYPERVISORS_MAP.esxi.key].includes(this.hypervisor)) return false
+      const supportAgentHypervisors = [
+        HYPERVISORS_MAP.kvm.key,
+        HYPERVISORS_MAP.esxi.key,
+        HYPERVISORS_MAP.baremetal.key,
+      ]
+      if (!supportAgentHypervisors.includes(this.hypervisor)) return false
+      if (this.hypervisor === HYPERVISORS_MAP.baremetal.key && !os) return false
       if (os === 'Windows') {
         return this.osArch !== HOST_CPU_ARCHS.arm.capabilityKey &&
           this.osArch !== HOST_CPU_ARCHS.riscv64.capabilityKey

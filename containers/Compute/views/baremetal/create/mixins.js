@@ -294,6 +294,13 @@ export default {
             },
           ],
         },
+        deploy_telegraf: [
+          'deploy_telegraf',
+          {
+            valuePropName: 'checked',
+            initialValue: !(initData && initData.extraData && !initData.deploy_telegraf),
+          },
+        ],
         network: {
           networkType: [
             'networkType',
@@ -677,12 +684,36 @@ export default {
     isCheckedIso () {
       return this.osSelectImageType === 'iso'
     },
-    isWindows () {
-      let isWindows = false
-      if (this.selectedImage.os && this.form.fd.os.toLowerCase() === 'windows') {
-        isWindows = true
+    osType () {
+      const img = this.selectedImage || {}
+      let os_type = _.get(img, 'info.properties.os_type') || _.get(img, 'properties.os_type') || img.os_type
+      if (!os_type) {
+        const os = this.form.fc?.getFieldValue?.('os')
+        if (os) os_type = os
       }
-      return isWindows
+      if (!os_type) return ''
+      if (this.isWindows) return 'windows'
+      return String(os_type).toLowerCase()
+    },
+    isArm () {
+      const props = this.selectedImage?.info?.properties || this.selectedImage?.properties || {}
+      const arch = props.os_arch || ''
+      return arch === 'aarch64' || arch === 'arm64'
+    },
+    isShowAgent () {
+      if (!this.showBaremetalInstallFields) return false
+      if (this.isCheckedIso || !this.osType) return false
+      if (this.isWindows) {
+        return !this.isArm
+      }
+      return true
+    },
+    isWindows () {
+      const img = this.selectedImage || {}
+      const osType = (_.get(img, 'info.properties.os_type') || _.get(img, 'properties.os_type') || img.os_type || '').toLowerCase()
+      const os = (this.form.fc?.getFieldValue?.('os') || '').toLowerCase()
+      const osKey = (img.os || '').toLowerCase()
+      return [osType, os, osKey].some(v => v && v.indexOf('windows') >= 0)
     },
     loginTypes () { // 主机模板隐藏手工输入密码
       const maps = R.clone(LOGIN_TYPES_MAP)
@@ -744,6 +775,23 @@ export default {
     project_domain (newVal, oldVal) {
       if (this.isInstallOperationSystem) this.fetchSpec()
       this.capability(this.zone)
+    },
+    isShowAgent (val) {
+      this.$nextTick(() => {
+        if (!this.form?.fc) return
+        if (!val) {
+          this.form.fc.setFieldsValue({ deploy_telegraf: false })
+          return
+        }
+        if (this.canUseCreateFormDraft) {
+          const draft = this.readCreateFormFieldDraft(this.baremetalDraftFields.deployTelegraf)
+          if (draft !== null && draft !== undefined) {
+            this.form.fc.setFieldsValue({ deploy_telegraf: !!draft })
+            return
+          }
+        }
+        this.form.fc.setFieldsValue({ deploy_telegraf: true })
+      })
     },
     fakeCreateFromBmImport (val) {
       if (!this.isInstallOperationSystem && this.canUseCreateFormDraft && !this.isFormBackfill && this.createFormDraftUserInteracted) {
@@ -1014,7 +1062,10 @@ export default {
       if (zoneId) this.capability(zoneId)
     },
     setSelectedImage ({ imageMsg }) {
-      this.selectedImage = imageMsg
+      this.selectedImage = imageMsg || {}
+      if (this.form?.fi) {
+        this.$set(this.form.fi, 'imageMsg', imageMsg || {})
+      }
     },
     // 过滤network数据
     networkResourceMapper (data) {
@@ -1723,6 +1774,9 @@ export default {
         // 判断是否是iso导入
         if (values.imageType === 'iso' && values.image && values.image.key) {
           params.cdrom = values.image.key
+        }
+        if (this.isShowAgent && values.deploy_telegraf) {
+          params.deploy_telegraf = true
         }
       }
       if (this.selectedSpecItem.isolated_devices) params.isolated_devices = this.selectedSpecItem.isolated_devices

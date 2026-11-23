@@ -13,9 +13,12 @@ export const BAREMETAL_CREATE_FORM_DRAFT_FIELD = {
   SCHED_POLICY: 'schedPolicy',
   IS_BONDING: 'isBonding',
   FAKE_CREATE_FROM_BM_IMPORT: 'fakeCreateFromBmImport',
+  DEPLOY_TELEGRAF: 'deployTelegraf',
 }
 
-export const BAREMETAL_CREATE_FORM_DRAFT_FC_BINDINGS = []
+export const BAREMETAL_CREATE_FORM_DRAFT_FC_BINDINGS = [
+  { key: BAREMETAL_CREATE_FORM_DRAFT_FIELD.DEPLOY_TELEGRAF, formField: 'deploy_telegraf', kind: 'selection' },
+]
 
 export function getBaremetalCreateFormDraftScope ({ type }) {
   if (!type) return ''
