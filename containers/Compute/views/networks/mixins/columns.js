@@ -95,7 +95,7 @@ export default {
           default: ({ row }) => {
             return [
               this.$t('compute.text_619', [row.port_mappings ? row.port_mappings.length : 0]),
-              <a-button type="link" class={'pl-1'} onClick={() => this.viewContentDialog(row.port_mappings, this.$t('compute.port_mappings.title'), 'port')}>{this.$t('common.view')}</a-button>,
+              <a-button type="link" class={'pl-1'} onClick={() => this.viewContentDialog(row.port_mappings, this.$t('compute.port_mappings.title'), 'port', row)}>{this.$t('common.view')}</a-button>,
             ]
           },
         },
@@ -123,11 +123,17 @@ export default {
     ]
   },
   methods: {
-    viewContentDialog (data, title, type) {
+    viewContentDialog (data, title, type, nic) {
       this.createDialog('ViewContentDialog', {
         title,
         data,
         type,
+        nic,
+        resId: this.resId,
+        server: this.data,
+        columns: this.columns,
+        refresh: () => this.refresh(),
+        listRefresh: () => this.list && this.list.refresh(),
       })
     },
   },
