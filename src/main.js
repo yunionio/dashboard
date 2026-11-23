@@ -1,3 +1,5 @@
+import { redirectIfSelectedVersionMismatch, SHOW_SWITCH_VERSION } from '@/config/switchVersion'
+
 import Vue from 'vue'
 import Antd from 'ant-design-vue'
 import 'xe-utils'
@@ -12,7 +14,6 @@ import { openWebConsole } from '@/utils/webconsole'
 import '@/utils/polyfill'
 import '@/config/appBuryPoint'
 import setting from '@/config/setting'
-import { SHOW_SWITCH_VERSION } from '@/config/switchVersion'
 import './config/vue.config'
 import './styles/less/index.less'
 import './styles/scss/index.scss'
@@ -26,6 +27,8 @@ import './directives'
 import './plugins'
 import './permission'
 import './filters'
+
+redirectIfSelectedVersionMismatch()
 // import '../mock'
 Vue._watchers = Vue.prototype._watchers = []
 
