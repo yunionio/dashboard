@@ -1,7 +1,7 @@
 <template>
   <base-select
     v-if="showType === 'select'"
-    :value="value"
+    :value="value || undefined"
     :options="options"
     @change="change"
     :select-props="{
@@ -9,7 +9,7 @@
       loading: loading,
       placeholder: $t('common.tips.select', ['IP']),
     }" />
-  <a-input v-else :value="value" @change="ipChange" />
+  <a-input v-else :value="value" :placeholder="$t('compute.text_197')" @change="ipChange" />
 </template>
 
 <script>
