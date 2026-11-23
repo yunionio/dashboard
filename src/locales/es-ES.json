@@ -3799,7 +3799,10 @@
     "bastionhost": "Host bastión",
     "scheduledtask": "Tarea programada",
     "autoupdate": "Actualización automática",
-    "llm": "LLM"
+    "llm": "LLM",
+    "aiproxy": "AI Gateway",
+    "billing": "Billing",
+    "common": "Common"
   },
   "scope.text_1": "Lista de instancias",
   "scope.text_2": "Perfil de usuario",

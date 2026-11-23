@@ -3758,7 +3758,10 @@
     "devtool": "開発ツール",
     "scheduledtask": "スケジュールされたタスク",
     "autoupdate": "自動更新",
-    "llm": "LLM"
+    "llm": "LLM",
+    "aiproxy": "AI Gateway",
+    "billing": "Billing",
+    "common": "Common"
   },
   "scope.text_1": "インスタンスのリスト",
   "scope.text_2": "ユーザー情報",
