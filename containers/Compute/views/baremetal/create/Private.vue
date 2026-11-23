@@ -55,6 +55,9 @@
           @updateImageMsg="setSelectedImage"
           :imageType.sync="osSelectImageType" />
       </a-form-item>
+      <a-form-item v-if="isShowAgent" :label="$t('compute.agent.label')" :extra="$t('compute.agent.extra')" v-bind="formItemLayout">
+        <a-checkbox v-decorator="decorators.deploy_telegraf">{{ $t('compute.agent.install.plugin') }}</a-checkbox>
+      </a-form-item>
       <a-form-item v-bind="formItemLayout" :label="$t('compute.text_178')">
         <a-select v-decorator="decorators.specifications" :disabled="isInstallOperationSystem" @change="specificationChange">
           <a-select-option v-for="i in specOptions" :key="i.value" :value="i.value">
