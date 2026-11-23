@@ -3745,7 +3745,10 @@
     "devtool": "Devtool",
     "scheduledtask": "Scheduled Task",
     "autoupdate": "Autoupdate",
-    "llm": "LLM"
+    "llm": "LLM",
+    "aiproxy": "AI Gateway",
+    "billing": "Billing",
+    "common": "Common"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
