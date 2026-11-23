@@ -233,7 +233,7 @@ export default {
                       validate: true,
                       tooltip: null,
                     }
-                    if (obj.status !== 'ready' && obj.status !== 'admin') {
+                    if (obj.status !== 'ready' && obj.status !== 'admin' && obj.status !== 'running') {
                       ret.tooltip = i18n.t('compute.text_358')
                       ret.validate = false
                       return ret
