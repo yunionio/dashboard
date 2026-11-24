@@ -1,4 +1,77 @@
 // import { tableColumnMaps } from '@Monitor/constants'
+import i18n from '@/locales'
+
+const AGGREGATOR_PREFIX_REG = /^(mean|sum|max|min|last|count|derivative)_/
+// 与 gpuMonitor 各 vendor measurement 对齐，用于从列名截取 field（如 mean_nvidia_smi_memory_free → memory_free）
+const GPU_SMI_FIELD_TAIL_REG = /_(?:agent_)?(?:nvidia_smi|npu_smi|hysmi|ixsmi|ppusmi|mthreads_gmi|xpusmi)_(.+)$/i
+
+const MEMORY_PART_SORT_ORDER = { total: 0, free: 1, used: 2 }
+
+/** 多值列拆分时排序：同组内总量 → 空闲 → 已用 */
+export const compareMonitorMultiValueColumns = (colA, colB) => {
+  const keyA = getMonitorColumnFieldKey(colA)
+  const keyB = getMonitorColumnFieldKey(colB)
+  const memoryPartRank = (key = '') => {
+    const match = key.match(/_(total|free|used)$/)
+    return match ? (MEMORY_PART_SORT_ORDER[match[1]] ?? 99) : 99
+  }
+  const memoryGroup = (key = '') => key.replace(/_(total|free|used)$/, '')
+  const groupA = memoryGroup(keyA)
+  const groupB = memoryGroup(keyB)
+  if (groupA !== groupB) return String(colA).localeCompare(String(colB))
+  const rankA = memoryPartRank(keyA)
+  const rankB = memoryPartRank(keyB)
+  if (rankA !== rankB) return rankA - rankB
+  return String(colA).localeCompare(String(colB))
+}
+
+export const sortMultiValueMonitorColumns = (columns = []) => {
+  return [...columns].sort(compareMonitorMultiValueColumns)
+}
+
+export const getMonitorColumnFieldKey = (column = '') => {
+  const col = String(column || '')
+  if (!col || col.includes(',')) return ''
+  const withoutAgg = col.replace(AGGREGATOR_PREFIX_REG, '')
+  // 多值显存：memory_total / memory_gtt_free 等
+  const memMatch = withoutAgg.match(/((?:memory(?:_[a-z0-9]+)*)_(?:total|free|used))$/)
+  if (memMatch) return memMatch[1]
+  const smiMatch = withoutAgg.match(GPU_SMI_FIELD_TAIL_REG)
+  if (smiMatch?.[1] && i18n.te(`compute.metric.gpu_field.${smiMatch[1]}`)) {
+    return smiMatch[1]
+  }
+  // 回退：从列名尾部匹配已有 GPU 指标 i18n（与 gpuMonitor fields 共用文案，不重复维护字段表）
+  const parts = withoutAgg.split('_')
+  for (let len = Math.min(5, parts.length); len >= 1; len--) {
+    const candidate = parts.slice(-len).join('_')
+    if (i18n.te(`compute.metric.gpu_field.${candidate}`)) return candidate
+  }
+  return ''
+}
+
+export const resolveMonitorColumnFieldLabel = (fieldKey) => {
+  if (!fieldKey) return ''
+  const compound = fieldKey.match(/^(.+)_(total|free|used)$/)
+  if (compound) {
+    const [, prefix, part] = compound
+    const partKey = `compute.metric.gpu_field.memory_${part}`
+    if (prefix === 'memory' && i18n.te(partKey)) {
+      return i18n.t(partKey)
+    }
+    const groupKey = `compute.metric.gpu_field.${prefix}`
+    const group = i18n.te(groupKey) ? i18n.t(groupKey) : prefix
+    const partLabel = i18n.te(partKey) ? i18n.t(partKey) : part
+    return `${group} ${partLabel}`
+  }
+  const simpleKey = `compute.metric.gpu_field.${fieldKey}`
+  if (i18n.te(simpleKey)) return i18n.t(simpleKey)
+  return fieldKey.replace(/_/g, ' ')
+}
+
+const resolveMonitorColumnLabel = (column = '') => {
+  const fieldKey = getMonitorColumnFieldKey(column)
+  return resolveMonitorColumnFieldLabel(fieldKey)
+}
 
 export const getChartTooltipLabel = (serieItem, gorupBy, measurement) => {
   const { raw_name = '', tags = {} } = serieItem
@@ -56,7 +129,9 @@ const parseRawName = (rawName) => {
  */
 export const getSeriesDisplayName = (item = {}, groupBy) => {
   const tags = item.tags || {}
+  const metricLabel = resolveMonitorColumnLabel(item.name || item.raw_name)
   const fields = (groupBy || []).map(g => g && g.params && g.params[0]).filter(Boolean)
+  let base = ''
   if (fields.length) {
     const parts = []
     fields.forEach(field => {
@@ -66,12 +141,16 @@ export const getSeriesDisplayName = (item = {}, groupBy) => {
       const name = isIdValue(field, value) ? pickReadableTag(tags) : String(value)
       if (name && !parts.includes(name)) parts.push(name)
     })
-    if (parts.length) return parts.join(' / ')
+    if (parts.length) base = parts.join(' / ')
   }
-  return pickReadableTag(tags) ||
-    parseRawName(item.raw_name) ||
-    getChartTooltipLabel(item, groupBy) ||
-    ''
+  if (!base) {
+    base = pickReadableTag(tags) ||
+      parseRawName(item.raw_name) ||
+      getChartTooltipLabel(item, groupBy) ||
+      ''
+  }
+  if (base && metricLabel) return `${base} ${metricLabel}`
+  return base || metricLabel || ''
 }
 
 /**

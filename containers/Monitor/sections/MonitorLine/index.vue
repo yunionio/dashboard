@@ -81,7 +81,7 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import XLSX from 'xlsx'
 import { metric_zh, tableColumnMaps } from '@Monitor/constants'
-import { buildSeriesDisplayNames, getChartTooltipLabel } from '@Monitor/utils'
+import { buildSeriesDisplayNames, getChartTooltipLabel, sortMultiValueMonitorColumns } from '@Monitor/utils'
 import { CHART_TYPE_HEATMAP, CHART_TYPE_LINE, DEFAULT_CHART_TYPES } from '@Monitor/utils/chartTypes'
 import { ColorHash } from '@/utils/colorHash'
 import { transformUnit } from '@/utils/utils'
@@ -600,6 +600,8 @@ export default {
           {},
         ],
         tooltip: {
+          // 保持系列顺序（按 index 等分组），不按数值大小重排
+          preserveSeriesOrder: true,
           // 仅展示当前时间点有真实数据的系列，缺失数据不补 0
           hideEmptyValues: true,
           // 全部系列均无数据时，仍展示时间点并提示无数据
@@ -682,11 +684,14 @@ export default {
     // 将含多个分组字段的 series 拆分为「单值 + 时间」的结构，便于图表渲染和导出
     splitSeries (series = []) {
       if (!series.length) return series
-      const cols = (series[0].columns || []).filter(col => col !== 'time')
+      const rawColumns = series[0].columns || []
+      const cols = sortMultiValueMonitorColumns(rawColumns.filter(col => col !== 'time'))
       if (cols.length > 1) {
         const ret = []
-        cols.forEach((col, idx) => {
-          series.forEach(item => {
+        // 按分组维度（如 index）连续排列，便于 tooltip 同卡指标聚在一起
+        series.forEach(item => {
+          cols.forEach(col => {
+            const idx = rawColumns.indexOf(col)
             ret.push({
               columns: [col, 'time'],
               name: col,
