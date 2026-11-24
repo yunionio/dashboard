@@ -79,9 +79,51 @@ export function splitFullPath (fullPath = '/') {
   return { pathname, search, hash }
 }
 
+function isTruthyEnvFlag (v) {
+  const s = String(v ?? '').trim().toLowerCase()
+  return s === 'true' || s === '1' || s === 'yes'
+}
+
+function resolveLegacyAppBase () {
+  if (typeof window === 'undefined') return ''
+  try {
+    return String(window.__OC_LEGACY_APP_URL__ || process.env.VUE_APP_LEGACY_APP_URL || '').trim()
+  } catch (e) {
+    return process.env.VUE_APP_LEGACY_APP_URL || ''
+  }
+}
+
+function legacyAppOrigin (base) {
+  if (!base || typeof window === 'undefined') return ''
+  try {
+    return new URL(base, window.location.origin).origin
+  } catch (e) {
+    return ''
+  }
+}
+
+function buildLegacyLocation (base, pathname, search, hash) {
+  const root = String(base || '').replace(/\/+$/, '')
+  if (!root) return ''
+  const path = pathname && pathname.startsWith('/') ? pathname : `/${pathname || ''}`
+  return `${root}${path}${search || ''}${hash || ''}`
+}
+
+/** 线上始终自动跳转；开发默认关闭，由 VUE_APP_OC_VERSION_REDIRECT_IN_DEV 开启 */
+export function isOcVersionRedirectEnabled () {
+  if (process.env.NODE_ENV === 'production') return true
+  try {
+    if (typeof window.__OC_VERSION_REDIRECT_ENABLED__ === 'boolean') {
+      return window.__OC_VERSION_REDIRECT_ENABLED__
+    }
+  } catch (e) { /* ignore */ }
+  return isTruthyEnvFlag(process.env.VUE_APP_OC_VERSION_REDIRECT_IN_DEV)
+}
+
 /** 首屏补救：与 public/oc-version-redirect.js 同规则（同源只改前缀） */
 export function redirectIfSelectedVersionMismatch () {
   if (typeof window === 'undefined') return
+  if (!isOcVersionRedirectEnabled()) return
   const selected = getSelectedVersionPrefix()
   if (!selected) return
   const { pathname, search, hash } = splitFullPath(
@@ -93,7 +135,19 @@ export function redirectIfSelectedVersionMismatch () {
   const nextPathname = wantsV2 ? withV2PathnamePrefix(pathname) : stripV2PathnamePrefix(pathname)
   const target = `${nextPathname}${search}${hash}`
   const current = `${pathname}${search}${hash}`
-  if (target !== current) window.location.replace(target)
+  if (target === current) return
+  if (!wantsV2 && onV2) {
+    const legacyBase = resolveLegacyAppBase()
+    const legOrigin = legacyAppOrigin(legacyBase)
+    if (legOrigin && legOrigin !== window.location.origin) {
+      const legacyHref = buildLegacyLocation(legacyBase, nextPathname, search, hash)
+      if (legacyHref) {
+        window.location.replace(legacyHref)
+        return
+      }
+    }
+  }
+  window.location.replace(target)
 }
 
 /** 去掉 fullPath 上的新版前缀，得到与旧版对齐的 path */
