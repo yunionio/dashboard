@@ -87,20 +87,27 @@ export default {
         })
       })
     },
+    resolveServerId (item) {
+      return item.guest_id || item.server_id || (Array.isArray(item.guest_ids) ? item.guest_ids[0] : null)
+    },
+    resolveIsolatedDeviceId (item) {
+      return item.isolated_device_id || item.device || item.id
+    },
     doSubmit (data) {
-      const ids = this.params.data.map((item) => item.id)
-      return new this.$Manager('isolated_devices').batchUpdate({
-        ids,
-        data: {
-          gpu_type: data.type,
-        },
+      const manager = new this.$Manager('isolated_devices')
+      const jointsList = this.params.data.map(item => [
+        { resource: 'servers', id: this.resolveServerId(item) },
+        { resource: 'isolated_devices', id: this.resolveIsolatedDeviceId(item) },
+      ])
+      return manager.batchJointUpdate({
+        jointsList,
+        data: { gpu_type: data.type },
       })
     },
     async handleConfirm () {
       this.loading = true
       try {
         const values = await this.validateForm()
-        this.loading = true
         await this.doSubmit(values)
         this.params.refresh()
         this.cancelDialog()
