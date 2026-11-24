@@ -48,17 +48,16 @@
     </div>
     <div class="side-page-inner-content" :style="contentStyle">
       <div class="side-page-container" id="side-page-container">
-        <template v-if="!loaded">
+        <template v-if="hasError">
+          <data-empty :description="errorInfo.detail" />
+        </template>
+        <template v-else-if="!loaded">
+          <!-- 无预数据时仅内容区骨架；头部 tab 仍可切换，loaded 后展示对应页 -->
           <loading-block :layout="loadingLayout" />
         </template>
         <template v-else>
-          <template v-if="hasError">
-            <data-empty :description="errorInfo.detail" />
-          </template>
-          <template v-else>
-            <a-skeleton v-if="refreshDetail" active :paragraph="{ rows: 6 }" />
-            <slot v-else />
-          </template>
+          <a-skeleton v-if="refreshDetail" active :paragraph="{ rows: 6 }" />
+          <slot v-else />
         </template>
       </div>
     </div>
