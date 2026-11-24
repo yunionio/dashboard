@@ -175,9 +175,11 @@ export default {
               }
               return [x, y]
             }
-            visibleData.sort((a, b) => {
-              return (b.value || 0) - (a.value || 0)
-            })
+            if (!that.options?.tooltip?.preserveSeriesOrder) {
+              visibleData.sort((a, b) => {
+                return (b.value || 0) - (a.value || 0)
+              })
+            }
             let html = '<div class="uplot-tooltip-inner">'
             if (showTime && time) {
               const timeFormatter = that.options?.tooltip?.timeFormatter
