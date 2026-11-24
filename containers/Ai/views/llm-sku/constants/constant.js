@@ -78,3 +78,8 @@ export const portMappings = [
     protocol: 'tcp',
   },
 ]
+
+// LLM types that may be created without a data disk. Desktop-like types
+// (desktop / hermes-agent / openclaw) keep their workspace on the data disk
+// and still require one.
+export const DISK_OPTIONAL_LLM_TYPES = ['vllm', 'sglang', 'ollama', 'comfyui', 'dify']
