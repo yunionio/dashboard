@@ -3,7 +3,7 @@ import i18n from '@/locales'
 
 const AGGREGATOR_PREFIX_REG = /^(mean|sum|max|min|last|count|derivative)_/
 // 与 gpuMonitor 各 vendor measurement 对齐，用于从列名截取 field（如 mean_nvidia_smi_memory_free → memory_free）
-const GPU_SMI_FIELD_TAIL_REG = /_(?:agent_)?(?:nvidia_smi|npu_smi|hysmi|ixsmi|ppusmi|mthreads_gmi|xpusmi)_(.+)$/i
+const GPU_SMI_FIELD_TAIL_REG = /_(?:agent_)?(?:nvidia_smi|npu_smi|hysmi|ixsmi|ppusmi|mthreads_gmi|xpusmi|vasmi|brsmi)_(.+)$/i
 
 const MEMORY_PART_SORT_ORDER = { total: 0, free: 1, used: 2 }
 

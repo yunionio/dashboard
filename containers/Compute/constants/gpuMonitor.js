@@ -63,7 +63,7 @@ const sizeField = (name, labelKey = name) => ({
 
 /**
  * GPU / 加速卡监控 measurement：
- * - 裸金属 / 虚拟机 Agent：多数带 agent_ 前缀；昆仑芯后端约定为 xpusmi（无 agent_）
+ * - 裸金属 / 虚拟机 Agent：带 agent_ 前缀（含昆仑芯 agent_xpusmi）
  * - 容器宿主机：与裸金属相同，去掉 agent_ 前缀
  * fields 与后端各卡 Metrics 对齐，按厂商全量展示
  */
@@ -190,7 +190,7 @@ export const GPU_VENDORS = [
     key: 'kunlun',
     vendorLabel: () => i18n.t('compute.metric.gpu_vendor.kunlun'),
     groupBy: ['index'],
-    baremetal: 'xpusmi',
+    baremetal: 'agent_xpusmi',
     host: 'xpusmi',
     matchers: [/kunlun/i, /xpu/i, /昆仑/],
     pciIds: [],
@@ -209,6 +209,46 @@ export const GPU_VENDORS = [
       plain('ecc_errors_dram_uncorrectable'),
       plain('ecc_errors_dram_correctable_aggregate'),
       plain('ecc_errors_dram_uncorrectable_aggregate'),
+    ],
+  },
+  {
+    key: 'vastai',
+    vendorLabel: () => i18n.t('compute.metric.gpu_vendor.vastai'),
+    groupBy: ['index'],
+    baremetal: 'agent_vasmi',
+    host: 'vasmi',
+    matchers: [/vastai/i, /vasmi/i, /瀚博/],
+    pciIds: ['1ec6'],
+    fields: [
+      watt('aic_power'),
+      temp('temperature_gpu'),
+      pct('utilization_gpu'),
+      pct('utilization_memory'),
+      pct('utilization_share_memory'),
+      pct('utilization_encoder'),
+      pct('utilization_decoder'),
+      pct('utilization_ai'),
+      mhz('clocks_current_gpu'),
+    ],
+  },
+  {
+    key: 'biren',
+    vendorLabel: () => i18n.t('compute.metric.gpu_vendor.biren'),
+    groupBy: ['index'],
+    baremetal: 'agent_brsmi',
+    host: 'brsmi',
+    matchers: [/biren/i, /brsmi/i, /壁仞/],
+    pciIds: [],
+    fields: [
+      watt('power', 'power'),
+      temp('temperature_gpu'),
+      temp('temperature_memory'),
+      pct('utilization_memory'),
+      pct('utilization_spc'),
+      pct('utilization_encoder'),
+      pct('utilization_decoder'),
+      mhz('clocks_memory'),
+      mhz('clocks_gpu'),
     ],
   },
 ]
