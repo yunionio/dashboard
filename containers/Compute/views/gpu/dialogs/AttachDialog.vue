@@ -69,6 +69,7 @@ import {
 import DiskSizeInput from '@/sections/DiskSizeInput'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'GpuAttachServerDialog',
@@ -168,7 +169,7 @@ export default {
       return getGpuTypeSelectOptions(this.currentDevice.sharing_mode)
     },
     showGpuType () {
-      return this.currentDevice.dev_type === 'GPU'
+      return this.currentDevice.dev_type === 'GPU' && this.params.resourceType === 'server'
     },
     showMemoryRequest () {
       return this.currentDevice.sharing_mode === 'HAMI'
@@ -192,6 +193,11 @@ export default {
       filter: this.params.resourceType === 'server_container' ? 'hypervisor.in(pod)' : 'hypervisor.in(kvm)',
       scope: this.scope,
       limit: 0,
+    }
+    const hypervisorKey = this.params.resourceType === 'server_container' ? HYPERVISORS_MAP.pod.key : HYPERVISORS_MAP.kvm.key
+    const hypervisorCfg = HYPERVISORS_MAP[hypervisorKey]
+    if (hypervisorCfg?.provider) {
+      params.provider = hypervisorCfg.provider
     }
     new this.$Manager('servers').list({ params })
       .then((res) => {
