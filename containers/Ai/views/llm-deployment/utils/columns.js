@@ -1,4 +1,5 @@
 import i18n from '@/locales'
+import { getParallelModeShortLabel, formatTopologySummary } from './topology'
 
 export const getReplicasTableColumn = () => ({
   field: 'replicas_display',
@@ -69,6 +70,68 @@ export const getPlacementStrategyTableColumn = () => ({
     return i18n.te(key) ? i18n.t(key) : row.placement_strategy
   },
 })
+
+// getDistributedInferenceTableColumn shows the per-replica multi-host layout:
+// "3 × 8" means 3 nodes with 8 GPUs each. Single-host replicas show as such.
+export const getDistributedInferenceTableColumn = () => ({
+  field: 'distributed_inference',
+  title: i18n.t('aice.llm_deployment.distributed_inference'),
+  width: 140,
+  formatter: ({ row }) => {
+    if (row.distributed_inference === null || row.distributed_inference === undefined) return '-'
+    if (!row.distributed_inference) return i18n.t('aice.llm_deployment.dist_role.single')
+    const nnodes = row.distributed_nnodes || 1
+    const gpus = row.gpus_per_node || 0
+    if (nnodes <= 1) return i18n.t('aice.llm_deployment.dist_role.single')
+    return `${nnodes} × ${gpus}`
+  },
+})
+
+export const getTopologyBadgeTableColumn = ({ vm } = {}) => {
+  const column = {
+    field: 'parallel_mode',
+    title: i18n.t('aice.llm_deployment.topology_badge'),
+    width: 180,
+    formatter: ({ row }) => {
+      if (!row.distributed_inference) return i18n.t('aice.llm_deployment.dist_role.single')
+      const mode = row.parallel_mode || 'pp'
+      return `${getParallelModeShortLabel(mode)} · ${formatTopologySummary({
+        parallel_mode: mode,
+        distributed_nnodes: row.distributed_nnodes,
+        gpus_per_node: row.gpus_per_node,
+        tensor_parallel_size: row.tensor_parallel_size,
+        pipeline_parallel_size: row.pipeline_parallel_size,
+        data_parallel_size: row.data_parallel_size,
+      })}`
+    },
+  }
+  if (vm) {
+    column.slots = {
+      default: ({ row }) => {
+        if (!row.distributed_inference) return i18n.t('aice.llm_deployment.dist_role.single')
+        const mode = row.parallel_mode || 'pp'
+        const summary = formatTopologySummary({
+          parallel_mode: mode,
+          distributed_nnodes: row.distributed_nnodes,
+          gpus_per_node: row.gpus_per_node,
+          tensor_parallel_size: row.tensor_parallel_size,
+          pipeline_parallel_size: row.pipeline_parallel_size,
+          data_parallel_size: row.data_parallel_size,
+        })
+        return [
+          vm.$createElement('a-tag', {
+            props: { color: mode === 'dp' ? 'blue' : 'purple' },
+          }, [getParallelModeShortLabel(mode)]),
+          vm.$createElement('span', {
+            class: 'text-color-help ml-1',
+            attrs: { title: summary },
+          }, [summary]),
+        ]
+      },
+    }
+  }
+  return column
+}
 
 export const getAccessPolicyTableColumn = () => ({
   field: 'access_policy',

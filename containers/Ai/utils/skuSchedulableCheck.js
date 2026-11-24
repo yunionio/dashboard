@@ -10,11 +10,11 @@ function asArray (value) {
 /**
  * POST /llm_skus/{id}/schedulable-check
  */
-export function checkSkuSchedulable (manager, skuId) {
+export function checkSkuSchedulable (manager, skuId, data = {}) {
   return manager.performAction({
     id: skuId,
     action: 'schedulable-check',
-    data: {},
+    data: data || {},
   })
 }
 

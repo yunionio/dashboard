@@ -803,7 +803,8 @@ export function getCatalogImportFormDefaults (catalogItem) {
   return {
     cpu: spec?.cpu ?? 4,
     memory: spec?.memory ? Math.max(1, Math.round(spec.memory / 1024)) : 8,
-    volume_size: spec?.volume_size_mb ? Math.max(1, Math.round(spec.volume_size_mb / 1024)) : 10,
+    // The data disk is optional; only prefill when the catalog spec provides one.
+    volume_size: spec?.volume_size_mb ? Math.max(1, Math.round(spec.volume_size_mb / 1024)) : undefined,
     bandwidth: spec?.bandwidth ?? 1000,
     portMappings: ports,
   }
