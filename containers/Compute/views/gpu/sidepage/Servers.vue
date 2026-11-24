@@ -191,6 +191,7 @@ export default {
               title: this.$t('compute.text_483', [this.$t('dictionary.server')]),
               columns: this.gpuColumns,
               refresh: this.refresh,
+              resourceType: 'server',
             })
           },
           meta: obj => {
