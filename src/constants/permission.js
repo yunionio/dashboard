@@ -344,6 +344,8 @@ export const PERMISSION = {
   log_manage_list_splitable: ['log', 'actions', 'list', 'splitable'],
   // 命令记录
   commandlogs_list: ['log', 'commandlogs', 'list'],
+  // 物理机硬件日志
+  baremetalevents_list: ['log', 'baremetalevents', 'list'],
   // 消息中心
   notifications_list: ['notify', 'notifications', 'list'],
   // 消息订阅

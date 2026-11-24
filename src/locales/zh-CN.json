@@ -3334,6 +3334,7 @@
     "es": "ElasticSearch",
     "app": "应用程序服务",
     "command_log": "命令记录",
+    "baremetalevents": "硬件日志",
     "ipv6_gateway": "IPv6网关",
     "important": "重要",
     "normal": "正常",
