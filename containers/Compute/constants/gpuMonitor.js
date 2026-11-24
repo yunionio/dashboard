@@ -86,6 +86,23 @@ export const GPU_VENDORS = [
     ],
   },
   {
+    key: 'amd',
+    vendorLabel: () => i18n.t('compute.metric.gpu_vendor.amd'),
+    groupBy: ['index'],
+    baremetal: 'agent_amd_rocm_smi',
+    host: 'amd_rocm_smi',
+    matchers: [/amd/i, /rocm/i, /radeon/i],
+    pciIds: ['1002'],
+    fields: [
+      pct('utilization_gpu'),
+      pct('utilization_memory'),
+      memoryGroup('memory', 'memory'),
+      watt('power_draw'),
+      temp('temperature_sensor_edge'),
+      plain('fan_speed'),
+    ],
+  },
+  {
     key: 'ascend',
     vendorLabel: () => i18n.t('compute.metric.gpu_vendor.ascend'),
     groupBy: ['index'],
