@@ -30,9 +30,11 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import { hasPermission } from '@/utils/auth'
 import BaremetalList from './Baremetal'
 import PhysicalmachineDetail from './Detail'
 import NetworkList from './Network'
@@ -55,9 +57,9 @@ export default {
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
-  data () {
-    return {
-      detailTabs: [
+  computed: {
+    detailTabs () {
+      let tabs = [
         { label: this.$t('compute.text_238'), key: 'physicalmachine-detail' },
         { label: this.$t('compute.text_864'), key: 'baremetal-list' },
         { label: this.$t('compute.text_104'), key: 'network-list' },
@@ -67,10 +69,12 @@ export default {
         { label: this.$t('compute.text_865'), key: 'bmc-log' },
         { label: this.$t('table.title.task'), key: 'task-drawer' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
-      ],
-    }
-  },
-  computed: {
+      ]
+      if (!hasPermission({ key: 'baremetalevents_list' })) {
+        tabs = R.reject(R.propEq('key', 'bmc-log'), tabs)
+      }
+      return tabs
+    },
     getParams () {
       if (this.params.windowData.currentTab === 'baremetal-list') {
         return {
