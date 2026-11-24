@@ -188,6 +188,8 @@ export default {
     this.idKey = idKey
     this.steadyStatus = this.genSteadyStatus(steadyStatus)
     this.refreshInterval = refreshInterval
+    // 有列表行/入参预数据时先渲染侧栏轮廓与 tab，详情接口在后台刷新，避免大数据量时卡在 loading 无法切 tab
+    this.initPreloadDetail()
     this.fetchData()
     if (this.isList) {
       this.$watch('listRowData', (val, oldVal) => {
@@ -213,6 +215,21 @@ export default {
       if (this.params.tab) {
         this.handleTabChange(this.params.tab)
       }
+    },
+    /**
+     * @description 使用列表行或打开侧栏时传入的 data 预填详情，先让页面轮廓/标签可交互
+     */
+    initPreloadDetail () {
+      const optionsData = _.get(this.params, 'options.data')
+      let preload = null
+      if (this.isList && this.listRowData && !R.isEmpty(this.listRowData)) {
+        preload = this.listRowData
+      } else if (optionsData && !R.isEmpty(optionsData)) {
+        preload = optionsData
+      }
+      if (!preload) return
+      this.data = this.wrapData(R.clone(preload))
+      this.loaded = true
     },
     cancelSidePage () {
       if (this.params && R.is(Function, this.params.cancel)) {
