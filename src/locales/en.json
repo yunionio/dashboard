@@ -3312,6 +3312,7 @@
     "es": "ElasticSearch",
     "app": "Web App",
     "command_log": "Command Logs",
+    "baremetalevents": "Hardware Logs",
     "important": "Important",
     "normal": "Normal",
     "fatal": "Fatal",

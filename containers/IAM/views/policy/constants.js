@@ -766,6 +766,9 @@ export const RESOURCES_MAP = {
   commandlogs: {
     i18n: 'dictionary.command_log',
   },
+  baremetalevents: {
+    i18n: 'dictionary.baremetalevents',
+  },
   isolated_device_models: {
     i18n: 'system.text_360',
   },
