@@ -34,6 +34,39 @@
       </template>
       <template v-if="useBillingBucket && !isEA && !isApi">
         <a-divider v-if="!isHiddenDriver" orientation="left">{{ $t('cloudenv.text_199') }}</a-divider>
+        <a-form-item v-if="showBillSubscribeOption" :label="$t('cloudenv.bill_config_mode')">
+          <a-radio-group v-model="billingConfigMode">
+            <a-radio-button value="manual">{{ $t('cloudenv.bill_config_mode.manual') }}</a-radio-button>
+            <a-radio-button value="subscribe">{{ $t('cloudenv.bill_config_mode.subscribe') }}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+      </template>
+    </a-form>
+    <bill-subscribe-section
+      v-if="isSubscribeConfig && id"
+      ref="subscribeSection"
+      :account-id="id"
+      :account="cloudAccount"
+      :provider="provider"
+      :form-item-layout="formLayout"
+      :show-switch-meter="false" />
+    <a-form :form="form.fc" v-bind="formLayout">
+      <template v-if="useBillingBucket && !isEA && !isApi && isSubscribeConfig">
+        <a-form-item :label="$t('cloudenv.billing_scope')">
+          <div slot="extra">
+            <div>{{ $t('cloudenv.billing_scope.extra') }}</div>
+            <div>{{ $t('cloudenv.billing_scope.extra_note') }}</div>
+          </div>
+          <a-radio-group v-decorator="decorators.billing_scope">
+            <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
+            <a-radio-button
+              value="all"
+              key="all"
+              :disabled="billingScopeDisabled">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+      </template>
+      <template v-if="useBillingBucket && !isEA && !isApi && !isSubscribeConfig">
         <a-form-item :label="$t('cloudenv.text_200')">
           <a-radio-group v-model="cloudAccountType">
             <a-radio-button :value="1">{{ $t('cloudenv.text_201') }}</a-radio-button>
@@ -173,14 +206,19 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
 import { DOCS_MAP, showDocsLink } from '@/constants/docs'
+import { hasMeterService } from '@/utils/auth'
 import {
   keySecretFields,
   BILL_TYPES,
   BILL_TYPE_MAP,
 } from '../../constants'
+import BillSubscribeSection from './BillSubscribeSection'
 
 export default {
   name: 'BillConfig',
+  components: {
+    BillSubscribeSection,
+  },
   mixins: [DialogMixin, WindowsMixin],
   props: {
     account: {
@@ -195,6 +233,7 @@ export default {
       cloudAccountLoading: false,
       cloudAccount: {},
       cloudAccountType: 1, // 1 --> 主账号 | 2 --> 关联账号
+      billingConfigMode: 'manual', // manual | subscribe
       billTypeOptions: BILL_TYPES,
       billType: BILL_TYPE_MAP.EA.value, // EA --> EA账号 | Bucket --> 存储桶
       form: {
@@ -422,6 +461,12 @@ export default {
     isHiddenDriver () {
       return this.isAzure
     },
+    showBillSubscribeOption () {
+      return hasMeterService() && (this.isAliyun || this.isAws || this.isAzure)
+    },
+    isSubscribeConfig () {
+      return this.showBillSubscribeOption && this.billingConfigMode === 'subscribe'
+    },
   },
   watch: {
     cloudAccount (val) {
@@ -440,6 +485,14 @@ export default {
     },
     billType (val) {
       if (val === BILL_TYPE_MAP.Bucket.value) {
+        this.cloudAccountType = 1
+      }
+      if (val !== BILL_TYPE_MAP.Bucket.value) {
+        this.billingConfigMode = 'manual'
+      }
+    },
+    billingConfigMode (val) {
+      if (val === 'subscribe') {
         this.cloudAccountType = 1
       }
     },
@@ -541,6 +594,50 @@ export default {
     },
     async doSubmit ({ id } = this.cloudAccount, isGoCloudaccount = true) {
       try {
+        if (this.isSubscribeConfig) {
+          const section = this.$refs.subscribeSection
+          if (!section) {
+            throw new Error('subscribe section missing')
+          }
+          const result = await section.submit()
+          const syncFields = ['billing_scope', 'sync_info']
+          if (this.form.fc.getFieldValue('sync_info')) {
+            syncFields.push('start_day', 'end_day')
+          }
+          const values = await this.form.fc.validateFields(syncFields)
+          if (values.sync_info) {
+            this.postBillTasks(id, values)
+          }
+          const options = {
+            billing_scope: values.billing_scope,
+          }
+          // switch_meter_type / set-bill-subscribe-type 已写桶；仅补 scope
+          if (result && result.data) {
+            if (result.data.billing_report_bucket) {
+              this.cloudAccount.options = this.cloudAccount.options || {}
+              this.cloudAccount.options.billing_report_bucket = result.data.billing_report_bucket
+            }
+            if (result.data.billing_file_prefix != null || result.data.bucket_path != null) {
+              this.cloudAccount.options = this.cloudAccount.options || {}
+              this.cloudAccount.options.billing_file_prefix = result.data.billing_file_prefix || result.data.bucket_path || ''
+            }
+          }
+          await this.manager.update({
+            id,
+            data: {
+              options,
+              remove_options: [
+                'billing_bucket_account',
+                'billing_account',
+                'billing_bigquery_table',
+                'enrollment_number',
+                'balance_key',
+              ],
+            },
+          })
+          this.$message.success(this.$t('cloudenv.bill_subscribe_success'))
+          return
+        }
         const values = await this.form.fc.validateFields()
         if (values.sync_info) {
           this.postBillTasks(id, values)
@@ -612,6 +709,10 @@ export default {
       }
     },
     async testPost () {
+      if (this.isSubscribeConfig) {
+        // 订阅模式无本地桶 URL 可测；跳过 verify
+        return true
+      }
       const values = await this.form.fc.validateFields()
       values.cloudaccount_id = this.id
       delete values.sync_info
