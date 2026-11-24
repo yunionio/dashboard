@@ -3361,6 +3361,7 @@
     "es": "Elasticsearch",
     "app": "Aplicación web",
     "command_log": "Registros de comandos",
+    "baremetalevents": "Registros de hardware",
     "important": "Importante",
     "normal": "Normal",
     "fatal": "Crítico",
