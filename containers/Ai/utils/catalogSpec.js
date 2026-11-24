@@ -78,7 +78,6 @@ export function buildCatalogDeploymentPayload (deployForm, spec, llmType, pciMod
     replicas: 1,
     placement_strategy: 'spread',
     access_policy: 'authed',
-    auto_start: true,
     nets: [{ network: deployForm.network }],
     sku_spec: skuSpec,
   }
