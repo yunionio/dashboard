@@ -4,6 +4,7 @@
       :on-manager="onManager"
       :data="data"
       :base-info="baseInfo"
+      :extra-info="extraInfo"
       status-module="llmDeployment"
       resource="llm_deployments" />
   </div>
@@ -16,10 +17,12 @@ import {
   getReplicasTableColumn,
   getBackendTableColumn,
   getLLMSkuTableColumn,
-  // 调度/访问策略未实现，暂不展示
-  // getPlacementStrategyTableColumn,
+  getPlacementStrategyTableColumn,
+  getTopologyBadgeTableColumn,
+  // 访问策略未实现，暂不展示
   // getAccessPolicyTableColumn,
 } from '../utils/columns'
+import DistTopology from './DistTopology'
 
 export default {
   name: 'LlmDeploymentDetail',
@@ -40,17 +43,32 @@ export default {
         getLLMSkuTableColumn({ vm: this }),
         getBackendTableColumn(),
         getReplicasTableColumn(),
-        // 调度/访问策略未实现，暂不展示
-        // getPlacementStrategyTableColumn(),
-        // 分布式推理未实现，暂不展示
-        // {
-        //   field: 'distributed_inference',
-        //   title: this.$t('aice.llm_deployment.distributed_inference'),
-        //   formatter: ({ row }) => {
-        //     if (row.distributed_inference === null || row.distributed_inference === undefined) return '-'
-        //     return row.distributed_inference ? this.$t('common.true') : this.$t('common.false')
-        //   },
-        // },
+        getPlacementStrategyTableColumn(),
+        getTopologyBadgeTableColumn({ vm: this }),
+        {
+          field: 'distributed_inference',
+          title: this.$t('aice.llm_deployment.distributed_inference'),
+          formatter: ({ row }) => {
+            if (row.distributed_inference === null || row.distributed_inference === undefined) return '-'
+            return row.distributed_inference ? this.$t('common.true') : this.$t('common.false')
+          },
+        },
+        {
+          field: 'nnodes',
+          title: this.$t('aice.llm_deployment.nnodes'),
+          formatter: ({ row }) => {
+            if (!row.nnodes) return this.$t('aice.llm_deployment.nnodes_auto')
+            return row.nnodes
+          },
+        },
+        {
+          field: 'pipeline_parallel_size',
+          title: this.$t('aice.llm_deployment.pipeline_parallel_size'),
+          formatter: ({ row }) => {
+            if (!row.pipeline_parallel_size) return this.$t('aice.llm_deployment.pipeline_parallel_size_auto')
+            return row.pipeline_parallel_size
+          },
+        },
         {
           field: 'restart_on_error',
           title: this.$t('aice.llm_deployment.restart_on_error'),
@@ -89,6 +107,36 @@ export default {
           },
         },
         getAiRoutingDetailField(this, { routingName: this.aiRoutingName }),
+      ]
+    },
+    extraInfo () {
+      // Keep the pre-existing single-column layout for non-distributed
+      // deployments: an empty array would still render the right column.
+      if (!this.data?.distributed_inference) return undefined
+      return [
+        {
+          title: this.$t('aice.llm_deployment.dist_topology.title'),
+          items: [
+            {
+              field: 'distributed_nnodes',
+              title: this.$t('aice.llm_deployment.dist_topology.nnodes'),
+              formatter: ({ row }) => row.distributed_nnodes || '-',
+            },
+            {
+              field: 'gpus_per_node',
+              title: this.$t('aice.llm_deployment.dist_topology.gpus_per_node'),
+              formatter: ({ row }) => row.gpus_per_node || '-',
+            },
+            {
+              field: 'dist_groups',
+              slots: {
+                default: ({ row }) => this.$createElement(DistTopology, {
+                  props: { groups: row.dist_groups, vm: this },
+                }),
+              },
+            },
+          ],
+        },
       ]
     },
   },
