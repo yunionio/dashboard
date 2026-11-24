@@ -30,6 +30,7 @@
       :hiddenColumns="hiddenColumns"
       :hiddenSingleActions="hiddenSingleActions"
       :hiddenActionKeys="['SetReserveResource']"
+      :guest-vm-passthrough-list-actions="params.windowData.currentTab === 'gpu-list'"
       gpuResource="guestisolateddevices"
       taskResource="compute-tasks"
       @refresh="refresh"

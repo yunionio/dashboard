@@ -42,6 +42,11 @@ export default {
     probeHostDevices: Boolean,
     hiddenActionKeys: Array,
     showBaremetalIsolatedDevices: Boolean,
+    /** 虚拟机详情-透传设备列表：保留「更新GPU模式」为行首操作 */
+    guestVmPassthroughListActions: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     const filter = {}
@@ -305,6 +310,7 @@ export default {
           },
         },
         {
+          key: 'UpdateDeviceType',
           label: this.$t('gpu.device_type.update'),
           action: obj => {
             this.createDialog('UpdateDeviceTypeDialog', {
@@ -452,19 +458,23 @@ export default {
         throw err
       }
     },
+    filterPassthroughListActions (actions) {
+      let ret = actions
+      if (!this.guestVmPassthroughListActions) {
+        ret = ret.filter(o => o.key !== 'UpdateDeviceType')
+      }
+      if (this.hiddenActionKeys?.length > 0) {
+        ret = ret.filter(o => !this.hiddenActionKeys.includes(o.key))
+      }
+      return ret
+    },
     getFinalGroupActions () {
       if (this.isProjectMode || this.showBaremetalIsolatedDevices) return []
-      if (this.hiddenActionKeys?.length > 0) {
-        return this.groupActions.filter(o => !this.hiddenActionKeys.includes(o.key))
-      }
-      return this.groupActions
+      return this.filterPassthroughListActions(this.groupActions)
     },
     getFinalSingleActions () {
       if (this.isProjectMode || this.showBaremetalIsolatedDevices) return []
-      if (this.hiddenActionKeys?.length > 0) {
-        return this.singleActions.filter(o => !this.hiddenActionKeys.includes(o.key))
-      }
-      return this.singleActions
+      return this.filterPassthroughListActions(this.singleActions)
     },
   },
 }
