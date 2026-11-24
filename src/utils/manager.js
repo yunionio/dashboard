@@ -231,11 +231,20 @@ export class Manager {
     return Vue.http.post(url, params)
   }
 
-  jointUpdate ({ joints, data } = {}) {
+  _jointUrl (joints = []) {
     let url = '/' + this.apiVersion
-    joints.map(item => {
+    joints.forEach(item => {
       url += `/${item.resource}/${item.id}`
     })
-    return Vue.http.put(url, data)
+    return url
+  }
+
+  jointUpdate ({ joints, data, params } = {}) {
+    return Vue.http.put(this._jointUrl(joints), data, { params })
+  }
+
+  batchJointUpdate ({ jointsList, data, params } = {}) {
+    const list = jointsList || []
+    return Promise.all(list.map(joints => Vue.http.put(this._jointUrl(joints), data, { params })))
   }
 }
