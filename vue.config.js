@@ -65,6 +65,7 @@ const getBuildInfo = () => {
 }
 
 const devServerCoustomConfig = fsExistsSync(resolve('./dev.server.config.js')) ? require('./dev.server.config.js') : {}
+const { configureOcVersionHtml } = require('./scripts/configure-oc-version-html')
 
 module.exports = {
   lintOnSave: process.env.NODE_ENV !== 'production',
@@ -95,6 +96,7 @@ module.exports = {
     })
   },
   chainWebpack: (config) => {
+    configureOcVersionHtml(config)
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
     svgRule.include.add(resolve('./src/components/Icon'))
