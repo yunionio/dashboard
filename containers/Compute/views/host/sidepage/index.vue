@@ -90,7 +90,10 @@ export default {
       if (!hasPermission({ key: 'hoststorages_list' })) {
         tabs = R.remove(R.findIndex(R.propEq('key', 'storage-list'))(tabs), 1, tabs)
       }
-      if (this.data && this.data.data && this.data.data.is_baremetal) {
+      if (
+        this.data && this.data.data && this.data.data.is_baremetal &&
+        hasPermission({ key: 'baremetalevents_list' })
+      ) {
         tabs = R.insert(tabs.length - 1, { label: this.$t('compute.text_865'), key: 'bmc-log' }, tabs)
       }
       return tabs

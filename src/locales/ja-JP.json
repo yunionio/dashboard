@@ -3326,6 +3326,7 @@
     "es": "エラスティックサーチ",
     "app": "アプリケーションサービス",
     "command_log": "コマンド・ロギング",
+    "baremetalevents": "ハードウェアログ",
     "ipv6_gateway": "IPv6 ゲートウェイ",
     "important": "重要な",
     "normal": "正常",
