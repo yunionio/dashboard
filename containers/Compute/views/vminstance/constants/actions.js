@@ -133,8 +133,8 @@ const getSingleActions = function (ctx) {
                 ...prms,
                 type: 'server',
               }
-              if (!reqData.port) {
-                reqData.port = await getServerSshPort(new this.$Manager('servers'), id, 22)
+              if (reqData.port == null) {
+                reqData.port = (await getServerSshPort(new this.$Manager('servers'), id, 22)) || 22
               }
               const params = {
                 id: 'ssh',
@@ -235,11 +235,8 @@ const getSingleActions = function (ctx) {
                   height,
                   ...prms,
                 }
-                if (!reqData.port) {
-                  const port = await getServerSshPort(new this.$Manager('servers'), obj.id)
-                  if (port) {
-                    reqData.port = port
-                  }
+                if (reqData.port == null) {
+                  reqData.port = (await getServerSshPort(new this.$Manager('servers'), obj.id, 22)) || 22
                 }
                 const params = {
                   id: 'server-rdp',
