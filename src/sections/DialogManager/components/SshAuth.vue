@@ -119,26 +119,51 @@ export default {
       e.stopPropagation()
       this.handleConfirm()
     },
+    async persistSshPort () {
+      const webconsoleParams = this.params.params
+      if (!webconsoleParams?.action) return
+      const type = webconsoleParams.data?.type
+      const resourceByType = {
+        server: 'servers',
+        host: 'hosts',
+      }
+      const resource = resourceByType[type]
+      if (!resource) return
+      const port = Number(this.formData.port)
+      if (!port || port < 1 || port > 65535) return
+      try {
+        await new this.$Manager(resource, 'v2').performAction({
+          id: webconsoleParams.action,
+          action: 'set-sshport',
+          data: { port },
+        })
+      } catch (err) {
+        // 保存 SSH 端口失败不阻断已建立的终端连接
+      }
+    },
     async handleConfirm () {
       if (this.loading) return
       this.loading = true
       try {
         await validateModelForm(this.$refs.form)
-        this.params.manager.performAction({ ...this.params.params, data: { ...this.params.params.data, ...this.formData } }).then(({ data }) => {
-          const connectParams = qs.parse(data.connect_params)
-          if (connectParams.is_need_login === 'false') {
-            this.params.success && this.params.success(data)
-            this.cancelDialog()
-          } else {
-            showErrorNotification({
-              errorMsg: {
-                class: this.$t('scope.text_517'),
-                detail: connectParams.login_error_message,
-              },
-            })
-          }
-          this.loading = false
+        const { data } = await this.params.manager.performAction({
+          ...this.params.params,
+          data: { ...this.params.params.data, ...this.formData },
         })
+        const connectParams = qs.parse(data.connect_params)
+        if (connectParams.is_need_login === 'false') {
+          await this.persistSshPort()
+          this.params.success && this.params.success(data)
+          this.cancelDialog()
+        } else {
+          showErrorNotification({
+            errorMsg: {
+              class: this.$t('scope.text_517'),
+              detail: connectParams.login_error_message,
+            },
+          })
+        }
+        this.loading = false
       } catch (err) {
         this.loading = false
         throw err
