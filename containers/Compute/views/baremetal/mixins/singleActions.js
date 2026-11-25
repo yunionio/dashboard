@@ -45,12 +45,9 @@ export default {
             })
           }
           const openWebConsole = async (params) => {
-            let reqParams = params
-            if (!params.data?.port) {
-              const port = await getServerSshPort(new this.$Manager('servers'), params.action, 22)
-              if (port) {
-                reqParams = { ...params, data: { ...params.data, port } }
-              }
+            const reqParams = { ...params, data: { ...params.data } }
+            if (reqParams.data.port == null) {
+              reqParams.data.port = (await getServerSshPort(new this.$Manager('servers'), params.action, 22)) || 22
             }
             this.webconsoleManager.performAction(reqParams).then(({ data }) => {
               const connectParams = qs.parse(data.connect_params)
