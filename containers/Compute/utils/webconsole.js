@@ -36,7 +36,7 @@ export function solWebConsole (manager, host, onData, createDialog) {
 }
 
 // 获取 server 的 ssh 端口（接口返回 { port: 0 } 表示未配置），RDP 复用该端口
-export async function getServerSshPort (manager, id, fallback) {
+export async function getServerSshPort (manager, id, fallback = 22) {
   if (!manager || !id) return fallback
   try {
     const { data } = await manager.getSpecific({ id, spec: 'sshport' })

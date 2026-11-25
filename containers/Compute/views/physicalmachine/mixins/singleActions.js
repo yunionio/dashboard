@@ -5,7 +5,7 @@ import expectStatus from '@/constants/expectStatus'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 import { canIpmiProbe } from '../utils/status'
-import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
+import { solWebConsole, jnlpConsole, getServerSshPort } from '../../../utils/webconsole'
 import { hostNoIpmiTip } from '../../../utils/ipmi'
 // import { Base64 } from 'js-base64'
 export default {
@@ -43,16 +43,30 @@ export default {
           if (obj.access_ip) {
             ips = [obj.access_ip, ...ips]
           }
-          const openWebConsole = (params) => {
-            this.webconsoleManager.performAction(params).then(({ data }) => {
+          const buildSshParams = (ip, extra = {}) => ({
+            id: 'ssh',
+            action: obj.id,
+            data: {
+              id: obj.id,
+              ip,
+              type: 'host',
+              ...extra,
+            },
+          })
+          const openWebConsole = async (params) => {
+            const reqParams = { ...params, data: { ...params.data } }
+            if (reqParams.data.port == null) {
+              reqParams.data.port = (await getServerSshPort(new this.$Manager('hosts'), params.action, 22)) || 22
+            }
+            this.webconsoleManager.performAction(reqParams).then(({ data }) => {
               const connectParams = qs.parse(data.connect_params)
               // 验证账号密码
               if (connectParams.is_need_login === 'true') {
                 this.createDialog('SshAuthDialog', {
                   manager: this.webconsoleManager,
-                  params,
+                  params: reqParams,
                   errorMsg: connectParams.login_error_message,
-                  data: { name: obj.name, ip: params.action },
+                  data: { name: obj.name, ip: params.data?.ip },
                   success: (data) => {
                     this.openWebConsole(obj, data, 'ws')
                   },
@@ -66,12 +80,7 @@ export default {
           const actionGenerator = ip => {
             return (_) => {
               const success = () => {
-                const params = {
-                  action: ip,
-                  data: {},
-                  id: 'ssh',
-                }
-                openWebConsole(params)
+                openWebConsole(buildSshParams(ip))
               }
               if (this.enableMFA) {
                 this.createDialog('SecretVertifyDialog', {
@@ -103,11 +112,7 @@ export default {
                 }
                 const sshConnectHandle = () => {
                   const success = () => {
-                    openWebConsole({
-                      action: ip,
-                      data: {},
-                      id: 'ssh',
-                    })
+                    openWebConsole(buildSshParams(ip))
                   }
                   if (this.enableMFA) {
                     this.createDialog('SecretVertifyDialog', {
@@ -122,12 +127,11 @@ export default {
                     title: i18n.t('compute.custom_ssh_connect', ['SSH']),
                     data: [obj],
                     callback: async (data) => {
-                      const pms = {
-                        action: ip,
-                        data: { port: data.port, username: data.username, password: data.password },
-                        id: 'ssh',
-                      }
-                      openWebConsole(pms)
+                      openWebConsole(buildSshParams(ip, {
+                        port: data.port,
+                        username: data.username,
+                        password: data.password,
+                      }))
                     },
                     decorators: SMART_SSH_FORM_DECORATORS,
                   })
